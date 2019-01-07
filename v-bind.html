@@ -9,14 +9,15 @@
 
     <body>
         <div id="app">
-            <h1>Welcome to Index</h1>
+            <a v-bind:href="rex_link">Go to index</a>
+            <a :href="rex_link">Go to index 2</a>
         </div>
 
        <script>
            var vm = new Vue ({
                el: '#app',
                data: {
-
+                    rex_link: "index.html"
                }
            })
         </script>

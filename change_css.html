@@ -5,18 +5,33 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>     
         <link rel="shortcut icon" href="">    
+        <link type="text/css" rel="stylesheet" href="css/testCSS.css"/>
     </head>
 
     <body>
         <div id="app">
-            <h1>Welcome to Index</h1>
+            <div class="container">
+            <div v-bind:id="outlineColor">
+                <p>what color am I?</p>
+            </div>
+            <button v-on:click="changeOutline">change color</button>
         </div>
+    </div>
 
        <script>
            var vm = new Vue ({
                el: '#app',
                data: {
-
+                    outlineColor: 'redOutline',
+               }, 
+               methods:{
+                   changeOutline: function(){
+                       if(this.outlineColor == "redOutline"){
+                            this.outlineColor = "blueOutline"
+                       } else {
+                           this.outlineColor = "redOutline"
+                       }
+                   }
                }
            })
         </script>

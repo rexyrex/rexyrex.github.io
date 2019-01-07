@@ -9,14 +9,28 @@
 
     <body>
         <div id="app">
-            <h1>Welcome to Index</h1>
+            <div class="container">
+                <div class="row">
+                    <span>String: {{rex_string}}</span>
+                </div>
+
+                <div class="row">
+                    <button @click="reverseString()">Reverse</button>
+                </div>
+            </div>
         </div>
 
        <script>
            var vm = new Vue ({
                el: '#app',
                data: {
-
+                    rex_string: "안녕하세요 저는 문장입니다.",
+               },
+               methods:{
+                   reverseString: function(){
+                        this.rex_string = this.rex_string.split('').reverse().join('');
+                        console.log("split");
+                   }
                }
            })
         </script>

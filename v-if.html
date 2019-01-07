@@ -8,18 +8,25 @@
     </head>
 
     <body>
-        <div id="app">
-            <h1>Welcome to Index</h1>
-        </div>
-
-       <script>
-           var vm = new Vue ({
-               el: '#app',
-               data: {
-
-               }
-           })
-        </script>
+            <div id="app">
+                <span v-if="my_var">v-if를 사용해봅시다</span>
+                <span v-else="my_var">v-else를 사용해봅시다</span>
+                <button v-on:click="toggle">click me</button>
+            </div>
+        
+            <script>    
+                var vm = new Vue ({
+                    el: '#app',
+                    data: {
+                        my_var: true
+                    },
+                    methods: {
+                    toggle: function(){
+                            this.my_var = !this.my_var;
+                        }
+                    }
+                })    
+            </script>
 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

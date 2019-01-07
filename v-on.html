@@ -9,14 +9,20 @@
 
     <body>
         <div id="app">
-            <h1>Welcome to Index</h1>
+            <span>Test bool is {{test_bool}}</span>
+            <button @click="toggleBool()">Click me to toggle</button>
         </div>
 
        <script>
            var vm = new Vue ({
                el: '#app',
                data: {
-
+                    test_bool : true,
+               },
+               methods: {
+                   toggleBool: function(){                       
+                           this.test_bool = !this.test_bool;                       
+                   }
                }
            })
         </script>
