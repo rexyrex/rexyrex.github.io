@@ -10,103 +10,70 @@ Author URI: http://themeforest.net/user/XpeedStudio/portfolio
     body {
         font-size: 15px;
     }
+    .home-content h1 {
+    font-size: 40px;
+	}
+	.signup-process .signup-details h5 {
+    font-size: 21px;
+	}
+	.signup-process .signup-details .number li {
+    font-size: 13px;
 
-
+	}
+	.community-edition{
+		margin-bottom:20px;
+	}
 }
-
 /* Portrait tablets and small desktops */
 @media  (max-width: 991px) {
     html {
-        font-size: 90%;
+        font-size: 80%;
     }
-    .heading h1 {
-        font-size: 30px;
-    }
-    .portfolio-item h2 {
-        font-size: 14px;
-    }
-    .item .details p {
-        font-size: 16px;
-    }
-
-    .item .details small {
-        font-size: 16px;
-    }
-
+	.home-content h1 {
+    font-size: 36px;
+	}
+   .heading-content h1 {
+    font-size: 45px;
+	}
+	.signup-process .signup-icon {
+    float: none;
+	}
+	.community-edition{
+		margin-bottom:20px;
+	}
+	.signup-process .signup-details {
+    float:none;
+	}
 
 }
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
     html {
-        font-size: 80%;
+        font-size: 70%;
     }
-    .navbar-toggle {
-        background-color: #ffffff;
-        border:none;
-    }
-    .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-        background-color: #333333;
-        border:none;
-    }
-    .navbar-default .navbar-toggle:hover .icon-bar {
-        background-color: #fff;
-    }
-    .navbar-default .navbar-collapse, .navbar-default .navbar-form {
-        border-color:none;
-        background: #00a5ff;
-    }
-    .brand-identity{
-        text-align: center;
-        margin-bottom:50px;
-    }
-    .home-content h1 {
-        font-size: 35px;
-    }
-    .home-content h4 {
-        font-size: 18px;
-    }
-    .contact-top h1 {
-        text-align: center;
-    }
-    .contact-left-info {
-        text-align: center;
-    }
-    .contact-btn{
-        text-align: center;
-    }
-    .heading h1 {
-        font-size: 20px;
-    }
-
-    .item .details p {
-        font-size: 20px;
-    }
-    #quote-carousel .carousel-indicators li {
-        width: 70px;
-        height: 70px;
-    }
-    #quote-carousel .carousel-indicators .active {
-        width: 90px;
-        height: 90px;
-    }
-
-    .scrollup {
-        width: 50px;
-        height: 50px;
-        line-height: 50px;
-        bottom: 90px;
-    }
-    .navbar {
-        background: #00a5ff;
-    }
-    .navbar-default .navbar-collapse, .navbar-default .navbar-form {
-        margin-top: 20px;
-    }
-    .owl-carousel .owl-item img {
-        width:50%;
-        margin: 0 auto;
-    }
-
+	.home-content h1 {
+    font-size: 22px;
+	}
+	.navbar-default .collapse .login a {
+    margin-left:0;
+    width:22%;
+	}
+	.home-contact p {
+    font-size: 14px;
+	}
+	.heading-content h1 {
+    font-size: 28px;
+	}
+	.signup-process .signup-icon {
+    float: none;
+	}
+	.community-edition{
+		margin-bottom:20px;
+	}
+	.single_right_contact p{
+	margin-top:25px;
+	}
+   
 }
 
 
@@ -114,75 +81,57 @@ Author URI: http://themeforest.net/user/XpeedStudio/portfolio
 /* Landscape phones and smaller */
 @media (max-width: 480px) {
     html {
-        font-size: 65%;
+        font-size: 60%;
     }
-    .brand-identity{
-        text-align: center;
-        margin-bottom:50px;
-    }
-    .home-content h1 {
-        font-size: 22px;
-    }
-    .home-content h4 {
-        font-size: 14px;
-    }
-    .home-content a {
-        text-align: center;
-    }
-    .portfolio-item h2 {
-        font-size: 15px;
-    }
-    .btn {
-        padding: 16px 28px;
-    }
-    .contact-top h1 {
-        text-align: center;
-    }
-    .contact-left-info {
-        text-align: center;
-    }
-    .copyright{
-        margin-bottom: 25px;
-    }
-    .item .details p {
-        font-size: 16px;
-    }
-    #quote-carousel .carousel-indicators li {
-        width: 50px;
-        height: 50px;
-    }
-    #quote-carousel .carousel-indicators .active {
-        width: 70px;
-        height: 70px;
-    }
-    #quote-carousel .carousel-control.left {
-        left:0px;
-    }
-    #quote-carousel .carousel-control.right {
-        right:0px;
-    }
-    #quote-carousel .carousel-control {
-        top:30px;
-    }
-    .item .details p{
-        font-size: 15px;
-    }
+	.home-content h1 {
+    font-size:13px;
+	}
+   .navbar-default .collapse .login a {
+    margin-left: 0;
+    width: 23%;
+	}
+	.social-wrapper .social-contact a {
+    color: #fff;
+    margin-right: 20px;
+    float: left;
+    margin-top: 10px;
+	}
+	.home-contact p {
 
-    .item .details small{
-        font-size: 15px;
-    }
-
-    .scrollup {
-        width: 50px;
-        height: 50px;
-        line-height: 50px;
-        bottom: 110px;
-    }
-
-    .owl-carousel .owl-item img {
-        width:30%;
-        margin: 0 auto;
-    }
+    font-size: 8px;
+	}
+	.heading-content h1 {
+    font-size: 16px;
+	}
+	.signup-process .signup-icon {
+    float: none;
+	}
+	.signup-process .signup-details h5 {
+    font-size: 23px;
+    margin-left:0;
+	}
+	.signup-process .signup-details {
+    float:none;
+	}
+	.community-edition{
+		margin-bottom:20px;
+	}
+	.single_features_right h2 {
+    font-size: 22px;
+	}
+	.single_features_right p {
+    line-height: 24px;
+	}
+	.single_service_right p {
+    line-height: 24px;
+	}
+	.single_service2 .single_service_right {
+    width: 100%;
+    padding-left:0;
+	}
+	.single_service_right h2 {
+	margin-bottom: 15px;
+	}
 
 }
 
@@ -192,35 +141,22 @@ Author URI: http://themeforest.net/user/XpeedStudio/portfolio
 
 
     html {
-        font-size: 60.5%;
+        font-size: 50%;
     }
-    .portfolio-item h2 {
-        font-size: 13px;
-    }
-    .brand-identity{
-        text-align: center;
-        margin-bottom:50px;
-    }
-    .home-content h1 {
-        font-size: 25px;
-    }
-    .contact-top h1 {
-        text-align: center;
-    }
-    .contact-left-info {
-        text-align: center;
-    }
-    .copyright{
-        margin-bottom: 25px;
-    }
-    #quote-carousel .carousel-indicators li {
-        width: 20px;
-        height: 20px;
-    }
-    #quote-carousel .carousel-indicators .active {
-        width: 40px;
-        height: 40px;
-    }
-
+	.signup-process .signup-icon {
+    float: none;
+	}
+	.community-edition{
+		margin-bottom:20px;
+	}
+	.navbar-default .collapse .login a {
+    width: 36%;
+	}
+	.social-icon{
+		margin-left: 80px;
+	}
+	.social-wrapper .social-contact {
+    margin-left: 52px;
+	}
 }
 
