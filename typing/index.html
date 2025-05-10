@@ -1,0 +1,1247 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Rex Typing Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/typespeed2.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <div class="row justify-content-center">
+        <h1 style="text-align:center">Rexyrex</h1>
+      </div>
+    
+      <div class="row justify-content-center">
+        <h1 style="text-align:center">타자 속도 측정기</h1>
+      </div>
+
+      <div class="row justify-content-center">
+        <h6 id="verTitle" style="text-align:center; color: grey">Ver </h6>
+      </div>
+
+      <div class="row justify-content-center">
+        <a style="color: grey" onclick="openVersionModal()">[버전 이력]</a>
+      </div>
+      
+      <br><br><br>
+
+      <div id="grp1">
+        <div class="row justify-content-center">  
+          <div id="modeGrp" class="btn-group" data-toggle="buttons">
+            <button id="chMod1" type="button" class="main-menu-btn-small btn-choice" onclick="changeMode(1)">한타</button>
+            <button id="chMod2" type="button" class="main-menu-btn-small btn-choice" onclick="changeMode(2)">이포넷</button>
+            <button id="chMod3" type="button" class="main-menu-btn-small btn-choice" onclick="changeMode(3)">영타</button>
+            <button id="chMod4" type="button" class="main-menu-btn-small btn-choice" onclick="changeMode(4)">개발자</button>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row justify-content-center">
+          <button id="startBtn" class="main-menu-btn glow-on-hover" onclick="startCountDown()">시작</button>
+        </div> 
+        
+        <br>
+
+        <div class="row justify-content-center">
+          <button id="highScoreBtnDaily" class="main-menu-btn glow-on-hover" onclick="openHighscoresModal(true)">오늘 순위</button>
+        </div> 
+
+        <br>
+
+        <div class="row justify-content-center">
+          <button id="highScoreBtnAll" class="main-menu-btn glow-on-hover" onclick="openHighscoresModal(false)">역대 순위</button>
+        </div> 
+
+    </div>
+
+      <br>
+
+      <div id="grp2" style="visibility:hidden; opacity:0;">
+
+        <div>
+          <div id="prgBar" class="progress" style="height: 32px;">
+            <div           
+            class="progress-bar progress-bar-striped progress-bar-animated" 
+            role="progressbar" aria-valuenow="75" aria-valuemin="0" 
+            aria-valuemax="100" style="width: 0%;">0%</div>
+          </div>
+        </div>
+        
+        </br>
+        </br>
+
+        <div class="row" id="test">
+          <!-- <input class="unselectable form__input" style="pointer-events:none;" id="testSentInput"/> -->
+          <span id="testSentInputBefore" class="unselectable testSentInputSecondary" style="pointer-events:none; opacity:0.27;"></span>
+        </div>
+      </br>
+        <div class="row">
+          <!-- <input class="unselectable form__input" style="pointer-events:none;" id="testSentInput"/> -->
+          <span id="testSentInput" class="unselectable testSentInput" style="pointer-events:none;"></span>
+        </div>
+      </br>
+        <div class="row">
+          <!-- <input class="unselectable form__input" style="pointer-events:none;" id="testSentInput"/> -->
+          <span id="testSentInputAfter" class="unselectable testSentInputSecondary" style="pointer-events:none; opacity:0.27;"></span>
+        </div>
+        
+        </br>
+        
+        <div class="row">
+          <input id="chatInput" class="form__input2" autocomplete="off"/>
+        </div>
+
+        <div class="row justify-content-center">
+          <p id="comment" style="visibility:hidden; width:50%; text-align:center; font-size:34px">ddd</p>
+        </div>      
+
+    </div>
+      
+      <!-- Modal -->
+      <div id="testModal" class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color:black;">결과</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div id="modalBody" class="modal-body" style="color:black;">
+              <div>
+                <div>
+                  <h3 id="resGrade">등급:</h3>
+                  <h3 id="resScore">점수:</h3>
+                  <h3 id="resComp">상대 평가:</h3>
+                  <h3 id="resAccuracy">정확도:</h3>
+                </div>
+
+                <button id="openSaveCollapseBtn" onclick="openSaveCollapseBtn()" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                  기록 저장
+                </button>
+
+                <div class="collapse" id="collapseExample">
+                  <label>이름
+                    <input id="highscoreId" autocomplete="off" />
+                  </label>
+                  <button class="btn btn-success" type="button" onclick="saveHighscore();">기록 저장</button>
+                </div>
+
+                <br>
+
+                <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                  틀린 단어 목록
+                </button>
+
+                <br>
+                <div class="collapse" id="collapseExample2">
+                  <div class="redoutline">
+                    <ul id="incList" style="list-style-type: none;"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="startCountDown()">재도전!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Highscore Modal -->
+
+      <div id="highscoreModal" class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color:black;">타자 속도 순위</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+            <div id="modalBody" class="modal-body" style="color:black;">
+
+              <nav class="nav nav-pills nav-justified" style="font-size: 20px">
+                <a id="korScoreTab" class="nav-item nav-link active" href="#">한타</a>
+                <a id="engScoreTab" class="nav-item nav-link" href="#">영타</a>
+                <a id="prgScoreTab" class="nav-item nav-link" href="#">개발자</a>
+              </nav>
+
+              <br>
+              <h2 id="scoreTitle" style="text-align:center; background-color:black; color:white">한타 순위</h2>
+
+              <p style="color:black;text-align:center;">(100위 까지 보여줍니다.)</p>
+
+              <div class="tableFixHead">
+              <table id="highScoreTable" class="table table-striped table-bordered table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">순위</th>
+                    <th scope="col">이름</th>
+                    <th scope="col">등급</th>
+                    <th scope="col">점수</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+              <h3 id="highLoading" style="text-align:center;visibility:hidden;">Loading...</h3>
+            </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Version Modal -->
+      <div id="versionModal" class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color:black;">Version History</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div id="modalBody" class="modal-body" style="color:black;">
+              <div class="tableFixHead">
+              <table id="versionTable" class="table table-striped table-bordered table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">버전</th>
+                    <th scope="col">변경 사항</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-firestore.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+        apiKey: "AIzaSyANe3HNZoH-3vYVA4tyZRLA_qmsPYmfvbE",
+        authDomain: "rextypingspeed.firebaseapp.com",
+        projectId: "rextypingspeed",
+        storageBucket: "rextypingspeed.appspot.com",
+        messagingSenderId: "329903137752",
+        appId: "1:329903137752:web:749c515f41a710b265c8ad",
+        measurementId: "G-77L95J37F1"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+
+
+    <script>
+
+    var db;
+    
+    var progress;
+    var secondsPassed;
+    var timeLimit;
+    var started;
+    var keyPressCount;
+    var keyPressCountTmp;
+    
+    var correctWordCount;
+    var incorrectWordCount;
+    
+    var incWordArr;
+    var attmpWordArr;
+
+    var timerStartedOnce;
+
+    var startSentenceTime;
+
+    var score;
+    var accuracy;
+
+    var scoreSaved;
+
+    var sentenceTriplet;
+    var prevInputSent;
+
+    var countingDown;
+
+    var mode;
+
+    var daily = false;
+
+    const cheatDetect = [];
+
+    var givenSentenceList;
+    var typedSentenceList;
+
+    const keyMap= new Map();
+
+    const version = 8;
+
+    var uuid = uuidv4();
+    
+    var level = [
+      {"s" : 200, "l" : '죄송한데... 손가락 2개세요?'}, 
+      {"s" : 300, "l" : '분발하셔야겠어요'}, 
+      {"s" : 380, "l" : '이정도면 평타'}, 
+      {"s" : 420, "l" : '평균 이상'}, 
+      {"s" : 470, "l" : '빠른편'}, 
+      {"s" : 520, "l" : '개발자'}, 
+      {"s" : 560, "l" : 'pc카톡 많이 한거 티나네 (임희주급)'}, 
+      {"s" : 600, "l" : '타자 말고 잘하는게 없을 확률 높음'}, 
+      {"s" : 650, "l" : '대회 나가도 될듯'}, 
+      {"s" : 700, "l" : '타자 신'}, 
+      {"s" : 740, "l" : '해킹 유저'},
+      {"s" : 780, "l" : '기계'},
+      {"s" : 820, "l" : '초월자'},
+      {"s" : 999999, "l" : '띠용'}
+    ];
+
+    var englevel = [
+      {"s" : 20, "l" : 'Slowpoke'}, 
+      {"s" : 30, "l" : 'Practice makes perfect'}, 
+      {"s" : 40, "l" : 'Not bad'}, 
+      {"s" : 50, "l" : 'Above Average'}, 
+      {"s" : 60, "l" : 'Quite fast'}, 
+      {"s" : 70, "l" : 'Developer'}, 
+      {"s" : 80, "l" : 'Bunny Typer'}, 
+      {"s" : 90, "l" : 'Professional Typer'}, 
+      {"s" : 100, "l" : 'Typing God'}, 
+      {"s" : 110, "l" : 'Hacker'},
+      {"s" : 120, "l" : 'Machine'},
+      {"s" : 130, "l" : 'Ridonculous'},
+      {"s" : 999999, "l" : 'OMG'}
+    ];
+
+    var prglevel = [
+      {"s" : 20, "l" : '백수'}, 
+      {"s" : 27, "l" : '신입'}, 
+      {"s" : 32, "l" : '주임'}, 
+      {"s" : 38, "l" : '대리'}, 
+      {"s" : 45, "l" : '과장'}, 
+      {"s" : 52, "l" : '차장'}, 
+      {"s" : 59, "l" : '부장'}, 
+      {"s" : 65, "l" : '이사'}, 
+      {"s" : 70, "l" : '사장'}, 
+      {"s" : 75, "l" : '회장'}, 
+      {"s" : 80, "l" : '대통령'},
+      {"s" : 85, "l" : 'Elon Musk'},
+      {"s" : 90, "l" : '뇌로 프로그래밍하는 외계인'},
+      {"s" : 999999, "l" : 'OMG'}
+    ];
+
+    const scoreTabs = ['korScoreTab','engScoreTab', 'prgScoreTab'];
+    
+    $(function () {
+
+      $('#korScoreTab').on('click', function (e) {
+        setScoreTab('kor');
+      })
+
+      $('#engScoreTab').on('click', function (e) {
+        setScoreTab('eng');
+      })
+
+      $('#prgScoreTab').on('click', function (e) {
+        setScoreTab('prg');
+      })
+
+      $('#verTitle').text("Ver " + version);
+      changeMode(1);
+      db = firebase.firestore();
+      saveLogin();
+      checkVersion();
+      timerStartedOnce = false;
+      reset();
+
+      //var textgen = new TextGen();
+      //alert(textgen.sentence());
+    });
+
+    function setScoreTab(tabType){
+      if(tabType=='kor'){
+        for(var i=0; i<scoreTabs.length; i++){
+          $('#' + scoreTabs[i]).removeClass('active');
+        }
+        $('#scoreTitle').text("한타 순위" + (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
+        $('#korScoreTab').addClass('active');
+        loadHighscoreData('kor');
+      } else if(tabType=='eng'){
+        for(var i=0; i<scoreTabs.length; i++){
+          $('#' + scoreTabs[i]).removeClass('active');
+        }
+        $('#scoreTitle').text("English Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
+        $('#engScoreTab').addClass('active');
+        loadHighscoreData('eng');
+      } else if(tabType=='prg'){
+        for(var i=0; i<scoreTabs.length; i++){
+          $('#' + scoreTabs[i]).removeClass('active');
+        }
+        $('#scoreTitle').text("Programmer Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
+        $('#prgScoreTab').addClass('active');
+        loadHighscoreData('prg');
+      }
+    }
+
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function saveLogin(){
+      db.collection("login").add({
+            uuid: uuid,
+            navigator: navigator.userAgent,
+            date: moment().format('MM-DD-YYYY HH:mm:ss')
+          }).then((docRef) => {
+            
+          })
+          .catch((error) => {
+
+          });
+    }
+
+    function checkVersion(){
+      db.collection("version").orderBy("ver", "desc").limit(1)
+      .get()
+      .then((querySnapshot) => {
+          var serverVer = 100000;
+          querySnapshot.forEach((doc) => {
+              serverVer = parseInt(doc.data().ver);
+          });
+
+          if(version < serverVer){
+            alert("캐시를 지워주세요. (Client ver: " + version + ", Server ver: " + serverVer + ")");
+            //window.location.reload(true);
+            $('#startBtn').text("캐시를 지워주세요.");
+            $('#startBtn').attr('disabled', true);
+
+            fadeOut("grp2");
+            fadeOut("highScoreBtnDaily");
+            fadeOut("highScoreBtnAll")
+            fadeOut("modeGrp");
+          }
+
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+    }
+
+    function openVersionModal(){
+      $('#versionModal').modal('show');
+
+      db.collection("version").orderBy("ver", "desc").limit(100)
+      .get()
+      .then((querySnapshot) => {
+         var versionList = [];
+          querySnapshot.forEach((doc) => {
+              //console.log(doc.id, " => ", doc.data());
+              versionList.push(doc.data());
+          });
+
+          $('#versionTable tbody').empty();
+          for(var i=0; i<versionList.length; i++){
+            $('#versionTable tbody').append("<tr><td>" + versionList[i].ver + "</td><td>"+ versionList[i].desc + "</td>");
+          }
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+
+    }
+
+    function changeMode(m){
+      // if(m==4){
+      //   alert("준비중입니다");
+      //   return;
+      // }
+      mode = m;
+      $('#chMod1').css('background', 'black').css('color', 'white');
+      $('#chMod2').css('background', 'black').css('color', 'white');
+      $('#chMod3').css('background', 'black').css('color', 'white');
+      $('#chMod4').css('background', 'black').css('color', 'white');
+      $('#chMod'+m).css('background', 'white').css('color', 'black');
+
+    }
+
+    function openSaveCollapseBtn(){
+      $('#openSaveCollapseBtn').css("visibility", "hidden");
+    }
+
+    function updateSentenceTriplet(){
+      if(sentenceTriplet.length == 0){
+        sentenceTriplet.push(generateSentence());
+        sentenceTriplet.push(generateSentence());
+        sentenceTriplet[2] = '.';
+      } else {
+        //triplet is of length 2 or 3
+        sentenceTriplet[2] = sentenceTriplet[1];
+        sentenceTriplet[1] = sentenceTriplet[0];
+        sentenceTriplet[0] = generateSentence();
+      }
+    }
+
+    function saveHighscore(){
+      if($('#highscoreId').val().length < 2){
+        alert("이름이 너무 짧아요.");
+        return;
+      } else if($('#highscoreId').val().length > 8){
+        alert("이름이 너무 길어요.");
+        return;
+      }
+
+      if(score<0 || isNaN(score)){
+        alert("기록 저장 불가 - 한 단어도 안치셨네요 :(");
+      }
+
+      if(!scoreSaved){
+        scoreSaved = true;
+        addHighscore($('#highscoreId').val(), score, getGrade(), Math.round(accuracy*100)+'%');   
+        updateAnonHighscore();     
+      } else {
+        alert("이미 기록 저장하셨네요~");
+      }
+    }
+
+    function addAnonHighscore(score, rank, accuracy){
+      var keyArr = Array.from(keyMap, ([name, value]) => ({ name, value }));
+      var collectionName = '';
+      switch(mode){
+        case 1: collectionName = 'recordsAnon'; break;
+        case 2: collectionName = 'recordsAnon'; break;
+        case 3: collectionName = 'engRecordsAnon'; break;
+        case 4: collectionName = 'prgRecordsAnon'; break;
+      }
+      db.collection(collectionName).add({
+            uuid: uuid,
+            id: "",
+            score: score,
+            accuracy: accuracy,
+            correctWordCount : correctWordCount,
+            incorrectWordCount : incorrectWordCount,
+            givenSentenceList : givenSentenceList,
+            typedSentenceList : typedSentenceList,
+            keyMap : keyArr,
+            rank: rank,
+            clientVersion: version,
+            mode: mode,
+            cheatDetect: cheatDetect,
+            keyPressCount: keyPressCount,
+            keyPressCountTmp: keyPressCountTmp,
+            date: moment().format('MM-DD-YYYY HH:mm'),
+            day: moment().format('MM-DD-YYYY')
+          }).then((docRef) => {
+            
+          })
+          .catch((error) => {
+            console.log("error:");
+            console.log(error);
+          });
+    }
+
+    function updateAnonHighscore(){
+      var collectionName = '';
+      switch(mode){
+        case 1: collectionName = 'recordsAnon'; break;
+        case 2: collectionName = 'recordsAnon'; break;
+        case 3: collectionName = 'engRecordsAnon'; break;
+        case 4: collectionName = 'prgRecordsAnon'; break;
+      }
+      var tmpId = $('#highscoreId').val();
+      db.collection(collectionName).where("uuid", "==", uuid).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          db.collection(collectionName).doc(doc.id).update({
+              id: tmpId,
+          })
+          .then(() => {
+            
+          })
+        })
+      })
+    }
+
+    function addHighscore(username, score, rank, accuracy){
+      var keyArr = Array.from(keyMap, ([name, value]) => ({ name, value }));
+      var userExists = false;
+      var collectionName = '';
+      switch(mode){
+        case 1: collectionName = 'records2'; break;
+        case 2: collectionName = 'records2'; break;
+        case 3: collectionName = 'engRecords'; break;
+        case 4: collectionName = 'prgRecords'; break;
+      }
+      //Check if username exists
+      db.collection(collectionName).where("id", "==", username).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            userExists = true;
+            //console.log(doc.id, " => ", doc.data());
+            //username exists and new highscore reached
+            if(doc.data().score < score){
+              db.collection(collectionName).doc(doc.id).update({
+                  score: score,
+                  accuracy: accuracy,
+                  correctWordCount : correctWordCount,
+                  incorrectWordCount : incorrectWordCount,
+                  givenSentenceList : givenSentenceList,
+                  typedSentenceList : typedSentenceList,
+                  keyMap : keyArr,
+                  rank: rank,
+                  clientVersion: version,
+                  mode: mode,
+                  cheatDetect: cheatDetect,
+                  keyPressCount: keyPressCount,
+                  keyPressCountTmp: keyPressCountTmp,
+                  date: moment().format('MM-DD-YYYY HH:mm'),
+                  day: moment().format('MM-DD-YYYY')
+              })
+              .then(() => {
+                alert("기록 갱신하셨습니다! (" + doc.data().score + " => " + score + ")");
+              })
+            } else {
+              alert("더 높은 기록이 있으세요. 기록 갱신 실패. (" + doc.data().score + ")");
+            }
+        });
+        //Add new user
+        if(!userExists){
+          db.collection(collectionName).add({
+            id: username,
+            score: score,
+            accuracy: accuracy,
+            correctWordCount : correctWordCount,
+            incorrectWordCount : incorrectWordCount,
+            givenSentenceList : givenSentenceList,
+            typedSentenceList : typedSentenceList,
+            keyMap : keyArr,
+            rank: rank,
+            clientVersion: version,
+            mode: mode,
+            cheatDetect: cheatDetect,
+            keyPressCount: keyPressCount,
+            keyPressCountTmp: keyPressCountTmp,
+            date: moment().format('MM-DD-YYYY HH:mm'),
+            day: moment().format('MM-DD-YYYY')
+          }).then((docRef) => {
+            alert("저장 완료");
+          })
+          .catch((error) => {
+            alert("에러 발생");
+          });
+        }
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+    }
+
+    function openHighscoresModal(dly){
+
+      daily = dly;
+
+      $('#highLoading').css("visibility", "visible");
+      
+      setScoreTab('kor');
+
+      $('#highscoreModal').modal('show');
+    }
+
+    function loadHighscoreData(scoreType){
+      var collectionName = '';
+      if(!daily){
+        if(scoreType=='kor'){
+          collectionName = "records2";
+        } else if(scoreType == 'eng'){
+          collectionName = "engRecords";
+        } else if(scoreType == 'prg'){
+          collectionName = "prgRecords";
+        }
+      } else {
+        //daily
+        if(scoreType=='kor'){
+          collectionName = "recordsAnon";
+        } else if(scoreType == 'eng'){
+          collectionName = "engRecordsAnon";
+        } else if(scoreType == 'prg'){
+          collectionName = "prgRecordsAnon";
+        }
+      }
+
+      if(!daily){
+        db.collection(collectionName).orderBy("score", "desc").limit(100)
+        .get()
+        .then((querySnapshot) => {
+          var highList = [];
+            querySnapshot.forEach((doc) => {
+                //console.log(doc.id, " => ", doc.data());
+                highList.push(doc.data());
+            });
+            $('#highLoading').css("visibility", "hidden");
+            $('#highScoreTable tbody').empty();
+            for(var i=0; i<highList.length; i++){
+              $('#highScoreTable tbody').append("<tr><th scope='row'>" + (i+1) + "</th><td>" + highList[i].id + "</td><td>"+ highList[i].rank + "</td><td>"+ highList[i].score + "</td>");
+            }
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        });
+      } else {
+        //daily
+        db.collection(collectionName).where("day", "==", moment().format('MM-DD-YYYY')).orderBy("score", "desc").limit(100)
+        .get()
+        .then((querySnapshot) => {
+          var highList = [];
+            querySnapshot.forEach((doc) => {
+                //console.log(doc.id, " => ", doc.data());
+                highList.push(doc.data());
+            });
+            $('#highLoading').css("visibility", "hidden");
+            $('#highScoreTable tbody').empty();
+            for(var i=0; i<highList.length; i++){
+              $('#highScoreTable tbody').append("<tr><th scope='row'>" + (i+1) + "</th><td>" + (highList[i].id == '' ?  '익명 유저' : highList[i].id)+ "</td><td>"+ highList[i].rank + "</td><td>"+ highList[i].score + "</td>");
+            }
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        });
+      }
+      
+    }
+
+    function checkRank(){
+      var collectionName = '';
+      switch(mode){
+        case 1: collectionName = 'records2'; break;
+        case 2: collectionName = 'records2'; break;
+        case 3: collectionName = 'engRecords'; break;
+        case 4: collectionName = 'prgRecords'; break;
+      }
+      db.collection(collectionName).orderBy("score", "desc").limit(100)
+      .get()
+      .then((querySnapshot) => {
+         var highList = [];
+         var i = 0;
+         var place = 101;
+         var tmpSaved = false;
+          querySnapshot.forEach((doc) => {
+              highList.push(doc.data());
+              i+=1;
+              if(score>doc.data().score && !tmpSaved){
+                tmpSaved = true;
+                place = i;
+              }
+          });
+
+          if(place < 101){
+            $('#resComp').text("상대 평가 : 상위" + Math.round(place/i*100) + "% (" + i + "명 중 " + place + "등)" );
+            alert("총 " + i + "명 중 " + place + "등 하셨어요!\n[기록 저장]버튼을 눌러서 순위권에 올라가세요!");
+          } else if(i < 101){
+            $('#resComp').text("상대 평가 : " + i + "명 중 꼴등");
+            alert("총 " + i + "명 중 꼴등 하셨어요!\n[기록 저장]버튼을 눌러서 순위권에 올라가세요!");
+          } else {
+            $('#resComp').text("상대 평가 : 100등 안에 못들었어요");
+          }
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+    }
+    
+    function reset(){
+      uuid = uuidv4();
+
+      started = false;
+      countingDown = false;
+      progress = 0;
+      secondsPassed = 0;
+      keyPressCount = 0;
+      keyPressCountTmp = 0;
+      timeLimit = 60;
+      scoreSaved = false;
+      
+      correctWordCount = 0;
+      incorrectWordCount = 0;
+      score = 0;
+      accuracy = 0;
+      incWordArr = [];
+      attmpWordArr = [];
+
+      sentenceTriplet = [];
+      prevInputSent = "";
+
+      typedSentenceList = [];
+      givenSentenceList = [];
+
+      keyMap.clear();
+      
+      $('#testSentInput').html("");
+      $('#testSentInputBefore').html("");
+      $('#testSentInputAfter').html("");
+      $('#chatInput').val("");
+      $('#startBtn').text("시작");
+    }
+
+    function retry(){
+      reset();
+      start();
+    }
+
+    function fadeIn(elemId){
+      $('#' + elemId).css("visibility", "visible").css("opacity", 0);
+      //animate(elemId, "animateFadeIn", function(){$('#' + elemId).css("visibility", "visible").css("opacity", 1);});
+      $('#' + elemId).transition({opacity:1},4000, "snap"); 
+    }
+
+    function fadeIn2(elemId){
+      $('#' + elemId).css("visibility", "visible").css("opacity", 0);
+      $('#' + elemId).transition({opacity:0.27},4000, "snap");
+    }
+
+    function fadeOut(elemId){
+      $('#' + elemId).css("opacity", 1);
+      $('#' + elemId).transition({opacity:0}, 4000, "snap", function(){$('#' + elemId).css("visibility", "hidden").css("opacity", 0);});
+    }
+
+    function animate(elemId, anim, fn){
+      //console.log("animating : " + elemId + ", " + anim);
+      $('#' + elemId).addClass(anim);
+      $('#' + elemId).on("animationend", function(){
+        fn();
+        $(this).removeClass(anim);
+      });
+    }
+
+    function startCountDown(){
+      $('#chatInput').html('');
+
+      
+      if(!started && !countingDown){
+        fadeOut("highScoreBtnDaily");
+        fadeOut("highScoreBtnAll");
+        //fadeOut("startBtn");
+        fadeOut("modeGrp");
+        fadeIn("grp2");
+
+        countingDown = true;
+
+        var counter = 5;
+        $('#startBtn').text(counter);
+        var counterItv = setInterval(function(){ 
+          counter-=1;
+          $('#startBtn').text(counter);
+          if(counter==0){
+            clearInterval(counterItv);
+            countingDown = false;
+            if(timerStartedOnce){
+              retry();
+            } else {
+              start();
+            }            
+          }
+        }, 1000);
+      }
+    }
+    
+    function start(){
+      if(!started){
+
+      started = true;
+      $('#startBtn').text("Loading...");
+  
+      setTimeout(function(){
+          updateSentenceTriplet();
+          $('#testSentInputBefore').html(sentenceTriplet[0]);
+          $('#testSentInput').html(sentenceTriplet[1]);
+          $('#testSentInputAfter').html(sentenceTriplet[2]);
+          $('#startBtn').text("고고!");
+      }, 1000);
+      
+      if(timerStartedOnce){
+        return;
+      }
+
+      timerStartedOnce = true;
+
+      setInterval(function(){ 
+          if(started){
+              $('#chatInput').focus();
+              progress = secondsPassed/timeLimit * 100;  
+              var timeLeftVal = 100 - progress;
+              var color = progress < 60 ? 'green' : (progress < 80 ? 'orange' : 'red');
+              $(".progress-bar").css("width", timeLeftVal + "%").text(timeLimit - secondsPassed).css('background-color', color);
+              secondsPassed+=1;
+              if(secondsPassed > timeLimit){
+                endLogic();
+              }
+          }
+        }, 1000);
+      }
+    }
+    
+    function endLogic(){
+        if(started){
+            //fade
+            fadeOut("grp2");
+            fadeIn("startBtn");
+            fadeIn("highScoreBtnDaily");
+            fadeIn("highScoreBtnAll");
+            fadeIn("modeGrp");
+
+            started = false;
+
+            $('#testSentInput').html('');
+            $('#testSentInputBefore').html('');
+            $('#testSentInputAfter').html('');
+            $('#chatInput').html('');
+            $('#startBtn').text("재도전");
+
+            accuracy = correctWordCount / (correctWordCount + incorrectWordCount);
+            score = Math.round((keyPressCount + getEffectiveKeyPressCountTmp()) * accuracy);
+            if(mode==3||mode==4){
+              score = Math.round(score/5);
+            }
+
+            checkRank();
+
+            $('#resScore').text("점수 : " + score);
+            $('#resGrade').text("등급 : " + "[" + getGrade() + "]");
+            $('#resAccuracy').text("정확도 : " + Math.round(accuracy * 100) + "% (" + correctWordCount + "/" + (correctWordCount + incorrectWordCount) + ")");
+
+            $('#incList').empty();
+            for(var i=0; i<incWordArr.length; i++){
+                //console.log((i+1) + ". " + incWordArr[i] + " ('" + attmpWordArr[i] + "')");
+                $('#incList').append('<li>' + (i+1) + ". " + incWordArr[i] + " ('" + attmpWordArr[i] + "')" + '</li>')
+            }
+
+            if(!isNaN(score)){
+              addAnonHighscore(score, getGrade(), accuracy);
+            }            
+
+            $('#testModal').modal('show');
+        }
+    }
+
+    function getEffectiveKeyPressCountTmp(){
+      if(typedSentenceList.length == 0){
+        return 0;
+      } else {
+        var avg = Math.round(keyPressCount / typedSentenceList.length);
+        if(keyPressCountTmp > avg) {
+          return avg;
+        } else {
+          return keyPressCountTmp;
+        }
+      }
+    }
+
+    function checkBatchimEnding(word) {
+      if (typeof word !== 'string') return null;
+    
+      var lastLetter = word[word.length - 1];
+      var uni = lastLetter.charCodeAt(0);
+    
+      if (uni < 44032 || uni > 55203) return null;
+    
+      return (uni - 44032) % 28 != 0;
+    }
+
+    function encounterMessage(name){
+      var adj = checkBatchimEnding(name)?'이':'가';
+    }
+
+    function generateName(){
+      const f = ["김", "박", "이", "장", "임", "양", "한", "서", "안"];
+      const s = ["형", "민", "희", "주", "성", "호", "광", "천", "세", "훈", "석", "영", "은", "연", "경", "고", "운", "소", "희", "정"];
+
+      return f[ri(f.length)] + s[ri(s.length)] + s[ri(s.length)];
+    }
+    
+    function generateSentence(){
+      startSentenceTime = new Date();
+
+      var pnouns;
+      var nouns;
+      var verbs;
+      var adjectives;
+
+      if(mode == 1 || mode == 2){
+        pnouns = [];
+        pnouns.push(generateName());
+      
+        nouns = ["감자","과자","사탕","낙타","컴퓨터","키보드","다람쥐","공룡","슬랙","핸드폰", "사진기","물컵", "모니터", "창고", "강아지", "고양이", "냉장고", "다리미", "컵", "포크", "숟가락", "명함", "곰", "거북이", "토끼", "빗자루", "쇳덩어리", "구슬", "스트레칭 도구", "마사지 의자", "블루투스 이어폰", "유선 핸드폰", "명품 가방", "하이힐", "뚜레쥬르", "글루", "체리", "서버", "경지실", "경전실", "체리 개발팀", "야구 빠따", "원숭이", "생쥐", "친구", "사람", "모닥불", "아이스크림", "스테이크", "미국산 고기", "살아있는 한우", "소", "강아지", "고양이"]
+        
+        verbs = ["먹었다", "때렸다","째려봤다","걷어 찼다", "싫어한다", "좋아한다", "혐오한다", "공격했다", "돌려버렸다", "시도했다", "박살냈다", "싸대기 때렸다", "반토막냈다", "쳐다봤다", "패버렸다", "상상해봤다", "갈궜다", "뿌리쳤다", "깨물어버렸다", "개발했다", "해킹했다", "망하게 해버렸다", "망가트렸다", "위조했다", "기부했다", "밀어 냈다", "잡아 당겼다", "욕했다"]
+
+        adjectives = ["맛있게", "힘차게", "겨우", "천천히", "멋있게", "예쁘게", "빠르게", "뜨겁게", "이상하게", "귀엽게", "따끈하게","얄밉게", "차갑게", "어중간하게", "어색하게", "똑똑하게", "천재 처럼", "할듯 말듯", "뚜잉스럽게", "찰지게", "무섭게"];
+        if(mode == 2){
+          pnouns = ["이소희 사원님", "전하영 사원님", "장주환 주임님", "김석주 주임님", "김민형", "양세훈","임희주 주임님","서영은 과장님","안상준 대리님", "박성호 소장님", "김광천 이사님", "한세훈 이사님", "박연경 차장님", "이미주"];
+          adjectives.push("임희주 답게");
+        }
+      } else if(mode == 3){
+        var engSent = "";
+        for(var l=0; l<7; l++){
+          var engWord = getWord();
+          while(engSent.includes(engWord)){
+            engWord = getWord();
+          }
+          engSent += engWord + (l==6 ? '' : ' ');
+        }
+        return engSent;
+      } else if(mode==4){
+        return getPrgSent();
+      }
+
+      var sent = ""
+
+      var pnoun = pnouns[ri(pnouns.length)];
+      var noun =  nouns[ri(nouns.length)];
+      var adjective = adjectives[ri(adjectives.length)];
+      var verb = verbs[ri(verbs.length)];
+
+      sent += pnoun + (checkBatchimEnding(pnoun)? "은 " : "는 ") + noun + (checkBatchimEnding(noun)? "을 " : "를 ") + adjective + " " + verb;
+      sent += ".";
+
+      // if(Math.random() < 0.01){
+      //   sent = "임희주는 상당히 폭력적이다. 조심해라. 항상.";
+      // }
+      
+      // if(Math.random() < 0.01){
+      //   sent = "갑자기 영타 시험 고고 abcdefghijklmnopqrstuvwxyz";
+      // }
+
+      return sent;
+    }
+    
+    function updateScore(){
+        var splitProb = $('#testSentInput').text().split(' ');
+        var splitAns = $('#chatInput').val().split(' ');
+        
+        //var length = splitProb.length > splitAns.length ? splitAns.length : splitProb.length;
+        
+        for(var i=0; i<splitProb.length; i++){
+            var eq = false;
+            for(var j=0; j<splitAns.length; j++){
+                if(splitProb[i] == splitAns[j]){
+                    eq = true;
+                    correctWordCount+=1;
+                    break;
+                }
+            }
+            if(!eq){
+                var atmp = i >= splitAns.length ? '?' : splitAns[i];
+                attmpWordArr.push(atmp);
+                incWordArr.push(splitProb[i]);
+                incorrectWordCount+=1;
+            }
+        }
+
+        var sentenceEndDate = new Date();
+        var setenceSecondsElapsed = Math.round((sentenceEndDate - startSentenceTime)/1000);
+
+        $('#comment').text(getComment());
+        $('#comment').css("visibility", "visible");
+        $('#comment').addClass('animate')
+        $('#comment').on("animationend", function(){
+          $(this).css("visibility", "hidden");
+          $(this).removeClass('animate');
+        });
+
+        
+        
+        /*
+        for(var i=0; i< length; i++){
+            if(splitProb[i] == splitAns[i]){
+                correctWordCount+=1;
+            } else {
+                incWordArr.push(splitProb[i]);
+                incorrectWordCount+=1;
+            }
+        }
+        */
+    }
+
+    function getComment(){
+      var arr = [];
+      switch(mode){
+        case 1: arr = level; break;
+        case 2: arr = level; break;
+        case 3: arr = englevel; break;
+        case 4: arr = prglevel; break;
+        default: break;
+      }
+
+      var tmpAccuracy = correctWordCount / (correctWordCount + incorrectWordCount);
+      var tmpScore = Math.round(keyPressCount * timeLimit/secondsPassed * tmpAccuracy);
+      if(mode==3||mode==4){
+        tmpScore = Math.round(tmpScore/5);
+      }
+        
+      var grade = '';
+      for(var z=0; z<arr.length; z++){
+          if(tmpScore < arr[z].s){
+              grade = arr[z].l;
+              break;
+          }
+      }
+
+      return grade;
+    }
+
+    function getGrade(){
+      //accuracy = correctWordCount / (correctWordCount + incorrectWordCount);
+      //score = Math.round(keyPressCount * timeLimit/secondsPassed * accuracy);
+        
+      var arr = [];
+      switch(mode){
+        case 1: arr = level; break;
+        case 2: arr = level; break;
+        case 3: arr = englevel; break;
+        case 4: arr = prglevel; break;
+        default: break;
+      }
+      var grade = '';
+      for(var z=0; z<arr.length; z++){
+          if(score < arr[z].s){
+              grade = arr[z].l;
+              break;
+          }
+      }
+
+      return grade;
+    }
+    
+document.addEventListener('DOMContentLoaded', () => {
+    'use strict';
+
+    // document.addEventListener('input', event => {
+    //   console.log("new event: " + event.target.value);
+    // });
+
+    document.addEventListener('keydown', event => {
+      if(started){
+        keyPressCountTmp+=1;
+        //const key = event.key.toLowerCase();
+        const keyCode = event.code;
+        //console.log(keyCode);
+        //console.log(key);
+        //console.log(event);
+
+        if(keyCode != "Backspace"){
+          cheatDetect.push(keyCode);
+        
+          //cheat detection
+          if(cheatDetect.length >= 10){
+            cheatDetect.shift();
+
+            var cheating = true;
+            for(var z = 1; z < cheatDetect.length; z++){
+              if(cheatDetect[z-1] != cheatDetect[z]){
+                cheating = false;
+                break;
+              }
+            }
+            if(cheating){
+              alert("[점수 조작 방지 알림]");
+            }
+          }
+        }
+
+        if(keyMap.has(keyCode)){
+          keyMap.set(keyCode, keyMap.get(keyCode) + 1);
+        } else {
+          keyMap.set(keyCode, 1);
+        }
+        
+        if(keyCode=="Enter"){
+          keyPressCount += keyPressCountTmp;
+          keyPressCountTmp = 0;
+          updateScore();
+          updateSentenceTriplet();
+          givenSentenceList.push(sentenceTriplet[2]);
+          typedSentenceList.push($('#chatInput').val());
+
+          //$('#testSentInput').animate({"border-radius": "40px"},100, function(){$('#testSentInput').animate({"border-radius": "20px"},100)});
+          $('#testSentInputBefore').transition({ y: '111%', opacity: 1  }, 147, 'ease',function(){
+            $('#testSentInputBefore').clearQueue().transition({y: '0%', opacity: 0.27},1); 
+            $('#testSentInputBefore').html(sentenceTriplet[0]);
+          });
+          $('#testSentInput').transition({ y: '111%', opacity: 0.27 }, 147, 'ease', function(){
+            $('#testSentInput').clearQueue().transition({y: '0%', opacity: 1},1); 
+            $('#testSentInput').html(sentenceTriplet[1]);
+          });
+          $('#testSentInputAfter').transition({ y: '0%' }, 147, 'ease', function(){
+            $('#testSentInputAfter').clearQueue().transition({y: '0%'},1);
+            $('#testSentInputAfter').html(sentenceTriplet[2]);
+            $("#testSentInputAfter").unmark();
+            $('#testSentInputAfter').mark(prevInputSent);
+          });
+          
+          prevInputSent = $('#chatInput').val();
+          $('#chatInput').val("");
+        }
+
+
+        
+        $("#testSentInput").unmark();
+        var totalInput = $('#chatInput').val();
+        $('#testSentInput').mark(totalInput);
+      }
+    });
+});
+    </script>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
+  <script src="js/transit.js"></script>  
+  <script src="js/sent_generator.js"></script> 
+  <script src="js/sent_generator_kr.js"></script> 
+  <script src="js/prg_sent.js"></script> 
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/ko.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.js" integrity="sha512-19TrqSGVSwaC2IDGHrD+tAkX59/w5cXy0BHDVwn7OJQXxavORhFSFM7DOO9soXKuo8O7gGNHiG9R2vFrXRBcTQ==" crossorigin="anonymous"></script>
+    <script src="data/adjectives.js"></script>
+    <script src="data/verbs.js"></script>
+    <script src="data/nouns.js"></script>
+    <script src="data/simple_words.js"></script>
+  </body>
+</html>

@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Parser Download</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="parserDownload/parserDownload.css">
+  </head>
+
+  <body> 
+    <div id="app">
+      <div class="container">
+        <h1>Download list v10</h1>
+        <p>Multiple Download setting : chrome://settings/content/automaticDownloads</p>
+        <hr>
+        
+        <h5 style="display:none">Estimated Time : <span id="estimatedTime"></span></h5>
+        <h5 style="display:none">Elpased Time : <span id="elapsedTime">0 seconds</span></h5>
+        <h5>Remaining Time : <span id="remainingTime"></span></h5>
+        <hr>
+        <button id="loadBtn" type="button" class="btn btn-primary" onclick="loadList()">1. Load</button>
+        <button id="startBtn" type="button" class="btn btn-primary" onclick="downloadAll()">2. Start</button>
+
+        <div id="downloadDiv" class="blackOutline">
+          <p>Download Count : <span id="downloadCount">0</span></p>
+          <p>Downloading : <span id="downloading">NULL</span></p>
+        </div>
+
+        <div id="deleteDiv" class="blackOutline">
+          <p>Delete Count : <span id="deleteCount">0</span></p>
+          <p>Deleting : <span id="deleting">NULL</span></p>
+        </div>
+
+        <div id="listDiv" class="blackOutline">
+          <h3>List Count : <span id="listCount"></span></h3>
+          <p>Time : <span id="loadTime"></span> </p>
+          <ol id="list"></ol>
+        </div>
+
+      </div>
+    </div>
+
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-storage.js"></script>
+  
+  <script>
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyBW1WBOJ7FuASswgsBNQb7J9XK9-RRRkEQ",
+    authDomain: "kakaoparser.firebaseapp.com",
+    projectId: "kakaoparser",
+    storageBucket: "kakaoparser.appspot.com",
+    messagingSenderId: "130150702474",
+    appId: "1:130150702474:web:ba51119a99cdd81ed57c73",
+    measurementId: "G-66NS46TV9X"
+  };
+
+
+  // Get a reference to the storage service, which is used to create references in your storage bucket
+
+  var dlQueue = [];
+  var deleteQueue = [];
+  var totalCount = 0;
+  var twoCount = 0;
+  var downloadCount = 0;
+  var deleteCount = 0;
+  var storage;
+  var storageRef;
+  var listRef;
+  var loaded;
+  var estimatedTime;
+  const downloadInterval = 2200;
+  const deleteInterval = 300;
+  
+  $(function(){
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    storage = firebase.storage();
+
+    $('#downloadDiv').hide();
+    $('#listDiv').hide();
+    $('#deleteDiv').hide();
+
+    storageRef = storage.ref();
+
+    loaded = false;
+
+    // Create a reference under which you want to list
+    listRef = storageRef;//.child('');
+  })
+
+  $('.item').on('click', function(e){
+    e.preventDefault();
+    $(this).remove();
+  })
+  
+  function loadList(){
+    if(loaded){
+      alert("Reloading Page");
+      location.reload();
+      return;
+    }
+
+    $('#listDiv').show();
+    toggleOutlines($('#listDiv'));
+    $('#loadBtn').hide();
+
+    loaded = true;
+    
+    // Find all the prefixes and items.
+    listRef.listAll().then(function(res) {
+      $('#loadTime').html(new Date());
+        // res.prefixes.forEach(function(folderRef) {
+        //           //console.log(folderRef);
+        // });
+        res.items.forEach(function(itemRef) {
+          // All the items under listRef.
+          console.log(itemRef);
+          deleteQueue.push(itemRef);
+          itemRef.getDownloadURL().then(function(url) {
+
+            totalCount++;
+            if(itemRef.name.includes("T-")){
+              twoCount++;
+              $('#list').append("<li class='item' style='color:yellow'><a href='" + url + "'>" + itemRef.name + "</a></li>");
+            } else {
+              $('#list').append("<li class='item'><a href='" + url + "'>" + itemRef.name + "</a></li>");
+            }
+
+            dlQueue.push({"url" : url, "itemRef" : itemRef});
+            $('#listCount').html(totalCount + "<span style='color:red'> (" + twoCount + ")</span>");
+            estimatedTime = (totalCount * (downloadInterval + deleteInterval))/1000;
+            $('#estimatedTime').html(getTimeStr(estimatedTime));
+            $('#remainingTime').html(getTimeStr(estimatedTime));
+            $('#downloadCount').html(0 + " / " + totalCount);
+            $('#deleteCount').html(0 + " / " + totalCount);
+            
+            //console.log(url);
+          }).catch(function(error) {
+            //console.log("error:" + error);
+          });
+        });
+      }).catch(function(error) {
+      });
+  }
+
+  function getTimeStr(seconds){
+    if(seconds < 60){
+      return Math.floor(seconds) + " seconds";
+    } else {
+      return Math.floor(seconds/60) + " minutes " + Math.floor(seconds%60) + " seconds";
+    }
+  }
+
+  function toggleOutlines(type){
+    $('#downloadDiv').addClass('blackOutline').removeClass('redOutline');
+    $('#listDiv').addClass('blackOutline').removeClass('redOutline');
+    $('#deleteDiv').addClass('blackOutline').removeClass('redOutline');
+    type.addClass('redOutline').removeClass('blackOutline');
+  }
+
+  function downloadAll(){
+    if(!loaded){
+      alert("Load first");
+      return;
+    }
+
+    $('#downloadDiv').show();
+    toggleOutlines($('#downloadDiv'));
+    $('#startBtn').hide();
+  
+    var downInterval = setInterval(function(){
+      if(dlQueue.length > 0){
+        var tmpObj = dlQueue.pop();
+        location.href = tmpObj.url;
+        updateElapsedAndRemainingTime();
+        downloadCount++;
+        console.log("downloading... " + downloadCount + " / " + totalCount);
+        $('#downloadCount').html(downloadCount + " / " + totalCount);
+        $('#downloading').html(tmpObj.itemRef.name);
+        
+      } else {
+        deleteAll();
+        $('#downloading').html("FINISHED!");
+        clearInterval(downInterval);
+	    }
+    }, downloadInterval);
+  }
+
+  function deleteAll(){
+
+    $('#deleteDiv').show();
+    toggleOutlines($('#deleteDiv'));
+
+    deleteFromQueue();
+
+    // var delInterval = setInterval(function(){
+
+    // }, deleteInterval);
+  }
+
+  function deleteFromQueue(){
+    if(deleteQueue.length > 0){
+        var delObj = deleteQueue.pop();
+        var delTitle = delObj.name;
+        delObj.delete().then(() => {
+          updateElapsedAndRemainingTime();
+          deleteCount++;
+          console.log("deleting... " + deleteCount + " / " + totalCount);
+          $('#deleteCount').html(deleteCount + " / " + totalCount);
+          $('#deleting').html(delTitle);
+          deleteFromQueue();
+        }).catch((error) => {
+        });
+      } else {
+        //clearInterval(delInterval);  
+        $('#deleting').html("FINISHED!");      
+      }
+  }
+
+  function updateElapsedAndRemainingTime(){
+    var elapsedTime = (downloadCount * downloadInterval + deleteCount * deleteInterval)/1000;
+    $('#elapsedTime').html(getTimeStr(elapsedTime));
+    $('#remainingTime').html( getTimeStr(estimatedTime - elapsedTime));
+  }
+
+  </script>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  </body>
+  
+</html>

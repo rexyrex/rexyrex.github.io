@@ -1,0 +1,30 @@
+.redOutline{
+    outline-color:red; 
+    outline-style:solid;
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .greenOutline{
+    outline-color:green; 
+    outline-style:solid;
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .blackOutline{
+    outline-color:black; 
+    outline-style:solid;
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .glowbox:hover{
+    background: yellow; /* make this whatever you want */
+  }
+
+
+  hr {
+      background:black;
+      height: 5px;
+  }
