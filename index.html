@@ -1,103 +1,111 @@
 <!doctype html>
 <html>
     <head>
-        <meta property="al:web:should_fallback" content="false" />
-    <meta property="al:android:url" content="cherry://story/1234">
-    <meta property="al:android:package" content="net.e4net.cherry.e4netflavor">
-    <meta property="al:android:app_name" content="Cherry">
-    <meta property="og:title" content="example page title 2" />
-    <meta property="og:description" content="example page description" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://www.thesun.co.uk/wp-content/uploads/2017/07/emoji_update_2017_81.png" />
-    
-    
-        <title>Index</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="./js/vue.js"></script>        
-        <link rel="shortcut icon" href="">
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rexyrex - Developer & Composer</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Poppins', sans-serif;
+                padding-top: 76px;
+                background: #f8f9fa;
+            }
+            .hero-section {
+                min-height: calc(100vh - 76px);
+                display: flex;
+                align-items: center;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            }
+            .profile-section {
+                text-align: center;
+                padding: 2rem;
+            }
+            .profile-title {
+                font-size: 2.5rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+                color: #2d3436;
+            }
+            .profile-subtitle {
+                font-size: 1.2rem;
+                color: #636e72;
+                margin-bottom: 2rem;
+            }
+            .social-links {
+                margin-top: 2rem;
+            }
+            .social-links a {
+                display: inline-block;
+                margin: 0 15px;
+                color: #2d3436;
+                font-size: 1.5rem;
+                transition: transform 0.3s ease, color 0.3s ease;
+            }
+            .social-links a:hover {
+                transform: translateY(-3px);
+                color: #0984e3;
+                text-decoration: none;
+            }
+            .skills-list {
+                list-style: none;
+                padding: 0;
+                margin: 2rem 0;
+            }
+            .skills-list li {
+                display: inline-block;
+                margin: 0.5rem;
+                padding: 0.5rem 1rem;
+                background: #fff;
+                border-radius: 20px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease;
+            }
+            .skills-list li:hover {
+                transform: translateY(-2px);
+            }
+        </style>
     </head>
 
     <body>
-        <div id="nav-placeholder">
+        <div id="nav-placeholder"></div>
 
+        <div class="hero-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="profile-section">
+                            <h1 class="profile-title">Rexyrex</h1>
+                            <p class="profile-subtitle">Developer & Composer</p>
+                            
+                            <ul class="skills-list">
+                                <li><i class="fas fa-code"></i> Developer</li>
+                                <li><i class="fas fa-music"></i> Composer</li>
+                                <li><i class="fas fa-lightbulb"></i> Creative Thinker</li>
+                            </ul>
+
+                            <div class="social-links">
+                                <a href="https://www.youtube.com/channel/UCq3yY-SCoglG8xm6Z1_udaw" target="_blank">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                                <a href="https://rexyrex.newgrounds.com/" target="_blank">
+                                    <i class="fas fa-music"></i>
+                                </a>
+                                <a href="https://github.com/rexyrex" target="_blank">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div id="app">
-            <div class="container-fluid">
-            <span v-bind:title="message">Rexyrex</span>
-            <li v-for="todo in todos">
-                {{ todo.text }}
-            </li>
-
-            <a href="https://www.youtube.com/channel/UCq3yY-SCoglG8xm6Z1_udaw?view_as=subscriber">Youtube</a> |
-            <a href="https://rexyrex.newgrounds.com/">Newgrounds (Music)</a> |
-            <a href="https://github.com/rexyrex">Github</a> |
-            <a href="deadlyBalloons.html">Deadly Balloons</a> |
-            <a href="typing/index.html">Typing Game</a>
-
-
-        </div>
-            
-
-
-        </div>
-
-        <script>
-
-            var vm = new Vue({
-                el: '#app',
-                data: {
-                    question: '',
-                    answer: '',
-                    message: 'sup rex',
-                    todos: [
-                    { text: 'Composer' },
-                    { text: 'Developer' },
-                    { text: 'Creative Thinker' }
-                    ],
-                    seen: true,
-                    toggle1: false,
-                },
-                watch: {
-                    question: function (newQuestion, oldQuestion) {
-
-                    }
-                },
-                created: function() {
-                    console.log('created!');
-                },
-                computed: {
-                    reversedMessage: function() {
-                        return this.message.split('').reverse().join('')
-                    }
-                },
-                methods: {
-                    reverseMessage: function () {
-                        this.message = this.message.split('').reverse().join('')
-                    },
-                    toggleButton1: function() {
-                        if(this.toggle1==false){
-                            this.toggle1=true;
-                        } else {
-                            this.toggle1=false;
-                        }
-                    },
-                }
-            })
-
-
-
-            vm.$watch('message', function(newVal, oldVal){
-                console.log('changed to ' + oldVal)
-            })
-        </script>
-
-
 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script>
             $(function(){
                 $("#nav-placeholder").load("navbar.html");
