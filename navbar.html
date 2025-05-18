@@ -20,20 +20,24 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav ml-auto">
-                        <a class="nav-item nav-link active" href="/index.html">
-                            <i class="fas fa-home"></i> Home
-                        </a>
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-tools"></i> Tools
+                            <a class="nav-link dropdown-toggle" href="#" id="gamesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-gamepad"></i> Games
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="toolsDropdown">
+                            <div class="dropdown-menu" aria-labelledby="gamesDropdown">
                                 <a class="dropdown-item" href="/typing/index.html">
                                     <i class="fas fa-keyboard"></i> Typing Speed Test
                                 </a>
                                 <a class="dropdown-item" href="/deadlyBalloons/index.html">
                                     <i class="fas fa-gamepad"></i> Deadly Balloons
                                 </a>
+                            </div>
+                        </div>
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-flask"></i> Test
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="testDropdown">
                                 <a class="dropdown-item" href="/animation.html">
                                     <i class="fas fa-magic"></i> Animation Demo
                                 </a>
@@ -90,6 +94,35 @@
                         $(this).dropdown('toggle');
                     });
                 }
+                
+                // Add hover delay to keep dropdown open longer
+                var dropdownTimeout;
+                $('.dropdown').hover(
+                    function() {
+                        clearTimeout(dropdownTimeout);
+                        $('.dropdown-menu').not($(this).children('.dropdown-menu')).removeClass('show');
+                        $(this).children('.dropdown-menu').addClass('show');
+                    },
+                    function() {
+                        var $this = $(this);
+                        dropdownTimeout = setTimeout(function() {
+                            $this.children('.dropdown-menu').removeClass('show');
+                        }, 500); // 500ms delay before hiding
+                    }
+                );
+                
+                // Also add hover delay to dropdown items
+                $('.dropdown-menu').hover(
+                    function() {
+                        clearTimeout(dropdownTimeout);
+                    },
+                    function() {
+                        var $dropdown = $(this).closest('.dropdown');
+                        dropdownTimeout = setTimeout(function() {
+                            $dropdown.children('.dropdown-menu').removeClass('show');
+                        }, 500); // 500ms delay before hiding
+                    }
+                );
             });
         </script>
     </body>

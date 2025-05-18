@@ -44,16 +44,18 @@ body {
     padding: 0.5rem;
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     display: block;
     visibility: hidden;
     pointer-events: none;
 }
-.dropdown:hover .dropdown-menu {
+.dropdown:hover .dropdown-menu,
+.dropdown-menu.show {
     opacity: 1;
     transform: translateY(0);
     visibility: visible;
     pointer-events: auto;
+    transition-delay: 0.1s;
 }
 .dropdown-item {
     border-radius: 8px;
