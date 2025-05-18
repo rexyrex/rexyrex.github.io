@@ -104,6 +104,27 @@
                     margin: 0.2rem 0;
                 }
             }
+            .dropdown-toggle::after {
+                display: inline-block;
+                margin-left: 0.255em;
+                vertical-align: 0.255em;
+                content: "";
+                border-top: 0.3em solid;
+                border-right: 0.3em solid transparent;
+                border-bottom: 0;
+                border-left: 0.3em solid transparent;
+            }
+            .dropdown-menu.show {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+                transition: all 0.2s ease;
+            }
+            .dropdown-menu {
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.2s ease;
+            }
         </style>
     </head>
 
@@ -123,10 +144,10 @@
                             <i class="fas fa-home"></i> Home
                         </a>
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" data-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-tools"></i> Tools
                             </a>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu" aria-labelledby="toolsDropdown">
                                 <a class="dropdown-item" href="/typing/index.html">
                                     <i class="fas fa-keyboard"></i> Typing Speed Test
                                 </a>
@@ -146,8 +167,32 @@
             </div>
         </nav>
 
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Initialize all dropdowns
+                $('.dropdown-toggle').dropdown();
+                
+                // Handle click events
+                $('.dropdown-toggle').on('click', function(e) {
+                    e.preventDefault();
+                    $(this).dropdown('toggle');
+                });
+
+                // Close dropdown when clicking outside
+                $(document).on('click', function(e) {
+                    if (!$(e.target).closest('.dropdown').length) {
+                        $('.dropdown-menu').removeClass('show');
+                    }
+                });
+
+                // Prevent dropdown from closing when clicking inside
+                $('.dropdown-menu').on('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        </script>
     </body>
 </html>
