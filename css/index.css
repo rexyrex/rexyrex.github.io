@@ -1,0 +1,58 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    padding-top: 76px;
+    background: #f8f9fa;
+}
+.hero-section {
+    min-height: calc(100vh - 76px);
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+.profile-section {
+    text-align: center;
+    padding: 2rem;
+}
+.profile-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2d3436;
+}
+.profile-subtitle {
+    font-size: 1.2rem;
+    color: #636e72;
+    margin-bottom: 2rem;
+}
+.social-links {
+    margin-top: 2rem;
+}
+.social-links a {
+    display: inline-block;
+    margin: 0 15px;
+    color: #2d3436;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+.social-links a:hover {
+    transform: translateY(-3px);
+    color: #0984e3;
+    text-decoration: none;
+}
+.skills-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+}
+.skills-list li {
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+.skills-list li:hover {
+    transform: translateY(-2px);
+} 
