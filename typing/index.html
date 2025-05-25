@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rex Typing Game</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/typespeed2.css">
@@ -12,232 +13,204 @@
 
   <body>
     <div class="container">
-
-      <div class="row justify-content-center">
-        <h1 style="text-align:center">Rexyrex</h1>
-      </div>
-    
-      <div class="row justify-content-center">
-        <h1 style="text-align:center">타자 속도 측정기</h1>
-      </div>
-
-      <div class="row justify-content-center">
-        <h6 id="verTitle" style="text-align:center; color: grey">Ver </h6>
+      <!-- Header Section -->
+      <div class="game-card text-center">
+        <h1>Rexyrex</h1>
+        <h1 style="font-size: 2rem; margin-top: -0.5rem;">타자 속도 측정기</h1>
+        <h6 id="verTitle">Ver </h6>
+        <a style="color: var(--text-muted); cursor: pointer; text-decoration: none; font-size: 0.875rem;" onclick="openVersionModal()">[버전 이력]</a>
       </div>
 
-      <div class="row justify-content-center">
-        <a style="color: grey" onclick="openVersionModal()">[버전 이력]</a>
-      </div>
-      
-      <br><br><br>
+      <!-- Main Menu -->
+      <div id="grp1" class="game-card">
+        <!-- Mode Selection -->
+        <div class="mode-selector" id="modeGrp" data-toggle="buttons">
+          <button id="chMod1" type="button" class="mode-btn btn-choice" onclick="changeMode(1)">한타</button>
+          <button id="chMod2" type="button" class="mode-btn btn-choice" onclick="changeMode(2)">이포넷</button>
+          <button id="chMod3" type="button" class="mode-btn btn-choice" onclick="changeMode(3)">영타</button>
+          <button id="chMod4" type="button" class="mode-btn btn-choice" onclick="changeMode(4)">개발자</button>
+        </div>
 
-      <div id="grp1">
-        <div class="row justify-content-center">  
-          <div id="modeGrp" class="btn-group" data-toggle="buttons">
-            <button id="chMod1" type="button" class="main-menu-btn-small btn-choice" onclick="changeMode(1)">한타</button>
-            <button id="chMod2" type="button" class="main-menu-btn-small btn-choice" onclick="changeMode(2)">이포넷</button>
-            <button id="chMod3" type="button" class="main-menu-btn-small btn-choice" onclick="changeMode(3)">영타</button>
-            <button id="chMod4" type="button" class="main-menu-btn-small btn-choice" onclick="changeMode(4)">개발자</button>
+        <!-- Action Buttons -->
+        <div class="text-center mb-3">
+          <button id="startBtn" class="modern-btn btn-primary btn-large glow-on-hover main-menu-btn" onclick="startCountDown()">시작</button>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6 mb-2">
+            <button id="highScoreBtnDaily" class="modern-btn btn-secondary w-100 glow-on-hover main-menu-btn" onclick="openHighscoresModal(true)">오늘 순위</button>
+          </div>
+          <div class="col-md-6 mb-2">
+            <button id="highScoreBtnAll" class="modern-btn btn-secondary w-100 glow-on-hover main-menu-btn" onclick="openHighscoresModal(false)">역대 순위</button>
           </div>
         </div>
+      </div>
 
-        <br>
-
-        <div class="row justify-content-center">
-          <button id="startBtn" class="main-menu-btn glow-on-hover" onclick="startCountDown()">시작</button>
-        </div> 
+      <!-- Game Area -->
+      <div id="grp2" class="game-card game-area" style="visibility:hidden; opacity:0;">
+        <!-- Progress Bar -->
+        <div id="prgBar" class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" 
+               role="progressbar" aria-valuenow="75" aria-valuemin="0" 
+               aria-valuemax="100" style="width: 0%;">0%</div>
+        </div>
         
-        <br>
+        <!-- Text Display Areas -->
+        <div class="text-display">
+          <div class="mb-3">
+            <span id="testSentInputBefore" class="testSentInputSecondary text-display unselectable" style="pointer-events:none; opacity:0.27;"></span>
+          </div>
+          
+          <div class="mb-3">
+            <span id="testSentInput" class="testSentInput text-display unselectable" style="pointer-events:none;"></span>
+          </div>
+          
+          <div class="mb-4">
+            <span id="testSentInputAfter" class="testSentInputSecondary text-display unselectable" style="pointer-events:none; opacity:0.27;"></span>
+          </div>
+          
+          <!-- Input Field -->
+          <div class="mb-3">
+            <input id="chatInput" class="form__input2" autocomplete="off" placeholder="여기에 입력하세요..."/>
+          </div>
 
-        <div class="row justify-content-center">
-          <button id="highScoreBtnDaily" class="main-menu-btn glow-on-hover" onclick="openHighscoresModal(true)">오늘 순위</button>
-        </div> 
-
-        <br>
-
-        <div class="row justify-content-center">
-          <button id="highScoreBtnAll" class="main-menu-btn glow-on-hover" onclick="openHighscoresModal(false)">역대 순위</button>
-        </div> 
-
-    </div>
-
-      <br>
-
-      <div id="grp2" style="visibility:hidden; opacity:0;">
-
-        <div>
-          <div id="prgBar" class="progress" style="height: 32px;">
-            <div           
-            class="progress-bar progress-bar-striped progress-bar-animated" 
-            role="progressbar" aria-valuenow="75" aria-valuemin="0" 
-            aria-valuemax="100" style="width: 0%;">0%</div>
+          <!-- Comment Display -->
+          <div class="text-center">
+            <p id="comment" style="visibility:hidden; font-size:1.5rem; font-weight: 600; color: var(--accent-color);">ddd</p>
           </div>
         </div>
-        
-        </br>
-        </br>
-
-        <div class="row" id="test">
-          <!-- <input class="unselectable form__input" style="pointer-events:none;" id="testSentInput"/> -->
-          <span id="testSentInputBefore" class="unselectable testSentInputSecondary" style="pointer-events:none; opacity:0.27;"></span>
-        </div>
-      </br>
-        <div class="row">
-          <!-- <input class="unselectable form__input" style="pointer-events:none;" id="testSentInput"/> -->
-          <span id="testSentInput" class="unselectable testSentInput" style="pointer-events:none;"></span>
-        </div>
-      </br>
-        <div class="row">
-          <!-- <input class="unselectable form__input" style="pointer-events:none;" id="testSentInput"/> -->
-          <span id="testSentInputAfter" class="unselectable testSentInputSecondary" style="pointer-events:none; opacity:0.27;"></span>
-        </div>
-        
-        </br>
-        
-        <div class="row">
-          <input id="chatInput" class="form__input2" autocomplete="off"/>
-        </div>
-
-        <div class="row justify-content-center">
-          <p id="comment" style="visibility:hidden; width:50%; text-align:center; font-size:34px">ddd</p>
-        </div>      
-
-    </div>
+      </div>
       
-      <!-- Modal -->
-      <div id="testModal" class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+      <!-- Result Modal -->
+      <div id="testModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="resultModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle" style="color:black;">결과</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+              <h5 class="modal-title" id="resultModalTitle">🎉 결과</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div id="modalBody" class="modal-body" style="color:black;">
-              <div>
-                <div>
-                  <h3 id="resGrade">등급:</h3>
-                  <h3 id="resScore">점수:</h3>
-                  <h3 id="resComp">상대 평가:</h3>
-                  <h3 id="resAccuracy">정확도:</h3>
-                </div>
+            <div class="modal-body">
+              <div class="text-center mb-4">
+                <h3 id="resGrade" class="mb-2">등급:</h3>
+                <h3 id="resScore" class="mb-2">점수:</h3>
+                <h3 id="resComp" class="mb-2">상대 평가:</h3>
+                <h3 id="resAccuracy" class="mb-3">정확도:</h3>
+              </div>
 
-                <button id="openSaveCollapseBtn" onclick="openSaveCollapseBtn()" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                  기록 저장
+              <div class="text-center mb-3">
+                <button id="openSaveCollapseBtn" onclick="openSaveCollapseBtn()" class="modern-btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                  📊 기록 저장
                 </button>
+              </div>
 
-                <div class="collapse" id="collapseExample">
-                  <label>이름
-                    <input id="highscoreId" autocomplete="off" />
-                  </label>
-                  <button class="btn btn-success" type="button" onclick="saveHighscore();">기록 저장</button>
-                </div>
-
-                <br>
-
-                <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
-                  틀린 단어 목록
-                </button>
-
-                <br>
-                <div class="collapse" id="collapseExample2">
-                  <div class="redoutline">
-                    <ul id="incList" style="list-style-type: none;"></ul>
+              <div class="collapse" id="collapseExample">
+                <div class="card bg-dark border-secondary mb-3">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="highscoreId" class="text-light">이름</label>
+                      <input id="highscoreId" class="form-control bg-dark text-light border-secondary" autocomplete="off" placeholder="닉네임을 입력하세요" />
+                    </div>
+                    <button class="modern-btn btn-primary w-100" type="button" onclick="saveHighscore();">✅ 기록 저장</button>
                   </div>
+                </div>
+              </div>
+
+              <div class="text-center mb-3">
+                <button class="modern-btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                  ❌ 틀린 단어 목록
+                </button>
+              </div>
+
+              <div class="collapse" id="collapseExample2">
+                <div class="redoutline">
+                  <ul id="incList" style="list-style-type: none; padding: 0;"></ul>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="startCountDown()">재도전!</button>
+              <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">닫기</button>
+              <button type="button" class="modern-btn btn-primary" data-dismiss="modal" onclick="startCountDown()">🔄 재도전!</button>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Highscore Modal -->
-
-      <div id="highscoreModal" class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div id="highscoreModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="highscoreModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle" style="color:black;">타자 속도 순위</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+              <h5 class="modal-title" id="highscoreModalTitle">🏆 타자 속도 순위</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             
-            <div id="modalBody" class="modal-body" style="color:black;">
-
-              <nav class="nav nav-pills nav-justified" style="font-size: 20px">
+            <div class="modal-body">
+              <nav class="nav nav-pills nav-justified mb-3">
                 <a id="korScoreTab" class="nav-item nav-link active" href="#">한타</a>
                 <a id="engScoreTab" class="nav-item nav-link" href="#">영타</a>
                 <a id="prgScoreTab" class="nav-item nav-link" href="#">개발자</a>
               </nav>
 
-              <br>
-              <h2 id="scoreTitle" style="text-align:center; background-color:black; color:white">한타 순위</h2>
+              <h4 id="scoreTitle" class="text-center mb-3 p-3 bg-dark text-light rounded">한타 순위</h4>
 
-              <p style="color:black;text-align:center;">(100위 까지 보여줍니다.)</p>
+              <p class="text-center text-muted mb-3">(100위 까지 보여줍니다.)</p>
 
               <div class="tableFixHead">
-              <table id="highScoreTable" class="table table-striped table-bordered table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">순위</th>
-                    <th scope="col">이름</th>
-                    <th scope="col">등급</th>
-                    <th scope="col">점수</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-              </table>
-              <h3 id="highLoading" style="text-align:center;visibility:hidden;">Loading...</h3>
+                <table id="highScoreTable" class="table table-striped table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">순위</th>
+                      <th scope="col">이름</th>
+                      <th scope="col">등급</th>
+                      <th scope="col">점수</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+                <h3 id="highLoading" class="text-center" style="visibility:hidden;">⏳ Loading...</h3>
+              </div>
             </div>
-
-            </div>
+            
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+              <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">닫기</button>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Version Modal -->
-      <div id="versionModal" class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div id="versionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="versionModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle" style="color:black;">Version History</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+              <h5 class="modal-title" id="versionModalTitle">📋 Version History</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div id="modalBody" class="modal-body" style="color:black;">
+            <div class="modal-body">
               <div class="tableFixHead">
-              <table id="versionTable" class="table table-striped table-bordered table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">버전</th>
-                    <th scope="col">변경 사항</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-              </table>
-            </div>
+                <table id="versionTable" class="table table-striped table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">버전</th>
+                      <th scope="col">변경 사항</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+              <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">닫기</button>
             </div>
           </div>
         </div>
       </div>
-      
     </div>
 
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -493,12 +466,12 @@
       //   return;
       // }
       mode = m;
-      $('#chMod1').css('background', 'black').css('color', 'white');
-      $('#chMod2').css('background', 'black').css('color', 'white');
-      $('#chMod3').css('background', 'black').css('color', 'white');
-      $('#chMod4').css('background', 'black').css('color', 'white');
-      $('#chMod'+m).css('background', 'white').css('color', 'black');
-
+      
+      // Remove active class from all mode buttons
+      $('.mode-btn').removeClass('active');
+      
+      // Add active class to selected mode button
+      $('#chMod'+m).addClass('active');
     }
 
     function openSaveCollapseBtn(){
