@@ -400,6 +400,105 @@ mark {
   to { transform: translateY(0); opacity: 1; }
 }
 
+/* Game transition animations */
+.game-start-transition {
+  animation: gameStartSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes gameStartSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.menu-fade-out {
+  animation: menuFadeOut 0.5s ease-in-out forwards;
+}
+
+@keyframes menuFadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+  }
+}
+
+.countdown-pulse {
+  animation: countdownPulse 1s ease-in-out;
+}
+
+@keyframes countdownPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Text reveal animations */
+.text-reveal {
+  animation: textReveal 0.6s ease-out forwards;
+}
+
+@keyframes textReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.text-reveal-delay-1 {
+  animation: textReveal 0.6s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.text-reveal-delay-2 {
+  animation: textReveal 0.6s ease-out 0.4s forwards;
+  opacity: 0;
+}
+
+.text-reveal-delay-3 {
+  animation: textReveal 0.6s ease-out 0.6s forwards;
+  opacity: 0;
+}
+
+/* Input field focus animation */
+.input-focus-ready {
+  animation: inputFocusReady 0.8s ease-out 0.8s forwards;
+  transform: scale(0.98);
+  opacity: 0.7;
+}
+
+@keyframes inputFocusReady {
+  0% {
+    transform: scale(0.98);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   body {

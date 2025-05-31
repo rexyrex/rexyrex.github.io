@@ -824,24 +824,33 @@
     function startCountDown(){
       $('#chatInput').html('');
 
-      
       if(!started && !countingDown){
-        fadeOut("highScoreBtnDaily");
-        fadeOut("highScoreBtnAll");
-        //fadeOut("startBtn");
-        fadeOut("modeGrp");
-        fadeIn("grp2");
-
+        // Add fade out animation to menu elements
+        $('#grp1').addClass('menu-fade-out');
+        
+        // Show game area with initial hidden state
+        $('#grp2').css('visibility', 'visible').css('opacity', '0');
+        
         countingDown = true;
 
         var counter = 5;
-        $('#startBtn').text(counter);
+        $('#startBtn').text(counter).addClass('countdown-pulse');
+        
         var counterItv = setInterval(function(){ 
           counter-=1;
           $('#startBtn').text(counter);
+          
+          // Add pulse animation for each countdown number
+          $('#startBtn').removeClass('countdown-pulse');
+          setTimeout(() => $('#startBtn').addClass('countdown-pulse'), 10);
+          
           if(counter==0){
             clearInterval(counterItv);
             countingDown = false;
+            
+            // Hide the start button completely and start the game
+            $('#startBtn').css('visibility', 'hidden');
+            
             if(timerStartedOnce){
               retry();
             } else {
@@ -854,56 +863,81 @@
     
     function start(){
       if(!started){
-
-      started = true;
-      $('#startBtn').text("Loading...");
-  
-      setTimeout(function(){
+        started = true;
+        
+        // Start the smooth transition to game
+        setTimeout(function(){
+          // Prepare game content
           updateSentenceTriplet();
           $('#testSentInputBefore').html(sentenceTriplet[0]);
           $('#testSentInput').html(sentenceTriplet[1]);
           $('#testSentInputAfter').html(sentenceTriplet[2]);
-          $('#startBtn').text("고고!");
-      }, 1000);
-      
-      if(timerStartedOnce){
-        return;
-      }
+          
+          // Animate game area appearance
+          $('#grp2').addClass('game-start-transition').css('opacity', '1');
+          
+          // Add staggered text reveal animations
+          setTimeout(() => {
+            $('#testSentInputBefore').addClass('text-reveal-delay-1');
+            $('#testSentInput').addClass('text-reveal');
+            $('#testSentInputAfter').addClass('text-reveal-delay-2');
+            $('#chatInput').addClass('input-focus-ready');
+          }, 200);
+          
+          // Focus on input after animations
+          setTimeout(() => {
+            $('#chatInput').focus();
+          }, 1000);
+          
+        }, 300);
+        
+        if(timerStartedOnce){
+          return;
+        }
 
-      timerStartedOnce = true;
+        timerStartedOnce = true;
 
-      setInterval(function(){ 
-          if(started){
-              $('#chatInput').focus();
-              progress = secondsPassed/timeLimit * 100;  
-              var timeLeftVal = 100 - progress;
-              var color = progress < 60 ? 'green' : (progress < 80 ? 'orange' : 'red');
-              $(".progress-bar").css("width", timeLeftVal + "%").text(timeLimit - secondsPassed).css('background-color', color);
-              secondsPassed+=1;
-              if(secondsPassed > timeLimit){
-                endLogic();
-              }
-          }
-        }, 1000);
-      }
+        setInterval(function(){ 
+            if(started){
+                $('#chatInput').focus();
+                progress = secondsPassed/timeLimit * 100;  
+                var timeLeftVal = 100 - progress;
+                var color = progress < 60 ? 'var(--success-color)' : (progress < 80 ? 'var(--warning-color)' : 'var(--error-color)');
+                $(".progress-bar").css("width", timeLeftVal + "%").text(timeLimit - secondsPassed).css('background', color);
+                secondsPassed+=1;
+                if(secondsPassed > timeLimit){
+                  endLogic();
+                }
+            }
+          }, 1000);
+        }
     }
     
     function endLogic(){
         if(started){
-            //fade
-            fadeOut("grp2");
-            fadeIn("startBtn");
-            fadeIn("highScoreBtnDaily");
-            fadeIn("highScoreBtnAll");
-            fadeIn("modeGrp");
-
             started = false;
 
+            // Animate game area disappearing
+            $('#grp2').removeClass('game-start-transition').css('opacity', '0');
+            
+            // Clear all animation classes
+            $('#testSentInputBefore').removeClass('text-reveal text-reveal-delay-1');
+            $('#testSentInput').removeClass('text-reveal');
+            $('#testSentInputAfter').removeClass('text-reveal text-reveal-delay-2');
+            $('#chatInput').removeClass('input-focus-ready');
+            
+            // Clear content
             $('#testSentInput').html('');
             $('#testSentInputBefore').html('');
             $('#testSentInputAfter').html('');
-            $('#chatInput').html('');
-            $('#startBtn').text("재도전");
+            $('#chatInput').val('');
+
+            // Show menu again after a delay
+            setTimeout(() => {
+                $('#grp2').css('visibility', 'hidden');
+                $('#grp1').removeClass('menu-fade-out');
+                $('#startBtn').css('visibility', 'visible').removeClass('countdown-pulse').text("재도전");
+            }, 500);
 
             accuracy = correctWordCount / (correctWordCount + incorrectWordCount);
             score = Math.round((keyPressCount + getEffectiveKeyPressCountTmp()) * accuracy);
