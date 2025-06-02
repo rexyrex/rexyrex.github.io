@@ -100,30 +100,36 @@ h6 {
 
 .btn-primary:hover {
   background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .btn-secondary {
   background: var(--secondary-bg);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .btn-secondary:hover {
   background: var(--card-bg);
   border-color: var(--accent-color);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
 }
 
 .btn-large {
   padding: 1rem 2rem;
   font-size: 1rem;
   font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .btn-small {
   padding: 0.5rem 1rem;
   font-size: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* Mode selection buttons */
@@ -142,20 +148,42 @@ h6 {
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   font-size: 0.875rem;
   font-weight: 500;
+  position: relative;
+  overflow: hidden;
 }
 
 .mode-btn:hover {
   background: var(--card-bg);
   color: var(--text-primary);
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
 }
 
 .mode-btn.active {
   background: var(--accent-color);
   color: white;
   border-color: var(--accent-color);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+  animation: modeActivePulse 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modeActivePulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0.3);
+  }
+  100% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+  }
 }
 
 /* Game area styling */
@@ -266,6 +294,15 @@ mark {
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-md);
+}
+
+.comment-fade-in {
+  animation: commentFadeIn 0.5s ease-in-out;
+}
+
+@keyframes commentFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Modal improvements */
@@ -451,12 +488,10 @@ mark {
 
 @keyframes textReveal {
   0% {
-    opacity: 0;
-    transform: translateY(20px);
-    filter: blur(5px);
+    transform: translateY(10px);
+    filter: blur(2px);
   }
   100% {
-    opacity: 1;
     transform: translateY(0);
     filter: blur(0);
   }
@@ -464,38 +499,150 @@ mark {
 
 .text-reveal-delay-1 {
   animation: textReveal 0.6s ease-out 0.2s forwards;
-  opacity: 0;
 }
 
 .text-reveal-delay-2 {
   animation: textReveal 0.6s ease-out 0.4s forwards;
-  opacity: 0;
 }
 
 .text-reveal-delay-3 {
   animation: textReveal 0.6s ease-out 0.6s forwards;
-  opacity: 0;
 }
 
 /* Input field focus animation */
 .input-focus-ready {
   animation: inputFocusReady 0.8s ease-out 0.8s forwards;
-  transform: scale(0.98);
-  opacity: 0.7;
 }
 
 @keyframes inputFocusReady {
   0% {
     transform: scale(0.98);
-    opacity: 0.7;
   }
   50% {
     transform: scale(1.02);
-    opacity: 0.9;
   }
   100% {
     transform: scale(1);
+  }
+}
+
+/* SPECTACULAR sentence fly-away animation */
+.sentence-fly-away {
+  animation: sentenceFlyAway 1.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+}
+
+@keyframes sentenceFlyAway {
+  0% {
+    transform: translateY(0) scale(1) rotateX(0deg);
     opacity: 1;
+    filter: blur(0);
+  }
+  30% {
+    transform: translateY(-30px) scale(1.1) rotateX(-10deg);
+    opacity: 0.8;
+    filter: blur(1px);
+  }
+  70% {
+    transform: translateY(-150px) scale(0.6) rotateX(-45deg) rotateZ(15deg);
+    opacity: 0.3;
+    filter: blur(5px);
+  }
+  100% {
+    transform: translateY(-300px) scale(0.2) rotateX(-90deg) rotateZ(30deg);
+    opacity: 0;
+    filter: blur(10px);
+  }
+}
+
+/* EXPLOSIVE sentence slide-in animation */
+.sentence-slide-in {
+  animation: sentenceSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes sentenceSlideIn {
+  0% {
+    transform: translateY(200px) scale(0.5) rotateX(45deg);
+    opacity: 0;
+    filter: blur(15px);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.15) rotateX(-10deg);
+    opacity: 0.8;
+    filter: blur(3px);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotateX(0deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* FLASHY button press animation */
+.button-flash {
+  animation: buttonFlash 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes buttonFlash {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    filter: brightness(1);
+  }
+  25% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 15px rgba(99, 102, 241, 0.4);
+    filter: brightness(1.8) saturate(1.5);
+  }
+  50% {
+    transform: scale(1.4);
+    box-shadow: 0 0 0 30px rgba(99, 102, 241, 0.2);
+    filter: brightness(2) saturate(2);
+  }
+  75% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0.3);
+    filter: brightness(1.5) saturate(1.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    filter: brightness(1);
+  }
+}
+
+/* EXPLOSIVE comment animation */
+.comment-explosion {
+  animation: commentExplosion 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes commentExplosion {
+  0% {
+    transform: scale(0.3) rotateZ(-180deg);
+    opacity: 0;
+    filter: blur(10px);
+  }
+  20% {
+    transform: scale(1.5) rotateZ(-90deg);
+    opacity: 0.8;
+    filter: blur(3px);
+  }
+  40% {
+    transform: scale(1.2) rotateZ(0deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+  60% {
+    transform: scale(1.1) rotateZ(5deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1) rotateZ(-2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8) rotateZ(0deg);
+    opacity: 0;
+    filter: blur(5px);
   }
 }
 

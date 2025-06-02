@@ -31,56 +31,59 @@
           <button id="chMod4" type="button" class="mode-btn btn-choice" onclick="changeMode(4)">개발자</button>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="text-center mb-3">
-          <button id="startBtn" class="modern-btn btn-primary btn-large glow-on-hover main-menu-btn" onclick="startCountDown()">시작</button>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-6 mb-2">
-            <button id="highScoreBtnDaily" class="modern-btn btn-secondary w-100 glow-on-hover main-menu-btn" onclick="openHighscoresModal(true)">오늘 순위</button>
+        <!-- Menu Content Container -->
+        <div id="menuContent">
+          <!-- Action Buttons -->
+          <div class="text-center mb-3">
+            <button id="startBtn" class="modern-btn btn-primary btn-large glow-on-hover main-menu-btn" onclick="startCountDown()">시작</button>
           </div>
-          <div class="col-md-6 mb-2">
-            <button id="highScoreBtnAll" class="modern-btn btn-secondary w-100 glow-on-hover main-menu-btn" onclick="openHighscoresModal(false)">역대 순위</button>
+          
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <button id="highScoreBtnDaily" class="modern-btn btn-secondary w-100 glow-on-hover main-menu-btn" onclick="openHighscoresModal(true)">오늘 순위</button>
+            </div>
+            <div class="col-md-6 mb-2">
+              <button id="highScoreBtnAll" class="modern-btn btn-secondary w-100 glow-on-hover main-menu-btn" onclick="openHighscoresModal(false)">역대 순위</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game Area (initially hidden, will replace menu content) -->
+        <div id="grp2" class="game-area" style="display: none;">
+          <!-- Progress Bar -->
+          <div id="prgBar" class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                 role="progressbar" aria-valuenow="75" aria-valuemin="0" 
+                 aria-valuemax="100" style="width: 0%;">0%</div>
+          </div>
+          
+          <!-- Text Display Areas -->
+          <div class="text-display">
+            <div class="mb-3">
+              <span id="testSentInputBefore" class="testSentInputSecondary text-display unselectable" style="pointer-events:none; opacity:0.27;"></span>
+            </div>
+            
+            <div class="mb-3">
+              <span id="testSentInput" class="testSentInput text-display unselectable" style="pointer-events:none;"></span>
+            </div>
+            
+            <div class="mb-4">
+              <span id="testSentInputAfter" class="testSentInputSecondary text-display unselectable" style="pointer-events:none; opacity:0.27;"></span>
+            </div>
+            
+            <!-- Input Field -->
+            <div class="mb-3">
+              <input id="chatInput" class="form__input2" autocomplete="off" placeholder="여기에 입력하세요..."/>
+            </div>
+
+            <!-- Comment Display -->
+            <div class="text-center">
+              <p id="comment" style="visibility:hidden; font-size:1.5rem; font-weight: 600; color: var(--accent-color);">ddd</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Game Area -->
-      <div id="grp2" class="game-card game-area" style="visibility:hidden; opacity:0;">
-        <!-- Progress Bar -->
-        <div id="prgBar" class="progress">
-          <div class="progress-bar progress-bar-striped progress-bar-animated" 
-               role="progressbar" aria-valuenow="75" aria-valuemin="0" 
-               aria-valuemax="100" style="width: 0%;">0%</div>
-        </div>
-        
-        <!-- Text Display Areas -->
-        <div class="text-display">
-          <div class="mb-3">
-            <span id="testSentInputBefore" class="testSentInputSecondary text-display unselectable" style="pointer-events:none; opacity:0.27;"></span>
-          </div>
-          
-          <div class="mb-3">
-            <span id="testSentInput" class="testSentInput text-display unselectable" style="pointer-events:none;"></span>
-          </div>
-          
-          <div class="mb-4">
-            <span id="testSentInputAfter" class="testSentInputSecondary text-display unselectable" style="pointer-events:none; opacity:0.27;"></span>
-          </div>
-          
-          <!-- Input Field -->
-          <div class="mb-3">
-            <input id="chatInput" class="form__input2" autocomplete="off" placeholder="여기에 입력하세요..."/>
-          </div>
-
-          <!-- Comment Display -->
-          <div class="text-center">
-            <p id="comment" style="visibility:hidden; font-size:1.5rem; font-weight: 600; color: var(--accent-color);">ddd</p>
-          </div>
-        </div>
-      </div>
-      
       <!-- Result Modal -->
       <div id="testModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="resultModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -758,6 +761,8 @@
     }
     
     function reset(){
+      console.log('Reset called - before reset: secondsPassed:', secondsPassed, 'started:', started);
+      
       uuid = uuidv4();
 
       started = false;
@@ -784,16 +789,36 @@
 
       keyMap.clear();
       
-      $('#testSentInput').html("");
-      $('#testSentInputBefore').html("");
-      $('#testSentInputAfter').html("");
-      $('#chatInput').val("");
-      $('#startBtn').text("시작");
+      console.log('Reset completed - after reset: secondsPassed:', secondsPassed, 'started:', started);
+      
+      // Clear content and animations
+      $('#testSentInput').html('');
+      $('#testSentInputBefore').html('');
+      $('#testSentInputAfter').html('');
+      $('#chatInput').val('');
+      
+      // Reset progress bar
+      $(".progress-bar").css("width", "0%").text("60").css('background', 'var(--success-color)');
+      
+      // Reset all animation classes and structure
+      $('#menuContent').removeClass('menu-fade-out').show();
+      $('#modeGrp').removeClass('menu-fade-out');
+      $('#highScoreBtnDaily').removeClass('menu-fade-out');
+      $('#highScoreBtnAll').removeClass('menu-fade-out');
+      $('#grp2').removeClass('game-start-transition').hide();
+      $('#testSentInputBefore').removeClass('text-reveal text-reveal-delay-1');
+      $('#testSentInput').removeClass('text-reveal');
+      $('#testSentInputAfter').removeClass('text-reveal text-reveal-delay-2');
+      $('#chatInput').removeClass('input-focus-ready');
+      $('#startBtn').removeClass('countdown-pulse').text("시작");
+      
+      // Clear any comment visibility
+      $('#comment').css("visibility", "hidden");
     }
 
     function retry(){
       reset();
-      start();
+      // Don't call start() directly, let startCountDown() handle the flow
     }
 
     function fadeIn(elemId){
@@ -823,13 +848,23 @@
 
     function startCountDown(){
       $('#chatInput').html('');
+      
+      // Debug logging
+      console.log('startCountDown called - started:', started, 'countingDown:', countingDown);
+      
+      // If this is a retry (button says "재도전"), reset the game state first
+      if($('#startBtn').text() === "재도전") {
+        console.log('This is a retry - calling reset first');
+        reset();
+      }
 
       if(!started && !countingDown){
-        // Add fade out animation to menu elements
-        $('#grp1').addClass('menu-fade-out');
+        console.log('Starting countdown...');
         
-        // Show game area with initial hidden state
-        $('#grp2').css('visibility', 'visible').css('opacity', '0');
+        // Hide other menu elements but keep the start button for countdown
+        $('#modeGrp').addClass('menu-fade-out');
+        $('#highScoreBtnDaily').addClass('menu-fade-out');
+        $('#highScoreBtnAll').addClass('menu-fade-out');
         
         countingDown = true;
 
@@ -840,24 +875,34 @@
           counter-=1;
           $('#startBtn').text(counter);
           
-          // Add pulse animation for each countdown number
-          $('#startBtn').removeClass('countdown-pulse');
-          setTimeout(() => $('#startBtn').addClass('countdown-pulse'), 10);
-          
           if(counter==0){
             clearInterval(counterItv);
             countingDown = false;
             
-            // Hide the start button completely and start the game
-            $('#startBtn').css('visibility', 'hidden');
+            // Now hide the entire menu content and show game
+            $('#menuContent').addClass('menu-fade-out');
             
-            if(timerStartedOnce){
-              retry();
-            } else {
+            // Start the game after menu fades out
+            setTimeout(() => {
+              $('#menuContent').hide();
+              
+              // Prepare game content BEFORE showing the game area
+              updateSentenceTriplet();
+              $('#testSentInputBefore').html(sentenceTriplet[0]);
+              $('#testSentInput').html(sentenceTriplet[1]);
+              $('#testSentInputAfter').html(sentenceTriplet[2]);
+              
+              // Show game area with GRANDIOSE transition
+              $('#grp2').show().addClass('game-start-transition');
+              
+              // Always call start() for both first time and retry
               start();
-            }            
+            }, 500);
           }
         }, 1000);
+      } else {
+        // Debug: log why startCountDown is not executing
+        console.log('startCountDown blocked - started:', started, 'countingDown:', countingDown);
       }
     }
     
@@ -865,51 +910,47 @@
       if(!started){
         started = true;
         
-        // Start the smooth transition to game
-        setTimeout(function(){
-          // Prepare game content
-          updateSentenceTriplet();
-          $('#testSentInputBefore').html(sentenceTriplet[0]);
-          $('#testSentInput').html(sentenceTriplet[1]);
-          $('#testSentInputAfter').html(sentenceTriplet[2]);
-          
-          // Animate game area appearance
-          $('#grp2').addClass('game-start-transition').css('opacity', '1');
-          
-          // Add staggered text reveal animations
-          setTimeout(() => {
-            $('#testSentInputBefore').addClass('text-reveal-delay-1');
-            $('#testSentInput').addClass('text-reveal');
-            $('#testSentInputAfter').addClass('text-reveal-delay-2');
-            $('#chatInput').addClass('input-focus-ready');
-          }, 200);
-          
-          // Focus on input after animations
-          setTimeout(() => {
-            $('#chatInput').focus();
-          }, 1000);
-          
-        }, 300);
+        // Debug: log timer state when starting
+        console.log('Game starting - secondsPassed:', secondsPassed, 'timeLimit:', timeLimit);
         
-        if(timerStartedOnce){
-          return;
-        }
+        // Add reveal animations to content that's already visible
+        setTimeout(() => {
+          $('#testSentInputBefore').addClass('text-reveal-delay-1');
+          $('#testSentInput').addClass('text-reveal');
+          $('#testSentInputAfter').addClass('text-reveal-delay-2');
+          $('#chatInput').addClass('input-focus-ready');
+        }, 200);
+        
+        // Focus on input after animations
+        setTimeout(() => {
+          $('#chatInput').focus();
+        }, 1000);
+        
+        // Set up the game timer (only once)
+        if(!timerStartedOnce){
+          timerStartedOnce = true;
 
-        timerStartedOnce = true;
-
-        setInterval(function(){ 
-            if(started){
-                $('#chatInput').focus();
-                progress = secondsPassed/timeLimit * 100;  
-                var timeLeftVal = 100 - progress;
-                var color = progress < 60 ? 'var(--success-color)' : (progress < 80 ? 'var(--warning-color)' : 'var(--error-color)');
-                $(".progress-bar").css("width", timeLeftVal + "%").text(timeLimit - secondsPassed).css('background', color);
-                secondsPassed+=1;
-                if(secondsPassed > timeLimit){
-                  endLogic();
-                }
-            }
-          }, 1000);
+          setInterval(function(){ 
+              if(started){
+                  $('#chatInput').focus();
+                  progress = secondsPassed/timeLimit * 100;  
+                  var timeLeftVal = 100 - progress;
+                  var color = progress < 60 ? 'var(--success-color)' : (progress < 80 ? 'var(--warning-color)' : 'var(--error-color)');
+                  $(".progress-bar").css("width", timeLeftVal + "%").text(timeLimit - secondsPassed).css('background', color);
+                  
+                  // Debug: log timer progress
+                  if(secondsPassed % 10 === 0) {
+                    console.log('Timer tick - secondsPassed:', secondsPassed, 'timeLimit:', timeLimit);
+                  }
+                  
+                  secondsPassed+=1;
+                  if(secondsPassed > timeLimit){
+                    console.log('Timer ended - calling endLogic()');
+                    endLogic();
+                  }
+              }
+            }, 1000);
+          }
         }
     }
     
@@ -917,8 +958,8 @@
         if(started){
             started = false;
 
-            // Animate game area disappearing
-            $('#grp2').removeClass('game-start-transition').css('opacity', '0');
+            // Hide game area
+            $('#grp2').removeClass('game-start-transition').hide();
             
             // Clear all animation classes
             $('#testSentInputBefore').removeClass('text-reveal text-reveal-delay-1');
@@ -932,11 +973,13 @@
             $('#testSentInputAfter').html('');
             $('#chatInput').val('');
 
-            // Show menu again after a delay
+            // Show menu content again
             setTimeout(() => {
-                $('#grp2').css('visibility', 'hidden');
-                $('#grp1').removeClass('menu-fade-out');
-                $('#startBtn').css('visibility', 'visible').removeClass('countdown-pulse').text("재도전");
+                $('#menuContent').removeClass('menu-fade-out').show();
+                $('#modeGrp').removeClass('menu-fade-out');
+                $('#highScoreBtnDaily').removeClass('menu-fade-out');
+                $('#highScoreBtnAll').removeClass('menu-fade-out');
+                $('#startBtn').removeClass('countdown-pulse').text("재도전");
             }, 500);
 
             accuracy = correctWordCount / (correctWordCount + incorrectWordCount);
@@ -1084,10 +1127,10 @@
 
         $('#comment').text(getComment());
         $('#comment').css("visibility", "visible");
-        $('#comment').addClass('animate')
+        $('#comment').addClass('comment-fade-in')
         $('#comment').on("animationend", function(){
           $(this).css("visibility", "hidden");
-          $(this).removeClass('animate');
+          $(this).removeClass('comment-fade-in');
         });
 
         
@@ -1204,21 +1247,14 @@ document.addEventListener('DOMContentLoaded', () => {
           givenSentenceList.push(sentenceTriplet[2]);
           typedSentenceList.push($('#chatInput').val());
 
-          //$('#testSentInput').animate({"border-radius": "40px"},100, function(){$('#testSentInput').animate({"border-radius": "20px"},100)});
-          $('#testSentInputBefore').transition({ y: '111%', opacity: 1  }, 147, 'ease',function(){
-            $('#testSentInputBefore').clearQueue().transition({y: '0%', opacity: 0.27},1); 
-            $('#testSentInputBefore').html(sentenceTriplet[0]);
-          });
-          $('#testSentInput').transition({ y: '111%', opacity: 0.27 }, 147, 'ease', function(){
-            $('#testSentInput').clearQueue().transition({y: '0%', opacity: 1},1); 
-            $('#testSentInput').html(sentenceTriplet[1]);
-          });
-          $('#testSentInputAfter').transition({ y: '0%' }, 147, 'ease', function(){
-            $('#testSentInputAfter').clearQueue().transition({y: '0%'},1);
-            $('#testSentInputAfter').html(sentenceTriplet[2]);
-            $("#testSentInputAfter").unmark();
-            $('#testSentInputAfter').mark(prevInputSent);
-          });
+          // Simple content update without dramatic animations
+          $('#testSentInputBefore').html(sentenceTriplet[0]);
+          $('#testSentInput').html(sentenceTriplet[1]);
+          $('#testSentInputAfter').html(sentenceTriplet[2]);
+          
+          // Mark the previous input in the after section
+          $("#testSentInputAfter").unmark();
+          $('#testSentInputAfter').mark(prevInputSent);
           
           prevInputSent = $('#chatInput').val();
           $('#chatInput').val("");
