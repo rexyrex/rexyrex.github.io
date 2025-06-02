@@ -5,38 +5,141 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Rexyrex - Developer & Composer</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="/css/index.css">
     </head>
 
     <body>
         <div id="nav-placeholder"></div>
 
+        <!-- Animated Background -->
+        <div class="animated-bg">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+                <div class="shape shape-5"></div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
         <div class="hero-section">
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <div class="profile-section">
-                            <h1 class="profile-title">Rexyrex</h1>
-                            <p class="profile-subtitle">Developer & Composer</p>
+                <div class="row justify-content-center align-items-center min-vh-100">
+                    <div class="col-lg-10 col-xl-8">
+                        <div class="hero-content text-center">
+                            <div class="hero-badge">
+                                <i class="fas fa-sparkles sparkle-enhanced"></i>
+                                <span>Available for Projects</span>
+                            </div>
                             
-                            <ul class="skills-list">
-                                <li><i class="fas fa-code"></i> Developer</li>
-                                <li><i class="fas fa-music"></i> Composer</li>
-                                <li><i class="fas fa-lightbulb"></i> Creative Thinker</li>
-                            </ul>
+                            <div class="profile-avatar">
+                                <div class="avatar-glow"></div>
+                                <div class="avatar-ring"></div>
+                                <div class="avatar-inner">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="status-indicator"></div>
+                            </div>
+                            
+                            <h1 class="hero-title">
+                                <span class="title-greeting">Hello, I'm</span>
+                                <span class="title-main">Rexyrex</span>
+                                <span class="title-accent">.</span>
+                            </h1>
+                            
+                            <div class="hero-roles">
+                                <span class="role active">Developer</span>
+                                <span class="role-separator">•</span>
+                                <span class="role">Composer</span>
+                                <span class="role-separator">•</span>
+                                <span class="role">Creator</span>
+                            </div>
+                            
+                            <div class="hero-description-card">
+                                <p class="hero-description">
+                                    I craft digital experiences through elegant code and immersive soundscapes. 
+                                    Passionate about building innovative solutions that bridge technology and creativity.
+                                </p>
+                            </div>
+
+                            <div class="hero-stats">
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="stat-number">8+</div>
+                                    <div class="stat-label">Years Experience</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-project-diagram"></i>
+                                    </div>
+                                    <div class="stat-number">20+</div>
+                                    <div class="stat-label">Projects Built</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <div class="stat-number">∞</div>
+                                    <div class="stat-label">Ideas Brewing</div>
+                                </div>
+                            </div>
+
+                            <div class="hero-buttons">
+                                <a href="/typing/index.html" class="btn btn-primary hero-btn">
+                                    <span class="btn-text">
+                                        <i class="fas fa-keyboard"></i>
+                                        Try Typing Game
+                                    </span>
+                                    <div class="btn-shine"></div>
+                                </a>
+                                <a href="#projects" class="btn btn-outline hero-btn">
+                                    <span class="btn-text">
+                                        <i class="fas fa-folder-open"></i>
+                                        View Projects
+                                    </span>
+                                </a>
+                            </div>
 
                             <div class="social-links">
-                                <a href="https://www.youtube.com/channel/UCq3yY-SCoglG8xm6Z1_udaw" target="_blank">
-                                    <i class="fab fa-youtube"></i>
+                                <a href="https://www.youtube.com/channel/UCq3yY-SCoglG8xm6Z1_udaw" target="_blank" class="social-card youtube">
+                                    <div class="social-icon">
+                                        <i class="fab fa-youtube"></i>
+                                    </div>
+                                    <div class="social-content">
+                                        <span class="social-title">YouTube</span>
+                                        <span class="social-subtitle">Video Content</span>
+                                    </div>
                                 </a>
-                                <a href="https://rexyrex.newgrounds.com/" target="_blank">
-                                    <i class="fas fa-music"></i>
+                                <a href="https://rexyrex.newgrounds.com/" target="_blank" class="social-card newgrounds">
+                                    <div class="social-icon">
+                                        <i class="fas fa-music"></i>
+                                    </div>
+                                    <div class="social-content">
+                                        <span class="social-title">Newgrounds</span>
+                                        <span class="social-subtitle">Music Portfolio</span>
+                                    </div>
                                 </a>
-                                <a href="https://github.com/rexyrex" target="_blank">
-                                    <i class="fab fa-github"></i>
+                                <a href="https://github.com/rexyrex" target="_blank" class="social-card github">
+                                    <div class="social-icon">
+                                        <i class="fab fa-github"></i>
+                                    </div>
+                                    <div class="social-content">
+                                        <span class="social-title">GitHub</span>
+                                        <span class="social-subtitle">Code Repository</span>
+                                    </div>
                                 </a>
+                            </div>
+
+                            <div class="scroll-indicator">
+                                <div class="scroll-text">Scroll to explore</div>
+                                <div class="scroll-arrow">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -44,9 +147,228 @@
             </div>
         </div>
 
+        <!-- Skills Section -->
+        <div class="skills-section" id="skills">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center mb-5">
+                        <div class="section-header-card fade-in-up">
+                            <div class="section-badge">
+                                <i class="fas fa-tools"></i>
+                                <span>What I Do</span>
+                            </div>
+                            <h2 class="section-title">Expertise & Passion</h2>
+                            <p class="section-subtitle">Combining technical mastery with creative vision to build exceptional experiences</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="skill-card slide-in-up stagger-1">
+                            <div class="skill-icon">
+                                <i class="fas fa-code"></i>
+                                <div class="icon-bg"></div>
+                            </div>
+                            <h3 class="skill-title">Full-Stack Development</h3>
+                            <p class="skill-description">
+                                Building scalable web applications, interactive games, and modern user interfaces with cutting-edge technologies.
+                            </p>
+                            <div class="skill-tags">
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">React</span>
+                                <span class="tag">Node.js</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="progress-bar" data-progress="90"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="skill-card slide-in-up stagger-2">
+                            <div class="skill-icon">
+                                <i class="fas fa-music"></i>
+                                <div class="icon-bg"></div>
+                            </div>
+                            <h3 class="skill-title">Music Composition</h3>
+                            <p class="skill-description">
+                                Creating immersive soundtracks, ambient atmospheres, and dynamic audio experiences for games and media.
+                            </p>
+                            <div class="skill-tags">
+                                <span class="tag">Soundtrack</span>
+                                <span class="tag">Ambient</span>
+                                <span class="tag">Game Audio</span>
+                                <span class="tag">Sound Design</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="progress-bar" data-progress="85"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="skill-card slide-in-up stagger-3">
+                            <div class="skill-icon">
+                                <i class="fas fa-palette"></i>
+                                <div class="icon-bg"></div>
+                            </div>
+                            <h3 class="skill-title">Creative Design</h3>
+                            <p class="skill-description">
+                                Crafting intuitive user experiences and stunning visual designs that seamlessly blend form with function.
+                            </p>
+                            <div class="skill-tags">
+                                <span class="tag">UI/UX</span>
+                                <span class="tag">Design Systems</span>
+                                <span class="tag">Prototyping</span>
+                                <span class="tag">Branding</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="progress-bar" data-progress="80"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="projects-section" id="projects">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center mb-5">
+                        <div class="section-header-card fade-in-up">
+                            <div class="section-badge">
+                                <i class="fas fa-rocket"></i>
+                                <span>Portfolio</span>
+                            </div>
+                            <h2 class="section-title">Featured Projects</h2>
+                            <p class="section-subtitle">A showcase of my latest work and creative experiments</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="project-card fade-in-left stagger-1">
+                            <div class="project-image">
+                                <div class="project-overlay">
+                                    <div class="project-links">
+                                        <a href="/typing/index.html" class="project-link-btn">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <i class="fas fa-keyboard project-icon"></i>
+                                <div class="project-bg-pattern"></div>
+                            </div>
+                            <div class="project-content">
+                                <div class="project-meta">
+                                    <span class="project-type">Web Application</span>
+                                    <span class="project-status">Live</span>
+                                </div>
+                                <h3 class="project-title">Typing Speed Game</h3>
+                                <p class="project-description">
+                                    A sophisticated typing speed test featuring multiple languages, real-time analytics, and competitive leaderboards with Firebase integration.
+                                </p>
+                                <div class="project-features">
+                                    <div class="feature">
+                                        <i class="fas fa-globe"></i>
+                                        <span>Multi-language Support</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Real-time Analytics</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-trophy"></i>
+                                        <span>Leaderboards</span>
+                                    </div>
+                                </div>
+                                <div class="project-tech">
+                                    <span class="tech-tag">JavaScript</span>
+                                    <span class="tech-tag">CSS3</span>
+                                    <span class="tech-tag">Firebase</span>
+                                    <span class="tech-tag">Responsive</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="project-card fade-in-right stagger-2">
+                            <div class="project-image">
+                                <div class="project-overlay">
+                                    <div class="project-links">
+                                        <a href="/deadlyBalloons/index.html" class="project-link-btn">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <i class="fas fa-gamepad project-icon"></i>
+                                <div class="project-bg-pattern"></div>
+                            </div>
+                            <div class="project-content">
+                                <div class="project-meta">
+                                    <span class="project-type">Game</span>
+                                    <span class="project-status">Live</span>
+                                </div>
+                                <h3 class="project-title">Deadly Balloons</h3>
+                                <p class="project-description">
+                                    An engaging HTML5 canvas game with dynamic physics, particle effects, and progressive difficulty scaling for addictive gameplay.
+                                </p>
+                                <div class="project-features">
+                                    <div class="feature">
+                                        <i class="fas fa-magic"></i>
+                                        <span>Particle Effects</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-cogs"></i>
+                                        <span>Physics Engine</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-level-up-alt"></i>
+                                        <span>Progressive Difficulty</span>
+                                    </div>
+                                </div>
+                                <div class="project-tech">
+                                    <span class="tech-tag">HTML5 Canvas</span>
+                                    <span class="tech-tag">JavaScript</span>
+                                    <span class="tech-tag">Game Physics</span>
+                                    <span class="tech-tag">Animation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="footer-card scale-in">
+                            <div class="footer-content">
+                                <div class="footer-main">
+                                    <h4 class="footer-title">Let's Build Something Amazing</h4>
+                                    <p class="footer-text">
+                                        Built with <i class="fas fa-heart"></i> by Rexyrex
+                                    </p>
+                                </div>
+                                <div class="footer-meta">
+                                    <p class="footer-subtext">
+                                        © 2024 All rights reserved. Ready to collaborate on your next project.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="/js/common.js"></script>
+        <script src="/js/index.js"></script>
     </body>
 </html>
