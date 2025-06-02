@@ -14,37 +14,49 @@
   <body>
     <div class="container">
       <!-- Header Section -->
-      <div class="game-card text-center">
-        <h1>Rexyrex</h1>
-        <h1 style="font-size: 2rem; margin-top: -0.5rem;">타자 속도 측정기</h1>
-        <h6 id="verTitle">Ver </h6>
-        <a style="color: var(--text-muted); cursor: pointer; text-decoration: none; font-size: 0.875rem;" onclick="openVersionModal()">[버전 이력]</a>
+      <div class="game-card text-center header-section">
+        <div class="title-container">
+          <h1 class="main-title">Rexyrex</h1>
+          <h2 class="subtitle">타자 속도 측정기</h2>
+          <div class="title-accent-line"></div>
+        </div>
+        <div class="version-info">
+          <span id="verTitle" class="version-badge">Ver </span>
+          <a class="version-link" onclick="openVersionModal()">[버전 이력]</a>
+        </div>
       </div>
 
-      <!-- Main Menu -->
+      <!-- Main Game Section -->
       <div id="grp1" class="game-card">
         <!-- Mode Selection -->
-        <div class="mode-selector" id="modeGrp" data-toggle="buttons">
-          <button id="chMod1" type="button" class="mode-btn btn-choice" onclick="changeMode(1)">한타</button>
-          <button id="chMod2" type="button" class="mode-btn btn-choice" onclick="changeMode(2)">이포넷</button>
-          <button id="chMod3" type="button" class="mode-btn btn-choice" onclick="changeMode(3)">영타</button>
-          <button id="chMod4" type="button" class="mode-btn btn-choice" onclick="changeMode(4)">개발자</button>
+        <div class="mode-selection-section" id="modeSelectionSection">
+          <h3 class="mode-title">게임 모드 선택</h3>
+          <div class="mode-selector" id="modeGrp" data-toggle="buttons">
+            <button id="chMod1" type="button" class="mode-btn btn-choice" onclick="changeMode(1)">
+              <span class="mode-btn-text">한타</span>
+              <span class="mode-btn-desc">한글 타자</span>
+            </button>
+            <button id="chMod2" type="button" class="mode-btn btn-choice" onclick="changeMode(2)">
+              <span class="mode-btn-text">이포넷</span>
+              <span class="mode-btn-desc">회사 모드</span>
+            </button>
+            <button id="chMod3" type="button" class="mode-btn btn-choice" onclick="changeMode(3)">
+              <span class="mode-btn-text">영타</span>
+              <span class="mode-btn-desc">English</span>
+            </button>
+            <button id="chMod4" type="button" class="mode-btn btn-choice" onclick="changeMode(4)">
+              <span class="mode-btn-text">개발자</span>
+              <span class="mode-btn-desc">Programming</span>
+            </button>
+          </div>
         </div>
 
         <!-- Menu Content Container -->
         <div id="menuContent">
-          <!-- Action Buttons -->
-          <div class="text-center mb-3">
-            <button id="startBtn" class="modern-btn btn-primary btn-large glow-on-hover main-menu-btn" onclick="startCountDown()">시작</button>
-          </div>
-          
-          <div class="row">
-            <div class="col-md-6 mb-2">
-              <button id="highScoreBtnDaily" class="modern-btn btn-secondary w-100 glow-on-hover main-menu-btn" onclick="openHighscoresModal(true)">오늘 순위</button>
-            </div>
-            <div class="col-md-6 mb-2">
-              <button id="highScoreBtnAll" class="modern-btn btn-secondary w-100 glow-on-hover main-menu-btn" onclick="openHighscoresModal(false)">역대 순위</button>
-            </div>
+          <!-- Start Button - Prominently displayed -->
+          <div class="start-section text-center mb-4">
+            <button id="startBtn" class="modern-btn btn-primary btn-large glow-on-hover start-game-btn" onclick="startCountDown()">시작</button>
+            <p class="text-muted mt-2" style="font-size: 0.875rem;">모드를 선택하고 시작 버튼을 눌러주세요</p>
           </div>
         </div>
 
@@ -79,6 +91,37 @@
             <!-- Comment Display -->
             <div class="text-center">
               <p id="comment" style="visibility:hidden; font-size:1.5rem; font-weight: 600; color: var(--accent-color);">ddd</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rankings Section - Separated from main game -->
+      <div class="rankings-section">
+        <div class="game-card">
+          <h3 class="rankings-title">🏆 순위표</h3>
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <button id="highScoreBtnDaily" class="modern-btn btn-secondary w-100 ranking-btn" onclick="openHighscoresModal(true)">
+                <div class="ranking-btn-content">
+                  <div class="ranking-btn-icon">📅</div>
+                  <div class="ranking-btn-text">
+                    <div class="ranking-btn-title">오늘 순위</div>
+                    <div class="ranking-btn-subtitle">Today's Rankings</div>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div class="col-md-6 mb-2">
+              <button id="highScoreBtnAll" class="modern-btn btn-secondary w-100 ranking-btn" onclick="openHighscoresModal(false)">
+                <div class="ranking-btn-content">
+                  <div class="ranking-btn-icon">🏆</div>
+                  <div class="ranking-btn-text">
+                    <div class="ranking-btn-title">역대 순위</div>
+                    <div class="ranking-btn-subtitle">All Time Rankings</div>
+                  </div>
+                </div>
+              </button>
             </div>
           </div>
         </div>
@@ -802,9 +845,8 @@
       
       // Reset all animation classes and structure
       $('#menuContent').removeClass('menu-fade-out').show();
-      $('#modeGrp').removeClass('menu-fade-out');
-      $('#highScoreBtnDaily').removeClass('menu-fade-out');
-      $('#highScoreBtnAll').removeClass('menu-fade-out');
+      $('#modeSelectionSection').removeClass('menu-fade-out');
+      $('.rankings-section').removeClass('menu-fade-out');
       $('#grp2').removeClass('game-start-transition').hide();
       $('#testSentInputBefore').removeClass('text-reveal text-reveal-delay-1');
       $('#testSentInput').removeClass('text-reveal');
@@ -862,9 +904,8 @@
         console.log('Starting countdown...');
         
         // Hide other menu elements but keep the start button for countdown
-        $('#modeGrp').addClass('menu-fade-out');
-        $('#highScoreBtnDaily').addClass('menu-fade-out');
-        $('#highScoreBtnAll').addClass('menu-fade-out');
+        $('#modeSelectionSection').addClass('menu-fade-out');
+        $('.rankings-section').addClass('menu-fade-out');
         
         countingDown = true;
 
@@ -976,9 +1017,8 @@
             // Show menu content again
             setTimeout(() => {
                 $('#menuContent').removeClass('menu-fade-out').show();
-                $('#modeGrp').removeClass('menu-fade-out');
-                $('#highScoreBtnDaily').removeClass('menu-fade-out');
-                $('#highScoreBtnAll').removeClass('menu-fade-out');
+                $('#modeSelectionSection').removeClass('menu-fade-out');
+                $('.rankings-section').removeClass('menu-fade-out');
                 $('#startBtn').removeClass('countdown-pulse').text("재도전");
             }, 500);
 
