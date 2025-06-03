@@ -71,7 +71,7 @@ function animateProgressBar(skillCard) {
     }
 }
 
-// Enhanced Role Rotation Animation
+// Enhanced Role Rotation Animation - Subtle and Clean
 function initRoleRotation() {
     const roles = ['Developer', 'Composer', 'Creator', 'Innovator', 'Designer'];
     const roleElements = document.querySelectorAll('.role');
@@ -83,121 +83,176 @@ function initRoleRotation() {
         // Remove active class from all roles
         roleElements.forEach(role => role.classList.remove('active'));
         
-        // Add active class to current role
+        // Add active class to current role with subtle animation
         if (roleElements[currentIndex]) {
             roleElements[currentIndex].classList.add('active');
             
-            // Faster, more visible text change with enhanced fade effect
-            roleElements[currentIndex].style.opacity = '0';
-            roleElements[currentIndex].style.transform = 'scale(0.8)';
+            // Simple, subtle text change
+            roleElements[currentIndex].style.opacity = '0.7';
             setTimeout(() => {
                 roleElements[currentIndex].textContent = roles[currentIndex % roles.length];
                 roleElements[currentIndex].style.opacity = '1';
-                roleElements[currentIndex].style.transform = 'scale(1)';
-                
-                // Add sparkle effect to active role
-                createRoleSparkle(roleElements[currentIndex]);
             }, 150);
         }
         
         currentIndex = (currentIndex + 1) % roleElements.length;
-    }, 1500); // Reduced from 3000ms to 1500ms for faster rotation
+    }, 2000); // Slower, more relaxed timing
 }
 
-// Create sparkle effect for role changes
-function createRoleSparkle(element) {
-    const sparkle = document.createElement('div');
-    sparkle.className = 'role-sparkle';
-    sparkle.innerHTML = '✨';
-    sparkle.style.position = 'absolute';
-    sparkle.style.top = '-10px';
-    sparkle.style.right = '-10px';
-    sparkle.style.fontSize = '16px';
-    sparkle.style.animation = 'roleSparkleEffect 1s ease-out forwards';
-    sparkle.style.pointerEvents = 'none';
-    
-    element.style.position = 'relative';
-    element.appendChild(sparkle);
-    
-    setTimeout(() => {
-        if (sparkle.parentNode) {
-            sparkle.parentNode.removeChild(sparkle);
-        }
-    }, 1000);
-}
-
-// Enhanced Custom Cursor - Pacman Style
+// Modern Custom Cursor - Optimized for Safari
 function initCustomCursor() {
+    console.log('Initializing modern cursor...');
+    
+    // Detect Safari for specific optimizations
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    
+    // Instant cursor that follows mouse exactly (no lag)
+    const instantCursor = document.createElement('div');
+    instantCursor.className = 'instant-cursor';
+    document.body.appendChild(instantCursor);
+    
+    // Main cursor with smooth animation
     const cursor = document.createElement('div');
-    cursor.className = 'pacman-cursor';
-    cursor.innerHTML = '<div class="pacman-mouth"></div>';
+    cursor.className = 'custom-cursor';
     document.body.appendChild(cursor);
 
+    // Trail cursor for visual effect
     const trail = document.createElement('div');
-    trail.className = 'pacman-trail';
+    trail.className = 'cursor-trail';
     document.body.appendChild(trail);
 
-    let mouseX = 0, mouseY = 0;
-    let trailX = 0, trailY = 0;
-    let lastMouseX = 0, lastMouseY = 0;
-    let angle = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+    let trailX = 0;
+    let trailY = 0;
+    let isMoving = false;
+    let animationId = null;
+
+    // Initialize cursor positions to center of screen to avoid positioning issues
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    
+    mouseX = centerX;
+    mouseY = centerY;
+    cursorX = centerX;
+    cursorY = centerY;
+    trailX = centerX;
+    trailY = centerY;
+    
+    // Set initial positions
+    instantCursor.style.left = centerX + 'px';
+    instantCursor.style.top = centerY + 'px';
+    cursor.style.left = centerX + 'px';
+    cursor.style.top = centerY + 'px';
+    trail.style.left = centerX + 'px';
+    trail.style.top = centerY + 'px';
+
+    // More aggressive throttling for Safari
+    let lastUpdate = 0;
+    const updateThreshold = isSafari ? 32 : 16; // 30fps for Safari, 60fps for others
 
     document.addEventListener('mousemove', (e) => {
-        lastMouseX = mouseX;
-        lastMouseY = mouseY;
         mouseX = e.clientX;
         mouseY = e.clientY;
         
-        // Calculate movement direction for Pacman rotation
-        const deltaX = mouseX - lastMouseX;
-        const deltaY = mouseY - lastMouseY;
+        // Instant cursor follows mouse exactly (no throttling)
+        instantCursor.style.left = mouseX + 'px';
+        instantCursor.style.top = mouseY + 'px';
         
-        if (Math.abs(deltaX) > 1 || Math.abs(deltaY) > 1) {
-            angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+        // Always set isMoving to true when mouse moves
+        isMoving = true;
+        
+        // Throttle updates for animated cursors (but don't prevent movement detection)
+        const now = Date.now();
+        if (now - lastUpdate >= updateThreshold) {
+            lastUpdate = now;
         }
-        
-        cursor.style.left = (mouseX - 15) + 'px';
-        cursor.style.top = (mouseY - 15) + 'px';
-        cursor.style.transform = `rotate(${angle}deg)`;
-        
-        // Add eating animation when moving
-        cursor.classList.add('eating');
-        clearTimeout(cursor.eatTimeout);
-        cursor.eatTimeout = setTimeout(() => {
-            cursor.classList.remove('eating');
-        }, 100);
     });
 
-    // Smooth trail animation
-    function animateTrail() {
-        trailX += (mouseX - trailX) * 0.08;
-        trailY += (mouseY - trailY) * 0.08;
+    // Optimized animation for smooth cursors
+    function animateCursors() {
+        // Always run animation, but check if we need to update positions
+        const cursorDistance = Math.abs(mouseX - cursorX) + Math.abs(mouseY - cursorY);
+        const trailDistance = Math.abs(cursorX - trailX) + Math.abs(cursorY - trailY);
         
-        trail.style.left = (trailX - 20) + 'px';
-        trail.style.top = (trailY - 20) + 'px';
+        // Continue animating if either cursor needs to catch up
+        if (cursorDistance > 0.5 || trailDistance > 0.5) {
+            // Different easing for Safari vs other browsers
+            const ease = isSafari ? 0.2 : 0.15;
+            const trailEase = isSafari ? 0.1 : 0.08;
+            
+            // Smooth cursor animation
+            cursorX += (mouseX - cursorX) * ease;
+            cursorY += (mouseY - cursorY) * ease;
+            
+            // Trail follows the main cursor (not the mouse directly)
+            trailX += (cursorX - trailX) * trailEase;
+            trailY += (cursorY - trailY) * trailEase;
+            
+            // Update positions - ensure all use same positioning method
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            trail.style.left = trailX + 'px';
+            trail.style.top = trailY + 'px';
+        }
         
-        requestAnimationFrame(animateTrail);
+        animationId = requestAnimationFrame(animateCursors);
     }
-    animateTrail();
+    animateCursors();
 
-    // Enhanced hover effects
-    const hoverElements = document.querySelectorAll('a, button, .btn, .card, .tag, .social-card');
+    // Enhanced hover effects - improved detection for nested elements
+    const hoverElements = document.querySelectorAll('a, button, .btn, .card, .tag, .social-card, .skill-card, .project-card, .stat-card');
+    
     hoverElements.forEach(el => {
+        // Use both mouseenter/mouseleave and mouseover/mouseout for better detection
         el.addEventListener('mouseenter', () => {
+            instantCursor.classList.add('cursor-hover');
             cursor.classList.add('cursor-hover');
             trail.classList.add('cursor-hover');
         });
         
         el.addEventListener('mouseleave', () => {
+            instantCursor.classList.remove('cursor-hover');
             cursor.classList.remove('cursor-hover');
             trail.classList.remove('cursor-hover');
         });
+        
+        // Additional detection for nested elements
+        el.addEventListener('mouseover', (e) => {
+            // Check if we're hovering over the element or its children
+            if (el.contains(e.target)) {
+                instantCursor.classList.add('cursor-hover');
+                cursor.classList.add('cursor-hover');
+                trail.classList.add('cursor-hover');
+            }
+        });
+        
+        el.addEventListener('mouseout', (e) => {
+            // Only remove hover if we're leaving the element entirely
+            if (!el.contains(e.relatedTarget)) {
+                instantCursor.classList.remove('cursor-hover');
+                cursor.classList.remove('cursor-hover');
+                trail.classList.remove('cursor-hover');
+            }
+        });
     });
+    
+    // Clean up on page unload
+    window.addEventListener('beforeunload', () => {
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+    });
+    
+    console.log(`Modern cursor initialization complete! (Safari: ${isSafari})`);
 }
 
 // Enhanced Magnetic Button Effects
 function initMagneticButtons() {
-    const magneticElements = document.querySelectorAll('.hero-btn, .project-link-btn, .social-card');
+    // Only apply magnetic effect to project link buttons, not social cards
+    const magneticElements = document.querySelectorAll('.project-link-btn');
     
     magneticElements.forEach(el => {
         el.addEventListener('mousemove', (e) => {
@@ -215,150 +270,34 @@ function initMagneticButtons() {
     });
 }
 
-// Sparkle and Glow Effects for Cards
+// Remove all hover effects - use pure CSS only
 function initSparkleEffects() {
-    const sparkleElements = document.querySelectorAll('.skill-card, .project-card, .stat-card');
-    
-    sparkleElements.forEach(el => {
-        // Add glow effect on hover
-        el.addEventListener('mouseenter', () => {
-            el.classList.add('card-glow');
-            createEnhancedSparkles(el);
-        });
-        
-        el.addEventListener('mouseleave', () => {
-            el.classList.remove('card-glow');
-            removeSparkles(el);
-        });
-    });
-    
-    // Add sparkle effects to hero badge
-    const heroBadge = document.querySelector('.hero-badge');
-    if (heroBadge) {
-        setInterval(() => {
-            createBadgeSparkle(heroBadge);
-        }, 2000);
-    }
+    // Remove all JavaScript hover effects for better performance
+    // All effects are now handled by pure CSS
 }
 
-// Create enhanced sparkle particles around cards
-function createEnhancedSparkles(element) {
-    const sparkleContainer = document.createElement('div');
-    sparkleContainer.className = 'sparkle-container';
-    element.appendChild(sparkleContainer);
-    
-    // Create more sparkles with enhanced effects
-    for (let i = 0; i < 12; i++) {
-        setTimeout(() => {
-            createEnhancedSparkle(sparkleContainer);
-        }, i * 80);
-    }
-}
-
-// Create enhanced sparkle particles
-function createEnhancedSparkle(container) {
-    const sparkle = document.createElement('div');
-    sparkle.className = 'sparkle-particle';
-    
-    // Random position around the container
-    const rect = container.getBoundingClientRect();
-    const x = Math.random() * rect.width;
-    const y = Math.random() * rect.height;
-    
-    sparkle.style.left = x + 'px';
-    sparkle.style.top = y + 'px';
-    
-    // Enhanced sparkle styles
-    const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b'];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    sparkle.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
-    sparkle.style.boxShadow = `0 0 10px ${color}`;
-    
-    // Random animation duration and direction
-    const duration = 1.5 + Math.random() * 1;
-    const direction = Math.random() > 0.5 ? 1 : -1;
-    sparkle.style.animationDuration = duration + 's';
-    sparkle.style.transform = `rotate(${Math.random() * 360}deg)`;
-    
-    container.appendChild(sparkle);
-    
-    setTimeout(() => {
-        if (sparkle.parentNode) {
-            sparkle.parentNode.removeChild(sparkle);
-        }
-    }, duration * 1000);
-}
-
-// Create sparkle effect for hero badge
-function createBadgeSparkle(badge) {
-    const sparkle = document.createElement('div');
-    sparkle.innerHTML = '✨';
-    sparkle.style.position = 'absolute';
-    sparkle.style.fontSize = '14px';
-    sparkle.style.animation = 'badgeSparkleFloat 2s ease-out forwards';
-    sparkle.style.pointerEvents = 'none';
-    sparkle.style.zIndex = '10';
-    
-    // Random position around badge
-    const positions = [
-        { top: '-20px', left: '-20px' },
-        { top: '-20px', right: '-20px' },
-        { bottom: '-20px', left: '-20px' },
-        { bottom: '-20px', right: '-20px' }
-    ];
-    const pos = positions[Math.floor(Math.random() * positions.length)];
-    Object.assign(sparkle.style, pos);
-    
-    badge.style.position = 'relative';
-    badge.appendChild(sparkle);
-    
-    setTimeout(() => {
-        if (sparkle.parentNode) {
-            sparkle.parentNode.removeChild(sparkle);
-        }
-    }, 2000);
-}
-
-// Enhanced Floating Particles Animation
+// Lightweight Floating Particles with CSS-only animation
 function initFloatingParticles() {
     const particlesContainer = document.createElement('div');
     particlesContainer.className = 'floating-particles';
     document.body.appendChild(particlesContainer);
 
-    for (let i = 0; i < 50; i++) {
-        createParticle(particlesContainer);
+    // Create only 5 lightweight particles for minimal impact
+    for (let i = 0; i < 5; i++) {
+        createLightParticle(particlesContainer, i);
     }
 }
 
-function createParticle(container) {
+function createLightParticle(container, index) {
     const particle = document.createElement('div');
-    particle.className = 'particle';
+    particle.className = 'light-particle';
     
-    const size = Math.random() * 4 + 2;
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * window.innerHeight;
-    const duration = Math.random() * 20 + 10;
-    
-    particle.style.cssText = `
-        position: fixed;
-        width: ${size}px;
-        height: ${size}px;
-        background: rgba(99, 102, 241, 0.3);
-        border-radius: 50%;
-        left: ${x}px;
-        top: ${y}px;
-        pointer-events: none;
-        z-index: -1;
-        animation: float ${duration}s infinite ease-in-out;
-    `;
+    // Use CSS custom properties for positioning
+    particle.style.setProperty('--delay', (index * 3) + 's');
+    particle.style.setProperty('--x', Math.random() * 100 + '%');
+    particle.style.setProperty('--y', Math.random() * 100 + '%');
     
     container.appendChild(particle);
-    
-    // Remove and recreate particle after animation
-    setTimeout(() => {
-        particle.remove();
-        createParticle(container);
-    }, duration * 1000);
 }
 
 // Enhanced Scroll Progress Bar
@@ -414,37 +353,9 @@ function initProgressBars() {
     });
 }
 
-// Add CSS for custom cursor, particles, and sparkle effects
+// Add minimal CSS for custom cursor only
 const style = document.createElement('style');
 style.textContent = `
-    .custom-cursor {
-        position: fixed;
-        width: 20px;
-        height: 20px;
-        background: rgba(99, 102, 241, 0.8);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transition: transform 0.1s ease;
-        transform: translate(-50%, -50%);
-    }
-
-    .cursor-follower {
-        position: fixed;
-        width: 40px;
-        height: 40px;
-        border: 2px solid rgba(99, 102, 241, 0.3);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9998;
-        transform: translate(-50%, -50%);
-        transition: all 0.3s ease;
-    }
-
-    .cursor-hover {
-        transform: translate(-50%, -50%) scale(1.5);
-    }
-
     .floating-particles {
         position: fixed;
         top: 0;
@@ -455,102 +366,9 @@ style.textContent = `
         z-index: -1;
     }
 
-    /* Card Glow Effect */
-    .card-glow {
-        box-shadow: 
-            0 0 30px rgba(99, 102, 241, 0.4),
-            0 0 60px rgba(99, 102, 241, 0.2),
-            0 0 90px rgba(99, 102, 241, 0.1) !important;
-        border-color: rgba(99, 102, 241, 0.8) !important;
-        background: linear-gradient(135deg, 
-            rgba(255, 255, 255, 0.1) 0%, 
-            rgba(99, 102, 241, 0.05) 50%, 
-            rgba(255, 255, 255, 0.1) 100%) !important;
-    }
-
-    /* Sparkle Container */
-    .sparkle-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        pointer-events: none;
-        overflow: hidden;
-        border-radius: inherit;
-    }
-
-    /* Sparkle Animation */
-    @keyframes sparkleAnimation {
-        0% {
-            opacity: 0;
-            transform: scale(0) rotate(0deg);
-        }
-        50% {
-            opacity: 1;
-            transform: scale(1) rotate(180deg);
-        }
-        100% {
-            opacity: 0;
-            transform: scale(0) rotate(360deg);
-        }
-    }
-
-    /* Enhanced Glow for Different Card Types */
-    .skill-card.card-glow {
-        box-shadow: 
-            0 0 30px rgba(99, 102, 241, 0.5),
-            0 0 60px rgba(99, 102, 241, 0.3),
-            0 0 90px rgba(99, 102, 241, 0.1),
-            inset 0 0 30px rgba(99, 102, 241, 0.1) !important;
-    }
-
-    .project-card.card-glow {
-        box-shadow: 
-            0 0 30px rgba(139, 92, 246, 0.5),
-            0 0 60px rgba(139, 92, 246, 0.3),
-            0 0 90px rgba(139, 92, 246, 0.1),
-            inset 0 0 30px rgba(139, 92, 246, 0.1) !important;
-    }
-
-    .stat-card.card-glow {
-        box-shadow: 
-            0 0 30px rgba(236, 72, 153, 0.5),
-            0 0 60px rgba(236, 72, 153, 0.3),
-            0 0 90px rgba(236, 72, 153, 0.1),
-            inset 0 0 30px rgba(236, 72, 153, 0.1) !important;
-    }
-
-    @keyframes float {
-        0%, 100% {
-            transform: translateY(0px) translateX(0px) rotate(0deg);
-        }
-        25% {
-            transform: translateY(-20px) translateX(10px) rotate(90deg);
-        }
-        50% {
-            transform: translateY(-40px) translateX(-10px) rotate(180deg);
-        }
-        75% {
-            transform: translateY(-20px) translateX(-20px) rotate(270deg);
-        }
-    }
-
-    /* Enhanced smooth transitions for all interactive elements */
-    .skill-card, .project-card, .stat-card, .social-card, .hero-btn {
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Smooth scroll behavior */
-    html {
-        scroll-behavior: smooth;
-    }
-
     /* Hide cursor on touch devices */
     @media (hover: none) {
-        .custom-cursor, .cursor-follower {
+        .custom-cursor, .cursor-trail {
             display: none;
         }
     }
