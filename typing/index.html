@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rex Typing Game</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/typespeed2.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -12,41 +14,100 @@
   </head>
 
   <body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="shape shape-5"></div>
+      </div>
+    </div>
+
     <div class="container">
       <!-- Header Section -->
-      <div class="game-card text-center header-section">
-        <div class="title-container">
-          <h1 class="main-title">Rexyrex</h1>
-          <h2 class="subtitle">타자 속도 측정기</h2>
-          <div class="title-accent-line"></div>
-        </div>
-        <div class="version-info">
-          <span id="verTitle" class="version-badge">Ver </span>
-          <a class="version-link" onclick="openVersionModal()">[버전 이력]</a>
+      <div class="hero-section-typing">
+        <div class="hero-content-typing text-center">
+          <div class="typing-avatar">
+            <div class="avatar-glow"></div>
+            <div class="avatar-ring"></div>
+            <div class="avatar-inner">
+              <i class="fas fa-keyboard"></i>
+            </div>
+            <div class="status-indicator"></div>
+          </div>
+          
+          <h1 class="hero-title-typing">
+            <span class="title-main">Rexyrex</span>
+            <span class="title-accent">.</span>
+          </h1>
+          
+          <div class="hero-subtitle-typing">
+            <span class="subtitle-text">타자 속도 측정기</span>
+          </div>
+          
+          <div class="version-card">
+            <span id="verTitle" class="version-badge">Ver </span>
+            <a class="version-link" onclick="openVersionModal()">[버전 이력]</a>
+          </div>
         </div>
       </div>
 
       <!-- Main Game Section -->
-      <div id="grp1" class="game-card">
+      <div id="grp1" class="game-section">
         <!-- Mode Selection -->
         <div class="mode-selection-section" id="modeSelectionSection">
-          <h3 class="mode-title">게임 모드 선택</h3>
-          <div class="mode-selector" id="modeGrp" data-toggle="buttons">
-            <button id="chMod1" type="button" class="mode-btn btn-choice" onclick="changeMode(1)">
-              <span class="mode-btn-text">한타</span>
-              <span class="mode-btn-desc">한글 타자</span>
+          <div class="section-header-card">
+            <div class="section-badge">
+              <i class="fas fa-gamepad"></i>
+              <span>게임 모드 선택</span>
+            </div>
+          </div>
+          
+          <div class="mode-grid" id="modeGrp" data-toggle="buttons">
+            <button id="chMod1" type="button" class="mode-card" onclick="changeMode(1)">
+              <div class="mode-icon">
+                <i class="fas fa-language"></i>
+              </div>
+              <div class="mode-content">
+                <div class="mode-title">한타</div>
+                <div class="mode-description">한글 타자</div>
+              </div>
+              <div class="mode-glow"></div>
             </button>
-            <button id="chMod2" type="button" class="mode-btn btn-choice" onclick="changeMode(2)">
-              <span class="mode-btn-text">이포넷</span>
-              <span class="mode-btn-desc">회사 모드</span>
+            
+            <button id="chMod2" type="button" class="mode-card" onclick="changeMode(2)">
+              <div class="mode-icon">
+                <i class="fas fa-building"></i>
+              </div>
+              <div class="mode-content">
+                <div class="mode-title">이포넷</div>
+                <div class="mode-description">회사 모드</div>
+              </div>
+              <div class="mode-glow"></div>
             </button>
-            <button id="chMod3" type="button" class="mode-btn btn-choice" onclick="changeMode(3)">
-              <span class="mode-btn-text">영타</span>
-              <span class="mode-btn-desc">English</span>
+            
+            <button id="chMod3" type="button" class="mode-card" onclick="changeMode(3)">
+              <div class="mode-icon">
+                <i class="fas fa-globe-americas"></i>
+              </div>
+              <div class="mode-content">
+                <div class="mode-title">영타</div>
+                <div class="mode-description">English</div>
+              </div>
+              <div class="mode-glow"></div>
             </button>
-            <button id="chMod4" type="button" class="mode-btn btn-choice" onclick="changeMode(4)">
-              <span class="mode-btn-text">개발자</span>
-              <span class="mode-btn-desc">Programming</span>
+            
+            <button id="chMod4" type="button" class="mode-card" onclick="changeMode(4)">
+              <div class="mode-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <div class="mode-content">
+                <div class="mode-title">개발자</div>
+                <div class="mode-description">Programming</div>
+              </div>
+              <div class="mode-glow"></div>
             </button>
           </div>
         </div>
@@ -54,75 +115,90 @@
         <!-- Menu Content Container -->
         <div id="menuContent">
           <!-- Start Button - Prominently displayed -->
-          <div class="start-section text-center mb-4">
-            <button id="startBtn" class="modern-btn btn-primary btn-large glow-on-hover start-game-btn" onclick="startCountDown()">시작</button>
-            <p class="text-muted mt-2" style="font-size: 0.875rem;">모드를 선택하고 시작 버튼을 눌러주세요</p>
+          <div class="start-section text-center">
+            <button id="startBtn" class="hero-btn btn-primary start-game-btn" onclick="startCountDown()">
+              <span class="btn-text">
+                <i class="fas fa-play"></i>
+                시작
+              </span>
+              <div class="btn-shine"></div>
+            </button>
+            <p class="start-hint">모드를 선택하고 시작 버튼을 눌러주세요</p>
           </div>
         </div>
 
         <!-- Game Area (initially hidden, will replace menu content) -->
-        <div id="grp2" class="game-area" style="display: none;">
+        <div id="grp2" class="game-area-main" style="display: none;">
           <!-- Progress Bar -->
-          <div id="prgBar" class="progress">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                 role="progressbar" aria-valuenow="75" aria-valuemin="0" 
-                 aria-valuemax="100" style="width: 0%;">0%</div>
+          <div class="progress-section">
+            <div id="prgBar" class="progress-modern">
+              <div class="progress-bar-modern progress-bar-striped progress-bar-animated" 
+                   role="progressbar" aria-valuenow="100" aria-valuemin="0" 
+                   aria-valuemax="100">60</div>
+            </div>
           </div>
           
           <!-- Text Display Areas -->
-          <div class="text-display">
-            <div class="mb-3">
-              <span id="testSentInputBefore" class="testSentInputSecondary text-display unselectable" style="pointer-events:none; opacity:0.27;"></span>
+          <div class="text-display-modern">
+            <div class="text-section">
+              <span id="testSentInputBefore" class="text-previous unselectable" style="pointer-events:none;"></span>
             </div>
             
-            <div class="mb-3">
-              <span id="testSentInput" class="testSentInput text-display unselectable" style="pointer-events:none;"></span>
+            <div class="text-section">
+              <span id="testSentInput" class="text-current unselectable" style="pointer-events:none;"></span>
             </div>
             
-            <div class="mb-4">
-              <span id="testSentInputAfter" class="testSentInputSecondary text-display unselectable" style="pointer-events:none; opacity:0.27;"></span>
+            <div class="text-section">
+              <span id="testSentInputAfter" class="text-next unselectable" style="pointer-events:none;"></span>
             </div>
             
             <!-- Input Field -->
-            <div class="mb-3">
-              <input id="chatInput" class="form__input2" autocomplete="off" placeholder="여기에 입력하세요..."/>
+            <div class="input-section">
+              <input id="chatInput" class="input-modern" autocomplete="off" placeholder="여기에 입력하세요..."/>
             </div>
 
             <!-- Comment Display -->
-            <div class="text-center">
-              <p id="comment" style="visibility:hidden; font-size:1.5rem; font-weight: 600; color: var(--accent-color);">ddd</p>
+            <div class="comment-section text-center">
+              <p id="comment" class="comment-modern" style="visibility:hidden;">ddd</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Rankings Section - Separated from main game -->
-      <div class="rankings-section">
-        <div class="game-card">
-          <h3 class="rankings-title">🏆 순위표</h3>
-          <div class="row">
-            <div class="col-md-6 mb-2">
-              <button id="highScoreBtnDaily" class="modern-btn btn-secondary w-100 ranking-btn" onclick="openHighscoresModal(true)">
-                <div class="ranking-btn-content">
-                  <div class="ranking-btn-icon">📅</div>
-                  <div class="ranking-btn-text">
-                    <div class="ranking-btn-title">오늘 순위</div>
-                    <div class="ranking-btn-subtitle">Today's Rankings</div>
-                  </div>
-                </div>
-              </button>
-            </div>
-            <div class="col-md-6 mb-2">
-              <button id="highScoreBtnAll" class="modern-btn btn-secondary w-100 ranking-btn" onclick="openHighscoresModal(false)">
-                <div class="ranking-btn-content">
-                  <div class="ranking-btn-icon">🏆</div>
-                  <div class="ranking-btn-text">
-                    <div class="ranking-btn-title">역대 순위</div>
-                    <div class="ranking-btn-subtitle">All Time Rankings</div>
-                  </div>
-                </div>
-              </button>
-            </div>
+      <div class="rankings-section-modern">
+        <div class="section-header-card">
+          <div class="section-badge">
+            <i class="fas fa-trophy"></i>
+            <span>순위표</span>
+          </div>
+        </div>
+        
+        <div class="rankings-grid">
+          <div class="ranking-card">
+            <button id="highScoreBtnDaily" class="ranking-btn-modern" onclick="openHighscoresModal(true)">
+              <div class="ranking-icon">
+                <i class="fas fa-calendar-day"></i>
+              </div>
+              <div class="ranking-content">
+                <div class="ranking-title">오늘 순위</div>
+                <div class="ranking-subtitle">Today's Rankings</div>
+              </div>
+              <div class="ranking-glow"></div>
+            </button>
+          </div>
+          
+          <div class="ranking-card">
+            <button id="highScoreBtnAll" class="ranking-btn-modern" onclick="openHighscoresModal(false)">
+              <div class="ranking-icon">
+                <i class="fas fa-crown"></i>
+              </div>
+              <div class="ranking-content">
+                <div class="ranking-title">역대 순위</div>
+                <div class="ranking-subtitle">All Time Rankings</div>
+              </div>
+              <div class="ranking-glow"></div>
+            </button>
           </div>
         </div>
       </div>
@@ -132,52 +208,101 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="resultModalTitle">🎉 결과</h5>
+              <h5 class="modal-title" id="resultModalTitle">
+                <i class="fas fa-trophy"></i> 결과
+              </h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <div class="text-center mb-4">
-                <h3 id="resGrade" class="mb-2">등급:</h3>
-                <h3 id="resScore" class="mb-2">점수:</h3>
-                <h3 id="resComp" class="mb-2">상대 평가:</h3>
-                <h3 id="resAccuracy" class="mb-3">정확도:</h3>
-              </div>
-
-              <div class="text-center mb-3">
-                <button id="openSaveCollapseBtn" onclick="openSaveCollapseBtn()" class="modern-btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                  📊 기록 저장
-                </button>
-              </div>
-
-              <div class="collapse" id="collapseExample">
-                <div class="card bg-dark border-secondary mb-3">
-                  <div class="card-body">
-                    <div class="form-group">
-                      <label for="highscoreId" class="text-light">이름</label>
-                      <input id="highscoreId" class="form-control bg-dark text-light border-secondary" autocomplete="off" placeholder="닉네임을 입력하세요" />
-                    </div>
-                    <button class="modern-btn btn-primary w-100" type="button" onclick="saveHighscore();">✅ 기록 저장</button>
+              <div class="result-stats">
+                <div class="stat-item">
+                  <div class="stat-icon">
+                    <i class="fas fa-medal"></i>
+                  </div>
+                  <div class="stat-content">
+                    <div class="stat-label">등급</div>
+                    <div id="resGrade" class="stat-value">-</div>
+                  </div>
+                </div>
+                
+                <div class="stat-item">
+                  <div class="stat-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                  </div>
+                  <div class="stat-content">
+                    <div class="stat-label">점수</div>
+                    <div id="resScore" class="stat-value">-</div>
+                  </div>
+                </div>
+                
+                <div class="stat-item">
+                  <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                  </div>
+                  <div class="stat-content">
+                    <div class="stat-label">상대 평가</div>
+                    <div id="resComp" class="stat-value">-</div>
+                  </div>
+                </div>
+                
+                <div class="stat-item">
+                  <div class="stat-icon">
+                    <i class="fas fa-bullseye"></i>
+                  </div>
+                  <div class="stat-content">
+                    <div class="stat-label">정확도</div>
+                    <div id="resAccuracy" class="stat-value">-</div>
                   </div>
                 </div>
               </div>
 
               <div class="text-center mb-3">
+                <button id="openSaveCollapseBtn" onclick="openSaveCollapseBtn()" class="hero-btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                  <span class="btn-text">
+                    <i class="fas fa-save"></i>
+                    기록 저장
+                  </span>
+                  <div class="btn-shine"></div>
+                </button>
+              </div>
+
+              <div class="collapse" id="collapseExample">
+                <div class="modal-card">
+                  <div class="form-group">
+                    <label for="highscoreId" class="form-label">이름</label>
+                    <input id="highscoreId" class="form-control" autocomplete="off" placeholder="닉네임을 입력하세요" />
+                  </div>
+                  <button class="hero-btn btn-primary w-100" type="button" onclick="saveHighscore();">
+                    <span class="btn-text">
+                      <i class="fas fa-check"></i>
+                      기록 저장
+                    </span>
+                    <div class="btn-shine"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="text-center mb-3">
                 <button class="modern-btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
-                  ❌ 틀린 단어 목록
+                  <i class="fas fa-times"></i> 틀린 단어 목록
                 </button>
               </div>
 
               <div class="collapse" id="collapseExample2">
-                <div class="redoutline">
-                  <ul id="incList" style="list-style-type: none; padding: 0;"></ul>
+                <div class="error-list-card">
+                  <ul id="incList" class="error-list"></ul>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">닫기</button>
-              <button type="button" class="modern-btn btn-primary" data-dismiss="modal" onclick="startCountDown()">🔄 재도전!</button>
+              <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">
+                <i class="fas fa-times"></i> 닫기
+              </button>
+              <button type="button" class="modern-btn btn-primary" data-dismiss="modal" onclick="startCountDown()">
+                <i class="fas fa-redo"></i> 재도전!
+              </button>
             </div>
           </div>
         </div>
@@ -188,7 +313,9 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="highscoreModalTitle">🏆 타자 속도 순위</h5>
+              <h5 class="modal-title" id="highscoreModalTitle">
+                <i class="fas fa-trophy"></i> 타자 속도 순위
+              </h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -196,33 +323,44 @@
             
             <div class="modal-body">
               <nav class="nav nav-pills nav-justified mb-3">
-                <a id="korScoreTab" class="nav-item nav-link active" href="#">한타</a>
-                <a id="engScoreTab" class="nav-item nav-link" href="#">영타</a>
-                <a id="prgScoreTab" class="nav-item nav-link" href="#">개발자</a>
+                <a id="korScoreTab" class="nav-item nav-link active" href="#">
+                  <i class="fas fa-language"></i> 한타
+                </a>
+                <a id="engScoreTab" class="nav-item nav-link" href="#">
+                  <i class="fas fa-globe-americas"></i> 영타
+                </a>
+                <a id="prgScoreTab" class="nav-item nav-link" href="#">
+                  <i class="fas fa-code"></i> 개발자
+                </a>
               </nav>
 
-              <h4 id="scoreTitle" class="text-center mb-3 p-3 bg-dark text-light rounded">한타 순위</h4>
-
-              <p class="text-center text-muted mb-3">(100위 까지 보여줍니다.)</p>
+              <div class="score-title-card">
+                <h4 id="scoreTitle" class="score-title">한타 순위</h4>
+                <p class="score-subtitle">(100위 까지 보여줍니다.)</p>
+              </div>
 
               <div class="tableFixHead">
                 <table id="highScoreTable" class="table table-striped table-dark">
                   <thead>
                     <tr>
-                      <th scope="col">순위</th>
-                      <th scope="col">이름</th>
-                      <th scope="col">등급</th>
-                      <th scope="col">점수</th>
+                      <th scope="col"><i class="fas fa-medal"></i> 순위</th>
+                      <th scope="col"><i class="fas fa-user"></i> 이름</th>
+                      <th scope="col"><i class="fas fa-star"></i> 등급</th>
+                      <th scope="col"><i class="fas fa-tachometer-alt"></i> 점수</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
                 </table>
-                <h3 id="highLoading" class="text-center" style="visibility:hidden;">⏳ Loading...</h3>
+                <div id="highLoading" class="loading-indicator" style="visibility:hidden;">
+                  <i class="fas fa-spinner fa-spin"></i> Loading...
+                </div>
               </div>
             </div>
             
             <div class="modal-footer">
-              <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">닫기</button>
+              <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">
+                <i class="fas fa-times"></i> 닫기
+              </button>
             </div>
           </div>
         </div>
@@ -233,7 +371,9 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="versionModalTitle">📋 Version History</h5>
+              <h5 class="modal-title" id="versionModalTitle">
+                <i class="fas fa-code-branch"></i> Version History
+              </h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -243,8 +383,8 @@
                 <table id="versionTable" class="table table-striped table-dark">
                   <thead>
                     <tr>
-                      <th scope="col">버전</th>
-                      <th scope="col">변경 사항</th>
+                      <th scope="col"><i class="fas fa-tag"></i> 버전</th>
+                      <th scope="col"><i class="fas fa-list"></i> 변경 사항</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -252,7 +392,9 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">닫기</button>
+              <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">
+                <i class="fas fa-times"></i> 닫기
+              </button>
             </div>
           </div>
         </div>
@@ -514,7 +656,7 @@
       mode = m;
       
       // Remove active class from all mode buttons
-      $('.mode-btn').removeClass('active');
+      $('.mode-card').removeClass('active');
       
       // Add active class to selected mode button
       $('#chMod'+m).addClass('active');
@@ -841,7 +983,7 @@
       $('#chatInput').val('');
       
       // Reset progress bar
-      $(".progress-bar").css("width", "0%").text("60").css('background', 'var(--success-color)');
+      $(".progress-bar-modern").css("width", "100%").text("60").css('background', 'var(--success)');
       
       // Reset all animation classes and structure
       $('#menuContent').removeClass('menu-fade-out').show();
@@ -976,8 +1118,8 @@
                   $('#chatInput').focus();
                   progress = secondsPassed/timeLimit * 100;  
                   var timeLeftVal = 100 - progress;
-                  var color = progress < 60 ? 'var(--success-color)' : (progress < 80 ? 'var(--warning-color)' : 'var(--error-color)');
-                  $(".progress-bar").css("width", timeLeftVal + "%").text(timeLimit - secondsPassed).css('background', color);
+                  var color = progress < 60 ? 'var(--success)' : (progress < 80 ? 'var(--warning)' : 'var(--error)');
+                  $(".progress-bar-modern").css("width", timeLeftVal + "%").text(timeLimit - secondsPassed).css('background', color);
                   
                   // Debug: log timer progress
                   if(secondsPassed % 10 === 0) {
