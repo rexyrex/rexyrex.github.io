@@ -54,10 +54,48 @@
         </div>
       </div>
 
+      <!-- Rankings Section -->
+      <div class="rankings-section-modern">
+        <div class="section-header-card">
+          <div class="section-badge">
+            <i class="fas fa-trophy"></i>
+            <span>순위표</span>
+          </div>
+        </div>
+        
+        <div class="rankings-grid">
+          <div class="ranking-card">
+            <button id="highScoreBtnDaily" class="ranking-btn-modern" onclick="openHighscoresModal(true)">
+              <div class="ranking-icon">
+                <i class="fas fa-calendar-day"></i>
+              </div>
+              <div class="ranking-content">
+                <div class="ranking-title">오늘 순위</div>
+                <div class="ranking-subtitle">Today's Rankings</div>
+              </div>
+              <div class="ranking-glow"></div>
+            </button>
+          </div>
+          
+          <div class="ranking-card">
+            <button id="highScoreBtnAll" class="ranking-btn-modern" onclick="openHighscoresModal(false)">
+              <div class="ranking-icon">
+                <i class="fas fa-crown"></i>
+              </div>
+              <div class="ranking-content">
+                <div class="ranking-title">역대 순위</div>
+                <div class="ranking-subtitle">All Time Rankings</div>
+              </div>
+              <div class="ranking-glow"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Main Game Section -->
       <div id="grp1" class="game-section">
-        <!-- Mode Selection -->
-        <div class="mode-selection-section" id="modeSelectionSection">
+        <!-- Mode Selection (initially hidden) -->
+        <div class="mode-selection-section" id="modeSelectionSection" style="display: none;">
           <div class="section-header-card">
             <div class="section-badge">
               <i class="fas fa-gamepad"></i>
@@ -165,43 +203,7 @@
         </div>
       </div>
 
-      <!-- Rankings Section - Separated from main game -->
-      <div class="rankings-section-modern">
-        <div class="section-header-card">
-          <div class="section-badge">
-            <i class="fas fa-trophy"></i>
-            <span>순위표</span>
-          </div>
-        </div>
-        
-        <div class="rankings-grid">
-          <div class="ranking-card">
-            <button id="highScoreBtnDaily" class="ranking-btn-modern" onclick="openHighscoresModal(true)">
-              <div class="ranking-icon">
-                <i class="fas fa-calendar-day"></i>
-              </div>
-              <div class="ranking-content">
-                <div class="ranking-title">오늘 순위</div>
-                <div class="ranking-subtitle">Today's Rankings</div>
-              </div>
-              <div class="ranking-glow"></div>
-            </button>
-          </div>
-          
-          <div class="ranking-card">
-            <button id="highScoreBtnAll" class="ranking-btn-modern" onclick="openHighscoresModal(false)">
-              <div class="ranking-icon">
-                <i class="fas fa-crown"></i>
-              </div>
-              <div class="ranking-content">
-                <div class="ranking-title">역대 순위</div>
-                <div class="ranking-subtitle">All Time Rankings</div>
-              </div>
-              <div class="ranking-glow"></div>
-            </button>
-          </div>
-        </div>
-      </div>
+
 
       <!-- Result Modal -->
       <div id="testModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="resultModalTitle" aria-hidden="true">
@@ -987,14 +989,13 @@
       
       // Reset all animation classes and structure
       $('#menuContent').removeClass('menu-fade-out').show();
-      $('#modeSelectionSection').removeClass('menu-fade-out');
-      $('.rankings-section').removeClass('menu-fade-out');
+      $('#modeSelectionSection').hide();
       $('#grp2').removeClass('game-start-transition').hide();
       $('#testSentInputBefore').removeClass('text-reveal text-reveal-delay-1');
       $('#testSentInput').removeClass('text-reveal');
       $('#testSentInputAfter').removeClass('text-reveal text-reveal-delay-2');
       $('#chatInput').removeClass('input-focus-ready');
-      $('#startBtn').removeClass('countdown-pulse').text("시작");
+      $('#startBtn').removeClass('countdown-pulse').html('<span class="btn-text"><i class="fas fa-play"></i> 시작</span><div class="btn-shine"></div>');
       
       // Clear any comment visibility
       $('#comment').css("visibility", "hidden");
@@ -1040,14 +1041,23 @@
       if($('#startBtn').text() === "재도전") {
         console.log('This is a retry - calling reset first');
         reset();
+        return;
+      }
+
+      // If mode selection is not visible, show it first
+      if($('#modeSelectionSection').is(':hidden')) {
+        console.log('Showing mode selection...');
+        $('#modeSelectionSection').show().addClass('text-reveal');
+        $('#startBtn .btn-text').html('<i class="fas fa-play"></i> 게임 시작');
+        return;
       }
 
       if(!started && !countingDown){
         console.log('Starting countdown...');
         
-        // Hide other menu elements but keep the start button for countdown
-        $('#modeSelectionSection').addClass('menu-fade-out');
-        $('.rankings-section').addClass('menu-fade-out');
+        // Remove sections completely to eliminate empty space
+        $('.rankings-section-modern').remove();
+        $('.hero-section-typing').remove();
         
         countingDown = true;
 
@@ -1159,9 +1169,8 @@
             // Show menu content again
             setTimeout(() => {
                 $('#menuContent').removeClass('menu-fade-out').show();
-                $('#modeSelectionSection').removeClass('menu-fade-out');
-                $('.rankings-section').removeClass('menu-fade-out');
-                $('#startBtn').removeClass('countdown-pulse').text("재도전");
+                $('#modeSelectionSection').hide();
+                $('#startBtn').removeClass('countdown-pulse').html('<span class="btn-text"><i class="fas fa-redo"></i> 재도전</span><div class="btn-shine"></div>');
             }, 500);
 
             accuracy = correctWordCount / (correctWordCount + incorrectWordCount);
