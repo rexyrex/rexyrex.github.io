@@ -1670,20 +1670,17 @@ body * {
 }
 
 .romantic-modal .modal-content {
-  background: none;
+  background: black;
   border: none;
   box-shadow: none;
   height: 85vh;
 }
 
 .romantic-content {
-  background: linear-gradient(135deg, 
-    rgba(255, 20, 147, 0.95) 0%,
-    rgba(255, 105, 180, 0.9) 50%,
-    rgba(255, 182, 193, 0.95) 100%);
-  backdrop-filter: blur(20px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 30px;
+  background: black;
+  backdrop-filter: none;
+  border: none;
+  border-radius: 0;
   padding: 0;
   overflow: hidden;
   position: relative;
@@ -1714,6 +1711,7 @@ body * {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 .romantic-close {
@@ -1738,7 +1736,7 @@ body * {
   z-index: 2;
 }
 
-/* Floating Hearts Animation - Simple Orbit */
+/* Floating Hearts Animation - Simple Oval */
 .floating-hearts {
   position: absolute;
   width: 100%;
@@ -1751,63 +1749,131 @@ body * {
 
 .floating-hearts i {
   position: absolute;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 2rem;
   top: 50%;
   left: 50%;
-  transform-origin: 0 0;
-  animation: heartCircle 6s linear infinite;
+  filter: 
+    drop-shadow(0 0 20px rgba(255, 255, 255, 0.9))
+    drop-shadow(0 0 40px rgba(255, 192, 203, 0.6))
+    drop-shadow(0 0 60px rgba(255, 182, 193, 0.4));
+  z-index: 10;
+  animation-timing-function: ease-in-out;
 }
 
 .heart-1 {
+  animation: heartCircle 10s linear infinite;
   animation-delay: 0s;
-  transform: translate(-50%, -50%) rotate(0deg) translateX(150px);
 }
 
 .heart-2 {
-  animation-delay: -1s;
-  transform: translate(-50%, -50%) rotate(60deg) translateX(150px);
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -0.83s;
 }
 
 .heart-3 {
-  animation-delay: -2s;
-  transform: translate(-50%, -50%) rotate(120deg) translateX(150px);
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -1.67s;
 }
 
 .heart-4 {
-  animation-delay: -3s;
-  transform: translate(-50%, -50%) rotate(180deg) translateX(150px);
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -2.5s;
 }
 
 .heart-5 {
-  animation-delay: -4s;
-  transform: translate(-50%, -50%) rotate(240deg) translateX(150px);
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -3.33s;
 }
 
 .heart-6 {
-  animation-delay: -5s;
-  transform: translate(-50%, -50%) rotate(300deg) translateX(150px);
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -4.17s;
 }
 
-/* Simple circular heart animation */
+.heart-7 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -5s;
+}
+
+.heart-8 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -5.83s;
+}
+
+.heart-9 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -6.67s;
+}
+
+.heart-10 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -7.5s;
+}
+
+.heart-11 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -8.33s;
+}
+
+.heart-12 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -9.17s;
+}
+
+/* Smooth circular animation using trigonometry for perfect circle */
 @keyframes heartCircle {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg) translateX(150px) rotate(0deg);
-    opacity: 0.6;
+  0% { 
+    transform: translate(-50%, -50%) translateX(350px) translateY(0px); 
+    opacity: 0.9; 
   }
-  25% {
-    opacity: 1;
+  8.33% { 
+    transform: translate(-50%, -50%) translateX(303px) translateY(-175px); 
+    opacity: 1; 
   }
-  50% {
-    transform: translate(-50%, -50%) rotate(180deg) translateX(150px) rotate(-180deg);
-    opacity: 0.8;
+  16.67% { 
+    transform: translate(-50%, -50%) translateX(175px) translateY(-303px); 
+    opacity: 0.9; 
   }
-  75% {
-    opacity: 1;
+  25% { 
+    transform: translate(-50%, -50%) translateX(0px) translateY(-350px); 
+    opacity: 1; 
   }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg) translateX(150px) rotate(-360deg);
-    opacity: 0.6;
+  33.33% { 
+    transform: translate(-50%, -50%) translateX(-175px) translateY(-303px); 
+    opacity: 0.9; 
+  }
+  41.67% { 
+    transform: translate(-50%, -50%) translateX(-303px) translateY(-175px); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: translate(-50%, -50%) translateX(-350px) translateY(0px); 
+    opacity: 0.9; 
+  }
+  58.33% { 
+    transform: translate(-50%, -50%) translateX(-303px) translateY(175px); 
+    opacity: 1; 
+  }
+  66.67% { 
+    transform: translate(-50%, -50%) translateX(-175px) translateY(303px); 
+    opacity: 0.9; 
+  }
+  75% { 
+    transform: translate(-50%, -50%) translateX(0px) translateY(350px); 
+    opacity: 1; 
+  }
+  83.33% { 
+    transform: translate(-50%, -50%) translateX(175px) translateY(303px); 
+    opacity: 0.9; 
+  }
+  91.67% { 
+    transform: translate(-50%, -50%) translateX(303px) translateY(175px); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) translateX(350px) translateY(0px); 
+    opacity: 0.9; 
   }
 }
 
@@ -1904,13 +1970,14 @@ body * {
 
 /* Beautiful Twinkle Sparkles */
 .romantic-sparkles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
   top: 0;
   left: 0;
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 1000;
 }
 
 .sparkle {
@@ -2003,16 +2070,266 @@ body * {
   animation-duration: 2s;
 }
 
+/* Additional sparkles */
+.sparkle-9 {
+  top: 15%;
+  left: 70%;
+  animation-delay: 0.2s;
+  animation-duration: 2.1s;
+}
+
+.sparkle-10 {
+  top: 85%;
+  left: 15%;
+  animation-delay: 0.4s;
+  animation-duration: 1.9s;
+}
+
+.sparkle-11 {
+  top: 40%;
+  left: 10%;
+  animation-delay: 0.7s;
+  animation-duration: 2.3s;
+}
+
+.sparkle-12 {
+  top: 60%;
+  left: 90%;
+  animation-delay: 1.1s;
+  animation-duration: 1.7s;
+}
+
+.sparkle-13 {
+  top: 25%;
+  left: 50%;
+  animation-delay: 1.4s;
+  animation-duration: 2.2s;
+}
+
+.sparkle-14 {
+  top: 75%;
+  left: 50%;
+  animation-delay: 1.7s;
+  animation-duration: 1.8s;
+}
+
+.sparkle-15 {
+  top: 50%;
+  left: 20%;
+  animation-delay: 2.0s;
+  animation-duration: 2.1s;
+}
+
+.sparkle-16 {
+  top: 50%;
+  left: 80%;
+  animation-delay: 2.3s;
+  animation-duration: 1.9s;
+}
+
+.sparkle-17 {
+  top: 10%;
+  left: 30%;
+  animation-delay: 2.6s;
+  animation-duration: 2.0s;
+}
+
+.sparkle-18 {
+  top: 90%;
+  left: 70%;
+  animation-delay: 2.9s;
+  animation-duration: 2.2s;
+}
+
+.sparkle-19 {
+  top: 35%;
+  left: 85%;
+  animation-delay: 3.2s;
+  animation-duration: 1.8s;
+}
+
+.sparkle-20 {
+  top: 65%;
+  left: 5%;
+  animation-delay: 3.5s;
+  animation-duration: 2.1s;
+}
+
+/* Enhanced twinkle animation with rotation and color */
 @keyframes twinkle {
   0%, 100% {
     opacity: 0;
-    transform: scale(0);
+    transform: scale(0.3) rotate(0deg);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  }
+  25% {
+    opacity: 0.7;
+    transform: scale(0.8) rotate(90deg);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.9), 0 0 18px rgba(255, 192, 203, 0.6);
   }
   50% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1.5) rotate(180deg);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 192, 203, 0.8);
+  }
+  75% {
+    opacity: 0.8;
+    transform: scale(1.2) rotate(270deg);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 192, 203, 0.7);
   }
 }
+
+/* Magical floating particles */
+.magical-particles {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 998;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 192, 203, 0.7) 40%, rgba(255, 182, 193, 0.5) 70%, transparent 100%);
+  border-radius: 50%;
+  animation: particleFloat 12s ease-in-out infinite;
+  box-shadow: 
+    0 0 15px rgba(255, 255, 255, 0.8),
+    0 0 25px rgba(255, 192, 203, 0.6),
+    0 0 35px rgba(255, 182, 193, 0.4);
+}
+
+.particle-1 {
+  top: 20%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.particle-2 {
+  top: 80%;
+  left: 85%;
+  animation-delay: -1.5s;
+}
+
+.particle-3 {
+  top: 30%;
+  left: 75%;
+  animation-delay: -3s;
+}
+
+.particle-4 {
+  top: 70%;
+  left: 25%;
+  animation-delay: -4.5s;
+}
+
+.particle-5 {
+  top: 10%;
+  left: 50%;
+  animation-delay: -6s;
+}
+
+.particle-6 {
+  top: 90%;
+  left: 50%;
+  animation-delay: -7.5s;
+}
+
+.particle-7 {
+  top: 50%;
+  left: 10%;
+  animation-delay: -9s;
+}
+
+.particle-8 {
+  top: 50%;
+  left: 90%;
+  animation-delay: -10.5s;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(0.8);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translateY(-30px) translateX(15px) scale(1.3);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-60px) translateX(-10px) scale(1.1);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-30px) translateX(-20px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Romantic glow effects */
+.romantic-glow-effects {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 997;
+}
+
+.glow-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  animation: glowRing 8s ease-in-out infinite;
+}
+
+.glow-ring-1 {
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  animation-delay: 0s;
+}
+
+.glow-ring-2 {
+  width: 800px;
+  height: 800px;
+  transform: translate(-50%, -50%);
+  animation-delay: -2.7s;
+}
+
+.glow-ring-3 {
+  width: 1000px;
+  height: 1000px;
+  transform: translate(-50%, -50%);
+  animation-delay: -5.3s;
+}
+
+@keyframes glowRing {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7) rotate(0deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+  }
+}
+
+/* Clean romantic container without visible box */
+.romantic-container {
+  position: relative;
+  z-index: 5;
+}
+
+
 
 /* Responsive Design for Romantic Modal */
 @media (max-width: 768px) {

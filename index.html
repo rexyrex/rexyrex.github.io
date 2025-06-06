@@ -376,6 +376,12 @@
                                 <i class="fas fa-heart heart-4"></i>
                                 <i class="fas fa-heart heart-5"></i>
                                 <i class="fas fa-heart heart-6"></i>
+                                <i class="fas fa-heart heart-7"></i>
+                                <i class="fas fa-heart heart-8"></i>
+                                <i class="fas fa-heart heart-9"></i>
+                                <i class="fas fa-heart heart-10"></i>
+                                <i class="fas fa-heart heart-11"></i>
+                                <i class="fas fa-heart heart-12"></i>
                             </div>
                             <div class="romantic-message">
                                 <div class="name-container name-1-container">
@@ -397,6 +403,36 @@
                                 <div class="sparkle sparkle-6"></div>
                                 <div class="sparkle sparkle-7"></div>
                                 <div class="sparkle sparkle-8"></div>
+                                <div class="sparkle sparkle-9"></div>
+                                <div class="sparkle sparkle-10"></div>
+                                <div class="sparkle sparkle-11"></div>
+                                <div class="sparkle sparkle-12"></div>
+                                <div class="sparkle sparkle-13"></div>
+                                <div class="sparkle sparkle-14"></div>
+                                <div class="sparkle sparkle-15"></div>
+                                <div class="sparkle sparkle-16"></div>
+                                <div class="sparkle sparkle-17"></div>
+                                <div class="sparkle sparkle-18"></div>
+                                <div class="sparkle sparkle-19"></div>
+                                <div class="sparkle sparkle-20"></div>
+                            </div>
+                            
+                            <!-- Additional magical effects -->
+                            <div class="magical-particles">
+                                <div class="particle particle-1"></div>
+                                <div class="particle particle-2"></div>
+                                <div class="particle particle-3"></div>
+                                <div class="particle particle-4"></div>
+                                <div class="particle particle-5"></div>
+                                <div class="particle particle-6"></div>
+                                <div class="particle particle-7"></div>
+                                <div class="particle particle-8"></div>
+                            </div>
+                            
+                            <div class="romantic-glow-effects">
+                                <div class="glow-ring glow-ring-1"></div>
+                                <div class="glow-ring glow-ring-2"></div>
+                                <div class="glow-ring glow-ring-3"></div>
                             </div>
                         </div>
                     </div>
@@ -442,6 +478,35 @@
             // Prevent context menu on long press
             $('.avatar-inner').on('contextmenu', function(e) {
                 e.preventDefault();
+            });
+            
+            // Fix animation restart when modal reopens
+            $('#romanticModal').on('show.bs.modal', function() {
+                // Remove and re-add animation classes to restart animations
+                const hearts = $('.floating-hearts i');
+                const sparkles = $('.sparkle');
+                const romanticMessage = $('.romantic-message');
+                const nameContainers = $('.name-container');
+                const mainHeart = $('.main-heart');
+                
+                // Remove animations temporarily
+                hearts.css('animation', 'none');
+                sparkles.css('animation', 'none');
+                romanticMessage.css('animation', 'none');
+                nameContainers.css('animation', 'none');
+                mainHeart.css('animation', 'none');
+                
+                // Force reflow
+                hearts[0].offsetHeight;
+                
+                // Restore animations
+                setTimeout(function() {
+                    hearts.css('animation', '');
+                    sparkles.css('animation', '');
+                    romanticMessage.css('animation', '');
+                    nameContainers.css('animation', '');
+                    mainHeart.css('animation', '');
+                }, 50);
             });
         });
         </script>
