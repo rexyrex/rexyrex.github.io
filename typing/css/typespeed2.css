@@ -81,7 +81,7 @@ body {
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   letter-spacing: -0.01em;
   min-height: 100vh;
-  padding: calc(80px + var(--space-md)) var(--space-sm) var(--space-md) var(--space-sm);
+  padding: 80px var(--space-sm) var(--space-md) var(--space-sm);
 }
 
 /* Animated Background */
@@ -180,8 +180,8 @@ body {
 
 /* Hero Section for Typing Game */
 .hero-section-typing {
-  padding: var(--space-xl) 0;
-  margin-bottom: var(--space-lg);
+  padding: var(--space-md) 0;
+  margin-bottom: var(--space-md);
 }
 
 .hero-content-typing {
@@ -311,8 +311,6 @@ body {
   letter-spacing: 0.02em;
 }
 
-
-
 /* Inline Rankings */
 .rankings-inline {
   display: flex;
@@ -352,8 +350,8 @@ body {
 /* Mega Start Button */
 .mega-start-btn {
   position: relative;
-  background: none;
-  border: none;
+  background: none !important;
+  border: none !important;
   cursor: pointer;
   padding: 0;
   width: 320px;
@@ -363,15 +361,22 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  margin: var(--space-lg) auto 0;
+  margin: var(--space-sm) auto 0;
   z-index: 10;
   transform-style: preserve-3d;
+  /* Override all browser defaults */
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  outline: none !important;
+  color: inherit !important;
+  text-decoration: none !important;
 }
 
 .mega-btn-bg {
   position: absolute;
   inset: 0;
-  background: var(--gradient-primary);
+  background: var(--gradient-primary) !important;
   border-radius: 50%;
   opacity: 0.95;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -380,6 +385,23 @@ body {
     0 10px 40px rgba(99, 102, 241, 0.3),
     0 5px 15px rgba(99, 102, 241, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure consistent styling across all browsers */
+.mega-start-btn,
+button.mega-start-btn,
+#startBtn.mega-start-btn {
+  background: none !important;
+  border: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+.mega-start-btn .mega-btn-bg,
+button.mega-start-btn .mega-btn-bg,
+#startBtn.mega-start-btn .mega-btn-bg {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
 }
 
 .mega-btn-content {
@@ -937,33 +959,172 @@ body {
 
 /* Progress Section */
 .progress-section {
+  margin-top: var(--space-lg);
   margin-bottom: var(--space-lg);
+  padding: 0 var(--space-md);
 }
 
 .progress-modern {
-  height: 20px;
+  height: 32px;
   background: var(--bg-glass);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-sm);
+  border: 2px solid var(--border-glass);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
   position: relative;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 15px rgba(16, 185, 129, 0.1);
 }
 
-.progress-bar-modern {
+.progress-modern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+  opacity: 0.6;
+}
+
+.progress-modern::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
   height: 100%;
-  background: var(--success);
-  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: progressShimmer 3s infinite;
+}
+
+@keyframes progressShimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.progress-modern .progress-bar-modern {
+  height: 100% !important;
+  background: linear-gradient(135deg, #059669 0%, #10b981 30%, #34d399 50%, #10b981 70%, #059669 100%) !important;
+  border-radius: var(--radius-lg);
   transition: width 0.1s linear;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   color: white;
   width: 100%;
   position: relative;
-  min-width: 30px;
+  min-width: 40px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 0 20px rgba(5, 150, 105, 0.6),
+    0 0 40px rgba(5, 150, 105, 0.2);
+  animation: defaultGlow 2s ease-in-out infinite;
+}
+
+@keyframes defaultGlow {
+  0%, 100% { 
+    filter: brightness(1);
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+      0 0 20px rgba(5, 150, 105, 0.6),
+      0 0 40px rgba(5, 150, 105, 0.2);
+  }
+  50% { 
+    filter: brightness(1.05);
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+      0 0 25px rgba(5, 150, 105, 0.8),
+      0 0 50px rgba(5, 150, 105, 0.3);
+  }
+}
+
+/* Override any Bootstrap striped patterns */
+.progress-modern .progress-bar-modern:before,
+.progress-modern .progress-bar-modern:after {
+  background-image: none !important;
+  display: none !important;
+}
+
+/* Glare effects removed for better text readability */
+
+/* Dynamic Progress Bar Colors */
+.progress-modern .progress-bar-modern.warning {
+  background: linear-gradient(135deg, var(--warning) 0%, #fbbf24 50%, var(--warning) 100%) !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(245, 158, 11, 0.4);
+  animation: warningPulse 1s ease-in-out infinite;
+}
+
+.progress-modern .progress-bar-modern.danger {
+  background: linear-gradient(135deg, var(--error) 0%, #f87171 50%, var(--error) 100%) !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(239, 68, 68, 0.5);
+  animation: dangerPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: scale(1.01);
+    filter: brightness(1.1);
+  }
+}
+
+@keyframes dangerPulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: brightness(1);
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+      0 0 15px rgba(239, 68, 68, 0.5);
+  }
+  50% { 
+    transform: scale(1.02);
+    filter: brightness(1.2);
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+      0 0 25px rgba(239, 68, 68, 0.8);
+  }
+}
+
+/* Progress container glow effect */
+.progress-modern.warning {
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+.progress-modern.danger {
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 30px rgba(239, 68, 68, 0.3);
+  animation: containerShake 0.1s ease-in-out infinite;
+}
+
+@keyframes containerShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  75% { transform: translateX(1px); }
 }
 
 /* Text Display */
@@ -1167,7 +1328,29 @@ body {
   opacity: 0.5;
 }
 
-/* Modal Styles */
+/* Modal Input Text Fix */
+.modal .form-control,
+#testModal .form-control,
+#highscoreModal .form-control,
+.modal input[type="text"],
+.modal input[type="email"],
+.modal input[type="password"],
+.modal textarea {
+  color: #1f2937 !important;
+  font-weight: 500 !important;
+}
+
+.modal .form-control:focus,
+#testModal .form-control:focus,
+#highscoreModal .form-control:focus,
+.modal input[type="text"]:focus,
+.modal input[type="email"]:focus,
+.modal input[type="password"]:focus,
+.modal textarea:focus {
+  color: #111827 !important;
+  font-weight: 500 !important;
+}
+
 /* Modal Styles - Force override Bootstrap conflicts */
 .modal-content,
 #testModal .modal-content,
@@ -1630,7 +1813,7 @@ mark.word-incorrect {
 /* Responsive Design */
 @media (max-width: 768px) {
   body {
-    padding: calc(80px + var(--space-sm)) var(--space-sm) var(--space-sm) var(--space-sm);
+    padding: 80px var(--space-sm) var(--space-sm) var(--space-sm);
   }
 
   .hero-title-typing {

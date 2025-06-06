@@ -38,9 +38,9 @@
             <div class="avatar-ring"></div>
             <div class="avatar-inner" id="keyboardIcon">
               <i class="fas fa-keyboard"></i>
-            </div>
+        </div>
             <div class="status-indicator"></div>
-          </div>
+        </div>
           
           <h1 class="hero-title-typing">
             <span class="title-main">Rexyrex</span>
@@ -49,8 +49,8 @@
           
           <div class="hero-subtitle-typing">
             <span class="subtitle-text">타자 속도 측정기</span>
-          </div>
-          
+      </div>
+
           <div class="rankings-inline">
             <button id="highScoreBtnDaily" class="ranking-btn-inline" onclick="openHighscoresModal(true)">
               <i class="fas fa-calendar-day"></i>
@@ -62,8 +62,8 @@
               <span>역대 순위</span>
             </button>
           </div>
+          </div>
         </div>
-      </div>
 
       <!-- Main Landing Button -->
       <button id="startBtn" class="mega-start-btn" onclick="showModeSelection()">
@@ -75,7 +75,7 @@
           <div class="mega-btn-text">
             <span class="mega-btn-title">게임 시작</span>
             <span class="mega-btn-subtitle">Click to Start Typing</span>
-          </div>
+        </div>
         </div>
         <div class="mega-btn-pulse"></div>
         <div class="mega-btn-glow"></div>
@@ -96,7 +96,7 @@
             <button id="chMod1" type="button" class="mode-card" onclick="selectModeAndStart(1)">
               <div class="mode-icon">
                 <i class="fas fa-language"></i>
-              </div>
+            </div>
               <div class="mode-content">
                 <div class="mode-title">한타</div>
                 <div class="mode-description">한글 타자</div>
@@ -107,7 +107,7 @@
             <button id="chMod2" type="button" class="mode-card" onclick="selectModeAndStart(2)">
               <div class="mode-icon">
                 <i class="fas fa-building"></i>
-              </div>
+            </div>
               <div class="mode-content">
                 <div class="mode-title">이포넷</div>
                 <div class="mode-description">회사 모드</div>
@@ -118,7 +118,7 @@
             <button id="chMod3" type="button" class="mode-card" onclick="selectModeAndStart(3)">
               <div class="mode-icon">
                 <i class="fas fa-globe-americas"></i>
-              </div>
+            </div>
               <div class="mode-content">
                 <div class="mode-title">영타</div>
                 <div class="mode-description">English</div>
@@ -137,9 +137,9 @@
               <div class="mode-glow"></div>
             </button>
           </div>
-        </div>
+            </div>
 
-      </div>
+            </div>
 
       <!-- Countdown Section -->
       <div id="countdownSection" class="countdown-section" style="display: none;">
@@ -165,30 +165,30 @@
         <!-- Progress Bar -->
         <div class="progress-section">
           <div id="prgBar" class="progress-modern">
-            <div class="progress-bar-modern progress-bar-striped progress-bar-animated" 
+            <div class="progress-bar-modern" 
                  role="progressbar" aria-valuenow="100" aria-valuemin="0" 
                  aria-valuemax="100">60</div>
-          </div>
-        </div>
+                  </div>
+                </div>
         
         <!-- Text Display Areas -->
         <div class="text-display-modern">
           <div class="text-section">
             <span id="testSentInputBefore" class="text-previous unselectable" style="pointer-events:none;"></span>
-          </div>
+            </div>
           
           <div class="text-section">
             <span id="testSentInput" class="text-current unselectable" style="pointer-events:none;"></span>
-          </div>
+                  </div>
           
           <div class="text-section">
             <span id="testSentInputAfter" class="text-next unselectable" style="pointer-events:none;"></span>
-          </div>
+                </div>
           
           <!-- Input Field -->
           <div class="input-section">
             <input id="chatInput" class="input-modern" autocomplete="off" placeholder="여기에 입력하세요..."/>
-          </div>
+            </div>
 
           <!-- Comment Display -->
           <div class="comment-section text-center">
@@ -1046,7 +1046,10 @@
       $('#chatInput').val('');
       
       // Reset progress bar
-      $(".progress-bar-modern").css("width", "100%").text("60").css('background', 'var(--success)');
+      var $progressBar = $(".progress-bar-modern");
+      var $progressContainer = $(".progress-modern");
+      $progressBar.removeClass('warning danger').css("width", "100%").text("60");
+      $progressContainer.removeClass('warning danger');
       
       // Reset save form state
       resetSaveForm();
@@ -1331,7 +1334,10 @@
       $('#chatInput').val('');
       
       // Reset progress bar
-      $(".progress-bar-modern").css("width", "100%").text("60").css('background', 'var(--success)');
+      var $progressBar = $(".progress-bar-modern");
+      var $progressContainer = $(".progress-modern");
+      $progressBar.removeClass('warning danger').css("width", "100%").text("60");
+      $progressContainer.removeClass('warning danger');
       
       // Reset save form state
       resetSaveForm();
@@ -1381,8 +1387,13 @@
         $('#testSentInput').removeData('original-text').html(sentenceTriplet[1]).data('original-text', sentenceTriplet[1]);
         $('#testSentInputAfter').removeData('original-text').html(sentenceTriplet[2]).data('original-text', sentenceTriplet[2]);
         
-        // Start the game immediately
+        // Start the game immediately and ensure input is ready
         start();
+        
+        // Additional focus to ensure input is immediately responsive
+        setTimeout(() => {
+          $('#chatInput').focus();
+        }, 100);
       } else {
         console.log('startGameDirectly blocked - started:', started, 'countingDown:', countingDown);
       }
@@ -1391,7 +1402,7 @@
     function startGameCountdown(){
       console.log('startGameCountdown() called - this should NOT happen during retry!');
       console.log('Stack trace:', new Error().stack);
-      
+
       if(!started && !countingDown){
         console.log('Starting countdown...');
         
@@ -1417,7 +1428,7 @@
             // Prepare game content - ensure fresh start
             console.log('Before updateSentenceTriplet in startGameCountdown - sentenceTriplet:', sentenceTriplet);
             sentenceTriplet = []; // Force clear to ensure fresh sentences
-            updateSentenceTriplet();
+              updateSentenceTriplet();
             console.log('After updateSentenceTriplet in startGameCountdown - sentenceTriplet:', sentenceTriplet);
             
             // Clear any old data attributes and set new content
@@ -1426,7 +1437,7 @@
             $('#testSentInputAfter').removeData('original-text').html(sentenceTriplet[2]).data('original-text', sentenceTriplet[2]);
             
             // Start the game
-            start();
+              start();
           }
         }, 1000);
       } else {
@@ -1442,34 +1453,51 @@
         // Debug: log timer state when starting
         console.log('Game starting - secondsPassed:', secondsPassed, 'timeLimit:', timeLimit);
         
-        // Add reveal animations to content that's already visible
+        // Focus input immediately for instant responsiveness
+        $('#chatInput').focus();
+        
+        // Add reveal animations to content that's already visible (but don't delay input)
         setTimeout(() => {
           $('#testSentInputBefore').addClass('text-reveal-delay-1');
           $('#testSentInput').addClass('text-reveal');
           $('#testSentInputAfter').addClass('text-reveal-delay-2');
-          $('#chatInput').addClass('input-focus-ready');
+          // Don't add animation class to input to keep it immediately responsive
         }, 200);
-        
-        // Focus on input after animations
-        setTimeout(() => {
-          $('#chatInput').focus();
-        }, 1000);
         
         // Set up the game timer (only once)
         if(!timerStartedOnce){
           timerStartedOnce = true;
-          
+
           // Initialize game start time for smooth animation
           window.gameStartTime = Date.now();
 
           // Main timer that updates every second
           setInterval(function(){ 
               if(started){
+                  // Ensure input stays focused during gameplay
+                  if(!$('#chatInput').is(':focus')) {
                   $('#chatInput').focus();
+                  }
                   progress = secondsPassed/timeLimit * 100;  
                   var timeLeftVal = 100 - progress;
-                  var color = progress < 60 ? 'var(--success)' : (progress < 80 ? 'var(--warning)' : 'var(--error)');
-                  $(".progress-bar-modern").css("width", timeLeftVal + "%").text(timeLimit - secondsPassed).css('background', color);
+                  
+                  // Dynamic color classes and container effects
+                  var $progressBar = $(".progress-bar-modern");
+                  var $progressContainer = $(".progress-modern");
+                  
+                  // Remove all dynamic classes first
+                  $progressBar.removeClass('warning danger');
+                  $progressContainer.removeClass('warning danger');
+                  
+                  if (progress >= 80) {
+                    $progressBar.addClass('danger');
+                    $progressContainer.addClass('danger');
+                  } else if (progress >= 60) {
+                    $progressBar.addClass('warning');
+                    $progressContainer.addClass('warning');
+                  }
+                  
+                  $progressBar.css("width", timeLeftVal + "%").text(timeLimit - secondsPassed);
                   
                   // Debug: log timer progress
                   if(secondsPassed % 10 === 0) {
