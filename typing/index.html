@@ -7,13 +7,17 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" type="text/css" href="css/typespeed2.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="/js/common.js"></script>
   </head>
 
   <body>
+    <div id="nav-placeholder"></div>
+    
     <!-- Animated Background -->
     <div class="animated-bg">
       <div class="floating-shapes">
@@ -32,7 +36,7 @@
           <div class="typing-avatar">
             <div class="avatar-glow"></div>
             <div class="avatar-ring"></div>
-            <div class="avatar-inner">
+            <div class="avatar-inner" id="keyboardIcon">
               <i class="fas fa-keyboard"></i>
             </div>
             <div class="status-indicator"></div>
@@ -47,53 +51,38 @@
             <span class="subtitle-text">타자 속도 측정기</span>
           </div>
           
-          <div class="version-card">
-            <span id="verTitle" class="version-badge">Ver </span>
-            <a class="version-link" onclick="openVersionModal()">[버전 이력]</a>
+          <div class="rankings-inline">
+            <button id="highScoreBtnDaily" class="ranking-btn-inline" onclick="openHighscoresModal(true)">
+              <i class="fas fa-calendar-day"></i>
+              <span>오늘 순위</span>
+            </button>
+            
+            <button id="highScoreBtnAll" class="ranking-btn-inline" onclick="openHighscoresModal(false)">
+              <i class="fas fa-crown"></i>
+              <span>역대 순위</span>
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- Rankings Section -->
-      <div class="rankings-section-modern">
-        <div class="section-header-card">
-          <div class="section-badge">
-            <i class="fas fa-trophy"></i>
-            <span>순위표</span>
+      <!-- Main Landing Button -->
+      <button id="startBtn" class="mega-start-btn" onclick="showModeSelection()">
+        <div class="mega-btn-bg"></div>
+        <div class="mega-btn-content">
+          <div class="mega-btn-icon">
+            <i class="fas fa-keyboard"></i>
+          </div>
+          <div class="mega-btn-text">
+            <span class="mega-btn-title">게임 시작</span>
+            <span class="mega-btn-subtitle">Click to Start Typing</span>
           </div>
         </div>
-        
-        <div class="rankings-grid">
-          <div class="ranking-card">
-            <button id="highScoreBtnDaily" class="ranking-btn-modern" onclick="openHighscoresModal(true)">
-              <div class="ranking-icon">
-                <i class="fas fa-calendar-day"></i>
-              </div>
-              <div class="ranking-content">
-                <div class="ranking-title">오늘 순위</div>
-                <div class="ranking-subtitle">Today's Rankings</div>
-              </div>
-              <div class="ranking-glow"></div>
-            </button>
-          </div>
-          
-          <div class="ranking-card">
-            <button id="highScoreBtnAll" class="ranking-btn-modern" onclick="openHighscoresModal(false)">
-              <div class="ranking-icon">
-                <i class="fas fa-crown"></i>
-              </div>
-              <div class="ranking-content">
-                <div class="ranking-title">역대 순위</div>
-                <div class="ranking-subtitle">All Time Rankings</div>
-              </div>
-              <div class="ranking-glow"></div>
-            </button>
-          </div>
-        </div>
-      </div>
+        <div class="mega-btn-pulse"></div>
+        <div class="mega-btn-glow"></div>
+      </button>
 
       <!-- Main Game Section -->
-      <div id="grp1" class="game-section">
+      <div id="grp1" class="game-section" style="display: none;">
         <!-- Mode Selection (initially hidden) -->
         <div class="mode-selection-section" id="modeSelectionSection" style="display: none;">
           <div class="section-header-card">
@@ -103,8 +92,8 @@
             </div>
           </div>
           
-          <div class="mode-grid" id="modeGrp" data-toggle="buttons">
-            <button id="chMod1" type="button" class="mode-card" onclick="changeMode(1)">
+          <div class="mode-grid" id="modeGrp">
+            <button id="chMod1" type="button" class="mode-card" onclick="selectModeAndStart(1)">
               <div class="mode-icon">
                 <i class="fas fa-language"></i>
               </div>
@@ -115,7 +104,7 @@
               <div class="mode-glow"></div>
             </button>
             
-            <button id="chMod2" type="button" class="mode-card" onclick="changeMode(2)">
+            <button id="chMod2" type="button" class="mode-card" onclick="selectModeAndStart(2)">
               <div class="mode-icon">
                 <i class="fas fa-building"></i>
               </div>
@@ -126,7 +115,7 @@
               <div class="mode-glow"></div>
             </button>
             
-            <button id="chMod3" type="button" class="mode-card" onclick="changeMode(3)">
+            <button id="chMod3" type="button" class="mode-card" onclick="selectModeAndStart(3)">
               <div class="mode-icon">
                 <i class="fas fa-globe-americas"></i>
               </div>
@@ -137,7 +126,7 @@
               <div class="mode-glow"></div>
             </button>
             
-            <button id="chMod4" type="button" class="mode-card" onclick="changeMode(4)">
+            <button id="chMod4" type="button" class="mode-card" onclick="selectModeAndStart(4)">
               <div class="mode-icon">
                 <i class="fas fa-code"></i>
               </div>
@@ -150,55 +139,60 @@
           </div>
         </div>
 
-        <!-- Menu Content Container -->
-        <div id="menuContent">
-          <!-- Start Button - Prominently displayed -->
-          <div class="start-section text-center">
-            <button id="startBtn" class="hero-btn btn-primary start-game-btn" onclick="startCountDown()">
-              <span class="btn-text">
-                <i class="fas fa-play"></i>
-                시작
-              </span>
-              <div class="btn-shine"></div>
-            </button>
-            <p class="start-hint">모드를 선택하고 시작 버튼을 눌러주세요</p>
+      </div>
+
+      <!-- Countdown Section -->
+      <div id="countdownSection" class="countdown-section" style="display: none;">
+        <div class="countdown-content">
+          <div class="countdown-icon">
+            <i class="fas fa-stopwatch"></i>
+          </div>
+          <div class="countdown-text">
+            <h2 class="countdown-title">준비하세요!</h2>
+            <p class="countdown-subtitle">게임이 곧 시작됩니다</p>
+          </div>
+          <div class="countdown-timer">
+            <span id="countdownNumber">5</span>
+          </div>
+          <div class="countdown-progress">
+            <div id="countdownBar" class="countdown-bar"></div>
           </div>
         </div>
+      </div>
 
-        <!-- Game Area (initially hidden, will replace menu content) -->
-        <div id="grp2" class="game-area-main" style="display: none;">
-          <!-- Progress Bar -->
-          <div class="progress-section">
-            <div id="prgBar" class="progress-modern">
-              <div class="progress-bar-modern progress-bar-striped progress-bar-animated" 
-                   role="progressbar" aria-valuenow="100" aria-valuemin="0" 
-                   aria-valuemax="100">60</div>
-            </div>
+      <!-- Game Area (only appears when game starts) -->
+      <div id="grp2" class="game-area-main" style="display: none;">
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <div id="prgBar" class="progress-modern">
+            <div class="progress-bar-modern progress-bar-striped progress-bar-animated" 
+                 role="progressbar" aria-valuenow="100" aria-valuemin="0" 
+                 aria-valuemax="100">60</div>
+          </div>
+        </div>
+        
+        <!-- Text Display Areas -->
+        <div class="text-display-modern">
+          <div class="text-section">
+            <span id="testSentInputBefore" class="text-previous unselectable" style="pointer-events:none;"></span>
           </div>
           
-          <!-- Text Display Areas -->
-          <div class="text-display-modern">
-            <div class="text-section">
-              <span id="testSentInputBefore" class="text-previous unselectable" style="pointer-events:none;"></span>
-            </div>
-            
-            <div class="text-section">
-              <span id="testSentInput" class="text-current unselectable" style="pointer-events:none;"></span>
-            </div>
-            
-            <div class="text-section">
-              <span id="testSentInputAfter" class="text-next unselectable" style="pointer-events:none;"></span>
-            </div>
-            
-            <!-- Input Field -->
-            <div class="input-section">
-              <input id="chatInput" class="input-modern" autocomplete="off" placeholder="여기에 입력하세요..."/>
-            </div>
+          <div class="text-section">
+            <span id="testSentInput" class="text-current unselectable" style="pointer-events:none;"></span>
+          </div>
+          
+          <div class="text-section">
+            <span id="testSentInputAfter" class="text-next unselectable" style="pointer-events:none;"></span>
+          </div>
+          
+          <!-- Input Field -->
+          <div class="input-section">
+            <input id="chatInput" class="input-modern" autocomplete="off" placeholder="여기에 입력하세요..."/>
+          </div>
 
-            <!-- Comment Display -->
-            <div class="comment-section text-center">
-              <p id="comment" class="comment-modern" style="visibility:hidden;">ddd</p>
-            </div>
+          <!-- Comment Display -->
+          <div class="comment-section text-center">
+            <p id="comment" class="comment-modern" style="visibility:hidden;">ddd</p>
           </div>
         </div>
       </div>
@@ -272,23 +266,38 @@
 
               <div class="collapse" id="collapseExample">
                 <div class="modal-card">
-                  <div class="form-group">
-                    <label for="highscoreId" class="form-label">이름</label>
-                    <input id="highscoreId" class="form-control" autocomplete="off" placeholder="닉네임을 입력하세요" />
+                  <!-- Save Form (shown initially) -->
+                  <div id="saveForm">
+                    <div class="form-group">
+                      <label for="highscoreId" class="form-label">이름</label>
+                      <input id="highscoreId" class="form-control" autocomplete="off" placeholder="닉네임을 입력하세요" />
+                      <div id="saveErrorMessage" class="invalid-feedback" style="display: none;"></div>
+                    </div>
+                    <button class="hero-btn btn-primary w-100" type="button" onclick="saveHighscore();">
+                      <span class="btn-text">
+                        <i class="fas fa-check"></i>
+                        기록 저장
+                      </span>
+                      <div class="btn-shine"></div>
+                    </button>
                   </div>
-                  <button class="hero-btn btn-primary w-100" type="button" onclick="saveHighscore();">
-                    <span class="btn-text">
-                      <i class="fas fa-check"></i>
-                      기록 저장
-                    </span>
-                    <div class="btn-shine"></div>
-                  </button>
+                  
+                  <!-- Success Message (shown after successful save) -->
+                  <div id="saveSuccess" style="display: none;">
+                    <div class="text-center">
+                      <div class="save-success-icon">
+                        <i class="fas fa-check-circle"></i>
+                      </div>
+                      <h4 class="save-success-title">기록이 저장되었습니다!</h4>
+                      <p id="saveSuccessMessage" class="save-success-text"></p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div class="text-center mb-3">
-                <button class="modern-btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
-                  <i class="fas fa-times"></i> 틀린 단어 목록
+                <button id="toggleIncorrectWords" class="modern-btn btn-secondary" type="button" onclick="toggleIncorrectWordsList()">
+                  <i id="toggleIcon" class="fas fa-chevron-down"></i> 틀린 단어 목록
                 </button>
               </div>
 
@@ -301,9 +310,6 @@
             <div class="modal-footer">
               <button type="button" class="modern-btn btn-secondary" data-dismiss="modal">
                 <i class="fas fa-times"></i> 닫기
-              </button>
-              <button type="button" class="modern-btn btn-primary" data-dismiss="modal" onclick="startCountDown()">
-                <i class="fas fa-redo"></i> 재도전!
               </button>
             </div>
           </div>
@@ -403,7 +409,7 @@
       </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <!-- Removed old jQuery 1.11.1 to fix conflicts -->
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js"></script>
@@ -651,6 +657,9 @@
     }
 
     function changeMode(m){
+      console.log('changeMode called with mode:', m);
+      console.log('Stack trace:', new Error().stack);
+      
       // if(m==4){
       //   alert("준비중입니다");
       //   return;
@@ -666,6 +675,46 @@
 
     function openSaveCollapseBtn(){
       $('#openSaveCollapseBtn').css("visibility", "hidden");
+      // Reset save form state when opening
+      resetSaveForm();
+    }
+
+    function resetSaveForm(){
+      clearSaveError();
+      $('#saveForm').show();
+      $('#saveSuccess').hide();
+      $('#highscoreId').val('');
+    }
+
+    function toggleIncorrectWordsList(){
+      var $collapse = $('#collapseExample2');
+      var $icon = $('#toggleIcon');
+      
+      if($collapse.hasClass('show')){
+        // Currently open, so close it
+        $collapse.removeClass('show');
+        $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+      } else {
+        // Currently closed, so open it
+        $collapse.addClass('show');
+        $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+      }
+    }
+
+    function showSaveError(message) {
+      $('#highscoreId').addClass('is-invalid');
+      $('#saveErrorMessage').text(message).show();
+    }
+
+    function clearSaveError() {
+      $('#highscoreId').removeClass('is-invalid');
+      $('#saveErrorMessage').hide();
+    }
+
+    function showSaveSuccess(message) {
+      $('#saveForm').hide();
+      $('#saveSuccessMessage').text(message);
+      $('#saveSuccess').show();
     }
 
     function updateSentenceTriplet(){
@@ -682,24 +731,29 @@
     }
 
     function saveHighscore(){
-      if($('#highscoreId').val().length < 2){
-        alert("이름이 너무 짧아요.");
+      clearSaveError(); // Clear any previous error messages
+      
+      var username = $('#highscoreId').val().trim();
+      
+      if(username.length < 2){
+        showSaveError("이름이 너무 짧아요. (최소 2글자)");
         return;
-      } else if($('#highscoreId').val().length > 8){
-        alert("이름이 너무 길어요.");
+      } else if(username.length > 8){
+        showSaveError("이름이 너무 길어요. (최대 8글자)");
         return;
       }
 
       if(score<0 || isNaN(score)){
-        alert("기록 저장 불가 - 한 단어도 안치셨네요 :(");
+        showSaveError("기록 저장 불가 - 한 단어도 안치셨네요 :(");
+        return;
       }
 
       if(!scoreSaved){
         scoreSaved = true;
-        addHighscore($('#highscoreId').val(), score, getGrade(), Math.round(accuracy*100)+'%');   
+        addHighscore(username, score, getGrade(), Math.round(accuracy*100)+'%');   
         updateAnonHighscore();     
       } else {
-        alert("이미 기록 저장하셨네요~");
+        showSaveError("이미 기록 저장하셨네요~");
       }
     }
 
@@ -797,10 +851,10 @@
                   day: moment().format('MM-DD-YYYY')
               })
               .then(() => {
-                alert("기록 갱신하셨습니다! (" + doc.data().score + " => " + score + ")");
+                showSaveSuccess("기록을 갱신하셨습니다! (" + doc.data().score + " → " + score + "점)");
               })
             } else {
-              alert("더 높은 기록이 있으세요. 기록 갱신 실패. (" + doc.data().score + ")");
+              showSaveError("더 높은 기록이 있습니다. (현재 최고 기록: " + doc.data().score + "점)");
             }
         });
         //Add new user
@@ -823,10 +877,10 @@
             date: moment().format('MM-DD-YYYY HH:mm'),
             day: moment().format('MM-DD-YYYY')
           }).then((docRef) => {
-            alert("저장 완료");
+            showSaveSuccess("새로운 기록이 저장되었습니다! (" + score + "점)");
           })
           .catch((error) => {
-            alert("에러 발생");
+            showSaveError("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
           });
         }
       })
@@ -933,13 +987,11 @@
           });
 
           if(place < 101){
-            $('#resComp').text("상대 평가 : 상위" + Math.round(place/i*100) + "% (" + i + "명 중 " + place + "등)" );
-            alert("총 " + i + "명 중 " + place + "등 하셨어요!\n[기록 저장]버튼을 눌러서 순위권에 올라가세요!");
+            $('#resComp').text("상위" + Math.round(place/i*100) + "% (" + i + "명 중 " + place + "등)" );
           } else if(i < 101){
-            $('#resComp').text("상대 평가 : " + i + "명 중 꼴등");
-            alert("총 " + i + "명 중 꼴등 하셨어요!\n[기록 저장]버튼을 눌러서 순위권에 올라가세요!");
+            $('#resComp').text(i + "명 중 꼴등");
           } else {
-            $('#resComp').text("상대 평가 : 100등 안에 못들었어요");
+            $('#resComp').text("100등 안에 못들었어요");
           }
       })
       .catch((error) => {
@@ -949,6 +1001,12 @@
     
     function reset(){
       console.log('Reset called - before reset: secondsPassed:', secondsPassed, 'started:', started);
+      
+      // Clear any active countdown timer
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
       
       uuid = uuidv4();
 
@@ -960,6 +1018,9 @@
       keyPressCountTmp = 0;
       timeLimit = 60;
       scoreSaved = false;
+      
+      // Reset smooth animation timer
+      window.gameStartTime = null;
       
       correctWordCount = 0;
       incorrectWordCount = 0;
@@ -978,27 +1039,42 @@
       
       console.log('Reset completed - after reset: secondsPassed:', secondsPassed, 'started:', started);
       
-      // Clear content and animations
-      $('#testSentInput').html('');
-      $('#testSentInputBefore').html('');
-      $('#testSentInputAfter').html('');
+      // Clear content, animations, and data attributes
+      $('#testSentInput').html('').removeData('original-text');
+      $('#testSentInputBefore').html('').removeData('original-text');
+      $('#testSentInputAfter').html('').removeData('original-text');
       $('#chatInput').val('');
       
       // Reset progress bar
       $(".progress-bar-modern").css("width", "100%").text("60").css('background', 'var(--success)');
       
+      // Reset save form state
+      resetSaveForm();
+      
       // Reset all animation classes and structure
-      $('#menuContent').removeClass('menu-fade-out').show();
+      $('.hero-section-typing').show().removeClass('menu-fade-out');
+      $('#startBtn').show().removeClass('menu-fade-out');
       $('#modeSelectionSection').hide();
+      $('#grp1').hide(); // Hide game section container
       $('#grp2').removeClass('game-start-transition').hide();
+      $('#countdownSection').hide().removeClass('text-reveal menu-fade-out'); // Hide countdown section
       $('#testSentInputBefore').removeClass('text-reveal text-reveal-delay-1');
       $('#testSentInput').removeClass('text-reveal');
       $('#testSentInputAfter').removeClass('text-reveal text-reveal-delay-2');
       $('#chatInput').removeClass('input-focus-ready');
-      $('#startBtn').removeClass('countdown-pulse').html('<span class="btn-text"><i class="fas fa-play"></i> 시작</span><div class="btn-shine"></div>');
+      $('#startBtn').removeClass('countdown-pulse').html('<div class="mega-btn-bg"></div><div class="mega-btn-content"><div class="mega-btn-icon"><i class="fas fa-keyboard"></i></div><div class="mega-btn-text"><span class="mega-btn-title">게임 시작</span><span class="mega-btn-subtitle">Click to Start Typing</span></div></div><div class="mega-btn-pulse"></div><div class="mega-btn-glow"></div>');
+      $('#startBtn').attr('onclick', 'showModeSelection()');
       
       // Clear any comment visibility
       $('#comment').css("visibility", "hidden");
+      
+      // Reset countdown display
+      if (document.getElementById('countdownNumber')) {
+        document.getElementById('countdownNumber').textContent = '5';
+      }
+      if (document.getElementById('countdownBar')) {
+        document.getElementById('countdownBar').style.width = '100%';
+      }
     }
 
     function retry(){
@@ -1031,66 +1107,326 @@
       });
     }
 
-    function startCountDown(){
-      $('#chatInput').html('');
+    function showModeSelection() {
+      console.log('Showing mode selection...');
+      console.log('Current state - started:', started, 'countingDown:', countingDown, 'timerStartedOnce:', timerStartedOnce);
       
-      // Debug logging
-      console.log('startCountDown called - started:', started, 'countingDown:', countingDown);
+      // Ensure we start from a clean state
+      $('#grp2').hide();
+      $('#countdownSection').hide();
+      $('#modeSelectionSection').hide().removeClass('text-reveal menu-fade-out');
+      $('#grp1').removeClass('menu-fade-out');
       
-      // If this is a retry (button says "재도전"), reset the game state first
-      if($('#startBtn').text() === "재도전") {
-        console.log('This is a retry - calling reset first');
-        reset();
-        return;
+      // Show hero section and button if they're not visible
+      $('.hero-section-typing').show().removeClass('menu-fade-out');
+      $('#startBtn').show().removeClass('menu-fade-out');
+      
+      // Hide landing elements
+      $('.hero-section-typing').addClass('menu-fade-out');
+      $('#startBtn').addClass('menu-fade-out');
+      
+      // Show mode selection after animation
+      setTimeout(() => {
+        console.log('Mode selection timeout triggered - showing mode selection');
+        $('.hero-section-typing').hide();
+        $('#startBtn').hide();
+        $('#grp1').show(); // Show the game section container
+        
+        // Force animation reset by removing class, forcing reflow, then adding back
+        $('#modeSelectionSection').removeClass('text-reveal').css('opacity', '').css('transform', '').show();
+        // Force reflow to ensure style reset takes effect
+        $('#modeSelectionSection')[0].offsetHeight;
+        $('#modeSelectionSection').addClass('text-reveal');
+        console.log('Mode selection should now be visible');
+        
+        // Debug: Check if mode selection is actually visible
+        setTimeout(() => {
+          console.log('Checking mode selection visibility after 1 second...');
+          console.log('grp1 display:', $('#grp1').css('display'));
+          console.log('modeSelectionSection display:', $('#modeSelectionSection').css('display'));
+          console.log('modeSelectionSection visible:', $('#modeSelectionSection').is(':visible'));
+        }, 1000);
+        
+        setTimeout(() => {
+          console.log('Checking mode selection visibility after 3 seconds...');
+          console.log('grp1 display:', $('#grp1').css('display'));
+          console.log('modeSelectionSection display:', $('#modeSelectionSection').css('display'));
+          console.log('modeSelectionSection visible:', $('#modeSelectionSection').is(':visible'));
+        }, 3000);
+      }, 500);
+    }
+
+    // Long click functionality for keyboard icon
+    let longClickTimer = null;
+    let isLongClicking = false;
+
+    function setupLongClick() {
+      const keyboardIcon = document.getElementById('keyboardIcon');
+      
+      function startLongClick() {
+        isLongClicking = true;
+        longClickTimer = setTimeout(() => {
+          if (isLongClicking) {
+            openVersionModal();
+          }
+        }, 3000); // 3 seconds
       }
 
-      // If mode selection is not visible, show it first
-      if($('#modeSelectionSection').is(':hidden')) {
-        console.log('Showing mode selection...');
-        $('#modeSelectionSection').show().addClass('text-reveal');
-        $('#startBtn .btn-text').html('<i class="fas fa-play"></i> 게임 시작');
-        return;
+      function cancelLongClick() {
+        isLongClicking = false;
+        if (longClickTimer) {
+          clearTimeout(longClickTimer);
+          longClickTimer = null;
+        }
       }
 
+      // Mouse events
+      keyboardIcon.addEventListener('mousedown', startLongClick);
+      keyboardIcon.addEventListener('mouseup', cancelLongClick);
+      keyboardIcon.addEventListener('mouseleave', cancelLongClick);
+
+      // Touch events
+      keyboardIcon.addEventListener('touchstart', startLongClick);
+      keyboardIcon.addEventListener('touchend', cancelLongClick);
+      keyboardIcon.addEventListener('touchcancel', cancelLongClick);
+    }
+
+    // Initialize long click when page loads
+    $(document).ready(function() {
+      setupLongClick();
+    });
+
+    function selectModeAndStart(modeNumber) {
+      console.log('selectModeAndStart called with mode:', modeNumber);
+      console.log('Stack trace:', new Error().stack);
+      console.log('Current state when mode selected - started:', started, 'countingDown:', countingDown);
+      
+      // Set the mode
+      changeMode(modeNumber);
+      
+      // Show countdown instead of starting immediately
+      setTimeout(() => {
+        showCountdown();
+      }, 200);
+    }
+
+    function showCountdown() {
+      console.log('showCountdown() called - this should NOT happen during retry!');
+      console.log('Stack trace:', new Error().stack);
+      
+      // Hide mode selection
+      $('#grp1').addClass('menu-fade-out');
+      
+      // Show countdown after animation
+      setTimeout(() => {
+        $('#grp1').hide();
+        $('#countdownSection').show().addClass('text-reveal');
+        startCountdownTimer();
+      }, 500);
+    }
+
+    let countdownInterval;
+    
+    function startCountdownTimer() {
+      let timeLeft = 5;
+      const countdownNumber = document.getElementById('countdownNumber');
+      const countdownBar = document.getElementById('countdownBar');
+      
+      // Reset bar width
+      countdownBar.style.width = '100%';
+      
+      countdownInterval = setInterval(() => {
+        timeLeft--;
+        countdownNumber.textContent = timeLeft;
+        
+        // Update progress bar
+        const progressPercent = (timeLeft / 5) * 100;
+        countdownBar.style.width = progressPercent + '%';
+        
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          
+          // Hide countdown and start game
+          $('#countdownSection').addClass('menu-fade-out');
+          setTimeout(() => {
+            $('#countdownSection').hide().removeClass('text-reveal menu-fade-out');
+            // Reset countdown for next time
+            countdownNumber.textContent = '5';
+            countdownBar.style.width = '100%';
+            
+            // Start game immediately without additional countdown
+            startGameDirectly();
+          }, 500);
+        }
+      }, 1000);
+    }
+
+    function retryGame() {
+      console.log('Retrying game - going directly to mode selection...');
+      console.log('Before reset - started:', started, 'countingDown:', countingDown, 'timerStartedOnce:', timerStartedOnce);
+      
+      // Clear ALL possible timers and intervals more aggressively
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      
+      // Clear any potential setTimeout calls by getting the highest timeout ID and clearing them
+      let highestTimeoutId = setTimeout(";");
+      for (let i = 0; i < highestTimeoutId; i++) {
+        clearTimeout(i);
+      }
+      
+      // Reset only the game variables, not the UI state
+      resetGameVariables();
+      
+      console.log('After reset - started:', started, 'countingDown:', countingDown, 'timerStartedOnce:', timerStartedOnce);
+      
+      // Close modal if open
+      $('#testModal').modal('hide');
+      
+      // Go directly to mode selection (like clicking "게임 시작") with a longer delay
+      setTimeout(() => {
+        console.log('Showing mode selection after retry...');
+        showModeSelection();
+      }, 800);
+    }
+
+    function resetGameVariables() {
+      console.log('Resetting game variables only...');
+      
+      uuid = uuidv4();
+      started = false;
+      countingDown = false;
+      progress = 0;
+      secondsPassed = 0;
+      keyPressCount = 0;
+      keyPressCountTmp = 0;
+      timeLimit = 60;
+      scoreSaved = false;
+      timerStartedOnce = false; // Reset timer state so it can start fresh
+      
+      // Reset smooth animation timer
+      window.gameStartTime = null;
+      
+      correctWordCount = 0;
+      incorrectWordCount = 0;
+      score = 0;
+      accuracy = 0;
+      incWordArr = [];
+      attmpWordArr = [];
+
+      sentenceTriplet = [];
+      prevInputSent = "";
+
+      typedSentenceList = [];
+      givenSentenceList = [];
+
+      keyMap.clear();
+      
+      // Clear content and data attributes
+      $('#testSentInput').html('').removeData('original-text');
+      $('#testSentInputBefore').html('').removeData('original-text');
+      $('#testSentInputAfter').html('').removeData('original-text');
+      $('#chatInput').val('');
+      
+      // Reset progress bar
+      $(".progress-bar-modern").css("width", "100%").text("60").css('background', 'var(--success)');
+      
+      // Reset save form state
+      resetSaveForm();
+      
+      // Clear any comment visibility
+      $('#comment').css("visibility", "hidden");
+      
+      // Reset countdown display
+      if (document.getElementById('countdownNumber')) {
+        document.getElementById('countdownNumber').textContent = '5';
+      }
+      if (document.getElementById('countdownBar')) {
+        document.getElementById('countdownBar').style.width = '100%';
+      }
+      
+      // Clear animation classes from game elements
+      $('#testSentInputBefore').removeClass('text-reveal text-reveal-delay-1');
+      $('#testSentInput').removeClass('text-reveal');
+      $('#testSentInputAfter').removeClass('text-reveal text-reveal-delay-2');
+      $('#chatInput').removeClass('input-focus-ready');
+      $('#grp2').removeClass('game-start-transition').hide();
+      $('#countdownSection').hide().removeClass('text-reveal menu-fade-out');
+      
+      // Clear active mode selection
+      $('.mode-card').removeClass('active');
+      mode = null; // Reset mode variable
+    }
+
+    function startGameDirectly() {
+      console.log('startGameDirectly() called - this should NOT happen during retry!');
+      console.log('Stack trace:', new Error().stack);
+      
+      if(!started && !countingDown){
+        console.log('Starting game directly after countdown...');
+        
+        // Show game area immediately
+        $('#grp2').show().addClass('game-start-transition');
+        
+        // Prepare game content immediately - ensure fresh start
+        console.log('Before updateSentenceTriplet in startGameDirectly - sentenceTriplet:', sentenceTriplet);
+        sentenceTriplet = []; // Force clear to ensure fresh sentences
+        updateSentenceTriplet();
+        console.log('After updateSentenceTriplet in startGameDirectly - sentenceTriplet:', sentenceTriplet);
+        
+        // Clear any old data attributes and set new content
+        $('#testSentInputBefore').removeData('original-text').html(sentenceTriplet[0]).data('original-text', sentenceTriplet[0]);
+        $('#testSentInput').removeData('original-text').html(sentenceTriplet[1]).data('original-text', sentenceTriplet[1]);
+        $('#testSentInputAfter').removeData('original-text').html(sentenceTriplet[2]).data('original-text', sentenceTriplet[2]);
+        
+        // Start the game immediately
+        start();
+      } else {
+        console.log('startGameDirectly blocked - started:', started, 'countingDown:', countingDown);
+      }
+    }
+
+    function startGameCountdown(){
+      console.log('startGameCountdown() called - this should NOT happen during retry!');
+      console.log('Stack trace:', new Error().stack);
+      
       if(!started && !countingDown){
         console.log('Starting countdown...');
         
-        // Remove sections completely to eliminate empty space
-        $('.rankings-section-modern').remove();
-        $('.hero-section-typing').remove();
+        // Hide mode selection and show game area
+        $('#modeSelectionSection').addClass('menu-fade-out');
+        
+        setTimeout(() => {
+          $('#modeSelectionSection').hide();
+          $('#grp2').show().addClass('game-start-transition');
+        }, 300);
         
         countingDown = true;
 
         var counter = 5;
-        $('#startBtn').text(counter).addClass('countdown-pulse');
         
         var counterItv = setInterval(function(){ 
           counter-=1;
-          $('#startBtn').text(counter);
           
           if(counter==0){
             clearInterval(counterItv);
             countingDown = false;
             
-            // Now hide the entire menu content and show game
-            $('#menuContent').addClass('menu-fade-out');
+            // Prepare game content - ensure fresh start
+            console.log('Before updateSentenceTriplet in startGameCountdown - sentenceTriplet:', sentenceTriplet);
+            sentenceTriplet = []; // Force clear to ensure fresh sentences
+            updateSentenceTriplet();
+            console.log('After updateSentenceTriplet in startGameCountdown - sentenceTriplet:', sentenceTriplet);
             
-            // Start the game after menu fades out
-            setTimeout(() => {
-              $('#menuContent').hide();
-              
-              // Prepare game content BEFORE showing the game area
-              updateSentenceTriplet();
-              $('#testSentInputBefore').html(sentenceTriplet[0]);
-              $('#testSentInput').html(sentenceTriplet[1]);
-              $('#testSentInputAfter').html(sentenceTriplet[2]);
-              
-              // Show game area with GRANDIOSE transition
-              $('#grp2').show().addClass('game-start-transition');
-              
-              // Always call start() for both first time and retry
-              start();
-            }, 500);
+            // Clear any old data attributes and set new content
+            $('#testSentInputBefore').removeData('original-text').html(sentenceTriplet[0]).data('original-text', sentenceTriplet[0]);
+            $('#testSentInput').removeData('original-text').html(sentenceTriplet[1]).data('original-text', sentenceTriplet[1]);
+            $('#testSentInputAfter').removeData('original-text').html(sentenceTriplet[2]).data('original-text', sentenceTriplet[2]);
+            
+            // Start the game
+            start();
           }
         }, 1000);
       } else {
@@ -1122,7 +1458,11 @@
         // Set up the game timer (only once)
         if(!timerStartedOnce){
           timerStartedOnce = true;
+          
+          // Initialize game start time for smooth animation
+          window.gameStartTime = Date.now();
 
+          // Main timer that updates every second
           setInterval(function(){ 
               if(started){
                   $('#chatInput').focus();
@@ -1143,6 +1483,21 @@
                   }
               }
             }, 1000);
+            
+          // Smooth progress bar animation - updates every 100ms for smooth effect
+          setInterval(function(){
+              if(started){
+                  // Calculate fractional progress for smooth animation
+                  var currentTime = Date.now();
+                  var elapsedMs = currentTime - window.gameStartTime;
+                  var elapsedSeconds = elapsedMs / 1000;
+                  var smoothProgress = elapsedSeconds / timeLimit * 100;
+                  var smoothTimeLeftVal = 100 - smoothProgress;
+                  
+                  // Only update width for smooth animation, keep text from main timer
+                  $(".progress-bar-modern").css("width", Math.max(0, smoothTimeLeftVal) + "%");
+              }
+          }, 100);
           }
         }
     }
@@ -1166,11 +1521,22 @@
             $('#testSentInputAfter').html('');
             $('#chatInput').val('');
 
-            // Show menu content again
+            // Show landing page again for retry
             setTimeout(() => {
-                $('#menuContent').removeClass('menu-fade-out').show();
-                $('#modeSelectionSection').hide();
-                $('#startBtn').removeClass('countdown-pulse').html('<span class="btn-text"><i class="fas fa-redo"></i> 재도전</span><div class="btn-shine"></div>');
+                // Clear any countdown timer and hide all sections
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
+                $('#grp1').hide(); // Hide the game section container
+                $('#countdownSection').hide().removeClass('text-reveal menu-fade-out'); // Hide countdown section
+                
+                $('.hero-section-typing').show().removeClass('menu-fade-out');
+                $('#startBtn').show().removeClass('menu-fade-out').removeClass('countdown-pulse').html('<div class="mega-btn-bg"></div><div class="mega-btn-content"><div class="mega-btn-icon"><i class="fas fa-redo"></i></div><div class="mega-btn-text"><span class="mega-btn-title">재도전</span><span class="mega-btn-subtitle">Try Again</span></div></div><div class="mega-btn-pulse"></div><div class="mega-btn-glow"></div>');
+                $('#startBtn').attr('onclick', 'retryGame()');
+                
+                // Reset countdown display
+                document.getElementById('countdownNumber').textContent = '5';
+                document.getElementById('countdownBar').style.width = '100%';
             }, 500);
 
             accuracy = correctWordCount / (correctWordCount + incorrectWordCount);
@@ -1181,9 +1547,9 @@
 
             checkRank();
 
-            $('#resScore').text("점수 : " + score);
-            $('#resGrade').text("등급 : " + "[" + getGrade() + "]");
-            $('#resAccuracy').text("정확도 : " + Math.round(accuracy * 100) + "% (" + correctWordCount + "/" + (correctWordCount + incorrectWordCount) + ")");
+            $('#resScore').text(score);
+            $('#resGrade').text("[" + getGrade() + "]");
+            $('#resAccuracy').text(Math.round(accuracy * 100) + "% (" + correctWordCount + "/" + (correctWordCount + incorrectWordCount) + ")");
 
             $('#incList').empty();
             for(var i=0; i<incWordArr.length; i++){
@@ -1388,21 +1754,139 @@
       return grade;
     }
     
+    // Enhanced word-aware text highlighting functions
+    function highlightText(element, searchText) {
+      if (!searchText) {
+        return;
+      }
+      
+      var $el = $(element);
+      var originalText = $el.data('original-text') || $el.text();
+      
+      // Store original text if not already stored
+      if (!$el.data('original-text')) {
+        $el.data('original-text', originalText);
+      }
+      
+      // Split both texts into words, preserving spaces
+      var targetWords = originalText.split(' ');
+      var typedWords = searchText.split(' ');
+      
+      var highlightedText = '';
+      
+      for (var i = 0; i < targetWords.length; i++) {
+        var targetWord = targetWords[i];
+        var typedWord = typedWords[i] || '';
+        
+        if (i < typedWords.length - 1) {
+          // Complete word (user has moved past this word by typing a space)
+          if (typedWord === targetWord) {
+            // Correct complete word
+            highlightedText += '<mark class="word-correct">' + targetWord + '</mark>';
+          } else {
+            // Incorrect complete word
+            highlightedText += '<mark class="word-incorrect">' + targetWord + '</mark>';
+          }
+        } else if (i === typedWords.length - 1 && typedWord.length > 0) {
+          // Current word being typed
+          if (typedWord === targetWord) {
+            // Word is complete and correct - mark it green immediately!
+            highlightedText += '<mark class="word-correct">' + targetWord + '</mark>';
+          } else if (targetWord.startsWith(typedWord)) {
+            // Partial match - highlight the typed part
+            var typedPart = targetWord.substring(0, typedWord.length);
+            var remainingPart = targetWord.substring(typedWord.length);
+            highlightedText += '<mark class="word-partial">' + typedPart + '</mark>' + remainingPart;
+          } else {
+            // Wrong typing in current word
+            var matchLength = 0;
+            // Find how much of the beginning matches
+            for (var j = 0; j < Math.min(typedWord.length, targetWord.length); j++) {
+              if (typedWord[j] === targetWord[j]) {
+                matchLength++;
+              } else {
+                break;
+              }
+            }
+            
+            if (matchLength > 0) {
+              var correctPart = targetWord.substring(0, matchLength);
+              var wrongPart = targetWord.substring(matchLength, typedWord.length);
+              var remainingPart = targetWord.substring(typedWord.length);
+              
+              highlightedText += '<mark class="word-partial">' + correctPart + '</mark>';
+              if (wrongPart.length > 0) {
+                highlightedText += '<mark class="word-error">' + wrongPart + '</mark>';
+              }
+              highlightedText += remainingPart;
+            } else {
+              // Completely wrong from the start
+              var wrongLength = Math.min(typedWord.length, targetWord.length);
+              var wrongPart = targetWord.substring(0, wrongLength);
+              var remainingPart = targetWord.substring(wrongLength);
+              highlightedText += '<mark class="word-error">' + wrongPart + '</mark>' + remainingPart;
+            }
+          }
+        } else {
+          // Untyped word
+          highlightedText += targetWord;
+        }
+        
+        // Add space between words (except for the last word)
+        if (i < targetWords.length - 1) {
+          highlightedText += ' ';
+        }
+      }
+      
+      // Update the element content
+      $el.html(highlightedText);
+    }
+
+    function removeHighlight(element) {
+      var $el = $(element);
+      var originalText = $el.data('original-text');
+      
+      if (originalText) {
+        // Restore original text
+        $el.text(originalText);
+      } else {
+        // If no original text stored, remove mark tags manually and store clean text
+        var cleanText = $el.text(); // Get text without HTML
+        $el.find('mark').each(function() {
+          $(this).replaceWith($(this).text());
+        });
+        // Store the clean text for future use
+        $el.data('original-text', cleanText);
+      }
+    }
+
+    // jQuery plugin style functions for compatibility (defined globally)
+    // Ensure jQuery is available before defining plugins
+    if (typeof jQuery !== 'undefined') {
+      $.fn.mark = function(searchText) {
+        return this.each(function() {
+          highlightText(this, searchText);
+        });
+      };
+
+      $.fn.unmark = function() {
+        return this.each(function() {
+          removeHighlight(this);
+        });
+      };
+      
+      console.log('Custom mark.js replacement loaded successfully');
+    } else {
+      console.error('jQuery not available, cannot define mark/unmark functions');
+    }
+    
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
-
-    // document.addEventListener('input', event => {
-    //   console.log("new event: " + event.target.value);
-    // });
 
     document.addEventListener('keydown', event => {
       if(started){
         keyPressCountTmp+=1;
-        //const key = event.key.toLowerCase();
         const keyCode = event.code;
-        //console.log(keyCode);
-        //console.log(key);
-        //console.log(event);
 
         if(keyCode != "Backspace"){
           cheatDetect.push(keyCode);
@@ -1431,47 +1915,79 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if(keyCode=="Enter"){
+          console.log('Enter pressed - updating sentences');
           keyPressCount += keyPressCountTmp;
           keyPressCountTmp = 0;
           updateScore();
+          
+          // IMPORTANT: Capture current input before updating sentences
+          var currentTypedInput = $('#chatInput').val();
+          
+          console.log('Before updateSentenceTriplet:', sentenceTriplet);
           updateSentenceTriplet();
+          console.log('After updateSentenceTriplet:', sentenceTriplet);
+          
           givenSentenceList.push(sentenceTriplet[2]);
-          typedSentenceList.push($('#chatInput').val());
+          typedSentenceList.push(currentTypedInput);
 
-          // Simple content update without dramatic animations
+          // Update content for Before and Current sections (normal text)
           $('#testSentInputBefore').html(sentenceTriplet[0]);
           $('#testSentInput').html(sentenceTriplet[1]);
+          
+          // For After section: Set plain text first, then apply highlighting
           $('#testSentInputAfter').html(sentenceTriplet[2]);
           
-          // Mark the previous input in the after section
-          $("#testSentInputAfter").unmark();
-          $('#testSentInputAfter').mark(prevInputSent);
+          // Store original text for highlighting purposes after content update
+          $('#testSentInputBefore').data('original-text', sentenceTriplet[0]);
+          $('#testSentInput').data('original-text', sentenceTriplet[1]);
+          $('#testSentInputAfter').data('original-text', sentenceTriplet[2]);
           
-          prevInputSent = $('#chatInput').val();
+          console.log('Updated HTML content:');
+          console.log('Before:', sentenceTriplet[0]);
+          console.log('Current:', sentenceTriplet[1]);
+          console.log('After:', sentenceTriplet[2]);
+          console.log('Current typed input:', currentTypedInput);
+          
+          // Apply highlighting to the After section with the current input that just finished
+          removeHighlight($("#testSentInputAfter")[0]);
+          if (currentTypedInput && currentTypedInput.trim() !== '') {
+            console.log('Applying highlight to After section with:', currentTypedInput);
+            highlightText($("#testSentInputAfter")[0], currentTypedInput);
+          }
+          
+          // Update prevInputSent for future reference (though we don't use it for After section now)
+          prevInputSent = currentTypedInput;
           $('#chatInput').val("");
+          
+          // Clear any existing highlighting on the new current sentence
+          removeHighlight($("#testSentInput")[0]);
         }
+      }
+    });
 
-
-        
-        $("#testSentInput").unmark();
-        var totalInput = $('#chatInput').val();
-        $('#testSentInput').mark(totalInput);
+    // Handle real-time highlighting during typing using input event (fires AFTER value changes)
+    document.addEventListener('input', event => {
+      if(started && event.target && event.target.id === 'chatInput' && sentenceTriplet.length >= 2){
+        console.log('Input event triggered - highlighting current sentence');
+        removeHighlight($("#testSentInput")[0]);
+        var totalInput = event.target.value;
+        if (totalInput && totalInput.trim() !== '') {
+          highlightText($("#testSentInput")[0], totalInput);
+        }
       }
     });
 });
     </script>
 
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
+  <!-- Removed duplicate jQuery loads to fix mark.js conflicts -->
   <script src="js/transit.js"></script>  
   <script src="js/sent_generator.js"></script> 
   <script src="js/sent_generator_kr.js"></script> 
   <script src="js/prg_sent.js"></script> 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/ko.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.js" integrity="sha512-19TrqSGVSwaC2IDGHrD+tAkX59/w5cXy0BHDVwn7OJQXxavORhFSFM7DOO9soXKuo8O7gGNHiG9R2vFrXRBcTQ==" crossorigin="anonymous"></script>
+    <!-- Removed duplicate popper, bootstrap, and mark.js - now loaded in head -->
     <script src="data/adjectives.js"></script>
     <script src="data/verbs.js"></script>
     <script src="data/nouns.js"></script>

@@ -533,6 +533,9 @@ function reset(){
   timeLimit = 60;
   scoreSaved = false;
   
+  // Reset smooth animation timer
+  window.gameStartTime = null;
+  
   correctWordCount = 0;
   incorrectWordCount = 0;
   score = 0;
@@ -558,6 +561,11 @@ function reset(){
   
   // Reset progress bar
       $(".progress-bar-modern").css("width", "100%").text("60").css('background', 'var(--success)');
+  
+  // Reset save form state if the function exists
+  if (typeof resetSaveForm === 'function') {
+    resetSaveForm();
+  }
   
   // Reset all animation classes and structure
   $('#menuContent').removeClass('menu-fade-out').show();
@@ -683,7 +691,11 @@ function start(){
     // Set up the game timer (only once)
     if(!timerStartedOnce){
       timerStartedOnce = true;
+      
+      // Initialize game start time for smooth animation
+      window.gameStartTime = Date.now();
 
+      // Main timer that updates every second
       setInterval(function(){ 
           if(started){
               $('#chatInput').focus();
@@ -702,6 +714,21 @@ function start(){
               }
           }
         }, 1000);
+        
+      // Smooth progress bar animation - updates every 100ms for smooth effect
+      setInterval(function(){
+          if(started){
+              // Calculate fractional progress for smooth animation
+              var currentTime = Date.now();
+              var elapsedMs = currentTime - window.gameStartTime;
+              var elapsedSeconds = elapsedMs / 1000;
+              var smoothProgress = elapsedSeconds / timeLimit * 100;
+              var smoothTimeLeftVal = 100 - smoothProgress;
+              
+              // Only update width for smooth animation, keep text from main timer
+              $(".progress-bar-modern").css("width", Math.max(0, smoothTimeLeftVal) + "%");
+          }
+      }, 100);
       }
     }
 }
@@ -979,6 +1006,8 @@ function getGrade(){
 
   return grade;
 }
+
+
 
 // Original Keydown Event Listener
 document.addEventListener('DOMContentLoaded', () => {

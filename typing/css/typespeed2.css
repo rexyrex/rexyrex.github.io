@@ -73,15 +73,15 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
   line-height: 1.7;
   overflow-x: hidden;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   letter-spacing: -0.01em;
   min-height: 100vh;
-  padding: var(--space-md) var(--space-sm);
+  padding: calc(80px + var(--space-md)) var(--space-sm) var(--space-md) var(--space-sm);
 }
 
 /* Animated Background */
@@ -311,42 +311,380 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* Version Card */
-.version-card {
+
+
+/* Inline Rankings */
+.rankings-inline {
   display: flex;
-  align-items: center;
+  gap: var(--space-sm);
   justify-content: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
 }
 
-.version-badge {
+.ranking-btn-inline {
   background: var(--bg-glass);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border-glass);
-  color: var(--text-secondary);
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
+  padding: var(--space-xs) var(--space-sm);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  color: var(--text-primary);
   font-size: 0.875rem;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  text-decoration: none;
 }
 
-.version-link {
-  color: var(--text-muted);
+.ranking-btn-inline:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  color: var(--accent);
+}
+
+.ranking-btn-inline i {
+  font-size: 1rem;
+}
+
+/* Mega Start Button */
+.mega-start-btn {
+  position: relative;
+  background: none;
+  border: none;
   cursor: pointer;
-  text-decoration: none;
-  font-size: 0.875rem;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-md);
-  transition: all var(--transition-normal);
-  border: 1px solid transparent;
+  padding: 0;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin: var(--space-lg) auto 0;
+  z-index: 10;
+  transform-style: preserve-3d;
 }
 
-.version-link:hover {
-  color: var(--primary-light);
+.mega-btn-bg {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  opacity: 0.95;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: blur(0);
+  box-shadow: 
+    0 10px 40px rgba(99, 102, 241, 0.3),
+    0 5px 15px rgba(99, 102, 241, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.mega-btn-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  color: white;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.mega-btn-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-sm);
+  animation: iconFloat 3s ease-in-out infinite;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(-2deg); }
+}
+
+.mega-btn-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  transition: all 0.3s ease;
+}
+
+.mega-btn-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.mega-btn-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  font-weight: 400;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mega-btn-pulse {
+  position: absolute;
+  inset: -20px;
+  border: 3px solid var(--primary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: megaPulse 2s ease-out infinite;
+}
+
+.mega-btn-glow {
+  position: absolute;
+  inset: -30px;
+  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.4s ease;
+  filter: blur(20px);
+}
+
+@keyframes megaPulse {
+  0% {
+    opacity: 1;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+/* Enhanced Hover Effects */
+.mega-start-btn:hover {
+  transform: scale(1.08) translateY(-5px);
+  filter: brightness(1.1);
+}
+
+.mega-start-btn:hover .mega-btn-bg {
+  opacity: 1;
+  filter: blur(3px);
+  transform: scale(1.02);
+  box-shadow: 
+    0 20px 60px rgba(99, 102, 241, 0.4),
+    0 10px 30px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.mega-start-btn:hover .mega-btn-glow {
+  opacity: 0.6;
+  transform: scale(1.1);
+}
+
+.mega-start-btn:hover .mega-btn-icon {
+  transform: translateY(-5px) scale(1.1) rotate(5deg);
+  color: #ffffff;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+.mega-start-btn:hover .mega-btn-text {
+  transform: translateY(-2px);
+}
+
+.mega-start-btn:hover .mega-btn-title {
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0px;
+}
+
+.mega-start-btn:hover .mega-btn-subtitle {
+  opacity: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Active (Click) Effects */
+.mega-start-btn:active {
+  transform: scale(1.02) translateY(0px);
+  transition: all 0.1s ease;
+}
+
+.mega-start-btn:active .mega-btn-bg {
+  filter: blur(1px);
+  box-shadow: 
+    0 5px 20px rgba(99, 102, 241, 0.5),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mega-start-btn:active .mega-btn-icon {
+  transform: translateY(0px) scale(1.05);
+}
+
+/* Focus Effects for Accessibility */
+.mega-start-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3);
+}
+
+/* Countdown Section */
+.countdown-section {
   background: var(--bg-glass);
-  border-color: var(--border-glass);
-  text-decoration: none;
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  margin: var(--space-lg) 0;
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.countdown-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+}
+
+.countdown-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-lg);
+}
+
+.countdown-icon {
+  font-size: 4rem;
+  color: var(--primary);
+  animation: countdownIconPulse 1s ease-in-out infinite;
+}
+
+@keyframes countdownIconPulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.countdown-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.countdown-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin: 0;
+  opacity: 0.9;
+}
+
+.countdown-timer {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid var(--border-glass);
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 
+    0 10px 30px rgba(99, 102, 241, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.countdown-timer::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  opacity: 0.3;
+  animation: countdownRingPulse 1s ease-in-out infinite;
+}
+
+@keyframes countdownRingPulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: scale(1.05);
+    opacity: 0.6;
+  }
+}
+
+#countdownNumber {
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--primary);
+  z-index: 2;
+  position: relative;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: countdownNumberScale 1s ease-in-out infinite;
+}
+
+@keyframes countdownNumberScale {
+  0% { 
+    transform: scale(1);
+  }
+  30% { 
+    transform: scale(1.2);
+  }
+  100% { 
+    transform: scale(1);
+  }
+}
+
+.countdown-progress {
+  width: 100%;
+  max-width: 300px;
+  height: 8px;
+  background: var(--bg-glass);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-glass);
+  overflow: hidden;
+  position: relative;
+}
+
+.countdown-bar {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-full);
+  width: 100%;
+  transition: width 1s linear;
+  position: relative;
+  overflow: hidden;
+}
+
+.countdown-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: countdownShimmer 2s infinite;
+}
+
+@keyframes countdownShimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 /* Game Section */
@@ -616,7 +954,7 @@ body {
   height: 100%;
   background: var(--success);
   border-radius: var(--radius-sm);
-  transition: width 0.3s ease;
+  transition: width 0.1s linear;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -830,30 +1168,48 @@ body {
 }
 
 /* Modal Styles */
-.modal-content {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-lg);
-  backdrop-filter: blur(20px);
+/* Modal Styles - Force override Bootstrap conflicts */
+.modal-content,
+#testModal .modal-content,
+#highscoreModal .modal-content,
+#versionModal .modal-content {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-glass) !important;
+  border-radius: var(--radius-lg) !important;
+  backdrop-filter: blur(20px) !important;
+  color: var(--text-secondary) !important;
 }
 
-.modal-header {
-  border-bottom: 1px solid var(--border-glass);
-  background: var(--bg-glass);
+.modal-header,
+#testModal .modal-header,
+#highscoreModal .modal-header,
+#versionModal .modal-header {
+  border-bottom: 1px solid var(--border-glass) !important;
+  background: var(--bg-glass) !important;
 }
 
-.modal-title {
-  color: var(--text-primary);
-  font-weight: 600;
+.modal-title,
+#testModal .modal-title,
+#highscoreModal .modal-title,
+#versionModal .modal-title {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
 }
 
-.modal-body {
-  color: var(--text-secondary);
+.modal-body,
+#testModal .modal-body,
+#highscoreModal .modal-body,
+#versionModal .modal-body {
+  color: var(--text-secondary) !important;
+  background: transparent !important;
 }
 
-.modal-footer {
-  border-top: 1px solid var(--border-glass);
-  background: var(--bg-glass);
+.modal-footer,
+#testModal .modal-footer,
+#highscoreModal .modal-footer,
+#versionModal .modal-footer {
+  border-top: 1px solid var(--border-glass) !important;
+  background: var(--bg-glass) !important;
 }
 
 .close {
@@ -912,24 +1268,36 @@ body {
   color: var(--text-primary);
 }
 
-/* Table Styles */
-.table {
-  color: var(--text-secondary);
+/* Table Styles - Force override Bootstrap conflicts */
+.table,
+.modal .table,
+#testModal .table,
+#highscoreModal .table {
+  color: var(--text-secondary) !important;
+  background: transparent !important;
 }
 
-.table-dark {
-  background: var(--bg-glass);
-  backdrop-filter: blur(10px);
+.table-dark,
+.modal .table-dark,
+#testModal .table-dark,
+#highscoreModal .table-dark {
+  background: var(--bg-glass) !important;
+  backdrop-filter: blur(10px) !important;
+  border-color: var(--border-glass) !important;
 }
 
 .table-dark th,
-.table-dark td {
-  border-color: var(--border-glass);
-  background: transparent;
+.table-dark td,
+.modal .table-dark th,
+.modal .table-dark td {
+  border-color: var(--border-glass) !important;
+  background: transparent !important;
+  color: var(--text-secondary) !important;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
-  background: rgba(255, 255, 255, 0.02);
+.table-striped tbody tr:nth-of-type(odd),
+.modal .table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(255, 255, 255, 0.02) !important;
 }
 
 .tableFixHead {
@@ -979,6 +1347,38 @@ body {
   color: var(--text-muted);
 }
 
+.form-control.is-invalid {
+  border-color: var(--error) !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
+}
+
+.invalid-feedback {
+  display: block !important;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--error);
+  font-weight: 500;
+}
+
+/* Save Success Styling */
+.save-success-icon {
+  font-size: 3rem;
+  color: var(--success);
+  margin-bottom: 1rem;
+}
+
+.save-success-title {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.save-success-text {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 /* Collapse Cards */
 .card {
   background: var(--bg-glass) !important;
@@ -1007,19 +1407,85 @@ body {
 .mb-3 { margin-bottom: 1.5rem; }
 .mb-4 { margin-bottom: 2rem; }
 
-/* Highlighting for correct/incorrect text */
+/* Enhanced word-aware highlighting - Force override conflicts */
+mark,
+.text-section mark,
+.text-current mark,
+.text-previous mark,
+.text-next mark {
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+  font-weight: 500 !important;
+}
+
+/* Ensure highlights are fully visible in previous/next sections */
+.text-previous mark,
+.text-next mark {
+  opacity: 1 !important;
+}
+
+/* Default mark styling (fallback) */
 mark {
-  background: var(--success);
-  color: white;
-  padding: 2px 4px;
-  border-radius: 3px;
+  background: var(--success) !important;
+  color: var(--text-primary) !important;
+  opacity: 0.8 !important;
+}
+
+/* Word-specific highlighting styles */
+mark.word-correct {
+  background: var(--success) !important;
+  color: white !important;
+  opacity: 0.9 !important;
+  border: 1px solid rgba(34, 197, 94, 0.3) !important;
+}
+
+mark.word-partial {
+  background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+  color: white !important;
+  opacity: 0.85 !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  animation: partialPulse 1.5s ease-in-out infinite !important;
+}
+
+mark.word-error {
+  background: var(--error) !important;
+  color: white !important;
+  opacity: 0.9 !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  animation: errorShake 0.5s ease-in-out !important;
+}
+
+mark.word-incorrect {
+  background: var(--warning) !important;
+  color: var(--text-primary) !important;
+  opacity: 0.8 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  text-decoration: line-through !important;
+}
+
+/* Highlighting animations */
+@keyframes partialPulse {
+  0%, 100% { 
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
 }
 
 .incorrect {
-  background: var(--error);
-  color: white;
-  padding: 2px 4px;
-  border-radius: 3px;
+  background: var(--error) !important;
+  color: white !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
 }
 
 /* Animations */
@@ -1164,7 +1630,7 @@ mark {
 /* Responsive Design */
 @media (max-width: 768px) {
   body {
-    padding: var(--space-sm);
+    padding: calc(80px + var(--space-sm)) var(--space-sm) var(--space-sm) var(--space-sm);
   }
 
   .hero-title-typing {
@@ -1428,4 +1894,30 @@ mark {
   border-radius: var(--radius-md);
   padding: var(--space-sm);
   background: var(--bg-glass);
+}
+
+/* General Bootstrap overrides to prevent white backgrounds */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.btn-outline-secondary,
+.btn-secondary {
+  background: var(--bg-glass) !important;
+  border-color: var(--border-glass) !important;
+  color: var(--text-secondary) !important;
+}
+
+.btn-outline-secondary:hover,
+.btn-secondary:hover {
+  background: var(--bg-glass-hover) !important;
+  border-color: var(--primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ensure no white text on white backgrounds anywhere */
+.modal *,
+.table *,
+.card * {
+  color: inherit !important;
 }
