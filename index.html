@@ -360,10 +360,90 @@
             </div>
         </footer>
 
+        <!-- Romantic Easter Egg Modal -->
+        <div id="romanticModal" class="modal fade romantic-modal" tabindex="-1" role="dialog" aria-labelledby="romanticModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content romantic-content">
+                    <div class="modal-body romantic-body">
+                        <button type="button" class="close romantic-close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="romantic-container">
+                            <div class="floating-hearts">
+                                <i class="fas fa-heart heart-1"></i>
+                                <i class="fas fa-heart heart-2"></i>
+                                <i class="fas fa-heart heart-3"></i>
+                                <i class="fas fa-heart heart-4"></i>
+                                <i class="fas fa-heart heart-5"></i>
+                                <i class="fas fa-heart heart-6"></i>
+                            </div>
+                            <div class="romantic-message">
+                                <div class="name-container name-1-container">
+                                    <span class="name-1">민형</span>
+                                    <span class="username-1">rexyrex</span>
+                                </div>
+                                <i class="fas fa-heart main-heart"></i>
+                                <div class="name-container name-2-container">
+                                    <span class="name-2">희연</span>
+                                    <span class="username-2">pizzalover02</span>
+                                </div>
+                            </div>
+                            <div class="romantic-sparkles">
+                                <div class="sparkle sparkle-1"></div>
+                                <div class="sparkle sparkle-2"></div>
+                                <div class="sparkle sparkle-3"></div>
+                                <div class="sparkle sparkle-4"></div>
+                                <div class="sparkle sparkle-5"></div>
+                                <div class="sparkle sparkle-6"></div>
+                                <div class="sparkle sparkle-7"></div>
+                                <div class="sparkle sparkle-8"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="/js/common.js"></script>
         <script src="/js/index.js"></script>
+        
+        <script>
+        // Romantic Easter Egg - Long Press on Code Icon
+        $(document).ready(function() {
+            let longPressTimer;
+            const longPressDuration = 2000; // 2 seconds
+            let isPressed = false;
+            
+            $('.avatar-inner').on('mousedown touchstart', function(e) {
+                e.preventDefault();
+                isPressed = true;
+                
+                // Add visual feedback for long press
+                $(this).addClass('long-press-active');
+                
+                longPressTimer = setTimeout(function() {
+                    if (isPressed) {
+                        // Show romantic modal
+                        $('#romanticModal').modal('show');
+                        $('.avatar-inner').removeClass('long-press-active');
+                    }
+                }, longPressDuration);
+            });
+            
+            $(document).on('mouseup touchend', function() {
+                isPressed = false;
+                clearTimeout(longPressTimer);
+                $('.avatar-inner').removeClass('long-press-active');
+            });
+            
+            // Prevent context menu on long press
+            $('.avatar-inner').on('contextmenu', function(e) {
+                e.preventDefault();
+            });
+        });
+        </script>
     </body>
 </html>

@@ -1637,4 +1637,447 @@ body * {
       box-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
     }
   }
+}
+
+/* Long Press Visual Feedback */
+.avatar-inner.long-press-active {
+  transform: scale(0.95);
+  filter: brightness(1.2);
+  box-shadow: 
+    0 0 0 4px rgba(236, 72, 153, 0.3),
+    0 0 30px rgba(236, 72, 153, 0.4);
+  animation: longPressGlow 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes longPressGlow {
+  0% {
+    box-shadow: 
+      0 0 0 4px rgba(236, 72, 153, 0.3),
+      0 0 30px rgba(236, 72, 153, 0.4);
+  }
+  100% {
+    box-shadow: 
+      0 0 0 8px rgba(236, 72, 153, 0.5),
+      0 0 50px rgba(236, 72, 153, 0.6);
+  }
+}
+
+/* Romantic Modal Styles */
+.romantic-modal .modal-dialog {
+  max-width: 90vw;
+  width: 90vw;
+  margin: 2vh auto;
+}
+
+.romantic-modal .modal-content {
+  background: none;
+  border: none;
+  box-shadow: none;
+  height: 85vh;
+}
+
+.romantic-content {
+  background: linear-gradient(135deg, 
+    rgba(255, 20, 147, 0.95) 0%,
+    rgba(255, 105, 180, 0.9) 50%,
+    rgba(255, 182, 193, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  animation: modalSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  height: 100%;
+}
+
+@keyframes modalSlideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-10deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.romantic-body {
+  padding: 4rem;
+  text-align: center;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.romantic-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: white;
+  opacity: 0.8;
+  font-size: 2rem;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.romantic-close:hover {
+  opacity: 1;
+  transform: scale(1.2) rotate(90deg);
+  color: #ff69b4;
+}
+
+.romantic-container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Floating Hearts Animation - Simple Orbit */
+.floating-hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.floating-hearts i {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0;
+  animation: heartCircle 6s linear infinite;
+}
+
+.heart-1 {
+  animation-delay: 0s;
+  transform: translate(-50%, -50%) rotate(0deg) translateX(150px);
+}
+
+.heart-2 {
+  animation-delay: -1s;
+  transform: translate(-50%, -50%) rotate(60deg) translateX(150px);
+}
+
+.heart-3 {
+  animation-delay: -2s;
+  transform: translate(-50%, -50%) rotate(120deg) translateX(150px);
+}
+
+.heart-4 {
+  animation-delay: -3s;
+  transform: translate(-50%, -50%) rotate(180deg) translateX(150px);
+}
+
+.heart-5 {
+  animation-delay: -4s;
+  transform: translate(-50%, -50%) rotate(240deg) translateX(150px);
+}
+
+.heart-6 {
+  animation-delay: -5s;
+  transform: translate(-50%, -50%) rotate(300deg) translateX(150px);
+}
+
+/* Simple circular heart animation */
+@keyframes heartCircle {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translateX(150px) rotate(0deg);
+    opacity: 0.6;
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg) translateX(150px) rotate(-180deg);
+    opacity: 0.8;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) translateX(150px) rotate(-360deg);
+    opacity: 0.6;
+  }
+}
+
+/* Main Romantic Message */
+.romantic-message {
+  margin: 3rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  animation: messageGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes messageGlow {
+  0% {
+    text-shadow: 
+      0 3px 6px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    text-shadow: 
+      0 3px 6px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(255, 255, 255, 0.8),
+      0 0 50px rgba(255, 192, 203, 0.6);
+  }
+}
+
+/* Name Containers */
+.name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: nameFloat 3s ease-in-out infinite;
+}
+
+.name-2-container {
+  animation-delay: 1.5s;
+}
+
+@keyframes nameFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Main Names */
+.name-1, .name-2 {
+  font-size: 5rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.6);
+}
+
+/* Usernames */
+.username-1, .username-2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.4);
+  margin-top: 1rem;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.main-heart {
+  color: #ff1493;
+  animation: heartBeat 1.5s ease-in-out infinite;
+  font-size: 6rem;
+  filter: drop-shadow(0 0 25px rgba(255, 20, 147, 0.8));
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(1.25);
+  }
+}
+
+
+
+/* Beautiful Twinkle Sparkles */
+.romantic-sparkles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 2s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+.sparkle::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 16px;
+  background: linear-gradient(to bottom, transparent, white, transparent);
+  opacity: 0.8;
+}
+
+.sparkle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, white, transparent);
+  opacity: 0.8;
+}
+
+.sparkle-1 {
+  top: 15%;
+  left: 12%;
+  animation-delay: 0s;
+  animation-duration: 1.8s;
+}
+
+.sparkle-2 {
+  top: 20%;
+  right: 15%;
+  animation-delay: 0.3s;
+  animation-duration: 2.2s;
+}
+
+.sparkle-3 {
+  top: 35%;
+  left: 8%;
+  animation-delay: 0.6s;
+  animation-duration: 2s;
+}
+
+.sparkle-4 {
+  top: 40%;
+  right: 10%;
+  animation-delay: 0.9s;
+  animation-duration: 1.6s;
+}
+
+.sparkle-5 {
+  bottom: 35%;
+  left: 10%;
+  animation-delay: 1.2s;
+  animation-duration: 2.4s;
+}
+
+.sparkle-6 {
+  bottom: 25%;
+  right: 12%;
+  animation-delay: 1.5s;
+  animation-duration: 1.8s;
+}
+
+.sparkle-7 {
+  bottom: 15%;
+  left: 15%;
+  animation-delay: 1.8s;
+  animation-duration: 2.2s;
+}
+
+.sparkle-8 {
+  bottom: 20%;
+  right: 8%;
+  animation-delay: 2.1s;
+  animation-duration: 2s;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design for Romantic Modal */
+@media (max-width: 768px) {
+  .romantic-modal .modal-dialog {
+    width: 95vw;
+    max-width: 95vw;
+  }
+  
+  .romantic-message {
+    gap: 2rem;
+  }
+  
+  .name-1, .name-2 {
+    font-size: 3.5rem;
+  }
+  
+  .username-1, .username-2 {
+    font-size: 1.2rem;
+  }
+  
+  .main-heart {
+    font-size: 4rem;
+  }
+  
+  .romantic-body {
+    padding: 3rem;
+  }
+  
+  .romantic-close {
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .romantic-modal .modal-content {
+    height: 90vh;
+  }
+  
+  .romantic-message {
+    gap: 1.5rem;
+    flex-direction: column;
+  }
+  
+  .name-1, .name-2 {
+    font-size: 2.5rem;
+  }
+  
+  .username-1, .username-2 {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .main-heart {
+    font-size: 3rem;
+  }
+  
+  .romantic-body {
+    padding: 2rem;
+  }
+  
+  .romantic-close {
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+  }
 } 
