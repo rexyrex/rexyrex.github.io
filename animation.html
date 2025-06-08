@@ -1,117 +1,1295 @@
 <!doctype html>
 <html>
     <head>
-        <title>Animation</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Animation Showcase - Rexyrex</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
         <script src="./js/vue.js"></script>    
-        <link rel="shortcut icon" href="">    
         <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="css/animation.css"/>
+        <link rel="stylesheet" href="/css/index.css">
+        <style>
+            /* Fix cursor visibility */
+            body, body * {
+                cursor: auto !important;
+            }
+            
+            /* Force dark theme for animation page */
+            body {
+                background: #0a0a0a !important;
+                color: #ffffff !important;
+                min-height: 100vh;
+            }
+            
+            /* Animation page specific styles */
+            .animation-section {
+                min-height: 100vh;
+                padding: 6rem 2rem 2rem 2rem; /* Top padding for navbar */
+                position: relative;
+                z-index: 10;
+            }
+            
+            .animation-card {
+                background: rgba(255, 255, 255, 0.02) !important;
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                border-radius: 20px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                color: #ffffff !important;
+            }
+            
+            .animation-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .animation-card:hover::before {
+                opacity: 1;
+            }
+            
+            .animation-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(100, 255, 218, 0.3);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            }
+            
+            .animation-card h3 {
+                color: #64ffda !important;
+                font-weight: 600;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .animation-card h3 i {
+                font-size: 1.2rem;
+            }
+            
+            .demo-content {
+                background: rgba(0, 0, 0, 0.5) !important;
+                border-radius: 10px;
+                padding: 1.5rem;
+                margin: 1rem 0;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                min-height: 100px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .demo-text {
+                color: rgba(255, 255, 255, 0.95) !important;
+                text-align: center;
+                line-height: 1.6;
+            }
+            
+            .control-btn {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                border: none !important;
+                border-radius: 10px;
+                padding: 0.75rem 1.5rem;
+                color: white !important;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .control-btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.5s ease;
+            }
+            
+            .control-btn:hover::before {
+                left: 100%;
+            }
+            
+            .control-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            }
+            
+            .master-btn {
+                background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+                border: none;
+                border-radius: 15px;
+                padding: 1.5rem 3rem;
+                color: white;
+                font-weight: 700;
+                font-size: 1.5rem;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                width: 100%;
+                margin-bottom: 3rem;
+            }
+            
+            .master-btn:hover {
+                transform: scale(1.05);
+                box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+            }
+            
+            .number-controls {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .number-controls .control-btn {
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                margin-bottom: 0.5rem;
+            }
+            
+            .number-controls .control-btn.danger {
+                background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            }
+            
+            .number-line {
+                background: rgba(0, 0, 0, 0.7) !important;
+                border-radius: 10px;
+                padding: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                min-height: 200px;
+            }
+            
+            .list-item {
+                display: inline-block;
+                margin: 0.25rem;
+                padding: 0.5rem 1rem;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                color: white !important;
+                border-radius: 25px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+            
+            .progress {
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                height: 20px;
+                margin: 1rem 0;
+                overflow: hidden;
+            }
+            
+            .progress-bar {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 10px;
+                transition: width 0.3s ease;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .page-header {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+            
+            .page-title {
+                font-size: 3rem;
+                font-weight: 700;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .page-title-icon {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                width: 60px;
+                height: 60px;
+                border-radius: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.8rem;
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+                flex-shrink: 0;
+            }
+            
+            .page-subtitle {
+                color: rgba(255, 255, 255, 0.8) !important;
+                font-size: 1.2rem;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            /* Advanced Fancy Animation Styles */
+            
+            /* Matrix Rain Effect */
+            .matrix-text {
+                font-family: 'Courier New', monospace;
+                color: #00ff00;
+                letter-spacing: 2px;
+                font-weight: bold;
+                text-shadow: 0 0 10px #00ff00;
+            }
+            
+            .matrix-text .matrix-char {
+                display: inline-block;
+                animation: matrixDrop 0.1s ease-in-out infinite;
+            }
+            
+            @keyframes matrixDrop {
+                0%, 100% {
+                    opacity: 1;
+                    transform: translateY(0px);
+                    color: #00ff00;
+                    text-shadow: 0 0 10px #00ff00;
+                }
+                50% {
+                    opacity: 0.7;
+                    transform: translateY(2px);
+                    color: #00ff88;
+                    text-shadow: 0 0 15px #00ff88;
+                }
+            }
+            
+            /* Particle Explosion */
+            .explosion-container {
+                position: relative;
+                display: inline-block;
+            }
+            
+            .explosion-particle {
+                position: absolute;
+                width: 4px;
+                height: 4px;
+                background: radial-gradient(circle, #ff6b35, #ff4757);
+                border-radius: 50%;
+                pointer-events: none;
+            }
+            
+            .explosion-enter-active {
+                animation: fadeInScale 0.5s ease-out;
+            }
+            
+            .explosion-leave-active {
+                animation: fadeOutScale 0.5s ease-in;
+            }
+            
+            @keyframes fadeInScale {
+                0% {
+                    opacity: 0;
+                    transform: scale(0.5);
+                }
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+            
+            @keyframes fadeOutScale {
+                0% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(0.5);
+                }
+            }
+            
+            @keyframes explodeParticle {
+                0% {
+                    opacity: 1;
+                    transform: translate(0, 0) scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translate(var(--dx), var(--dy)) scale(0);
+                }
+            }
+            
+            /* Morphing Shape */
+            .morph-enter-active, .morph-leave-active {
+                transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                animation: morphLoop 4s ease-in-out infinite;
+            }
+            .morph-enter, .morph-leave-to {
+                opacity: 0;
+                transform: scale(0.3) skew(45deg) rotateX(90deg);
+                border-radius: 50%;
+                filter: blur(10px) hue-rotate(180deg);
+            }
+            @keyframes morphLoop {
+                0%, 100% { transform: scale(1) skew(0deg) rotateX(0deg); filter: hue-rotate(0deg); }
+                25% { transform: scale(1.2) skew(10deg) rotateX(90deg); filter: hue-rotate(90deg); }
+                50% { transform: scale(0.8) skew(-15deg) rotateX(180deg); filter: hue-rotate(180deg); }
+                75% { transform: scale(1.1) skew(5deg) rotateX(270deg); filter: hue-rotate(270deg); }
+            }
+            
+            /* Typewriter Effect */
+            .typewriter-text {
+                overflow: hidden;
+                border-right: 3px solid #64ffda;
+                white-space: nowrap;
+                animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+                font-family: 'JetBrains Mono', monospace;
+                letter-spacing: .1em;
+            }
+            
+            .typewriter-enter-active {
+                animation: typewriterFull 4s steps(40, end) infinite;
+                overflow: hidden;
+                border-right: 3px solid #00d2d3;
+                white-space: nowrap;
+                font-family: 'JetBrains Mono', monospace;
+                color: #00d2d3 !important;
+            }
+            
+            @keyframes typing {
+                from { width: 0; }
+                to { width: 100%; }
+            }
+            
+            @keyframes typewriterFull {
+                0%, 10% { width: 0; border-color: #00d2d3; }
+                50%, 90% { width: 100%; border-color: #00d2d3; }
+                91%, 100% { width: 100%; border-color: transparent; }
+            }
+            
+            @keyframes blink-caret {
+                from, to { border-color: transparent; }
+                50% { border-color: #64ffda; }
+            }
+            
+            /* 3D Rotation */
+            .rotate3d-enter-active, .rotate3d-leave-active {
+                transition: all 1.5s ease;
+            }
+            .rotate3d-enter, .rotate3d-leave-to {
+                opacity: 0;
+                transform: perspective(800px) rotateX(-90deg) rotateY(180deg) rotateZ(45deg) scale(0.5);
+            }
+            
+            .rotation-enter-active {
+                animation: rotation3D 3s ease-in-out infinite;
+                transform-style: preserve-3d;
+            }
+            
+            @keyframes rotation3D {
+                0% {
+                    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+                }
+                25% {
+                    transform: perspective(1000px) rotateX(90deg) rotateY(90deg) rotateZ(45deg);
+                }
+                50% {
+                    transform: perspective(1000px) rotateX(180deg) rotateY(180deg) rotateZ(90deg);
+                }
+                75% {
+                    transform: perspective(1000px) rotateX(270deg) rotateY(270deg) rotateZ(135deg);
+                }
+                100% {
+                    transform: perspective(1000px) rotateX(360deg) rotateY(360deg) rotateZ(180deg);
+                }
+            }
+            
+            /* Wave Effect */
+            .wave-text {
+                display: inline-block;
+            }
+            
+            .wave-text .wave-char {
+                display: inline-block;
+                animation: waveChar 2s ease-in-out infinite;
+            }
+            
+            @keyframes waveChar {
+                0%, 100% {
+                    transform: translateY(0px) rotateZ(0deg);
+                }
+                25% {
+                    transform: translateY(-15px) rotateZ(5deg);
+                }
+                50% {
+                    transform: translateY(0px) rotateZ(0deg);
+                }
+                75% {
+                    transform: translateY(15px) rotateZ(-5deg);
+                }
+            }
+            
+            /* Glitch Effect */
+            .glitch-enter-active {
+                animation: glitch 1s ease-in-out infinite;
+            }
+            .glitch-leave-active {
+                animation: glitch 1s ease-in-out infinite reverse;
+            }
+            @keyframes glitch {
+                0%, 100% {
+                    opacity: 1;
+                    transform: translate(0);
+                    filter: hue-rotate(0deg);
+                }
+                10% {
+                    opacity: 0.8;
+                    transform: translate(-2px, 2px);
+                    filter: hue-rotate(90deg);
+                }
+                20% {
+                    opacity: 0.9;
+                    transform: translate(2px, -2px);
+                    filter: hue-rotate(180deg);
+                }
+                30% {
+                    opacity: 0.7;
+                    transform: translate(-3px, 1px);
+                    filter: hue-rotate(270deg);
+                }
+                40% {
+                    opacity: 1;
+                    transform: translate(1px, -3px);
+                    filter: hue-rotate(360deg);
+                }
+                50% {
+                    opacity: 0.9;
+                    transform: translate(-1px, 3px);
+                    filter: hue-rotate(45deg);
+                }
+            }
+            
+            /* Holographic */
+            .hologram-enter-active, .hologram-leave-active {
+                transition: all 1.5s ease;
+                animation: hologramLoop 3s ease-in-out infinite;
+            }
+            .hologram-enter, .hologram-leave-to {
+                opacity: 0;
+                transform: translateZ(-100px) scale(0.8);
+                filter: blur(5px) brightness(2) contrast(1.5);
+                background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+            }
+            @keyframes hologramLoop {
+                0%, 100% { filter: blur(0px) brightness(1) contrast(1); opacity: 1; }
+                50% { filter: blur(3px) brightness(1.5) contrast(2); opacity: 0.7; }
+            }
+            
+            /* Elastic */
+            .elastic-enter-active {
+                animation: elastic 2s cubic-bezier(0.68, -0.55, 0.265, 1.55), elasticLoop 3s ease-in-out infinite;
+            }
+            .elastic-leave-active {
+                animation: elastic 1s ease-in reverse;
+            }
+            @keyframes elasticLoop {
+                0%, 100% { transform: scale(1, 1); }
+                25% { transform: scale(1.1, 0.9); }
+                50% { transform: scale(0.9, 1.1); }
+                75% { transform: scale(1.05, 0.95); }
+            }
+            @keyframes elastic {
+                0% {
+                    opacity: 0;
+                    transform: scale(0, 0);
+                }
+                50% {
+                    opacity: 0.8;
+                    transform: scale(1.2, 0.8);
+                }
+                75% {
+                    opacity: 1;
+                    transform: scale(0.9, 1.1);
+                }
+                100% {
+                    opacity: 1;
+                    transform: scale(1, 1);
+                }
+            }
+            
+            /* Magnetic Field */
+            .magnetic-enter-active, .magnetic-leave-active {
+                transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                animation: magneticLoop 4s ease-in-out infinite;
+            }
+            .magnetic-enter, .magnetic-leave-to {
+                opacity: 0;
+                transform: translate(var(--random-x, 50px), var(--random-y, -30px)) rotate(var(--random-r, 180deg)) scale(0.3);
+                filter: blur(8px);
+            }
+            @keyframes magneticLoop {
+                0%, 100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+                25% { transform: translate(10px, -5px) rotate(90deg) scale(1.1); }
+                50% { transform: translate(-8px, 8px) rotate(180deg) scale(0.9); }
+                75% { transform: translate(5px, -10px) rotate(270deg) scale(1.05); }
+            }
+            
+            /* Fire Effect */
+            .fire-text {
+                color: #ff4757 !important;
+                font-weight: bold;
+                animation: fireFlicker 0.5s ease-in-out infinite alternate;
+                text-shadow: 
+                    0 0 5px #ff6b35,
+                    0 0 10px #ff6b35,
+                    0 0 15px #ff6b35,
+                    0 0 20px #ff4757,
+                    0 0 35px #ff4757,
+                    0 0 40px #ff4757,
+                    0 0 50px #ff3742,
+                    0 0 60px #ff3742;
+                position: relative;
+            }
+            
+            .fire-text::before {
+                content: attr(data-text);
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                color: #ffaa00;
+                z-index: -1;
+                animation: fireFlicker2 0.3s ease-in-out infinite alternate;
+                text-shadow: 
+                    0 0 3px #ffaa00,
+                    0 0 8px #ffaa00,
+                    0 0 12px #ff6b35;
+            }
+            
+            @keyframes fireFlicker {
+                0% {
+                    text-shadow: 
+                        0 0 5px #ff6b35,
+                        0 0 10px #ff6b35,
+                        0 0 15px #ff6b35,
+                        0 0 20px #ff4757,
+                        0 0 35px #ff4757,
+                        0 0 40px #ff4757,
+                        0 0 50px #ff3742,
+                        0 0 60px #ff3742;
+                    transform: translateY(0px) scale(1);
+                }
+                100% {
+                    text-shadow: 
+                        0 0 3px #ff6b35,
+                        0 0 8px #ff6b35,
+                        0 0 12px #ff6b35,
+                        0 0 16px #ff4757,
+                        0 0 25px #ff4757,
+                        0 0 30px #ff4757,
+                        0 0 40px #ff3742,
+                        0 0 50px #ff3742;
+                    transform: translateY(-1px) scale(1.02);
+                }
+            }
+            
+            @keyframes fireFlicker2 {
+                0% {
+                    transform: translateY(1px) translateX(-1px) scale(0.98);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: translateY(-1px) translateX(1px) scale(1.02);
+                    opacity: 0.9;
+                }
+            }
+
+            /* Random Effect Showcase Animations */
+            @keyframes gradientShift {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+            }
+
+            /* Smooth transition for random effects */
+            .random-effect-container {
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                will-change: opacity, transform;
+            }
+
+            /* Crazy Random Animations */
+            .chaos-spin {
+                animation: chaosSpin 2s linear infinite;
+            }
+            @keyframes chaosSpin {
+                0% { transform: rotate(0deg) scale(1) skew(0deg); }
+                25% { transform: rotate(90deg) scale(1.2) skew(10deg); }
+                50% { transform: rotate(180deg) scale(0.8) skew(-10deg); }
+                75% { transform: rotate(270deg) scale(1.5) skew(5deg); }
+                100% { transform: rotate(360deg) scale(1) skew(0deg); }
+            }
+
+            .dimension-warp {
+                animation: dimensionWarp 3s ease-in-out infinite;
+                transform-style: preserve-3d;
+                perspective: 1000px;
+            }
+            @keyframes dimensionWarp {
+                0%, 100% { 
+                    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+                    filter: hue-rotate(0deg) brightness(1);
+                }
+                33% { 
+                    transform: rotateX(180deg) rotateY(90deg) rotateZ(45deg) scale(1.3);
+                    filter: hue-rotate(120deg) brightness(1.5);
+                }
+                66% { 
+                    transform: rotateX(90deg) rotateY(180deg) rotateZ(-45deg) scale(0.7);
+                    filter: hue-rotate(240deg) brightness(0.8);
+                }
+            }
+
+            .reality-glitch {
+                animation: realityGlitch 1.5s ease-in-out infinite;
+            }
+            @keyframes realityGlitch {
+                0%, 90%, 100% { 
+                    transform: translate(0, 0) scale(1);
+                    filter: hue-rotate(0deg) blur(0px);
+                    opacity: 1;
+                }
+                10% { 
+                    transform: translate(-10px, 5px) scale(1.1);
+                    filter: hue-rotate(90deg) blur(2px);
+                    opacity: 0.8;
+                }
+                20% { 
+                    transform: translate(8px, -3px) scale(0.9);
+                    filter: hue-rotate(180deg) blur(1px);
+                    opacity: 1.2;
+                }
+                30% { 
+                    transform: translate(-5px, -8px) scale(1.2);
+                    filter: hue-rotate(270deg) blur(3px);
+                    opacity: 0.6;
+                }
+            }
+
+            .quantum-phase {
+                animation: quantumPhase 4s ease-in-out infinite;
+            }
+            @keyframes quantumPhase {
+                0%, 100% {
+                    transform: translateX(0) scale(1);
+                    opacity: 1;
+                    filter: blur(0px) saturate(1);
+                }
+                25% {
+                    transform: translateX(-100px) scale(0.3);
+                    opacity: 0.3;
+                    filter: blur(5px) saturate(2);
+                }
+                50% {
+                    transform: translateX(0) scale(2);
+                    opacity: 1.5;
+                    filter: blur(2px) saturate(3);
+                }
+                75% {
+                    transform: translateX(100px) scale(0.1);
+                    opacity: 0.1;
+                    filter: blur(8px) saturate(0.5);
+                }
+            }
+
+            .cosmic-storm {
+                animation: cosmicStorm 2.5s linear infinite;
+                position: relative;
+            }
+            @keyframes cosmicStorm {
+                0% {
+                    transform: rotate(0deg) translateY(0px);
+                    text-shadow: 0 0 10px #ff6b35, 0 0 20px #f093fb, 0 0 30px #4facfe;
+                }
+                25% {
+                    transform: rotate(90deg) translateY(-20px);
+                    text-shadow: 0 0 15px #f093fb, 0 0 25px #4facfe, 0 0 35px #00f2fe;
+                }
+                50% {
+                    transform: rotate(180deg) translateY(0px);
+                    text-shadow: 0 0 20px #4facfe, 0 0 30px #00f2fe, 0 0 40px #ff6b35;
+                }
+                75% {
+                    transform: rotate(270deg) translateY(20px);
+                    text-shadow: 0 0 25px #00f2fe, 0 0 35px #ff6b35, 0 0 45px #f093fb;
+                }
+                100% {
+                    transform: rotate(360deg) translateY(0px);
+                    text-shadow: 0 0 10px #ff6b35, 0 0 20px #f093fb, 0 0 30px #4facfe;
+                }
+            }
+
+            .mind-bender {
+                animation: mindBender 3s ease-in-out infinite;
+                font-family: 'Courier New', monospace;
+            }
+            @keyframes mindBender {
+                0%, 100% {
+                    transform: perspective(500px) rotateX(0deg) rotateY(0deg);
+                    letter-spacing: normal;
+                    color: white;
+                }
+                16% {
+                    transform: perspective(500px) rotateX(30deg) rotateY(45deg);
+                    letter-spacing: 10px;
+                    color: #ff6b35;
+                }
+                33% {
+                    transform: perspective(500px) rotateX(-30deg) rotateY(-45deg);
+                    letter-spacing: -2px;
+                    color: #f093fb;
+                }
+                50% {
+                    transform: perspective(500px) rotateX(60deg) rotateY(90deg);
+                    letter-spacing: 20px;
+                    color: #4facfe;
+                }
+                66% {
+                    transform: perspective(500px) rotateX(-60deg) rotateY(-90deg);
+                    letter-spacing: 5px;
+                    color: #00f2fe;
+                }
+                83% {
+                    transform: perspective(500px) rotateX(15deg) rotateY(30deg);
+                    letter-spacing: 15px;
+                    color: #f5576c;
+                }
+            }
+
+            .time-warp {
+                animation: timeWarp 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            }
+            @keyframes timeWarp {
+                0% {
+                    transform: scale(1) rotateZ(0deg);
+                    filter: sepia(0%) contrast(100%);
+                }
+                25% {
+                    transform: scale(0.1) rotateZ(-180deg);
+                    filter: sepia(100%) contrast(200%);
+                }
+                50% {
+                    transform: scale(3) rotateZ(0deg);
+                    filter: sepia(50%) contrast(150%);
+                }
+                75% {
+                    transform: scale(0.3) rotateZ(180deg);
+                    filter: sepia(80%) contrast(250%);
+                }
+                100% {
+                    transform: scale(1) rotateZ(0deg);
+                    filter: sepia(0%) contrast(100%);
+                }
+            }
+
+            .neural-network {
+                animation: neuralNetwork 4s ease-in-out infinite;
+                position: relative;
+            }
+            @keyframes neuralNetwork {
+                0%, 100% {
+                    transform: scale(1);
+                    text-shadow: 0 0 5px #00ff00;
+                }
+                10% {
+                    transform: scale(1.1);
+                    text-shadow: 0 0 10px #00ff00, 5px 0 10px #ff00ff;
+                }
+                20% {
+                    transform: scale(0.9);
+                    text-shadow: 0 0 15px #00ff00, -5px 0 15px #ff00ff, 0 5px 15px #ffff00;
+                }
+                30% {
+                    transform: scale(1.2);
+                    text-shadow: 0 0 20px #00ff00, 5px 5px 20px #ff00ff, -5px -5px 20px #ffff00, 0 -5px 20px #ff0000;
+                }
+                50% {
+                    transform: scale(0.8);
+                    text-shadow: 
+                        0 0 25px #00ff00, 
+                        10px 0 25px #ff00ff, 
+                        -10px 0 25px #ffff00, 
+                        0 10px 25px #ff0000,
+                        0 -10px 25px #00ffff;
+                }
+                         }
+
+             /* NEW CRAZY RANDOM EFFECTS */
+             
+             /* Liquid Metal */
+             .liquid-metal {
+                 animation: liquidMetal 3s ease-in-out infinite;
+                 background: linear-gradient(45deg, #c0c0c0, #808080, #c0c0c0);
+                 background-size: 200% 200%;
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+                 filter: drop-shadow(0 0 10px #c0c0c0);
+             }
+             @keyframes liquidMetal {
+                 0%, 100% {
+                     background-position: 0% 50%;
+                     transform: scale(1) skew(0deg);
+                     filter: drop-shadow(0 0 10px #c0c0c0) blur(0px);
+                 }
+                 50% {
+                     background-position: 100% 50%;
+                     transform: scale(1.1) skew(5deg);
+                     filter: drop-shadow(0 0 20px #ffffff) blur(1px);
+                 }
+             }
+
+             /* Neon Pulse */
+             .neon-pulse {
+                 animation: neonPulse 1.5s ease-in-out infinite;
+                 color: #ff006e;
+                 text-shadow: 0 0 5px #ff006e, 0 0 10px #ff006e, 0 0 20px #ff006e;
+             }
+             @keyframes neonPulse {
+                 0%, 100% {
+                     text-shadow: 0 0 5px #ff006e, 0 0 10px #ff006e, 0 0 20px #ff006e;
+                     transform: scale(1);
+                 }
+                 50% {
+                     text-shadow: 0 0 10px #ff006e, 0 0 20px #ff006e, 0 0 40px #ff006e, 0 0 80px #ff006e;
+                     transform: scale(1.05);
+                 }
+             }
+
+             /* Crystal Shatter */
+             .crystal-shatter {
+                 animation: crystalShatter 4s ease-in-out infinite;
+                 filter: drop-shadow(0 0 10px #00ffff);
+             }
+             @keyframes crystalShatter {
+                 0%, 90%, 100% {
+                     transform: scale(1) rotate(0deg);
+                     filter: drop-shadow(0 0 10px #00ffff) blur(0px);
+                 }
+                 10% {
+                     transform: scale(0.95) rotate(-2deg);
+                     filter: drop-shadow(-5px -5px 15px #00ffff) blur(2px);
+                 }
+                 20% {
+                     transform: scale(1.05) rotate(2deg);
+                     filter: drop-shadow(5px 5px 20px #00ffff) blur(1px);
+                 }
+                 30% {
+                     transform: scale(0.98) rotate(-1deg);
+                     filter: drop-shadow(-3px 3px 25px #00ffff) blur(3px);
+                 }
+             }
+
+             /* Plasma Storm */
+             .plasma-storm {
+                 animation: plasmaStorm 2s linear infinite;
+                 background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5);
+                 background-size: 400% 400%;
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+             }
+             @keyframes plasmaStorm {
+                 0% {
+                     background-position: 0% 50%;
+                     filter: hue-rotate(0deg) saturate(1);
+                 }
+                 25% {
+                     background-position: 100% 100%;
+                     filter: hue-rotate(90deg) saturate(1.5);
+                 }
+                 50% {
+                     background-position: 100% 0%;
+                     filter: hue-rotate(180deg) saturate(2);
+                 }
+                 75% {
+                     background-position: 0% 100%;
+                     filter: hue-rotate(270deg) saturate(1.5);
+                 }
+                 100% {
+                     background-position: 0% 50%;
+                     filter: hue-rotate(360deg) saturate(1);
+                 }
+             }
+
+             /* Void Portal */
+             .void-portal {
+                 animation: voidPortal 3s ease-in-out infinite;
+                 background: radial-gradient(circle, transparent 30%, #000000 70%);
+                 color: #ffffff;
+                 text-shadow: 0 0 20px #ffffff;
+             }
+             @keyframes voidPortal {
+                 0%, 100% {
+                     transform: scale(1) rotate(0deg);
+                     text-shadow: 0 0 20px #ffffff;
+                 }
+                 50% {
+                     transform: scale(0.5) rotate(180deg);
+                     text-shadow: 0 0 50px #9d4edd, 0 0 100px #9d4edd;
+                 }
+             }
+
+             /* Fractal Zoom */
+             .fractal-zoom {
+                 animation: fractalZoom 4s ease-in-out infinite;
+                 background: radial-gradient(circle, #ff006e 0%, #8338ec 50%, #3a86ff 100%);
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+             }
+             @keyframes fractalZoom {
+                 0%, 100% {
+                     transform: scale(1);
+                     background-size: 100% 100%;
+                 }
+                 25% {
+                     transform: scale(1.2);
+                     background-size: 200% 200%;
+                 }
+                 50% {
+                     transform: scale(0.8);
+                     background-size: 50% 50%;
+                 }
+                 75% {
+                     transform: scale(1.1);
+                     background-size: 150% 150%;
+                 }
+             }
+
+             /* Electric Arc */
+             .electric-arc {
+                 animation: electricArc 0.8s ease-in-out infinite;
+                 color: #ffff00;
+                 text-shadow: 0 0 5px #ffff00, 0 0 10px #ffff00, 0 0 20px #ffff00;
+             }
+             @keyframes electricArc {
+                 0%, 100% {
+                     text-shadow: 0 0 5px #ffff00, 0 0 10px #ffff00, 0 0 20px #ffff00;
+                     transform: translateX(0px);
+                 }
+                 10% {
+                     text-shadow: -2px 0 10px #ffff00, 2px 0 15px #ffff00, 0 0 25px #ffff00;
+                     transform: translateX(-3px);
+                 }
+                 20% {
+                     text-shadow: 3px 0 8px #ffff00, -1px 0 12px #ffff00, 0 0 30px #ffff00;
+                     transform: translateX(4px);
+                 }
+                 30% {
+                     text-shadow: -1px 0 15px #ffff00, 3px 0 8px #ffff00, 0 0 20px #ffff00;
+                     transform: translateX(-2px);
+                 }
+             }
+
+             /* Shadow Clone */
+             .shadow-clone {
+                 animation: shadowClone 2s ease-in-out infinite;
+                 position: relative;
+             }
+             @keyframes shadowClone {
+                 0%, 100% {
+                     text-shadow: 0 0 0 transparent;
+                     transform: translateX(0);
+                 }
+                 25% {
+                     text-shadow: -10px 0 0 rgba(255, 107, 53, 0.7);
+                     transform: translateX(5px);
+                 }
+                 50% {
+                     text-shadow: -20px 0 0 rgba(255, 107, 53, 0.5), 20px 0 0 rgba(64, 252, 254, 0.5);
+                     transform: translateX(0);
+                 }
+                 75% {
+                     text-shadow: 10px 0 0 rgba(64, 252, 254, 0.7);
+                     transform: translateX(-5px);
+                 }
+             }
+
+             /* Quantum Tunnel */
+             .quantum-tunnel {
+                 animation: quantumTunnel 3s linear infinite;
+                 background: linear-gradient(90deg, transparent, #00ff00, transparent);
+                 background-size: 200% 100%;
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+             }
+             @keyframes quantumTunnel {
+                 0% {
+                     background-position: -200% 0;
+                     transform: scale(0.5) rotateY(90deg);
+                 }
+                 50% {
+                     background-position: 0% 0;
+                     transform: scale(1) rotateY(0deg);
+                 }
+                 100% {
+                     background-position: 200% 0;
+                     transform: scale(0.5) rotateY(-90deg);
+                 }
+             }
+
+             /* Antimatter */
+             .antimatter {
+                 animation: antimatter 2.5s ease-in-out infinite;
+                 background: radial-gradient(circle, #ffffff 0%, #000000 50%, #ffffff 100%);
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+                 filter: invert(1);
+             }
+             @keyframes antimatter {
+                 0%, 100% {
+                     filter: invert(1) hue-rotate(0deg);
+                     transform: scale(1);
+                 }
+                 50% {
+                     filter: invert(0) hue-rotate(180deg);
+                     transform: scale(1.2);
+                 }
+             }
+             
+             /* DNA Helix */
+            .dna-enter-active, .dna-leave-active {
+                transition: all 2s ease;
+            }
+            .dna-enter, .dna-leave-to {
+                opacity: 0;
+                transform: rotateX(90deg) rotateY(180deg) scale(0.5);
+                filter: blur(10px);
+            }
+            
+            /* Orbit Animation */
+            .orbit-enter-active {
+                animation: orbit 3s ease-in-out;
+            }
+            .orbit-leave-active {
+                animation: orbit 2s ease-in reverse;
+            }
+            @keyframes orbit {
+                0% {
+                    opacity: 0;
+                    transform: rotate(0deg) translateX(100px) rotate(0deg);
+                }
+                25% {
+                    opacity: 0.5;
+                    transform: rotate(90deg) translateX(100px) rotate(-90deg);
+                }
+                50% {
+                    opacity: 1;
+                    transform: rotate(180deg) translateX(100px) rotate(-180deg);
+                }
+                75% {
+                    opacity: 1;
+                    transform: rotate(270deg) translateX(100px) rotate(-270deg);
+                }
+                100% {
+                    opacity: 1;
+                    transform: rotate(360deg) translateX(100px) rotate(-360deg);
+                }
+            }
+            
+            /* Shatter Effect */
+            .shatter-enter-active, .shatter-leave-active {
+                transition: all 1.5s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            }
+            .shatter-enter, .shatter-leave-to {
+                opacity: 0;
+                transform: scale(1.2) rotate(15deg);
+                filter: blur(3px);
+                clip-path: polygon(0% 0%, 30% 0%, 25% 50%, 0% 100%, 70% 100%, 80% 50%, 100% 0%, 100% 100%, 0% 100%);
+            }
+
+            /* Vue Transition Styles */
+            .fade-enter-active, .fade-leave-active {
+                transition: opacity .5s;
+                animation: fadeLoop 3s ease-in-out infinite;
+            }
+            .fade-enter, .fade-leave-to {
+                opacity: 0;
+            }
+            @keyframes fadeLoop {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+            
+            .slide-fade-enter-active {
+                transition: all .3s ease;
+                animation: slideLoop 4s ease-in-out infinite;
+            }
+            .slide-fade-leave-active {
+                transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+            }
+            .slide-fade-enter, .slide-fade-leave-to {
+                transform: translateX(10px);
+                opacity: 0;
+            }
+            @keyframes slideLoop {
+                0%, 100% { transform: translateX(0px); opacity: 1; }
+                25% { transform: translateX(-20px); opacity: 0.8; }
+                75% { transform: translateX(20px); opacity: 0.8; }
+            }
+            
+            .bounce-enter-active {
+                animation: bounce-in .5s, bounceLoop 2s ease-in-out infinite;
+            }
+            .bounce-leave-active {
+                animation: bounce-in .5s reverse;
+            }
+            @keyframes bounce-in {
+                0% {
+                    transform: scale(0);
+                }
+                50% {
+                    transform: scale(1.5);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+            @keyframes bounceLoop {
+                0%, 100% { transform: scale(1) translateY(0px); }
+                25% { transform: scale(1.1) translateY(-10px); }
+                50% { transform: scale(0.9) translateY(5px); }
+                75% { transform: scale(1.05) translateY(-5px); }
+            }
+            
+            .list-enter-active, .list-leave-active {
+                transition: all 1s;
+            }
+            .list-enter, .list-leave-to {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+        </style>
     </head>
 
     <body>
-        <div id="app">
+        <div id="nav-placeholder"></div>
+        
+        <!-- Animated Background -->
+        <div class="animated-bg">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+                <div class="shape shape-5"></div>
+            </div>
+        </div>
+
+        <div id="app" class="animation-section">
             <div class="container">
-                <div class="row">
-                    <button style="width:100%" class="btn btn-danger" v-on:click="toggleEverything"><h1>THE BUTTON</h1></button>
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1 class="page-title">
+                        <div class="page-title-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <span>Animation Showcase</span>
+                    </h1>
+                    <p class="page-subtitle">
+                        This is a page to test animations and visual effects
+                    </p>
                 </div>
-                <div class="row">
-                    <div class="col" id="redOutline">
-                        <h3>Fade Animation</h3>
-                        <button class="btn btn-outline-secondary" v-on:click="show = !show">
-                                Toggle
-                        </button>
-                        <transition name="fade">
-                            <p v-if="show">{{rexText}}</p>
-                        </transition>
-                    </div>
 
-                    <div class="col" id="blueOutline">
-                        <h3>Slide Animation</h3>
-                        <button v-on:click="show2 = !show2">
-                            Toggle
-                        </button>
-                        <transition name="slide-fade">
-                            <div v-if="show2">
-                            <p >{{rexText}}</p>
+                <!-- Random Effect Showcase - MOVED TO TOP -->
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <div class="animation-card" style="min-height: 500px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: 3px solid #ff6b35; box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);">
+                            <h2 class="text-center mb-4" style="font-size: 3rem; font-weight: bold; background: linear-gradient(45deg, #ff6b35, #f093fb, #f5576c, #4facfe, #00f2fe); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientShift 3s ease infinite;">
+                                🎭 RANDOM EFFECT SHOWCASE 🎭
+                            </h2>
+                            <div class="text-center mb-4">
+                                <button v-if="!randomEffectActive && !selectMode" 
+                                        class="control-btn" 
+                                        @click="startRandomShow" 
+                                        style="font-size: 1.3rem; padding: 15px 30px; background: linear-gradient(45deg, #ff6b35, #f093fb); border: none; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4); transform: scale(1); transition: all 0.3s ease; margin-right: 15px;">
+                                    🎲 Start Random Show
+                                </button>
+                                <button v-if="!randomEffectActive && !selectMode" 
+                                        class="control-btn" 
+                                        @click="showDropdown" 
+                                        style="font-size: 1.3rem; padding: 15px 30px; background: linear-gradient(45deg, #4facfe, #00f2fe); border: none; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4); transform: scale(1); transition: all 0.3s ease;">
+                                    📋 Select Animation
+                                </button>
+                                <button v-if="randomEffectActive || selectMode" 
+                                        @click="resetToInitial" 
+                                        class="control-btn" 
+                                        style="font-size: 1.1rem; padding: 12px 25px; background: linear-gradient(45deg, #ff4757, #ff3742); border: none; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4); transition: all 0.3s ease;">
+                                    🛑 Stop & Reset
+                                </button>
                             </div>
-                        </transition>
-                    </div>
-
-                    <div class="col" id="greenOutline">
-                        <h3>Bounce Animation</h3>
-                        <button @click="show3 = !show3">Toggle</button>
-                        <transition name="bounce">
-                            <p v-if="show3">{{rexText}}</p>
-                        </transition>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col" id="orangeOutline">
-                            <h3>Custom Animation</h3>
-                            <button v-on:click="show4 = !show4">
-                                Toggle
-                            </button>
-                            <transition name="custom-classes-transition"
-                            enter-active-class="animated tada"
-                            leave-active-class="animated bounceOutRight">
-                                <div v-if="show4">
-                                <p >{{rexText}}</p>
-                                </div>
-                            </transition>
-                    </div>
-                    <div class="col" id="yellowOutline">
-                            <h3>VelocityJS Animation</h3>
-                            <button v-on:click="show5 = !show5">
-                                Toggle
-                            </button>
-                            <transition
-                            v-on:before-enter="beforeEnter"
-                            v-on:enter="enter"
-                            v-on:leave="leave"
-                            v-bind:css="false"
-                          >
-                                <div v-if="show5">
-                                <p >{{rexText}}</p>
-                                </div>
-                            </transition>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col" id="purpleOutline">
-                            <h3>The Number Line</h3>
-                        <div class="row">
-                        
-                            <div class="col-sm-2">
-                                <div class="btn-group-vertical" style="margin:10px">
-                                    <button class="btn btn-warning" v-on:click="add">Add</button>
-                                    <button class="btn btn-warning" v-on:click="remove">Remove</button>
-                                    <button class="btn btn-warning" v-on:click="addSeveral">Add Several</button>
-                                    <button class="btn btn-warning" v-on:click="removeSeveral">Remove Several</button>
-                                    <button class="btn btn-danger" v-on:click="gocrazy">Go Crazy</button>
+                            <div v-if="selectMode && !randomEffectActive" class="text-center mb-4">
+                                <select v-model="selectedAnimation" @change="playSelectedAnimation" 
+                                        style="font-size: 1.1rem; padding: 12px 20px; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 15px; color: white; min-width: 300px; backdrop-filter: blur(10px);">
+                                    <option value="" style="color: #333;">Choose an animation...</option>
+                                    <option v-for="effect in randomEffects" :key="effect.name" :value="effect.name" style="color: #333;">
+                                        {{effect.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="demo-content" style="min-height: 300px; display: flex; align-items: center; justify-content: center; position: relative; font-size: 2.5rem; font-weight: bold;">
+                                <!-- Fixed size placeholder to prevent layout shift -->
+                                <div style="min-height: 200px; min-width: 500px; display: flex; align-items: center; justify-content: center;">
+                                    <div v-if="randomEffectActive" 
+                                         :class="currentRandomEffect.class" 
+                                         :style="currentRandomEffect.style"
+                                         :data-text="currentRandomEffect.dataText"
+                                         v-html="currentRandomEffect.content"
+                                         ref="randomEffectContainer"
+                                         class="demo-text random-effect-container"
+                                         style="font-size: 2.5rem; font-weight: bold; z-index: 10; text-align: center; display: block;">
+                                    </div>
+                                    <div v-else style="text-align: center; color: rgba(255,255,255,0.8); font-size: 1.5rem;">
+                                        <i class="fas fa-magic" style="font-size: 4rem; margin-bottom: 20px; color: #ff6b35;"></i><br>
+                                        Click the button to witness pure chaos! 🌪️<br>
+                                        <small style="opacity: 0.7;">Experience mind-bending animations!</small>
+                                    </div>
                                 </div>
                             </div>
-                        <div class="col-sm-9" id="blackOutline">
-
-                            <transition-group name="list" tag="p">
-                                <span v-for="item in items" v-bind:key="item" class="list-item">
-                                {{ item }}
-                                </span>
-                            </transition-group>
+                            <div class="text-center mt-3">
+                                <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 15px;">
+                                    <span>Current Effect: <span style="color: #ff6b35; font-weight: bold; font-size: 1.2rem;">{{(randomEffectActive || selectMode) ? currentRandomEffect.name : 'None'}}</span></span>
+                                    <span v-if="randomEffectActive" style="background: rgba(255, 107, 53, 0.2); border-radius: 15px; padding: 8px 15px; color: #ff6b35; font-weight: bold; font-size: 1rem;">
+                                        ⏱️ Next in: {{secondsLeft}}s
+                                    </span>
+                                </p>
+                                <p v-if="!randomEffectActive && !selectMode" style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 5px;">
+                                    🎬 This is a page to test animations and visual effects
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class="progress" style="margin:10px">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" v-bind:style="rexStyle">{{Math.round(progress)}}</div>
-                    </div>
-                    
                 </div>
+
+
+
+
+
+
+
+
             </div>
         </div>
 
        <script>
-
            var vm = new Vue ({
                el: '#app',
                data: {
@@ -123,24 +1301,244 @@
                    show3:true,
                    show4:true,
                    show5:true,
+                   show6:true,
+                   show7:true,
+                   show8:true,
+                   show9:true,
+                   show10:true,
+                   show11:true,
+                   show12:true,
+                   show13:true,
+                   show14:true,
+                   show15:true,
+                   show16:true,
                    progress: 0,
                    iterations: 0,
                    f_iterations: 0,
+                   randomEffectActive: false,
+                   currentRandomEffect: {},
+                   autoRefreshTimer: null,
+                   autoRefreshInterval: 7000, // 7 seconds
+                   countdownTimer: null,
+                   secondsLeft: 0,
+                   selectMode: false,
+                   selectedAnimation: '',
+                   randomEffects: [
+                       // Existing effects
+                       {
+                           name: 'Fade Effect',
+                           class: 'fade-enter-active',
+                           content: 'BEHOLD THE POWER OF CSS!',
+                           style: 'color: #ff6b35;'
+                       },
+                       {
+                           name: 'Slide Effect',
+                           class: 'slide-fade-enter-active',
+                           content: 'SLIDING INTO GREATNESS!',
+                           style: 'color: #f093fb;'
+                       },
+                       {
+                           name: 'Bounce Effect',
+                           class: 'bounce-enter-active',
+                           content: 'BOUNCING WITH STYLE!',
+                           style: 'color: #4facfe;'
+                       },
+                       {
+                           name: 'Matrix Rain',
+                           class: 'matrix-text',
+                           content: 'THE MATRIX HAS YOU...',
+                           style: 'color: #00ff00; font-family: monospace;'
+                       },
+                       {
+                           name: 'Particle Explosion',
+                           class: 'explosion-container',
+                           content: 'EXPLOSIVE PARTICLES!',
+                           style: 'color: #ff4757;'
+                       },
+                       {
+                           name: 'Morphing Shape',
+                           class: 'morph-enter-active',
+                           content: 'SHAPESHIFTING REALITY!',
+                           style: 'color: #5f27cd;'
+                       },
+                       {
+                           name: 'Typewriter Effect',
+                           class: 'typewriter-enter-active',
+                           content: 'TYPING LIKE A MACHINE!',
+                           style: 'color: #00d2d3; font-family: monospace;'
+                       },
+                       {
+                           name: '3D Rotation',
+                           class: 'rotation-enter-active',
+                           content: 'SPINNING IN 3D SPACE!',
+                           style: 'color: #ff9ff3;'
+                       },
+                       {
+                           name: 'Wave Effect',
+                           class: 'wave-text',
+                           content: 'RIDING THE WAVE!',
+                           style: 'color: #54a0ff;'
+                       },
+                       {
+                           name: 'Fire Text',
+                           class: 'fire-text',
+                           content: '🔥 BLAZING HOT! 🔥',
+                           style: 'color: #ff4757;',
+                           dataText: '🔥 BLAZING HOT! 🔥'
+                       },
+                       // New crazy effects
+                       {
+                           name: 'Chaos Spin',
+                           class: 'chaos-spin',
+                           content: '🌪️ PURE CHAOS! 🌪️',
+                           style: 'color: #ff6b35; font-weight: bold;'
+                       },
+                       {
+                           name: 'Dimension Warp',
+                           class: 'dimension-warp',
+                           content: '🌌 WARPING DIMENSIONS! 🌌',
+                           style: 'color: #667eea; font-weight: bold;'
+                       },
+                       {
+                           name: 'Reality Glitch',
+                           class: 'reality-glitch',
+                           content: '⚡ GLITCHING REALITY! ⚡',
+                           style: 'color: #ff3742; font-weight: bold;'
+                       },
+                       {
+                           name: 'Quantum Phase',
+                           class: 'quantum-phase',
+                           content: '🔬 QUANTUM MECHANICS! 🔬',
+                           style: 'color: #2ed573; font-weight: bold;'
+                       },
+                       {
+                           name: 'Cosmic Storm',
+                           class: 'cosmic-storm',
+                           content: '🌟 COSMIC STORM! 🌟',
+                           style: 'color: #ff6b35; font-weight: bold;'
+                       },
+                       {
+                           name: 'Mind Bender',
+                           class: 'mind-bender',
+                           content: '🧠 BENDING MINDS! 🧠',
+                           style: 'color: #a55eea; font-weight: bold;'
+                       },
+                       {
+                           name: 'Time Warp',
+                           class: 'time-warp',
+                           content: '⏰ TIME WARPING! ⏰',
+                           style: 'color: #26de81; font-weight: bold;'
+                       },
+                       {
+                           name: 'Neural Network',
+                           class: 'neural-network',
+                           content: '🤖 NEURAL NETWORK! 🤖',
+                           style: 'color: #00ff00; font-weight: bold;'
+                       },
+                       // Additional crazy effects
+                       {
+                           name: 'Liquid Metal',
+                           class: 'liquid-metal',
+                           content: '🌊 LIQUID METAL! 🌊',
+                           style: 'font-weight: bold;'
+                       },
+                       {
+                           name: 'Neon Pulse',
+                           class: 'neon-pulse',
+                           content: '💡 NEON PULSE! 💡',
+                           style: 'font-weight: bold;'
+                       },
+                       {
+                           name: 'Crystal Shatter',
+                           class: 'crystal-shatter',
+                           content: '💎 CRYSTAL SHATTER! 💎',
+                           style: 'color: #00ffff; font-weight: bold;'
+                       },
+                       {
+                           name: 'Plasma Storm',
+                           class: 'plasma-storm',
+                           content: '⚡ PLASMA STORM! ⚡',
+                           style: 'font-weight: bold;'
+                       },
+                       {
+                           name: 'Void Portal',
+                           class: 'void-portal',
+                           content: '🕳️ VOID PORTAL! 🕳️',
+                           style: 'font-weight: bold;'
+                       },
+                       {
+                           name: 'Fractal Zoom',
+                           class: 'fractal-zoom',
+                           content: '🔬 FRACTAL ZOOM! 🔬',
+                           style: 'font-weight: bold;'
+                       },
+                       {
+                           name: 'Electric Arc',
+                           class: 'electric-arc',
+                           content: '⚡ ELECTRIC ARC! ⚡',
+                           style: 'font-weight: bold;'
+                       },
+                       {
+                           name: 'Shadow Clone',
+                           class: 'shadow-clone',
+                           content: '👥 SHADOW CLONE! 👥',
+                           style: 'color: #ff6b35; font-weight: bold;'
+                       },
+                       {
+                           name: 'Quantum Tunnel',
+                           class: 'quantum-tunnel',
+                           content: '🌌 QUANTUM TUNNEL! 🌌',
+                           style: 'font-weight: bold;'
+                       },
+                       {
+                           name: 'Antimatter',
+                           class: 'antimatter',
+                           content: '☢️ ANTIMATTER! ☢️',
+                           style: 'font-weight: bold;'
+                       },
+                       {
+                           name: 'Glitch Effect',
+                           class: 'glitch-enter-active',
+                           content: '📺 GLITCH EFFECT! 📺',
+                           style: 'color: #ff3742; font-weight: bold;'
+                       },
+                       {
+                           name: 'Holographic',
+                           class: 'hologram-enter-active',
+                           content: '👻 HOLOGRAPHIC! 👻',
+                           style: 'color: #00ffff; font-weight: bold;'
+                       },
+                       {
+                           name: 'Elastic Bounce',
+                           class: 'elastic-enter-active',
+                           content: '🏀 ELASTIC BOUNCE! 🏀',
+                           style: 'color: #ff9f43; font-weight: bold;'
+                       },
+                       {
+                           name: 'Magnetic Field',
+                           class: 'magnetic-enter-active',
+                           content: '🧲 MAGNETIC FIELD! 🧲',
+                           style: 'color: #3742fa; font-weight: bold;'
+                       }
+                   ]
                },
                computed: {
                    rexStyle: function(newR, oldR){
                        return "width: " + this.progress + "%"
+                   },
+                   matrixText: function(){
+                       return this.rexText.split('').map((char, index) => 
+                           `<span class="matrix-char" style="animation-delay: ${index * 0.05}s">${char}</span>`
+                       ).join('');
+                   },
+                   waveText: function(){
+                       return this.rexText.split('').map((char, index) => 
+                           `<span class="wave-char" style="animation-delay: ${index * 0.1}s">${char === ' ' ? '&nbsp;' : char}</span>`
+                       ).join('');
                    }
                },
                methods: {
-                   toggleEverything() {
-                       this.show = !this.show;
-                       this.show2 = !this.show2;
-                       this.show3 = !this.show3;
-                       this.show4 = !this.show4;
-                       this.show5 = !this.show5;
-                       this.gocrazy();
-                   },
+
                    beforeEnter: function (el) {
                     el.style.opacity = 0
                     },
@@ -190,14 +1588,253 @@
                                 }, 120*i);
                             setTimeout(() => {this.removeSeveral(); }, 120*i);                            
                         }
+                    },
+                    createExplosion: function(){
+                        if (!this.$refs.explosionContainer) return;
+                        
+                        // Clear existing particles
+                        const existingParticles = this.$refs.explosionContainer.querySelectorAll('.explosion-particle');
+                        existingParticles.forEach(p => p.remove());
+                        
+                        // Create new particles
+                        const particleCount = 20;
+                        const container = this.$refs.explosionContainer;
+                        const rect = container.getBoundingClientRect();
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        for(let i = 0; i < particleCount; i++){
+                            const particle = document.createElement('div');
+                            particle.className = 'explosion-particle';
+                            
+                            const angle = (Math.PI * 2 * i) / particleCount;
+                            const velocity = 50 + Math.random() * 100;
+                            const dx = Math.cos(angle) * velocity;
+                            const dy = Math.sin(angle) * velocity;
+                            
+                            particle.style.cssText = `
+                                left: ${centerX}px;
+                                top: ${centerY}px;
+                                --dx: ${dx}px;
+                                --dy: ${dy}px;
+                                animation: explodeParticle 1.5s ease-out forwards;
+                                animation-delay: ${Math.random() * 0.2}s;
+                            `;
+                            
+                            container.appendChild(particle);
+                            
+                            // Remove particle after animation
+                            setTimeout(() => {
+                                if(particle.parentNode) particle.remove();
+                            }, 1700);
+                        }
+                    },
+                    startRandomShow: function(){
+                        this.randomEffectActive = true;
+                        this.selectMode = false;
+                        this.selectedAnimation = '';
+                        this.generateRandomEffect();
+                        this.startAutoRefresh();
+                    },
+                    showDropdown: function(){
+                        this.selectMode = true;
+                        this.randomEffectActive = false;
+                        this.selectedAnimation = '';
+                    },
+                    playSelectedAnimation: function(){
+                        if (this.selectedAnimation) {
+                            const effect = this.randomEffects.find(e => e.name === this.selectedAnimation);
+                            if (effect) {
+                                this.currentRandomEffect = { ...effect };
+                                this.processSpecialEffect();
+                            }
+                        }
+                    },
+                    resetToInitial: function(){
+                        this.randomEffectActive = false;
+                        this.selectMode = false;
+                        this.selectedAnimation = '';
+                        this.currentRandomEffect = {};
+                        this.stopAutoRefresh();
+                        this.stopCountdown();
+                    },
+                    processSpecialEffect: function(){
+                        // Temporarily hide current effect for smooth transition (only for random mode)
+                        if (this.randomEffectActive && this.$refs.randomEffectContainer) {
+                            this.$refs.randomEffectContainer.style.opacity = '0';
+                            this.$refs.randomEffectContainer.style.transform = 'scale(0.8)';
+                        }
+                        
+                        const processEffect = () => {
+                            this.$nextTick(() => {
+                                if (this.currentRandomEffect.name === 'Matrix Rain') {
+                                    this.currentRandomEffect.content = this.currentRandomEffect.content.split('').map((char, index) => 
+                                        `<span class="matrix-char" style="animation-delay: ${index * 0.05}s">${char}</span>`
+                                    ).join('');
+                                }
+                                else if (this.currentRandomEffect.name === 'Wave Effect') {
+                                    this.currentRandomEffect.content = this.currentRandomEffect.content.split('').map((char, index) => 
+                                        `<span class="wave-char" style="animation-delay: ${index * 0.1}s">${char === ' ' ? '&nbsp;' : char}</span>`
+                                    ).join('');
+                                }
+                                else if (this.currentRandomEffect.name === 'Particle Explosion') {
+                                    setTimeout(() => this.createRandomExplosion(), 100);
+                                }
+                                
+                                // Restart animations
+                                setTimeout(() => {
+                                    if (this.$refs.randomEffectContainer) {
+                                        const element = this.$refs.randomEffectContainer;
+                                        const classes = element.className;
+                                        element.className = '';
+                                        setTimeout(() => {
+                                            element.className = classes;
+                                            // Restore visibility for random mode
+                                            if (this.randomEffectActive) {
+                                                element.style.opacity = '1';
+                                                element.style.transform = 'scale(1)';
+                                                element.style.transition = 'all 0.3s ease';
+                                            }
+                                        }, 10);
+                                    }
+                                }, 50);
+                            });
+                        };
+                        
+                        // Add delay only for random mode transition
+                        if (this.randomEffectActive) {
+                            setTimeout(processEffect, 200);
+                        } else {
+                            processEffect();
+                        }
+                    },
+                    startAutoRefresh: function(){
+                        // Clear any existing timer
+                        if (this.autoRefreshTimer) {
+                            clearInterval(this.autoRefreshTimer);
+                        }
+                        
+                        // Start countdown
+                        this.startCountdown();
+                        
+                        // Start new timer to auto-change effects
+                        this.autoRefreshTimer = setInterval(() => {
+                            if (this.randomEffectActive) {
+                                this.generateRandomEffect();
+                                this.startCountdown(); // Restart countdown after each effect change
+                            }
+                        }, this.autoRefreshInterval);
+                    },
+                    startCountdown: function(){
+                        // Clear existing countdown
+                        if (this.countdownTimer) {
+                            clearInterval(this.countdownTimer);
+                        }
+                        
+                        // Set initial countdown value
+                        this.secondsLeft = Math.floor(this.autoRefreshInterval / 1000);
+                        
+                        // Start countdown timer (update every second)
+                        this.countdownTimer = setInterval(() => {
+                            this.secondsLeft--;
+                            if (this.secondsLeft <= 0) {
+                                this.secondsLeft = Math.floor(this.autoRefreshInterval / 1000);
+                            }
+                        }, 1000);
+                    },
+                    stopCountdown: function(){
+                        if (this.countdownTimer) {
+                            clearInterval(this.countdownTimer);
+                            this.countdownTimer = null;
+                        }
+                        this.secondsLeft = 0;
+                    },
+                    stopAutoRefresh: function(){
+                        if (this.autoRefreshTimer) {
+                            clearInterval(this.autoRefreshTimer);
+                            this.autoRefreshTimer = null;
+                        }
+                        this.stopCountdown();
+                    },
+                    generateRandomEffect: function(){
+                        const randomIndex = Math.floor(Math.random() * this.randomEffects.length);
+                        this.currentRandomEffect = { ...this.randomEffects[randomIndex] };
+                        this.processSpecialEffect();
+                    },
+                    createRandomExplosion: function(){
+                        if (!this.$refs.randomEffectContainer) return;
+                        
+                        // Clear existing particles
+                        const existingParticles = this.$refs.randomEffectContainer.querySelectorAll('.explosion-particle');
+                        existingParticles.forEach(p => p.remove());
+                        
+                        // Create new particles
+                        const particleCount = 30;
+                        const container = this.$refs.randomEffectContainer;
+                        const rect = container.getBoundingClientRect();
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        for(let i = 0; i < particleCount; i++){
+                            const particle = document.createElement('div');
+                            particle.className = 'explosion-particle';
+                            
+                            const angle = (Math.PI * 2 * i) / particleCount;
+                            const velocity = 50 + Math.random() * 150;
+                            const dx = Math.cos(angle) * velocity;
+                            const dy = Math.sin(angle) * velocity;
+                            
+                            particle.style.cssText = `
+                                left: ${centerX}px;
+                                top: ${centerY}px;
+                                --dx: ${dx}px;
+                                --dy: ${dy}px;
+                                animation: explodeParticle 2s ease-out forwards;
+                                animation-delay: ${Math.random() * 0.3}s;
+                                background: radial-gradient(circle, #ff6b35, #f093fb, #4facfe);
+                                width: 6px;
+                                height: 6px;
+                            `;
+                            
+                            container.appendChild(particle);
+                            
+                            // Remove particle after animation
+                            setTimeout(() => {
+                                if(particle.parentNode) particle.remove();
+                            }, 2300);
+                        }
                     }
+               },
+               watch: {
+                   show7: function(newVal) {
+                       if(newVal) {
+                           this.$nextTick(() => {
+                               setTimeout(() => this.createExplosion(), 100);
+                           });
+                       }
+                   },
+                   randomEffectActive: function(newVal) {
+                       if(newVal) {
+                           // Generate a new random effect every time it's toggled on
+                           this.generateRandomEffect();
+                           this.startAutoRefresh();
+                       } else {
+                           // Stop auto refresh when turned off
+                           this.stopAutoRefresh();
+                       }
+                   }
+               },
+               beforeDestroy() {
+                   // Clean up timers when component is destroyed
+                   this.stopAutoRefresh();
+                   this.stopCountdown();
                }
            })
-
         </script>
 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
     </body>
 </html>

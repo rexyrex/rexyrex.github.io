@@ -434,6 +434,11 @@
                                 <div class="glow-ring glow-ring-2"></div>
                                 <div class="glow-ring glow-ring-3"></div>
                             </div>
+                            
+                            <!-- Radiant light effect -->
+                            <div class="radiant-light"></div>
+                            
+
                         </div>
                     </div>
                 </div>
@@ -485,27 +490,36 @@
                 // Remove and re-add animation classes to restart animations
                 const hearts = $('.floating-hearts i');
                 const sparkles = $('.sparkle');
+                const particles = $('.particle');
+                const glowRings = $('.glow-ring');
                 const romanticMessage = $('.romantic-message');
                 const nameContainers = $('.name-container');
                 const mainHeart = $('.main-heart');
+                const radiantLight = $('.radiant-light');
                 
                 // Remove animations temporarily
                 hearts.css('animation', 'none');
                 sparkles.css('animation', 'none');
+                particles.css('animation', 'none');
+                glowRings.css('animation', 'none');
                 romanticMessage.css('animation', 'none');
                 nameContainers.css('animation', 'none');
                 mainHeart.css('animation', 'none');
+                radiantLight.css('animation', 'none');
                 
                 // Force reflow
-                hearts[0].offsetHeight;
+                if (hearts[0]) hearts[0].offsetHeight;
                 
                 // Restore animations
                 setTimeout(function() {
                     hearts.css('animation', '');
                     sparkles.css('animation', '');
+                    particles.css('animation', '');
+                    glowRings.css('animation', '');
                     romanticMessage.css('animation', '');
                     nameContainers.css('animation', '');
                     mainHeart.css('animation', '');
+                    radiantLight.css('animation', '');
                 }, 50);
             });
         });
