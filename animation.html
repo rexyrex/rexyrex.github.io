@@ -282,11 +282,13 @@
             
             .explosion-particle {
                 position: absolute;
-                width: 4px;
-                height: 4px;
-                background: radial-gradient(circle, #ff6b35, #ff4757);
+                width: 12px;
+                height: 12px;
+                background: radial-gradient(circle, #ff6b35 0%, #f093fb 30%, #4facfe 60%, #00f2fe 100%);
                 border-radius: 50%;
                 pointer-events: none;
+                box-shadow: 0 0 30px currentColor, 0 0 60px currentColor, 0 0 90px rgba(255, 107, 53, 0.5);
+                filter: brightness(2) saturate(2);
             }
             
             .explosion-enter-active {
@@ -322,11 +324,33 @@
             @keyframes explodeParticle {
                 0% {
                     opacity: 1;
-                    transform: translate(0, 0) scale(1);
+                    transform: translate(0, 0) scale(1) rotate(0deg);
+                    filter: brightness(3) saturate(3) hue-rotate(0deg);
+                    box-shadow: 0 0 30px currentColor, 0 0 60px currentColor, 0 0 90px rgba(255, 107, 53, 0.8);
+                }
+                25% {
+                    opacity: 1;
+                    transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.3)) scale(1.5) rotate(90deg);
+                    filter: brightness(4) saturate(4) hue-rotate(90deg);
+                    box-shadow: 0 0 50px currentColor, 0 0 100px currentColor, 0 0 150px rgba(255, 107, 53, 0.6);
+                }
+                50% {
+                    opacity: 0.8;
+                    transform: translate(calc(var(--dx) * 0.6), calc(var(--dy) * 0.6)) scale(2) rotate(180deg);
+                    filter: brightness(5) saturate(5) hue-rotate(180deg);
+                    box-shadow: 0 0 70px currentColor, 0 0 140px currentColor, 0 0 210px rgba(255, 107, 53, 0.4);
+                }
+                75% {
+                    opacity: 0.4;
+                    transform: translate(calc(var(--dx) * 0.8), calc(var(--dy) * 0.8)) scale(1.2) rotate(270deg);
+                    filter: brightness(3) saturate(3) hue-rotate(270deg);
+                    box-shadow: 0 0 40px currentColor, 0 0 80px currentColor, 0 0 120px rgba(255, 107, 53, 0.3);
                 }
                 100% {
                     opacity: 0;
-                    transform: translate(var(--dx), var(--dy)) scale(0);
+                    transform: translate(var(--dx), var(--dy)) scale(0) rotate(360deg);
+                    filter: brightness(1) saturate(1) hue-rotate(360deg);
+                    box-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px rgba(255, 107, 53, 0.1);
                 }
             }
             
@@ -1177,6 +1201,671 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
+            /* NEW AWESOME ANIMATIONS */
+            
+            /* DNA Helix */
+            .dna-helix {
+                animation: dnaHelix 3s linear infinite;
+                background: linear-gradient(45deg, #00ff88, #39ff14, #00ff88);
+                background-size: 200% 200%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            @keyframes dnaHelix {
+                0% {
+                    transform: rotateY(0deg) rotateX(0deg);
+                    background-position: 0% 50%;
+                }
+                25% {
+                    transform: rotateY(90deg) rotateX(45deg);
+                    background-position: 100% 0%;
+                }
+                50% {
+                    transform: rotateY(180deg) rotateX(90deg);
+                    background-position: 100% 100%;
+                }
+                75% {
+                    transform: rotateY(270deg) rotateX(135deg);
+                    background-position: 0% 100%;
+                }
+                100% {
+                    transform: rotateY(360deg) rotateX(180deg);
+                    background-position: 0% 50%;
+                }
+            }
+
+            /* Black Hole */
+            .black-hole {
+                animation: blackHole 4s ease-in-out infinite;
+                background: radial-gradient(circle, transparent 20%, #000000 40%, #ffffff 80%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                filter: contrast(10);
+            }
+            @keyframes blackHole {
+                0%, 100% {
+                    transform: scale(1) rotate(0deg);
+                    filter: contrast(10) invert(0);
+                }
+                50% {
+                    transform: scale(0.1) rotate(360deg);
+                    filter: contrast(20) invert(1);
+                }
+            }
+
+            /* EXTREME Supernova */
+            .supernova {
+                animation: supernova 3s ease-out infinite, supernovaShockwave 1s ease-out infinite 0.5s;
+                color: #ffdf00;
+                text-shadow: 0 0 20px #ffdf00, 0 0 40px #ff6b35, 0 0 80px #ff1744;
+                position: relative;
+            }
+            @keyframes supernova {
+                0% {
+                    transform: scale(0.01);
+                    opacity: 0;
+                    text-shadow: 0 0 5px #ffdf00;
+                    filter: brightness(1) saturate(1) hue-rotate(0deg);
+                }
+                5% {
+                    transform: scale(0.5);
+                    opacity: 0.8;
+                    text-shadow: 0 0 40px #ffdf00, 0 0 80px #ff6b35, 0 0 120px #ff1744;
+                    filter: brightness(3) saturate(2) hue-rotate(45deg);
+                }
+                15% {
+                    transform: scale(2.5);
+                    opacity: 1;
+                    text-shadow: 0 0 100px #ffdf00, 0 0 200px #ff6b35, 0 0 300px #ff1744, 0 0 400px #ffffff;
+                    filter: brightness(8) saturate(5) hue-rotate(90deg);
+                }
+                30% {
+                    transform: scale(4);
+                    opacity: 1;
+                    text-shadow: 0 0 200px #ffdf00, 0 0 400px #ff6b35, 0 0 600px #ff1744, 0 0 800px #ffffff, 0 0 1000px #00ffff;
+                    filter: brightness(15) saturate(8) hue-rotate(180deg);
+                }
+                60% {
+                    transform: scale(6);
+                    opacity: 0.8;
+                    text-shadow: 0 0 300px #ffdf00, 0 0 600px #ff6b35, 0 0 900px #ff1744, 0 0 1200px #ffffff, 0 0 1500px #00ffff;
+                    filter: brightness(10) saturate(6) hue-rotate(270deg);
+                }
+                85% {
+                    transform: scale(12);
+                    opacity: 0.4;
+                    text-shadow: 0 0 500px #ffdf00, 0 0 1000px #ff6b35, 0 0 1500px #ff1744, 0 0 2000px #ffffff, 0 0 2500px #00ffff;
+                    filter: brightness(5) saturate(3) hue-rotate(315deg);
+                }
+                100% {
+                    transform: scale(25);
+                    opacity: 0;
+                    text-shadow: 0 0 1000px #ffdf00, 0 0 2000px #ff6b35, 0 0 3000px #ff1744, 0 0 4000px #ffffff, 0 0 5000px #00ffff;
+                    filter: brightness(1) saturate(1) hue-rotate(360deg);
+                }
+            }
+            @keyframes supernovaShockwave {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(255, 223, 0, 0.8);
+                }
+                50% {
+                    box-shadow: 0 0 0 200px rgba(255, 107, 53, 0.4);
+                }
+                100% {
+                    box-shadow: 0 0 0 400px rgba(255, 23, 68, 0);
+                }
+            }
+
+            /* Tornado Spin */
+            .tornado-spin {
+                animation: tornadoSpin 2s linear infinite;
+                color: #87ceeb;
+                text-shadow: 0 0 10px #87ceeb;
+            }
+            @keyframes tornadoSpin {
+                0% {
+                    transform: rotate(0deg) scale(1) skewX(0deg);
+                    text-shadow: 0 0 10px #87ceeb;
+                }
+                25% {
+                    transform: rotate(90deg) scale(1.2) skewX(15deg);
+                    text-shadow: 5px 0 15px #87ceeb, -5px 0 15px #ffffff;
+                }
+                50% {
+                    transform: rotate(180deg) scale(0.8) skewX(30deg);
+                    text-shadow: 10px 0 20px #87ceeb, -10px 0 20px #ffffff;
+                }
+                75% {
+                    transform: rotate(270deg) scale(1.1) skewX(15deg);
+                    text-shadow: 5px 0 15px #87ceeb, -5px 0 15px #ffffff;
+                }
+                100% {
+                    transform: rotate(360deg) scale(1) skewX(0deg);
+                    text-shadow: 0 0 10px #87ceeb;
+                }
+            }
+
+            /* Laser Beam */
+            .laser-beam {
+                animation: laserBeam 1.5s linear infinite;
+                color: #ff0000;
+                text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000;
+                background: linear-gradient(90deg, transparent, #ff0000, transparent);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-size: 200% 100%;
+            }
+            @keyframes laserBeam {
+                0% {
+                    background-position: -200% 0;
+                    text-shadow: 0 0 5px #ff0000;
+                }
+                50% {
+                    background-position: 0% 0;
+                    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000, 0 0 60px #ff0000;
+                }
+                100% {
+                    background-position: 200% 0;
+                    text-shadow: 0 0 5px #ff0000;
+                }
+            }
+
+            /* Earthquake */
+            .earthquake {
+                animation: earthquake 0.1s linear infinite;
+                color: #8b4513;
+                text-shadow: 2px 2px 0 #654321;
+            }
+            @keyframes earthquake {
+                0% { transform: translateX(-2px) translateY(1px); }
+                10% { transform: translateX(2px) translateY(-1px); }
+                20% { transform: translateX(-1px) translateY(2px); }
+                30% { transform: translateX(1px) translateY(-2px); }
+                40% { transform: translateX(-2px) translateY(1px); }
+                50% { transform: translateX(2px) translateY(-1px); }
+                60% { transform: translateX(-1px) translateY(2px); }
+                70% { transform: translateX(1px) translateY(-2px); }
+                80% { transform: translateX(-2px) translateY(1px); }
+                90% { transform: translateX(2px) translateY(-1px); }
+                100% { transform: translateX(-1px) translateY(2px); }
+            }
+
+            /* EXTREME Psychedelic */
+            .psychedelic {
+                animation: psychedelic 1s linear infinite, psychedelicPulse 0.5s ease-in-out infinite alternate;
+                background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080, #ff0000);
+                background-size: 800% 800%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                filter: saturate(5) contrast(3) brightness(2);
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px currentColor, 0 0 60px currentColor;
+            }
+            @keyframes psychedelic {
+                0% {
+                    background-position: 0% 50%;
+                    filter: saturate(5) contrast(3) hue-rotate(0deg) brightness(2) blur(0px);
+                    transform: scale(1) rotate(0deg);
+                }
+                20% {
+                    background-position: 80% 80%;
+                    filter: saturate(8) contrast(4) hue-rotate(72deg) brightness(3) blur(1px);
+                    transform: scale(1.1) rotate(36deg);
+                }
+                40% {
+                    background-position: 100% 0%;
+                    filter: saturate(6) contrast(5) hue-rotate(144deg) brightness(2.5) blur(0px);
+                    transform: scale(0.9) rotate(72deg);
+                }
+                60% {
+                    background-position: 20% 100%;
+                    filter: saturate(9) contrast(3) hue-rotate(216deg) brightness(3.5) blur(1px);
+                    transform: scale(1.15) rotate(108deg);
+                }
+                80% {
+                    background-position: 0% 20%;
+                    filter: saturate(7) contrast(6) hue-rotate(288deg) brightness(2) blur(0px);
+                    transform: scale(0.85) rotate(144deg);
+                }
+                100% {
+                    background-position: 0% 50%;
+                    filter: saturate(5) contrast(3) hue-rotate(360deg) brightness(2) blur(0px);
+                    transform: scale(1) rotate(180deg);
+                }
+            }
+            @keyframes psychedelicPulse {
+                0% {
+                    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px currentColor, 0 0 60px currentColor;
+                }
+                100% {
+                    text-shadow: 0 0 40px rgba(255, 255, 255, 1), 0 0 80px currentColor, 0 0 120px currentColor, 0 0 160px rgba(255, 255, 255, 0.5);
+                }
+            }
+
+            /* Virus Spread */
+            .virus-spread {
+                animation: virusSpread 3s ease-in-out infinite;
+                color: #32cd32;
+                position: relative;
+            }
+            @keyframes virusSpread {
+                0% {
+                    transform: scale(1);
+                    text-shadow: 0 0 10px #32cd32;
+                }
+                25% {
+                    transform: scale(1.2);
+                    text-shadow: 0 0 20px #32cd32, 10px 0 10px #ff0000, -10px 0 10px #ff0000;
+                }
+                50% {
+                    transform: scale(1.5);
+                    text-shadow: 0 0 30px #32cd32, 20px 0 20px #ff0000, -20px 0 20px #ff0000, 0 20px 20px #ff0000, 0 -20px 20px #ff0000;
+                }
+                75% {
+                    transform: scale(1.8);
+                    text-shadow: 0 0 40px #32cd32, 30px 0 30px #ff0000, -30px 0 30px #ff0000, 0 30px 30px #ff0000, 0 -30px 30px #ff0000, 21px 21px 15px #ff0000, -21px -21px 15px #ff0000;
+                }
+                100% {
+                    transform: scale(2);
+                    text-shadow: 0 0 50px #32cd32, 40px 0 40px #ff0000, -40px 0 40px #ff0000, 0 40px 40px #ff0000, 0 -40px 40px #ff0000, 28px 28px 20px #ff0000, -28px -28px 20px #ff0000, 40px -40px 20px #ff0000, -40px 40px 20px #ff0000;
+                }
+            }
+
+            /* EXTREME Nuclear Fusion */
+            .nuclear-fusion {
+                animation: nuclearFusion 3s ease-in-out infinite, nuclearPulse 0.5s ease-in-out infinite, nuclearRotate 2s linear infinite;
+                color: #ffff00;
+                text-shadow: 0 0 30px #ffff00, 0 0 60px #ff6b35, 0 0 90px #00ff00;
+                position: relative;
+            }
+            @keyframes nuclearFusion {
+                0%, 100% {
+                    transform: scale(1);
+                    text-shadow: 0 0 30px #ffff00, 0 0 60px #ff6b35, 0 0 90px #00ff00;
+                    filter: brightness(2) contrast(1) saturate(2);
+                }
+                25% {
+                    transform: scale(0.8);
+                    text-shadow: 0 0 60px #ffff00, 0 0 120px #ff6b35, 0 0 180px #00ff00, 0 0 240px #00ffff;
+                    filter: brightness(5) contrast(3) saturate(5);
+                }
+                50% {
+                    transform: scale(0.05);
+                    text-shadow: 0 0 200px #ffff00, 0 0 400px #ff6b35, 0 0 600px #ffffff, 0 0 800px #00ff00, 0 0 1000px #ff00ff;
+                    filter: brightness(20) contrast(10) saturate(10);
+                }
+                75% {
+                    transform: scale(3);
+                    text-shadow: 0 0 150px #ffff00, 0 0 300px #ff6b35, 0 0 450px #ffffff, 0 0 600px #00ff00, 0 0 750px #ff00ff;
+                    filter: brightness(8) contrast(5) saturate(8);
+                }
+            }
+            @keyframes nuclearPulse {
+                0%, 100% {
+                    box-shadow: 0 0 0 0 rgba(255, 255, 0, 0.8), 0 0 0 0 rgba(255, 107, 53, 0.6);
+                }
+                50% {
+                    box-shadow: 0 0 0 30px rgba(255, 255, 0, 0.4), 0 0 0 60px rgba(255, 107, 53, 0.2);
+                }
+            }
+            @keyframes nuclearRotate {
+                0% { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+
+            /* Time Distortion */
+            .time-distortion {
+                animation: timeDistortion 4s ease-in-out infinite;
+                color: #9370db;
+                text-shadow: 0 0 10px #9370db;
+            }
+            @keyframes timeDistortion {
+                0% {
+                    transform: scale(1) skewX(0deg);
+                    text-shadow: 0 0 10px #9370db;
+                    filter: blur(0px);
+                }
+                25% {
+                    transform: scale(0.5) skewX(45deg);
+                    text-shadow: 0 0 20px #9370db, 10px 0 10px #ff69b4;
+                    filter: blur(2px);
+                }
+                50% {
+                    transform: scale(2) skewX(0deg);
+                    text-shadow: 0 0 30px #9370db, 20px 0 20px #ff69b4, -20px 0 20px #00ffff;
+                    filter: blur(0px);
+                }
+                75% {
+                    transform: scale(0.5) skewX(-45deg);
+                    text-shadow: 0 0 20px #9370db, -10px 0 10px #ff69b4;
+                    filter: blur(2px);
+                }
+                100% {
+                    transform: scale(1) skewX(0deg);
+                    text-shadow: 0 0 10px #9370db;
+                    filter: blur(0px);
+                }
+            }
+
+            /* Galaxy Spiral */
+            .galaxy-spiral {
+                animation: galaxySpiral 5s linear infinite;
+                background: radial-gradient(circle, #4b0082 0%, #9370db 50%, #ffffff 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            @keyframes galaxySpiral {
+                0% {
+                    transform: rotate(0deg) scale(1);
+                    background-size: 100% 100%;
+                }
+                25% {
+                    transform: rotate(90deg) scale(1.2);
+                    background-size: 150% 150%;
+                }
+                50% {
+                    transform: rotate(180deg) scale(0.8);
+                    background-size: 50% 50%;
+                }
+                75% {
+                    transform: rotate(270deg) scale(1.1);
+                    background-size: 125% 125%;
+                }
+                100% {
+                    transform: rotate(360deg) scale(1);
+                    background-size: 100% 100%;
+                }
+            }
+
+            /* Lava Flow */
+            .lava-flow {
+                animation: lavaFlow 3s ease-in-out infinite;
+                background: linear-gradient(45deg, #ff4500, #ff6347, #ff8c00, #ffa500);
+                background-size: 400% 400%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow: 0 0 20px #ff4500;
+            }
+            @keyframes lavaFlow {
+                0%, 100% {
+                    background-position: 0% 50%;
+                    filter: brightness(1) saturate(1);
+                }
+                50% {
+                    background-position: 100% 50%;
+                    filter: brightness(1.5) saturate(2);
+                }
+            }
+
+            /* Ice Freeze */
+            .ice-freeze {
+                animation: iceFreeze 2s ease-in-out infinite;
+                color: #00ffff;
+                text-shadow: 0 0 10px #00ffff, 0 0 20px #ffffff;
+            }
+            @keyframes iceFreeze {
+                0% {
+                    transform: scale(1);
+                    text-shadow: 0 0 10px #00ffff, 0 0 20px #ffffff;
+                    filter: blur(0px);
+                }
+                50% {
+                    transform: scale(1.1);
+                    text-shadow: 0 0 20px #00ffff, 0 0 40px #ffffff, 0 0 60px #e0e0e0;
+                    filter: blur(1px);
+                }
+                100% {
+                    transform: scale(1);
+                    text-shadow: 0 0 10px #00ffff, 0 0 20px #ffffff;
+                    filter: blur(0px);
+                }
+            }
+
+            /* EXTREME Lightning Storm */
+            .lightning-storm {
+                animation: lightningStorm 0.15s linear infinite, lightningShake 0.1s linear infinite;
+                color: #ffff00;
+                text-shadow: 0 0 10px #ffff00, 0 0 20px #ffffff, 0 0 30px #0080ff;
+                position: relative;
+            }
+            @keyframes lightningStorm {
+                0%, 85%, 100% {
+                    opacity: 1;
+                    text-shadow: 0 0 10px #ffff00, 0 0 20px #ffffff, 0 0 30px #0080ff;
+                    filter: brightness(1) contrast(1);
+                }
+                2%, 8%, 12%, 18%, 83% {
+                    opacity: 0.1;
+                    text-shadow: 0 0 2px #ffff00;
+                    filter: brightness(0.5) contrast(0.5);
+                }
+                5%, 15% {
+                    opacity: 1;
+                    text-shadow: 0 0 50px #ffff00, 0 0 100px #ffffff, 0 0 150px #0080ff, 0 0 200px #ff00ff;
+                    filter: brightness(5) contrast(3);
+                }
+                7%, 17% {
+                    opacity: 0.05;
+                    text-shadow: 0 0 1px #ffff00;
+                    filter: brightness(0.2) contrast(0.2);
+                }
+                10% {
+                    opacity: 1;
+                    text-shadow: 0 0 80px #ffff00, 0 0 160px #ffffff, 0 0 240px #0080ff, 0 0 320px #ff00ff, 0 0 400px #00ff00;
+                    filter: brightness(8) contrast(5);
+                }
+            }
+            @keyframes lightningShake {
+                0% { transform: translateX(0) translateY(0) skewX(0deg); }
+                10% { transform: translateX(-3px) translateY(2px) skewX(2deg); }
+                20% { transform: translateX(3px) translateY(-2px) skewX(-2deg); }
+                30% { transform: translateX(-2px) translateY(3px) skewX(1deg); }
+                40% { transform: translateX(2px) translateY(-3px) skewX(-1deg); }
+                50% { transform: translateX(-4px) translateY(1px) skewX(3deg); }
+                60% { transform: translateX(4px) translateY(-1px) skewX(-3deg); }
+                70% { transform: translateX(-1px) translateY(4px) skewX(1deg); }
+                80% { transform: translateX(1px) translateY(-4px) skewX(-1deg); }
+                90% { transform: translateX(-2px) translateY(2px) skewX(2deg); }
+                100% { transform: translateX(0) translateY(0) skewX(0deg); }
+            }
+
+            /* Gravity Well */
+            .gravity-well {
+                animation: gravityWell 3s ease-in-out infinite;
+                background: radial-gradient(circle, transparent 30%, #8a2be2 70%, #000000 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            @keyframes gravityWell {
+                0%, 100% {
+                    transform: scale(1) rotate(0deg);
+                    background-size: 100% 100%;
+                }
+                50% {
+                    transform: scale(0.3) rotate(180deg);
+                    background-size: 300% 300%;
+                }
+            }
+
+            /* Radioactive */
+            .radioactive {
+                animation: radioactive 2s linear infinite;
+                color: #39ff14;
+                text-shadow: 0 0 10px #39ff14, 0 0 20px #32cd32;
+            }
+            @keyframes radioactive {
+                0%, 100% {
+                    text-shadow: 0 0 10px #39ff14, 0 0 20px #32cd32;
+                    filter: brightness(1);
+                }
+                25% {
+                    text-shadow: 0 0 20px #39ff14, 0 0 40px #32cd32, 0 0 60px #ffff00;
+                    filter: brightness(1.5);
+                }
+                50% {
+                    text-shadow: 0 0 30px #39ff14, 0 0 60px #32cd32, 0 0 90px #ffff00;
+                    filter: brightness(2);
+                }
+                75% {
+                    text-shadow: 0 0 20px #39ff14, 0 0 40px #32cd32, 0 0 60px #ffff00;
+                    filter: brightness(1.5);
+                }
+            }
+
+            /* Solar Flare */
+            .solar-flare {
+                animation: solarFlare 2.5s ease-out infinite;
+                background: linear-gradient(45deg, #ffa500, #ff8c00, #ff6347, #ff4500);
+                background-size: 400% 400%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            @keyframes solarFlare {
+                0% {
+                    background-position: 0% 50%;
+                    transform: scale(1);
+                    filter: brightness(1);
+                }
+                50% {
+                    background-position: 100% 50%;
+                    transform: scale(2);
+                    filter: brightness(3);
+                }
+                100% {
+                    background-position: 0% 50%;
+                    transform: scale(1);
+                    filter: brightness(1);
+                }
+            }
+
+            /* Wormhole */
+            .wormhole {
+                animation: wormhole 4s linear infinite;
+                background: radial-gradient(circle, #800080 0%, #4b0082 50%, #000000 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            @keyframes wormhole {
+                0% {
+                    transform: scale(1) rotate(0deg);
+                    background-size: 100% 100%;
+                }
+                25% {
+                    transform: scale(0.1) rotate(90deg);
+                    background-size: 1000% 1000%;
+                }
+                50% {
+                    transform: scale(0.01) rotate(180deg);
+                    background-size: 5000% 5000%;
+                }
+                75% {
+                    transform: scale(0.1) rotate(270deg);
+                    background-size: 1000% 1000%;
+                }
+                100% {
+                    transform: scale(1) rotate(360deg);
+                    background-size: 100% 100%;
+                }
+            }
+
+            /* Add all remaining new animations */
+            .meteor-shower { animation: meteorShower 3s linear infinite; color: #ff6347; text-shadow: 0 0 20px #ff6347; }
+            @keyframes meteorShower {
+                0% { transform: translateX(-100px) translateY(-100px) rotate(45deg); opacity: 0; }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { transform: translateX(100px) translateY(100px) rotate(45deg); opacity: 0; }
+            }
+
+            .cosmic-ray { animation: cosmicRay 2s linear infinite; color: #00ced1; text-shadow: 0 0 10px #00ced1; }
+            @keyframes cosmicRay {
+                0% { transform: translateX(-200px) scale(0.1); opacity: 0; }
+                50% { transform: translateX(0) scale(1); opacity: 1; }
+                100% { transform: translateX(200px) scale(0.1); opacity: 0; }
+            }
+
+            .dark-matter { animation: darkMatter 4s ease-in-out infinite; color: #2f4f4f; filter: invert(1); }
+            @keyframes darkMatter {
+                0%, 100% { opacity: 0.1; transform: scale(1); }
+                50% { opacity: 1; transform: scale(1.5); }
+            }
+
+            .quantum-entanglement { animation: quantumEntanglement 3s linear infinite; color: #ff1493; }
+            @keyframes quantumEntanglement {
+                0% { transform: translateX(0) scale(1); }
+                25% { transform: translateX(50px) scale(0.5); }
+                50% { transform: translateX(0) scale(1); }
+                75% { transform: translateX(-50px) scale(0.5); }
+                100% { transform: translateX(0) scale(1); }
+            }
+
+            .parallel-universe { animation: parallelUniverse 5s ease-in-out infinite; color: #7fffd4; }
+            @keyframes parallelUniverse {
+                0%, 100% { transform: rotateY(0deg) translateZ(0); }
+                50% { transform: rotateY(180deg) translateZ(100px); }
+            }
+
+            .multiverse { animation: multiverse 6s linear infinite; color: #ff69b4; }
+            @keyframes multiverse {
+                0% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
+                100% { transform: scale(1) rotate(360deg); filter: hue-rotate(360deg); }
+            }
+
+            .hyperdrive { animation: hyperdrive 1s linear infinite; color: #1e90ff; }
+            @keyframes hyperdrive {
+                0% { transform: translateX(-1000px) scaleX(10); opacity: 0; }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { transform: translateX(1000px) scaleX(10); opacity: 0; }
+            }
+
+            .teleport { animation: teleport 2s ease-in-out infinite; color: #ff6b35; }
+            @keyframes teleport {
+                0%, 100% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0; transform: scale(0); }
+            }
+
+            .mind-control { animation: mindControl 3s ease-in-out infinite; color: #ff1493; }
+            @keyframes mindControl {
+                0%, 100% { transform: scale(1) rotate(0deg); filter: blur(0px); }
+                50% { transform: scale(1.2) rotate(180deg); filter: blur(2px); }
+            }
+
+            .reality-break { animation: realityBreak 1s linear infinite; color: #dc143c; }
+            @keyframes realityBreak {
+                0% { transform: translateX(0); }
+                10% { transform: translateX(-10px) scaleY(1.1); }
+                20% { transform: translateX(10px) scaleY(0.9); }
+                30% { transform: translateX(-5px) scaleX(1.1); }
+                40% { transform: translateX(5px) scaleX(0.9); }
+                50% { transform: translateX(0) scale(1); }
+                60% { transform: translateX(-2px) rotateZ(1deg); }
+                70% { transform: translateX(2px) rotateZ(-1deg); }
+                80% { transform: translateX(-1px) rotateZ(0.5deg); }
+                90% { transform: translateX(1px) rotateZ(-0.5deg); }
+                100% { transform: translateX(0) rotateZ(0deg); }
+            }
+
+            .dimension-shift { animation: dimensionShift 4s ease-in-out infinite; color: #9932cc; }
+            @keyframes dimensionShift {
+                0%, 100% { transform: perspective(500px) rotateX(0deg) rotateY(0deg); }
+                25% { transform: perspective(500px) rotateX(90deg) rotateY(45deg); }
+                50% { transform: perspective(500px) rotateX(180deg) rotateY(90deg); }
+                75% { transform: perspective(500px) rotateX(270deg) rotateY(135deg); }
+            }
+
+            .energy-vortex { animation: energyVortex 2s linear infinite; color: #00ff00; }
+            @keyframes energyVortex {
+                0% { transform: rotate(0deg) scale(1); filter: brightness(1); }
+                50% { transform: rotate(180deg) scale(1.5); filter: brightness(2); }
+                100% { transform: rotate(360deg) scale(1); filter: brightness(1); }
+            }
+
+            .power-surge { animation: powerSurge 1.5s ease-in-out infinite; color: #ffff00; }
+            @keyframes powerSurge {
+                0%, 100% { transform: scale(1); text-shadow: 0 0 10px #ffff00; }
+                50% { transform: scale(2); text-shadow: 0 0 50px #ffff00, 0 0 100px #ffffff; }
+            }
         </style>
     </head>
 
@@ -1248,7 +1937,7 @@
                             <div class="demo-content" style="min-height: 300px; display: flex; align-items: center; justify-content: center; position: relative; font-size: 2.5rem; font-weight: bold;">
                                 <!-- Fixed size placeholder to prevent layout shift -->
                                 <div style="min-height: 200px; min-width: 500px; display: flex; align-items: center; justify-content: center;">
-                                    <div v-if="randomEffectActive" 
+                                    <div v-if="randomEffectActive || (selectMode && currentRandomEffect.name)" 
                                          :class="currentRandomEffect.class" 
                                          :style="currentRandomEffect.style"
                                          :data-text="currentRandomEffect.dataText"
@@ -1256,6 +1945,11 @@
                                          ref="randomEffectContainer"
                                          class="demo-text random-effect-container"
                                          style="font-size: 2.5rem; font-weight: bold; z-index: 10; text-align: center; display: block;">
+                                    </div>
+                                    <div v-else-if="selectMode && !currentRandomEffect.name" style="text-align: center; color: rgba(255,255,255,0.8); font-size: 1.5rem;">
+                                        <i class="fas fa-list" style="font-size: 4rem; margin-bottom: 20px; color: #4facfe;"></i><br>
+                                        Select an animation from the dropdown! 📋<br>
+                                        <small style="opacity: 0.7;">Choose your favorite effect!</small>
                                     </div>
                                     <div v-else style="text-align: center; color: rgba(255,255,255,0.8); font-size: 1.5rem;">
                                         <i class="fas fa-magic" style="font-size: 4rem; margin-bottom: 20px; color: #ff6b35;"></i><br>
@@ -1265,12 +1959,19 @@
                                 </div>
                             </div>
                             <div class="text-center mt-3">
-                                <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 15px;">
-                                    <span>Current Effect: <span style="color: #ff6b35; font-weight: bold; font-size: 1.2rem;">{{(randomEffectActive || selectMode) ? currentRandomEffect.name : 'None'}}</span></span>
-                                    <span v-if="randomEffectActive" style="background: rgba(255, 107, 53, 0.2); border-radius: 15px; padding: 8px 15px; color: #ff6b35; font-weight: bold; font-size: 1rem;">
-                                        ⏱️ Next in: {{secondsLeft}}s
-                                    </span>
-                                </p>
+                                <div style="text-align: center;">
+                                    <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 10px;">
+                                        Current Effect: <span style="color: #ff6b35; font-weight: bold; font-size: 1.2rem;">{{(randomEffectActive || selectMode) ? currentRandomEffect.name : 'None'}}</span>
+                                    </p>
+                                    <div v-if="randomEffectActive" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                        <div style="width: 200px; height: 10px; background: rgba(255, 255, 255, 0.2); border-radius: 5px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+                                            <div style="height: 100%; background: linear-gradient(90deg, #ff6b35, #f093fb); border-radius: 5px; transition: width 0.1s linear; box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);" :style="{width: progressBarWidth + '%'}"></div>
+                                        </div>
+                                        <span style="background: rgba(255, 107, 53, 0.2); border-radius: 15px; padding: 8px 15px; color: #ff6b35; font-weight: bold; font-size: 1rem;">
+                                            ⏱️ Next in: {{secondsLeft}}s
+                                        </span>
+                                    </div>
+                                </div>
                                 <p v-if="!randomEffectActive && !selectMode" style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 5px;">
                                     🎬 This is a page to test animations and visual effects
                                 </p>
@@ -1318,11 +2019,13 @@
                    randomEffectActive: false,
                    currentRandomEffect: {},
                    autoRefreshTimer: null,
-                   autoRefreshInterval: 7000, // 7 seconds
+                   autoRefreshInterval: 5000, // 5 seconds
                    countdownTimer: null,
                    secondsLeft: 0,
                    selectMode: false,
                    selectedAnimation: '',
+                   selectedAnimationTimer: null,
+                   progressBarWidth: 0,
                    randomEffects: [
                        // Existing effects
                        {
@@ -1343,10 +2046,11 @@
                            content: 'BOUNCING WITH STYLE!',
                            style: 'color: #4facfe;'
                        },
-                       {
+                                               {
                            name: 'Matrix Rain',
                            class: 'matrix-text',
                            content: 'THE MATRIX HAS YOU...',
+                           originalContent: 'THE MATRIX HAS YOU...',
                            style: 'color: #00ff00; font-family: monospace;'
                        },
                        {
@@ -1373,10 +2077,11 @@
                            content: 'SPINNING IN 3D SPACE!',
                            style: 'color: #ff9ff3;'
                        },
-                       {
+                                               {
                            name: 'Wave Effect',
                            class: 'wave-text',
                            content: 'RIDING THE WAVE!',
+                           originalContent: 'RIDING THE WAVE!',
                            style: 'color: #54a0ff;'
                        },
                        {
@@ -1519,6 +2224,193 @@
                            class: 'magnetic-enter-active',
                            content: '🧲 MAGNETIC FIELD! 🧲',
                            style: 'color: #3742fa; font-weight: bold;'
+                       },
+                       // NEW AWESOME ANIMATIONS
+                       {
+                           name: 'DNA Helix',
+                           class: 'dna-helix',
+                           content: '🧬 DNA HELIX! 🧬',
+                           style: 'color: #00ff88; font-weight: bold;'
+                       },
+                       {
+                           name: 'Black Hole',
+                           class: 'black-hole',
+                           content: '⚫ BLACK HOLE! ⚫',
+                           style: 'color: #ffffff; font-weight: bold;'
+                       },
+                       {
+                           name: 'Supernova',
+                           class: 'supernova',
+                           content: '💥 SUPERNOVA! 💥',
+                           style: 'color: #ffdf00; font-weight: bold;'
+                       },
+                       {
+                           name: 'Tornado Spin',
+                           class: 'tornado-spin',
+                           content: '🌪️ TORNADO SPIN! 🌪️',
+                           style: 'color: #87ceeb; font-weight: bold;'
+                       },
+                       {
+                           name: 'Laser Beam',
+                           class: 'laser-beam',
+                           content: '🔴 LASER BEAM! 🔴',
+                           style: 'color: #ff0000; font-weight: bold;'
+                       },
+                       {
+                           name: 'Earthquake',
+                           class: 'earthquake',
+                           content: '📳 EARTHQUAKE! 📳',
+                           style: 'color: #8b4513; font-weight: bold;'
+                       },
+                       {
+                           name: 'Psychedelic',
+                           class: 'psychedelic',
+                           content: '🌈 PSYCHEDELIC! 🌈',
+                           style: 'font-weight: bold;'
+                       },
+                       {
+                           name: 'Virus Spread',
+                           class: 'virus-spread',
+                           content: '🦠 VIRUS SPREAD! 🦠',
+                           style: 'color: #32cd32; font-weight: bold;'
+                       },
+                       {
+                           name: 'Nuclear Fusion',
+                           class: 'nuclear-fusion',
+                           content: '☢️ NUCLEAR FUSION! ☢️',
+                           style: 'color: #ffff00; font-weight: bold;'
+                       },
+                       {
+                           name: 'Time Distortion',
+                           class: 'time-distortion',
+                           content: '⏰ TIME DISTORTION! ⏰',
+                           style: 'color: #9370db; font-weight: bold;'
+                       },
+                       {
+                           name: 'Galaxy Spiral',
+                           class: 'galaxy-spiral',
+                           content: '🌌 GALAXY SPIRAL! 🌌',
+                           style: 'color: #4b0082; font-weight: bold;'
+                       },
+                       {
+                           name: 'Lava Flow',
+                           class: 'lava-flow',
+                           content: '🌋 LAVA FLOW! 🌋',
+                           style: 'color: #ff4500; font-weight: bold;'
+                       },
+                       {
+                           name: 'Ice Freeze',
+                           class: 'ice-freeze',
+                           content: '🧊 ICE FREEZE! 🧊',
+                           style: 'color: #00ffff; font-weight: bold;'
+                       },
+                       {
+                           name: 'Lightning Storm',
+                           class: 'lightning-storm',
+                           content: '⛈️ LIGHTNING STORM! ⛈️',
+                           style: 'color: #ffff00; font-weight: bold;'
+                       },
+                       {
+                           name: 'Gravity Well',
+                           class: 'gravity-well',
+                           content: '🕳️ GRAVITY WELL! 🕳️',
+                           style: 'color: #8a2be2; font-weight: bold;'
+                       },
+                       {
+                           name: 'Radioactive',
+                           class: 'radioactive',
+                           content: '☢️ RADIOACTIVE! ☢️',
+                           style: 'color: #39ff14; font-weight: bold;'
+                       },
+                       {
+                           name: 'Solar Flare',
+                           class: 'solar-flare',
+                           content: '☀️ SOLAR FLARE! ☀️',
+                           style: 'color: #ffa500; font-weight: bold;'
+                       },
+                       {
+                           name: 'Wormhole',
+                           class: 'wormhole',
+                           content: '🌀 WORMHOLE! 🌀',
+                           style: 'color: #800080; font-weight: bold;'
+                       },
+                       {
+                           name: 'Meteor Shower',
+                           class: 'meteor-shower',
+                           content: '☄️ METEOR SHOWER! ☄️',
+                           style: 'color: #ff6347; font-weight: bold;'
+                       },
+                       {
+                           name: 'Cosmic Ray',
+                           class: 'cosmic-ray',
+                           content: '🌟 COSMIC RAY! 🌟',
+                           style: 'color: #00ced1; font-weight: bold;'
+                       },
+                       {
+                           name: 'Dark Matter',
+                           class: 'dark-matter',
+                           content: '⚫ DARK MATTER! ⚫',
+                           style: 'color: #2f4f4f; font-weight: bold;'
+                       },
+                       {
+                           name: 'Quantum Entanglement',
+                           class: 'quantum-entanglement',
+                           content: '🔗 QUANTUM ENTANGLEMENT! 🔗',
+                           style: 'color: #ff1493; font-weight: bold;'
+                       },
+                       {
+                           name: 'Parallel Universe',
+                           class: 'parallel-universe',
+                           content: '🌐 PARALLEL UNIVERSE! 🌐',
+                           style: 'color: #7fffd4; font-weight: bold;'
+                       },
+                       {
+                           name: 'Multiverse',
+                           class: 'multiverse',
+                           content: '♾️ MULTIVERSE! ♾️',
+                           style: 'color: #ff69b4; font-weight: bold;'
+                       },
+                       {
+                           name: 'Hyperdrive',
+                           class: 'hyperdrive',
+                           content: '🚀 HYPERDRIVE! 🚀',
+                           style: 'color: #1e90ff; font-weight: bold;'
+                       },
+                       {
+                           name: 'Teleport',
+                           class: 'teleport',
+                           content: '✨ TELEPORT! ✨',
+                           style: 'color: #ff6b35; font-weight: bold;'
+                       },
+                       {
+                           name: 'Mind Control',
+                           class: 'mind-control',
+                           content: '🧠 MIND CONTROL! 🧠',
+                           style: 'color: #ff1493; font-weight: bold;'
+                       },
+                       {
+                           name: 'Reality Break',
+                           class: 'reality-break',
+                           content: '💥 REALITY BREAK! 💥',
+                           style: 'color: #dc143c; font-weight: bold;'
+                       },
+                       {
+                           name: 'Dimension Shift',
+                           class: 'dimension-shift',
+                           content: '🔄 DIMENSION SHIFT! 🔄',
+                           style: 'color: #9932cc; font-weight: bold;'
+                       },
+                       {
+                           name: 'Energy Vortex',
+                           class: 'energy-vortex',
+                           content: '🌀 ENERGY VORTEX! 🌀',
+                           style: 'color: #00ff00; font-weight: bold;'
+                       },
+                       {
+                           name: 'Power Surge',
+                           class: 'power-surge',
+                           content: '⚡ POWER SURGE! ⚡',
+                           style: 'color: #ffff00; font-weight: bold;'
                        }
                    ]
                },
@@ -1640,6 +2532,9 @@
                         this.selectMode = true;
                         this.randomEffectActive = false;
                         this.selectedAnimation = '';
+                        this.currentRandomEffect = {};
+                        this.stopAutoRefresh();
+                        this.stopCountdown();
                     },
                     playSelectedAnimation: function(){
                         if (this.selectedAnimation) {
@@ -1647,7 +2542,22 @@
                             if (effect) {
                                 this.currentRandomEffect = { ...effect };
                                 this.processSpecialEffect();
+                                // Start continuous animation loop for selected animations
+                                this.startSelectedAnimationLoop();
                             }
+                        }
+                    },
+                    startSelectedAnimationLoop: function(){
+                        // Clear any existing timers
+                        this.stopAutoRefresh();
+                        
+                        // Set up continuous animation refresh for selected mode
+                        if (this.selectMode && this.currentRandomEffect.name) {
+                            this.selectedAnimationTimer = setInterval(() => {
+                                if (this.selectMode && this.currentRandomEffect.name) {
+                                    this.processSpecialEffect();
+                                }
+                            }, 5000); // Refresh every 5 seconds to keep animation alive
                         }
                     },
                     resetToInitial: function(){
@@ -1657,6 +2567,13 @@
                         this.currentRandomEffect = {};
                         this.stopAutoRefresh();
                         this.stopCountdown();
+                        this.stopSelectedAnimationTimer();
+                    },
+                    stopSelectedAnimationTimer: function(){
+                        if (this.selectedAnimationTimer) {
+                            clearInterval(this.selectedAnimationTimer);
+                            this.selectedAnimationTimer = null;
+                        }
                     },
                     processSpecialEffect: function(){
                         // Temporarily hide current effect for smooth transition (only for random mode)
@@ -1668,12 +2585,14 @@
                         const processEffect = () => {
                             this.$nextTick(() => {
                                 if (this.currentRandomEffect.name === 'Matrix Rain') {
-                                    this.currentRandomEffect.content = this.currentRandomEffect.content.split('').map((char, index) => 
+                                    const originalText = this.currentRandomEffect.originalContent || this.currentRandomEffect.content;
+                                    this.currentRandomEffect.content = originalText.split('').map((char, index) => 
                                         `<span class="matrix-char" style="animation-delay: ${index * 0.05}s">${char}</span>`
                                     ).join('');
                                 }
                                 else if (this.currentRandomEffect.name === 'Wave Effect') {
-                                    this.currentRandomEffect.content = this.currentRandomEffect.content.split('').map((char, index) => 
+                                    const originalText = this.currentRandomEffect.originalContent || this.currentRandomEffect.content;
+                                    this.currentRandomEffect.content = originalText.split('').map((char, index) => 
                                         `<span class="wave-char" style="animation-delay: ${index * 0.1}s">${char === ' ' ? '&nbsp;' : char}</span>`
                                     ).join('');
                                 }
@@ -1733,14 +2652,24 @@
                         
                         // Set initial countdown value
                         this.secondsLeft = Math.floor(this.autoRefreshInterval / 1000);
+                        this.progressBarWidth = 100;
                         
-                        // Start countdown timer (update every second)
+                        // Start countdown timer (update every 100ms for smooth progress bar)
+                        const totalMs = this.autoRefreshInterval;
+                        const intervalMs = 100;
+                        let elapsedMs = 0;
+                        
                         this.countdownTimer = setInterval(() => {
-                            this.secondsLeft--;
-                            if (this.secondsLeft <= 0) {
+                            elapsedMs += intervalMs;
+                            this.secondsLeft = Math.ceil((totalMs - elapsedMs) / 1000);
+                            this.progressBarWidth = Math.max(0, ((totalMs - elapsedMs) / totalMs) * 100);
+                            
+                            if (elapsedMs >= totalMs) {
                                 this.secondsLeft = Math.floor(this.autoRefreshInterval / 1000);
+                                this.progressBarWidth = 100;
+                                elapsedMs = 0;
                             }
-                        }, 1000);
+                        }, intervalMs);
                     },
                     stopCountdown: function(){
                         if (this.countdownTimer) {
@@ -1755,6 +2684,7 @@
                             this.autoRefreshTimer = null;
                         }
                         this.stopCountdown();
+                        this.stopSelectedAnimationTimer();
                     },
                     generateRandomEffect: function(){
                         const randomIndex = Math.floor(Math.random() * this.randomEffects.length);
@@ -1768,19 +2698,19 @@
                         const existingParticles = this.$refs.randomEffectContainer.querySelectorAll('.explosion-particle');
                         existingParticles.forEach(p => p.remove());
                         
-                        // Create new particles
-                        const particleCount = 30;
+                        // Create EXTREME amount of particles (3 waves)
                         const container = this.$refs.randomEffectContainer;
                         const rect = container.getBoundingClientRect();
                         const centerX = rect.width / 2;
                         const centerY = rect.height / 2;
                         
-                        for(let i = 0; i < particleCount; i++){
+                        // Wave 1: Large outer explosion
+                        for(let i = 0; i < 50; i++){
                             const particle = document.createElement('div');
                             particle.className = 'explosion-particle';
                             
-                            const angle = (Math.PI * 2 * i) / particleCount;
-                            const velocity = 50 + Math.random() * 150;
+                            const angle = (Math.PI * 2 * i) / 50;
+                            const velocity = 100 + Math.random() * 200;
                             const dx = Math.cos(angle) * velocity;
                             const dy = Math.sin(angle) * velocity;
                             
@@ -1789,20 +2719,71 @@
                                 top: ${centerY}px;
                                 --dx: ${dx}px;
                                 --dy: ${dy}px;
-                                animation: explodeParticle 2s ease-out forwards;
-                                animation-delay: ${Math.random() * 0.3}s;
-                                background: radial-gradient(circle, #ff6b35, #f093fb, #4facfe);
-                                width: 6px;
-                                height: 6px;
+                                animation: explodeParticle 3s ease-out forwards;
+                                animation-delay: ${Math.random() * 0.2}s;
+                                background: radial-gradient(circle, #ff6b35 0%, #f093fb 50%, #4facfe 100%);
+                                width: ${8 + Math.random() * 8}px;
+                                height: ${8 + Math.random() * 8}px;
                             `;
                             
                             container.appendChild(particle);
-                            
-                            // Remove particle after animation
-                            setTimeout(() => {
-                                if(particle.parentNode) particle.remove();
-                            }, 2300);
+                            setTimeout(() => { if(particle.parentNode) particle.remove(); }, 3200);
                         }
+                        
+                        // Wave 2: Medium middle burst
+                        setTimeout(() => {
+                            for(let i = 0; i < 30; i++){
+                                const particle = document.createElement('div');
+                                particle.className = 'explosion-particle';
+                                
+                                const angle = Math.random() * Math.PI * 2;
+                                const velocity = 60 + Math.random() * 120;
+                                const dx = Math.cos(angle) * velocity;
+                                const dy = Math.sin(angle) * velocity;
+                                
+                                particle.style.cssText = `
+                                    left: ${centerX}px;
+                                    top: ${centerY}px;
+                                    --dx: ${dx}px;
+                                    --dy: ${dy}px;
+                                    animation: explodeParticle 2.5s ease-out forwards;
+                                    background: radial-gradient(circle, #f093fb 0%, #00f2fe 50%, #ff6b35 100%);
+                                    width: ${6 + Math.random() * 6}px;
+                                    height: ${6 + Math.random() * 6}px;
+                                `;
+                                
+                                container.appendChild(particle);
+                                setTimeout(() => { if(particle.parentNode) particle.remove(); }, 2700);
+                            }
+                        }, 300);
+                        
+                        // Wave 3: Fast inner sparkles
+                        setTimeout(() => {
+                            for(let i = 0; i < 40; i++){
+                                const particle = document.createElement('div');
+                                particle.className = 'explosion-particle';
+                                
+                                const angle = Math.random() * Math.PI * 2;
+                                const velocity = 30 + Math.random() * 80;
+                                const dx = Math.cos(angle) * velocity;
+                                const dy = Math.sin(angle) * velocity;
+                                
+                                particle.style.cssText = `
+                                    left: ${centerX}px;
+                                    top: ${centerY}px;
+                                    --dx: ${dx}px;
+                                    --dy: ${dy}px;
+                                    animation: explodeParticle 2s ease-out forwards;
+                                    background: radial-gradient(circle, #ffffff 0%, #4facfe 50%, #f093fb 100%);
+                                    width: ${4 + Math.random() * 4}px;
+                                    height: ${4 + Math.random() * 4}px;
+                                    box-shadow: 0 0 20px #ffffff, 0 0 40px currentColor;
+                                `;
+                                
+                                container.appendChild(particle);
+                                setTimeout(() => { if(particle.parentNode) particle.remove(); }, 2200);
+                            }
+                        }, 600);
                     }
                },
                watch: {
@@ -1828,6 +2809,7 @@
                    // Clean up timers when component is destroyed
                    this.stopAutoRefresh();
                    this.stopCountdown();
+                   this.stopSelectedAnimationTimer();
                }
            })
         </script>
