@@ -1,0 +1,399 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Music Showcase - Rexyrex</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/css/index.css">
+        <style>
+            /* Force dark theme for music page */
+            body {
+                background: #0a0a0a !important;
+                color: #ffffff !important;
+                min-height: 100vh;
+                font-family: 'Inter', sans-serif;
+                cursor: auto !important;
+            }
+            
+            /* Fix cursor visibility */
+            body, body *, html, html * {
+                cursor: auto !important;
+            }
+            
+            .music-section {
+                min-height: 100vh;
+                padding: 6rem 2rem 2rem 2rem;
+                position: relative;
+                z-index: 10;
+            }
+            
+            /* Animated Background - Same as other pages */
+            .animated-bg {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                background: 
+                    radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            }
+
+            .floating-shapes {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+
+            .shape {
+                position: absolute;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                opacity: 0.08;
+                animation: gentleDrift 25s infinite ease-in-out;
+            }
+
+            .shape-1 {
+                width: 60px;
+                height: 60px;
+                top: 15%;
+                left: 8%;
+                animation-delay: 0s;
+            }
+
+            .shape-2 {
+                width: 80px;
+                height: 80px;
+                top: 65%;
+                right: 12%;
+                animation-delay: -8s;
+            }
+
+            .shape-3 {
+                width: 40px;
+                height: 40px;
+                top: 85%;
+                left: 25%;
+                animation-delay: -16s;
+            }
+
+            .shape-4 {
+                width: 70px;
+                height: 70px;
+                top: 25%;
+                right: 35%;
+                animation-delay: -12s;
+            }
+
+            .shape-5 {
+                width: 90px;
+                height: 90px;
+                top: 75%;
+                left: 65%;
+                animation-delay: -4s;
+            }
+
+            @keyframes gentleDrift {
+                0%, 100% {
+                    transform: translateY(0px) translateX(0px);
+                    opacity: 0.08;
+                }
+                25% {
+                    transform: translateY(-15px) translateX(8px);
+                    opacity: 0.12;
+                }
+                50% {
+                    transform: translateY(-25px) translateX(-5px);
+                    opacity: 0.06;
+                }
+                75% {
+                    transform: translateY(-10px) translateX(-12px);
+                    opacity: 0.10;
+                }
+            }
+            
+            /* Music Cards */
+            .music-card {
+                background: rgba(255, 255, 255, 0.05) !important;
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                border-radius: 20px;
+                padding: 2.5rem;
+                margin-bottom: 2rem;
+                transition: all 0.4s ease;
+                position: relative;
+                overflow: hidden;
+                color: #ffffff !important;
+            }
+            
+            .music-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .music-card:hover::before {
+                opacity: 1;
+            }
+            
+            .music-card:hover {
+                transform: translateY(-10px) scale(1.02);
+                border-color: rgba(102, 126, 234, 0.4);
+                box-shadow: 0 25px 50px rgba(102, 126, 234, 0.3);
+            }
+            
+            .page-header {
+                text-align: center;
+                margin-bottom: 4rem;
+                animation: fadeInUp 1s ease-out;
+            }
+            
+            .page-title {
+                font-size: 4rem;
+                font-weight: 700;
+                background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+                background-size: 400% 400%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: gradientShift 4s ease infinite;
+                margin-bottom: 1rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.3rem;
+                color: rgba(255, 255, 255, 0.8);
+                font-weight: 300;
+            }
+            
+            @keyframes gradientShift {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+            }
+            
+            @keyframes fadeInUp {
+                0% {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            /* Track Styling */
+            .track-title {
+                font-size: 2.5rem;
+                font-weight: 600;
+                color: #64ffda !important;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .track-artist {
+                font-size: 1.4rem;
+                color: rgba(255, 255, 255, 0.8);
+                margin-bottom: 2rem;
+            }
+            
+            .soundcloud-container {
+                position: relative;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+                margin: 2rem 0;
+            }
+            
+            .soundcloud-container iframe {
+                border-radius: 15px;
+                transition: transform 0.3s ease;
+            }
+            
+            .soundcloud-container:hover iframe {
+                transform: scale(1.02);
+            }
+            
+
+            /* Newgrounds Button Hover Effects */
+            .newgrounds-btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                transition: left 0.5s ease;
+            }
+            
+            .newgrounds-btn:hover::before {
+                left: 100%;
+            }
+            
+            .newgrounds-btn {
+                cursor: pointer !important;
+            }
+            
+            .newgrounds-btn:hover {
+                transform: translateY(-2px) scale(1.05);
+                box-shadow: 0 8px 25px rgba(255, 105, 0, 0.5);
+                background: linear-gradient(45deg, #ff7a00, #ffb045);
+                cursor: pointer !important;
+            }
+            
+            .newgrounds-btn:active {
+                transform: translateY(0) scale(1.02);
+                box-shadow: 0 4px 15px rgba(255, 105, 0, 0.4);
+            }
+            
+            /* Animation for cards */
+            .music-card {
+                animation: slideInFromRight 0.8s ease-out;
+                animation-delay: 0.3s;
+                animation-fill-mode: both;
+            }
+            
+            @keyframes slideInFromRight {
+                0% {
+                    opacity: 0;
+                    transform: translateX(50px) rotateY(15deg);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateX(0) rotateY(0deg);
+                }
+            }
+            
+            /* Responsive */
+            @media (max-width: 768px) {
+                .page-title {
+                    font-size: 2.5rem;
+                }
+                
+                .track-title {
+                    font-size: 1.8rem;
+                }
+                
+
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="nav-placeholder"></div>
+        
+        <!-- Animated Background -->
+        <div class="animated-bg">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+                <div class="shape shape-5"></div>
+            </div>
+        </div>
+
+        <div class="music-section">
+            <div class="container">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1 class="page-title">🎵 Music Showcase 🎵</h1>
+                    <p class="page-subtitle">
+                        Discover the sonic creations and musical journey
+                    </p>
+                </div>
+
+                <!-- Featured Track -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="music-card">
+                            <h2 class="track-title">
+                                <i class="fas fa-music"></i>
+                                SuperPose
+                            </h2>
+                            <p class="track-artist">
+                                <i class="fas fa-user"></i> by Rexyrex
+                            </p>
+                            
+
+                            
+                            <!-- SoundCloud Embed -->
+                            <div class="soundcloud-container">
+                                <iframe 
+                                    width="100%" 
+                                    height="300" 
+                                    scrolling="no" 
+                                    frameborder="no" 
+                                    allow="autoplay" 
+                                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/220782743&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
+                                </iframe>
+                                <div style="font-size: 10px; color: #cccccc; line-break: anywhere; word-break: normal; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif; font-weight: 100; margin-top: 8px;">
+                                    <a href="https://soundcloud.com/rexyrex-1" title="Rexyrex" target="_blank" style="color: #cccccc; text-decoration: none;">Rexyrex</a> · <a href="https://soundcloud.com/rexyrex-1/550057-superpose" title="SuperPose" target="_blank" style="color: #cccccc; text-decoration: none;">SuperPose</a>
+                                </div>
+                            </div>
+
+                            
+                            <!-- Description -->
+                            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(102, 126, 234, 0.1); border-radius: 10px; border-left: 4px solid #667eea;">
+                                <h4 style="color: #64ffda; margin-bottom: 1rem;">
+                                    <i class="fas fa-info-circle"></i> About This Track
+                                </h4>
+                                <p style="color: rgba(255, 255, 255, 0.9); line-height: 1.6; margin: 0;">
+                                    "SuperPose" represents a unique blend of electronic elements and creative sound design. 
+                                    This track showcases experimental techniques in audio production and composition, 
+                                    demonstrating the artistic vision behind the Rexyrex project.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coming Soon Section -->
+                <div class="row justify-content-center mt-5">
+                    <div class="col-lg-8">
+                        <div class="music-card text-center">
+                            <h3 style="color: #64ffda; margin-bottom: 1.5rem;">
+                                <i class="fas fa-clock"></i> More Music Coming Soon
+                            </h3>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 1.1rem;">
+                                Stay tuned for more tracks, remixes, and musical experiments. 
+                                The creative journey continues...
+                            </p>
+                            <div style="margin-top: 2rem; text-align: center;">
+                                <a href="https://rexyrex.newgrounds.com/" 
+                                   target="_blank" 
+                                   class="newgrounds-btn"
+                                   style="display: inline-block; background: linear-gradient(45deg, #ff6900, #fcb045); color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 105, 0, 0.3); position: relative; overflow: hidden; cursor: pointer;">
+                                    <i class="fas fa-gamepad"></i> Follow on Newgrounds
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script>
+            // Load navbar
+            $(document).ready(function() {
+                $("#nav-placeholder").load("/navbar.html");
+            });
+        </script>
+    </body>
+</html> 

@@ -43,6 +43,23 @@
     color: var(--nav-text-primary) !important;
     font-size: 1.25rem;
     letter-spacing: -0.01em;
+    cursor: pointer !important;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #f59e0b);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: brandGradientShift 2s ease-in-out infinite;
+    letter-spacing: 0.02em;
+}
+
+@keyframes brandGradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .navbar-brand img {
@@ -67,6 +84,7 @@
     transition: var(--nav-transition-normal);
     position: relative;
     overflow: hidden;
+    cursor: pointer !important;
 }
 
 .nav-link::before {
@@ -130,6 +148,7 @@
     color: var(--nav-text-secondary);
     position: relative;
     overflow: hidden;
+    cursor: pointer !important;
 }
 
 .dropdown-item::before {
@@ -171,6 +190,7 @@
     padding: 0.5rem;
     border-radius: var(--nav-radius-md);
     background: var(--nav-bg-glass);
+    cursor: pointer !important;
 }
 
 .navbar-toggler:focus {

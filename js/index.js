@@ -129,6 +129,9 @@ function initCustomCursor() {
     let trailY = 0;
     let isMoving = false;
     let animationId = null;
+    
+    // Store animation ID globally for cleanup
+    window.cursorAnimationId = null;
 
     // Initialize cursor positions to center of screen to avoid positioning issues
     const centerX = window.innerWidth / 2;
@@ -199,6 +202,7 @@ function initCustomCursor() {
         }
         
         animationId = requestAnimationFrame(animateCursors);
+        window.cursorAnimationId = animationId; // Store globally for cleanup
     }
     animateCursors();
 
@@ -243,6 +247,10 @@ function initCustomCursor() {
     window.addEventListener('beforeunload', () => {
         if (animationId) {
             cancelAnimationFrame(animationId);
+        }
+        if (window.cursorAnimationId) {
+            cancelAnimationFrame(window.cursorAnimationId);
+            window.cursorAnimationId = null;
         }
     });
     
@@ -373,4 +381,83 @@ style.textContent = `
         }
     }
 `;
-document.head.appendChild(style); 
+document.head.appendChild(style);
+
+// Initialize all components
+function initializeAll() {
+    console.log('Initializing all components...');
+    initScrollAnimations();
+    initRoleRotation();
+    initCustomCursor();
+    initMagneticButtons();
+    initSparkleEffects();
+    initFloatingParticles();
+    initScrollProgress();
+    initTypingEffect();
+    initProgressBars();
+}
+
+// Handle page load and browser back/forward navigation
+document.addEventListener('DOMContentLoaded', initializeAll);
+
+// Handle browser back/forward button (pageshow event fires when page is restored from cache)
+window.addEventListener('pageshow', function(event) {
+    // If page was restored from cache, re-initialize
+    if (event.persisted) {
+        console.log('Page restored from cache, re-initializing...');
+        // Clean up any existing cursors first
+        const existingCursors = document.querySelectorAll('.instant-cursor, .custom-cursor, .cursor-trail');
+        existingCursors.forEach(cursor => cursor.remove());
+        
+        // Re-initialize after a small delay
+        setTimeout(initializeAll, 100);
+    }
+});
+
+// Also handle visibility change (when user switches back to tab)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        // Check if cursors exist, if not re-initialize
+        const instantCursor = document.querySelector('.instant-cursor');
+        if (!instantCursor) {
+            console.log('Cursors missing, re-initializing...');
+            setTimeout(initCustomCursor, 100);
+        }
+    }
+});
+
+// Handle window focus (when returning from external apps like email)
+window.addEventListener('focus', function() {
+    console.log('Window gained focus, completely re-initializing cursor...');
+    // Small delay to ensure the page is fully focused
+    setTimeout(function() {
+        // Always do a complete cleanup and re-initialization
+        console.log('Performing complete cursor cleanup and re-initialization...');
+        
+        // Remove any existing cursor elements
+        const existingCursors = document.querySelectorAll('.instant-cursor, .custom-cursor, .cursor-trail');
+        existingCursors.forEach(cursor => {
+            cursor.remove();
+            console.log('Removed existing cursor element:', cursor.className);
+        });
+        
+        // Cancel any existing animation frames
+        if (window.cursorAnimationId) {
+            cancelAnimationFrame(window.cursorAnimationId);
+            window.cursorAnimationId = null;
+        }
+        
+        // Re-initialize the cursor system completely
+        initCustomCursor();
+        console.log('Cursor system completely re-initialized');
+    }, 300);
+});
+
+// Handle mouse re-entry into the window (additional safety net)
+document.addEventListener('mouseenter', function() {
+    const instantCursor = document.querySelector('.instant-cursor');
+    if (!instantCursor) {
+        console.log('Mouse entered but cursors missing, re-initializing...');
+        setTimeout(initCustomCursor, 50);
+    }
+}); 

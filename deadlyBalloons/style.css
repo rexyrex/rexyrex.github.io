@@ -398,25 +398,12 @@ html {
 	transition: none;
 }
 
-/* Navbar animation */
+/* Navbar should always be visible and fixed - no animations */
 #nav-placeholder {
-	opacity: 0;
-	transform: translateY(-20px);
-	animation: navSlideDown 0.8s ease-out forwards;
-	animation-delay: 0.1s;
+	opacity: 1;
+	transform: translateY(0);
 	position: relative;
 	z-index: 1000;
-}
-
-@keyframes navSlideDown {
-	0% {
-		opacity: 0;
-		transform: translateY(-20px);
-	}
-	100% {
-		opacity: 1;
-		transform: translateY(0);
-	}
 }
 
 /* Responsive Design */

@@ -9,6 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" type="text/css" href="css/typespeed2.css">
+    <style>
+      /* Prevent navbar flash during loading */
+      #nav-placeholder {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.1s ease;
+      }
+      #nav-placeholder.loaded {
+        visibility: visible;
+        opacity: 1;
+      }
+    </style>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -29,11 +41,11 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container page-load-animation">
       <!-- Header Section -->
       <div class="hero-section-typing">
         <div class="hero-content-typing text-center">
-          <div class="typing-avatar">
+          <div class="typing-avatar card-entrance">
             <div class="avatar-glow"></div>
             <div class="avatar-ring"></div>
             <div class="avatar-inner" id="keyboardIcon">
@@ -42,31 +54,28 @@
             <div class="status-indicator"></div>
         </div>
           
-          <h1 class="hero-title-typing">
-            <span class="title-main">Rexyrex</span>
-            <span class="title-accent">.</span>
+          <h1 class="hero-title-typing title-slide-in">
+            <span class="title-main">Typing Speed Test</span>
           </h1>
-          
-          <div class="hero-subtitle-typing">
-            <span class="subtitle-text">타자 속도 측정기</span>
-      </div>
 
           <div class="rankings-inline">
-            <button id="highScoreBtnDaily" class="ranking-btn-inline" onclick="openHighscoresModal(true)">
+            <button id="highScoreBtnDaily" class="ranking-btn-inline card-entrance delay-1" onclick="openHighscoresModal(true)">
               <i class="fas fa-calendar-day"></i>
               <span>오늘 순위</span>
             </button>
             
-            <button id="highScoreBtnAll" class="ranking-btn-inline" onclick="openHighscoresModal(false)">
+            <button id="highScoreBtnAll" class="ranking-btn-inline card-entrance delay-2" onclick="openHighscoresModal(false)">
               <i class="fas fa-crown"></i>
               <span>역대 순위</span>
             </button>
+            
+
           </div>
           </div>
         </div>
 
       <!-- Main Landing Button -->
-      <button id="startBtn" class="mega-start-btn" onclick="showModeSelection()">
+      <button id="startBtn" class="mega-start-btn button-pop-in" onclick="showModeSelection()">
         <div class="mega-btn-bg"></div>
         <div class="mega-btn-content">
           <div class="mega-btn-icon">
@@ -374,6 +383,8 @@
         </div>
       </div>
 
+
+
       <!-- Version Modal -->
       <div id="versionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="versionModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -536,6 +547,8 @@
     const scoreTabs = ['korScoreTab','engScoreTab', 'prgScoreTab'];
     
     $(function () {
+      
+
 
       $('#korScoreTab').on('click', function (e) {
         setScoreTab('kor');
@@ -562,26 +575,56 @@
     });
 
     function setScoreTab(tabType){
+      // Update custom modal tabs with subtle styling
+      $('#customKorTab, #customEngTab, #customPrgTab').css({
+        'background': 'transparent',
+        'color': '#6c757d',
+        'border': 'none',
+        'box-shadow': 'none',
+        'transform': 'translateY(0)'
+      });
+      
       if(tabType=='kor'){
         for(var i=0; i<scoreTabs.length; i++){
           $('#' + scoreTabs[i]).removeClass('active');
         }
         $('#scoreTitle').text("한타 순위" + (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
+        $('#customScoreTitle').text("한타 순위" + (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
         $('#korScoreTab').addClass('active');
+        $('#customKorTab').css({
+          'background': '#ffffff',
+          'color': '#495057',
+          'border': '1px solid #dee2e6',
+          'box-shadow': '0 2px 4px rgba(0,0,0,0.06)'
+        });
         loadHighscoreData('kor');
       } else if(tabType=='eng'){
         for(var i=0; i<scoreTabs.length; i++){
           $('#' + scoreTabs[i]).removeClass('active');
         }
         $('#scoreTitle').text("English Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
+        $('#customScoreTitle').text("English Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
         $('#engScoreTab').addClass('active');
+        $('#customEngTab').css({
+          'background': '#ffffff',
+          'color': '#495057',
+          'border': '1px solid #dee2e6',
+          'box-shadow': '0 2px 4px rgba(0,0,0,0.06)'
+        });
         loadHighscoreData('eng');
       } else if(tabType=='prg'){
         for(var i=0; i<scoreTabs.length; i++){
           $('#' + scoreTabs[i]).removeClass('active');
         }
         $('#scoreTitle').text("Programmer Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
+        $('#customScoreTitle').text("Programmer Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
         $('#prgScoreTab').addClass('active');
+        $('#customPrgTab').css({
+          'background': '#ffffff',
+          'color': '#495057',
+          'border': '1px solid #dee2e6',
+          'box-shadow': '0 2px 4px rgba(0,0,0,0.06)'
+        });
         loadHighscoreData('prg');
       }
     }
@@ -657,9 +700,6 @@
     }
 
     function changeMode(m){
-      console.log('changeMode called with mode:', m);
-      console.log('Stack trace:', new Error().stack);
-      
       // if(m==4){
       //   alert("준비중입니다");
       //   return;
@@ -788,8 +828,7 @@
             
           })
           .catch((error) => {
-            console.log("error:");
-            console.log(error);
+            // Error handled silently
           });
     }
 
@@ -889,6 +928,8 @@
       });
     }
 
+
+
     function openHighscoresModal(dly){
 
       daily = dly;
@@ -897,7 +938,83 @@
       
       setScoreTab('kor');
 
-      $('#highscoreModal').modal('show');
+      // Use the WORKING custom modal approach instead of Bootstrap
+      
+      // Create custom ranking modal
+      if ($('#customRankingModal').length === 0) {
+        var modalContent = `
+          <div id="customRankingModal" style="position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 90vw !important; max-width: 900px !important; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important; border: 1px solid #dee2e6 !important; border-radius: 16px !important; z-index: 999999 !important; color: #495057 !important; box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important; pointer-events: auto !important; max-height: 85vh !important; overflow: hidden !important; animation: modalSlideIn 0.3s ease-out !important;">
+            <div style="padding: 25px 30px !important; border-bottom: 1px solid #dee2e6 !important; background: rgba(255,255,255,0.8) !important;">
+              <h3 style="margin: 0 !important; color: #343a40 !important; display: inline-block !important; font-weight: 600 !important; font-size: 24px !important;">🏆 타자 속도 순위</h3>
+              <button onclick="closeCustomRankingModal();" style="float: right !important; background: #f8f9fa !important; color: #6c757d !important; border: 1px solid #dee2e6 !important; padding: 8px 12px !important; border-radius: 50% !important; cursor: pointer !important; font-size: 18px !important; width: 40px !important; height: 40px !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.3s ease !important;" onmouseover="this.style.background='#e9ecef'; this.style.color='#495057'" onmouseout="this.style.background='#f8f9fa'; this.style.color='#6c757d'">&times;</button>
+            </div>
+            <div style="padding: 25px 30px !important;">
+              <nav style="margin-bottom: 25px !important; display: flex !important; gap: 6px !important; background: #f8f9fa !important; padding: 4px !important; border-radius: 10px !important; border: 1px solid #e9ecef !important;">
+                <button id="customKorTab" onclick="setScoreTab('kor')" style="background: #ffffff !important; color: #495057 !important; border: 1px solid #dee2e6 !important; padding: 10px 18px !important; border-radius: 6px !important; cursor: pointer !important; font-weight: 500 !important; font-size: 14px !important; transition: all 0.3s ease !important; flex: 1 !important; box-shadow: 0 2px 4px rgba(0,0,0,0.06) !important;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.06)';">한타</button>
+                <button id="customEngTab" onclick="setScoreTab('eng')" style="background: transparent !important; color: #6c757d !important; border: none !important; padding: 10px 18px !important; border-radius: 6px !important; cursor: pointer !important; font-weight: 500 !important; font-size: 14px !important; transition: all 0.3s ease !important; flex: 1 !important;" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">영타</button>
+                <button id="customPrgTab" onclick="setScoreTab('prg')" style="background: transparent !important; color: #6c757d !important; border: none !important; padding: 10px 18px !important; border-radius: 6px !important; cursor: pointer !important; font-weight: 500 !important; font-size: 14px !important; transition: all 0.3s ease !important; flex: 1 !important;" onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='transparent'">개발자</button>
+              </nav>
+              <div style="text-align: center !important; margin-bottom: 20px !important;">
+                <h4 id="customScoreTitle" style="color: #343a40 !important; margin: 0 0 8px 0 !important; font-weight: 600 !important; font-size: 20px !important;">한타 순위</h4>
+                <p style="color: #6c757d !important; margin: 0 !important; font-size: 14px !important;">(100위 까지 보여줍니다.)</p>
+              </div>
+              <div style="max-height: 420px !important; overflow-y: auto !important; border-radius: 10px !important; background: #ffffff !important; border: 1px solid #e9ecef !important;">
+                <table id="customHighScoreTable" style="width: 100% !important; border-collapse: collapse !important; background: transparent !important; color: #495057 !important;">
+                  <thead style="background: linear-gradient(135deg, #6c757d, #495057) !important; position: sticky !important; top: 0 !important; z-index: 10 !important;">
+                    <tr>
+                      <th style="padding: 16px 20px !important; border: none !important; color: white !important; text-align: left !important; font-weight: 600 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 0.5px !important;">순위</th>
+                      <th style="padding: 16px 20px !important; border: none !important; color: white !important; text-align: left !important; font-weight: 600 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 0.5px !important;">이름</th>
+                      <th style="padding: 16px 20px !important; border: none !important; color: white !important; text-align: left !important; font-weight: 600 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 0.5px !important;">등급</th>
+                      <th style="padding: 16px 20px !important; border: none !important; color: white !important; text-align: left !important; font-weight: 600 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 0.5px !important;">점수</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customTableBody">
+                  </tbody>
+                </table>
+                <div id="customLoading" style="text-align: center !important; padding: 40px !important; color: #6c757d !important; display: none !important; font-size: 16px !important;">
+                  <div style="display: inline-block !important; width: 20px !important; height: 20px !important; border: 3px solid #e9ecef !important; border-top: 3px solid #6c757d !important; border-radius: 50% !important; animation: spin 1s linear infinite !important; margin-right: 10px !important;"></div>
+                  Loading...
+                </div>
+              </div>
+            </div>
+          </div>
+          <style>
+            @keyframes modalSlideIn {
+              from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+              to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            }
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            #customRankingModal::-webkit-scrollbar {
+              width: 6px;
+            }
+            #customRankingModal::-webkit-scrollbar-track {
+              background: rgba(255,255,255,0.1);
+              border-radius: 3px;
+            }
+            #customRankingModal::-webkit-scrollbar-thumb {
+              background: rgba(255,255,255,0.3);
+              border-radius: 3px;
+            }
+            #customRankingModal::-webkit-scrollbar-thumb:hover {
+              background: rgba(255,255,255,0.5);
+            }
+          </style>
+        `;
+        
+        $('body').append(modalContent);
+        
+        // Add backdrop with subtle effect
+        $('body').append('<div id="customRankingBackdrop" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.4) !important; backdrop-filter: blur(4px) !important; z-index: 999998 !important; animation: backdropFadeIn 0.3s ease-out !important;" onclick="closeCustomRankingModal();"></div><style>@keyframes backdropFadeIn { from { opacity: 0; } to { opacity: 1; } }</style>');
+      }
+      
+    }
+    
+    function closeCustomRankingModal() {
+      $('#customRankingModal').remove();
+      $('#customRankingBackdrop').remove();
     }
 
     function loadHighscoreData(scoreType){
@@ -931,9 +1048,20 @@
                 highList.push(doc.data());
             });
             $('#highLoading').css("visibility", "hidden");
+            $('#customLoading').hide();
             $('#highScoreTable tbody').empty();
+            $('#customTableBody').empty();
             for(var i=0; i<highList.length; i++){
               $('#highScoreTable tbody').append("<tr><th scope='row'>" + (i+1) + "</th><td>" + highList[i].id + "</td><td>"+ highList[i].rank + "</td><td>"+ highList[i].score + "</td>");
+              var rankBadge = '';
+              var rankColor = '#6c757d';
+              if (i < 3) {
+                var medals = ['🥇', '🥈', '🥉'];
+                var colors = ['#FFD700', '#C0C0C0', '#CD7F32'];
+                rankBadge = medals[i];
+                rankColor = colors[i];
+              }
+              $('#customTableBody').append('<tr style="transition: all 0.3s ease !important; border-bottom: 1px solid #f8f9fa !important;" onmouseover="this.style.background=\'#f8f9fa\'; this.style.transform=\'translateX(3px)\';" onmouseout="this.style.background=\'transparent\'; this.style.transform=\'translateX(0)\';"><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 600 !important; font-size: 15px !important;"><span style="display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 28px !important; height: 28px !important; background: ' + rankColor + ' !important; color: white !important; border-radius: 50% !important; font-size: 13px !important; font-weight: 600 !important; margin-right: 8px !important;">' + (rankBadge || (i+1)) + '</span></td><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 500 !important; font-size: 14px !important;">' + highList[i].id + '</td><td style="padding: 14px 20px !important; color: #6c757d !important; font-weight: 500 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 0.3px !important;">' + highList[i].rank + '</td><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 600 !important; font-size: 15px !important;">' + highList[i].score + '</td></tr>');
             }
         })
         .catch((error) => {
@@ -950,9 +1078,20 @@
                 highList.push(doc.data());
             });
             $('#highLoading').css("visibility", "hidden");
+            $('#customLoading').hide();
             $('#highScoreTable tbody').empty();
+            $('#customTableBody').empty();
             for(var i=0; i<highList.length; i++){
               $('#highScoreTable tbody').append("<tr><th scope='row'>" + (i+1) + "</th><td>" + (highList[i].id == '' ?  '익명 유저' : highList[i].id)+ "</td><td>"+ highList[i].rank + "</td><td>"+ highList[i].score + "</td>");
+              var rankBadge = '';
+              var rankColor = '#6c757d';
+              if (i < 3) {
+                var medals = ['🥇', '🥈', '🥉'];
+                var colors = ['#FFD700', '#C0C0C0', '#CD7F32'];
+                rankBadge = medals[i];
+                rankColor = colors[i];
+              }
+              $('#customTableBody').append('<tr style="transition: all 0.3s ease !important; border-bottom: 1px solid #f8f9fa !important;" onmouseover="this.style.background=\'#f8f9fa\'; this.style.transform=\'translateX(3px)\';" onmouseout="this.style.background=\'transparent\'; this.style.transform=\'translateX(0)\';"><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 600 !important; font-size: 15px !important;"><span style="display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 28px !important; height: 28px !important; background: ' + rankColor + ' !important; color: white !important; border-radius: 50% !important; font-size: 13px !important; font-weight: 600 !important; margin-right: 8px !important;">' + (rankBadge || (i+1)) + '</span></td><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 500 !important; font-size: 14px !important;">' + (highList[i].id == '' ? '익명 유저' : highList[i].id) + '</td><td style="padding: 14px 20px !important; color: #6c757d !important; font-weight: 500 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 0.3px !important;">' + highList[i].rank + '</td><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 600 !important; font-size: 15px !important;">' + highList[i].score + '</td></tr>');
             }
         })
         .catch((error) => {
@@ -1000,7 +1139,6 @@
     }
     
     function reset(){
-      console.log('Reset called - before reset: secondsPassed:', secondsPassed, 'started:', started);
       
       // Clear any active countdown timer
       if (countdownInterval) {
@@ -1036,8 +1174,6 @@
       givenSentenceList = [];
 
       keyMap.clear();
-      
-      console.log('Reset completed - after reset: secondsPassed:', secondsPassed, 'started:', started);
       
       // Clear content, animations, and data attributes
       $('#testSentInput').html('').removeData('original-text');
@@ -1111,8 +1247,7 @@
     }
 
     function showModeSelection() {
-      console.log('Showing mode selection...');
-      console.log('Current state - started:', started, 'countingDown:', countingDown, 'timerStartedOnce:', timerStartedOnce);
+
       
       // Ensure we start from a clean state
       $('#grp2').hide();
@@ -1130,7 +1265,7 @@
       
       // Show mode selection after animation
       setTimeout(() => {
-        console.log('Mode selection timeout triggered - showing mode selection');
+
         $('.hero-section-typing').hide();
         $('#startBtn').hide();
         $('#grp1').show(); // Show the game section container
@@ -1140,22 +1275,8 @@
         // Force reflow to ensure style reset takes effect
         $('#modeSelectionSection')[0].offsetHeight;
         $('#modeSelectionSection').addClass('text-reveal');
-        console.log('Mode selection should now be visible');
+
         
-        // Debug: Check if mode selection is actually visible
-        setTimeout(() => {
-          console.log('Checking mode selection visibility after 1 second...');
-          console.log('grp1 display:', $('#grp1').css('display'));
-          console.log('modeSelectionSection display:', $('#modeSelectionSection').css('display'));
-          console.log('modeSelectionSection visible:', $('#modeSelectionSection').is(':visible'));
-        }, 1000);
-        
-        setTimeout(() => {
-          console.log('Checking mode selection visibility after 3 seconds...');
-          console.log('grp1 display:', $('#grp1').css('display'));
-          console.log('modeSelectionSection display:', $('#modeSelectionSection').css('display'));
-          console.log('modeSelectionSection visible:', $('#modeSelectionSection').is(':visible'));
-        }, 3000);
       }, 500);
     }
 

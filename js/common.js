@@ -23,6 +23,9 @@ $(document).ready(function() {
     
     // Load the navbar
     navPlaceholder.load(getNavbarPath(), function() {
+        // Add loaded class to make navbar visible with smooth transition
+        navPlaceholder.addClass('loaded');
+        
         // Highlight the current section in navbar if needed
         const path = window.location.pathname;
         
