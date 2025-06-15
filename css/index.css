@@ -1538,7 +1538,7 @@ body {
   background: var(--primary);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 100000;
+  z-index: 500; /* Reduced from 100000 to be below modals */
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, -50%);
@@ -1555,7 +1555,7 @@ body {
   background: var(--primary);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 99999;
+  z-index: 499; /* Reduced from 99999 to be below modals */
   transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   opacity: 0.8;
   visibility: visible;
@@ -1576,7 +1576,7 @@ body {
   border: 2px solid var(--primary);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 99998;
+  z-index: 498; /* Reduced from 99998 to be below modals */
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   opacity: 0.4;
   visibility: visible;
@@ -1609,6 +1609,13 @@ body {
 /* Hide default cursor */
 body * {
   cursor: none !important;
+}
+
+/* Restore cursor for modal elements */
+.modal,
+.modal *,
+.modal-backdrop {
+  cursor: auto !important;
 }
 
 /* Safari-specific optimizations */

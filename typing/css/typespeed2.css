@@ -73,30 +73,243 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-  background: var(--bg-primary) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--text-primary) !important;
   line-height: 1.7;
   overflow-x: hidden;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   letter-spacing: -0.01em;
-  min-height: 100vh;
+  height: 100vh;
   padding: calc(80px + var(--space-md)) var(--space-sm) var(--space-md) var(--space-sm);
-  pointer-events: auto !important;
+  pointer-events: auto;
+  /* Beautiful gradient background matching main page */
+  background-color: var(--bg-primary) !important;
+  background: var(--bg-primary) !important;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.1) 0%, transparent 50%) !important;
+  background-attachment: fixed;
 }
 
-/* EMERGENCY FIX: Force all elements to be clickable */
-*, *::before, *::after {
-  pointer-events: auto !important;
+/* Force dark theme overrides for Bootstrap */
+html {
+  background-color: var(--bg-primary) !important;
+  background: var(--bg-primary) !important;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.1) 0%, transparent 50%) !important;
+  background-attachment: fixed;
 }
 
-/* Exceptions for elements that should NOT be clickable */
-.text-current,
-.text-previous, 
-.text-next,
-[style*="pointer-events:none"],
-[style*="pointer-events: none"] {
-  pointer-events: none !important;
+.container {
+  background: transparent !important;
+}
+
+/* Ensure all text elements use dark theme colors */
+h1, h2, h3, h4, h5, h6, p, span, div {
+  color: var(--text-primary) !important;
+}
+
+/* Override Bootstrap's default button styles */
+.btn {
+  background: var(--bg-glass) !important;
+  border: 1px solid var(--border-glass) !important;
+  color: var(--text-primary) !important;
+}
+
+.btn:hover {
+  background: var(--bg-glass-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Override Bootstrap's modal styles */
+.modal-content {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-glass) !important;
+  color: var(--text-primary) !important;
+}
+
+.modal-header {
+  background: var(--bg-tertiary) !important;
+  border-bottom: 1px solid var(--border-glass) !important;
+  color: var(--text-primary) !important;
+}
+
+.modal-body {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.modal-footer {
+  background: var(--bg-tertiary) !important;
+  border-top: 1px solid var(--border-glass) !important;
+}
+
+/* Override Bootstrap's table styles */
+.table {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.table th {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-glass) !important;
+}
+
+.table td {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-glass) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background: var(--bg-glass) !important;
+}
+
+.table-dark {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Override Bootstrap's form styles */
+.form-control {
+  background: var(--bg-glass) !important;
+  border: 1px solid var(--border-glass) !important;
+  color: var(--text-primary) !important;
+}
+
+.form-control:focus {
+  background: var(--bg-glass-hover) !important;
+  border-color: var(--primary) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Navbar styles now handled by main navbar.css - no overrides needed */
+
+/* Additional Bootstrap overrides for dark theme */
+.close {
+  color: var(--text-primary) !important;
+  opacity: 0.8 !important;
+}
+
+.close:hover {
+  color: var(--text-primary) !important;
+  opacity: 1 !important;
+}
+
+/* Ensure all text inputs use dark theme */
+input, textarea, select {
+  background: var(--bg-glass) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-glass) !important;
+}
+
+/* Override any remaining white backgrounds */
+.bg-white, .bg-light {
+  background: var(--bg-secondary) !important;
+}
+
+/* Ensure dropdowns use dark theme */
+.dropdown-menu {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-glass) !important;
+}
+
+.dropdown-item {
+  color: var(--text-primary) !important;
+}
+
+.dropdown-item:hover {
+  background: var(--bg-glass) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ensure badges use dark theme */
+.badge {
+  background: var(--bg-glass) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ensure alerts use dark theme */
+.alert {
+  background: var(--bg-glass) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-glass) !important;
+}
+
+/* Ensure cards use dark theme */
+.card {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-glass) !important;
+  color: var(--text-primary) !important;
+}
+
+.card-header {
+  background: var(--bg-tertiary) !important;
+  border-bottom: 1px solid var(--border-glass) !important;
+  color: var(--text-primary) !important;
+}
+
+.card-body {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ensure list groups use dark theme */
+.list-group-item {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-glass) !important;
+}
+
+/* Override any remaining Bootstrap text colors */
+.text-dark {
+  color: var(--text-primary) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Ensure pagination uses dark theme */
+.page-link {
+  background: var(--bg-glass) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-glass) !important;
+}
+
+.page-link:hover {
+  background: var(--bg-glass-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+.page-item.active .page-link {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Targeted pointer-events fixes - scoped to typing game only */
+/* Note: These are now handled by the scoped rules at the bottom of the file */
+
+/* Ensure interactive elements are clickable */
+button, 
+.btn, 
+a, 
+input, 
+select, 
+textarea,
+[onclick],
+[data-toggle],
+[data-dismiss] {
+  pointer-events: auto !important;
 }
 
 /* Animated Background */
@@ -362,7 +575,8 @@ body {
   border-radius: 50%;
   background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent), var(--primary)) border-box;
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  mask-composite: xor;
+  mask-composite: exclude;             /* standardized name */
+  -webkit-mask-composite: xor;         /* WebKit support */
   animation: gradientShift 3s linear infinite;
 }
 
@@ -526,13 +740,12 @@ body {
 
 /* Ensure consistent styling across all browsers */
 .mega-start-btn,
+/* Only strip out native appearance, don't kill our BG or border */
 button.mega-start-btn,
 #startBtn.mega-start-btn {
-  background: none !important;
-  border: none !important;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  appearance: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .mega-start-btn .mega-btn-bg,
@@ -859,7 +1072,7 @@ button.mega-start-btn .mega-btn-bg,
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   animation: countdownShimmer 2s infinite;
 }
 
@@ -1074,16 +1287,18 @@ button.mega-start-btn .mega-btn-bg,
 }
 
 .btn-primary {
-  background: var(--gradient-primary);
-  color: white;
-  box-shadow: var(--shadow-lg);
+  background: var(--gradient-primary) !important;
+  color: white !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: none !important;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
-  color: white;
-  text-decoration: none;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-xl) !important;
+  color: white !important;
+  text-decoration: none !important;
+  background: var(--gradient-accent) !important;
 }
 
 .btn-shine {
@@ -1487,243 +1702,9 @@ button.mega-start-btn .mega-btn-bg,
   opacity: 0.5;
 }
 
-/* Modal Input Text Fix */
-.modal .form-control,
-#testModal .form-control,
-#highscoreModal .form-control,
-.modal input[type="text"],
-.modal input[type="email"],
-.modal input[type="password"],
-.modal textarea {
-  color: #1f2937 !important;
-  font-weight: 500 !important;
-}
 
-.modal .form-control:focus,
-#testModal .form-control:focus,
-#highscoreModal .form-control:focus,
-.modal input[type="text"]:focus,
-.modal input[type="email"]:focus,
-.modal input[type="password"]:focus,
-.modal textarea:focus {
-  color: #111827 !important;
-  font-weight: 500 !important;
-}
 
-/* Modal Styles - Force override Bootstrap conflicts */
-.modal-content,
-#testModal .modal-content,
-#highscoreModal .modal-content,
-#versionModal .modal-content {
-  background: var(--bg-secondary) !important;
-  border: 1px solid var(--border-glass) !important;
-  border-radius: var(--radius-lg) !important;
-  backdrop-filter: blur(20px) !important;
-  color: var(--text-secondary) !important;
-}
 
-.modal-header,
-#testModal .modal-header,
-#highscoreModal .modal-header,
-#versionModal .modal-header {
-  border-bottom: 1px solid var(--border-glass) !important;
-  background: var(--bg-glass) !important;
-}
-
-.modal-title,
-#testModal .modal-title,
-#highscoreModal .modal-title,
-#versionModal .modal-title {
-  color: var(--text-primary) !important;
-  font-weight: 600 !important;
-}
-
-.modal-body,
-#testModal .modal-body,
-#highscoreModal .modal-body,
-#versionModal .modal-body {
-  color: var(--text-secondary) !important;
-  background: transparent !important;
-  max-height: 70vh !important;
-  overflow-y: auto !important;
-  padding: var(--space-lg) !important;
-}
-
-.modal-footer,
-#testModal .modal-footer,
-#highscoreModal .modal-footer,
-#versionModal .modal-footer {
-  border-top: 1px solid var(--border-glass) !important;
-  background: var(--bg-glass) !important;
-}
-
-.close {
-  color: var(--text-muted);
-  opacity: 1;
-}
-
-.close:hover {
-  color: var(--text-primary);
-  opacity: 1;
-}
-
-/* Modern Button Styles */
-.modern-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  border-radius: var(--radius-md);
-  border: none;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  text-decoration: none;
-  font-family: inherit;
-  position: relative;
-  overflow: hidden;
-}
-
-.modern-btn:hover {
-  transform: translateY(-1px);
-  text-decoration: none;
-}
-
-.btn-primary.modern-btn {
-  background: var(--gradient-primary);
-  color: white;
-  box-shadow: var(--shadow-md);
-}
-
-.btn-primary.modern-btn:hover {
-  box-shadow: var(--shadow-lg);
-  color: white;
-}
-
-.btn-secondary.modern-btn {
-  background: var(--bg-glass);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-glass);
-  backdrop-filter: blur(10px);
-}
-
-.btn-secondary.modern-btn:hover {
-  background: var(--bg-glass-hover);
-  color: var(--text-primary);
-}
-
-/* Table Styles - Force override Bootstrap conflicts */
-.table,
-.modal .table,
-#testModal .table,
-#highscoreModal .table {
-  color: var(--text-secondary) !important;
-  background: transparent !important;
-}
-
-.table-dark,
-.modal .table-dark,
-#testModal .table-dark,
-#highscoreModal .table-dark {
-  background: var(--bg-glass) !important;
-  backdrop-filter: blur(10px) !important;
-  border-color: var(--border-glass) !important;
-}
-
-.table-dark th,
-.table-dark td,
-.modal .table-dark th,
-.modal .table-dark td {
-  border-color: var(--border-glass) !important;
-  background: transparent !important;
-  color: var(--text-secondary) !important;
-}
-
-.table-striped tbody tr:nth-of-type(odd),
-.modal .table-striped tbody tr:nth-of-type(odd) {
-  background: rgba(255, 255, 255, 0.02) !important;
-}
-
-.tableFixHead {
-  overflow-y: auto;
-  max-height: 60vh;
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-md);
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary) transparent;
-}
-
-.tableFixHead::-webkit-scrollbar {
-  width: 8px;
-}
-
-.tableFixHead::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tableFixHead::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 4px;
-}
-
-.tableFixHead::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
-
-/* Nav Pills */
-.nav-pills .nav-link {
-  background: var(--bg-glass);
-  border: 1px solid var(--border-glass);
-  color: var(--text-secondary);
-  margin-right: 0.5rem;
-  border-radius: var(--radius-md);
-  transition: all var(--transition-normal);
-}
-
-.nav-pills .nav-link:hover {
-  background: var(--bg-glass-hover);
-  color: var(--text-primary);
-}
-
-.nav-pills .nav-link.active {
-  background: var(--gradient-primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-/* Form Controls */
-.form-control {
-  background: var(--bg-glass);
-  border: 1px solid var(--border-glass);
-  color: var(--text-primary);
-  border-radius: var(--radius-md);
-}
-
-.form-control:focus {
-  background: var(--bg-glass);
-  border-color: var(--primary);
-  color: var(--text-primary);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
-}
-
-.form-control::placeholder {
-  color: var(--text-muted);
-}
-
-.form-control.is-invalid {
-  border-color: var(--error) !important;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
-}
-
-.invalid-feedback {
-  display: block !important;
-  width: 100%;
-  margin-top: 0.25rem;
-  font-size: 0.875rem;
-  color: var(--error);
-  font-weight: 500;
-}
 
 /* Save Success Styling */
 .save-success-icon {
@@ -1771,60 +1752,56 @@ button.mega-start-btn .mega-btn-bg,
 .mb-3 { margin-bottom: 1.5rem; }
 .mb-4 { margin-bottom: 2rem; }
 
-/* Enhanced word-aware highlighting - Force override conflicts */
+/* Consolidated mark styles */
 mark,
 .text-section mark,
 .text-current mark,
 .text-previous mark,
 .text-next mark {
-  padding: 2px 4px !important;
-  border-radius: 3px !important;
-  font-weight: 500 !important;
+  background: var(--success);
+  color: var(--text-primary);
+  opacity: 0.8;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 500;
 }
 
 /* Ensure highlights are fully visible in previous/next sections */
 .text-previous mark,
 .text-next mark {
-  opacity: 1 !important;
-}
-
-/* Default mark styling (fallback) */
-mark {
-  background: var(--success) !important;
-  color: var(--text-primary) !important;
-  opacity: 0.8 !important;
+  opacity: 1;
 }
 
 /* Word-specific highlighting styles */
 mark.word-correct {
-  background: var(--success) !important;
-  color: white !important;
-  opacity: 0.9 !important;
-  border: 1px solid rgba(34, 197, 94, 0.3) !important;
+  background: var(--success);
+  color: white;
+  opacity: 0.9;
+  border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 mark.word-partial {
-  background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
-  color: white !important;
-  opacity: 0.85 !important;
-  border: 1px solid rgba(99, 102, 241, 0.3) !important;
-  animation: partialPulse 1.5s ease-in-out infinite !important;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  opacity: 0.85;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  animation: partialPulse 1.5s ease-in-out infinite;
 }
 
 mark.word-error {
-  background: var(--error) !important;
-  color: white !important;
-  opacity: 0.9 !important;
-  border: 1px solid rgba(239, 68, 68, 0.3) !important;
-  animation: errorShake 0.5s ease-in-out !important;
+  background: var(--error);
+  color: white;
+  opacity: 0.9;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  animation: errorShake 0.5s ease-in-out;
 }
 
 mark.word-incorrect {
-  background: var(--warning) !important;
-  color: var(--text-primary) !important;
-  opacity: 0.8 !important;
-  border: 1px solid rgba(245, 158, 11, 0.3) !important;
-  text-decoration: line-through !important;
+  background: var(--warning);
+  color: var(--text-primary);
+  opacity: 0.8;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  text-decoration: line-through;
 }
 
 /* Highlighting animations */
@@ -2133,24 +2110,7 @@ mark.word-incorrect {
     font-size: 0.85rem;
   }
 
-  /* Modal adjustments for mobile */
-  .modal-dialog {
-    margin: 0.5rem !important;
-    max-width: 98vw !important;
-  }
-  
-  .modal-lg {
-    max-width: 98vw !important;
-  }
-  
-  .tableFixHead {
-    max-height: 50vh;
-  }
-  
-  .modal-body {
-    max-height: 60vh !important;
-    padding: var(--space-md) !important;
-  }
+
 }
 
 /* Special button styles for backwards compatibility */
@@ -2325,10 +2285,6 @@ mark.word-incorrect {
 }
 
 /* General Bootstrap overrides to prevent white backgrounds */
-.modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-}
-
 .btn-outline-secondary,
 .btn-secondary {
   background: var(--bg-glass) !important;
@@ -2343,155 +2299,84 @@ mark.word-incorrect {
   color: var(--text-primary) !important;
 }
 
-/* Ensure no white text on white backgrounds anywhere */
-.modal .text-secondary,
-.table .text-secondary,
-.card .text-secondary {
-  color: var(--text-secondary) !important;
+/* Table container with fixed header - prevents unwanted scrollbars */
+.tableFixHead {
+  overflow-y: auto;
+  max-height: 60vh;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  background: var(--bg-glass);
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
 }
 
-/* Ensure modal functionality is not blocked */
-.modal {
-  z-index: 999995 !important;
-  pointer-events: auto !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
+.tableFixHead::-webkit-scrollbar {
+  width: 8px;
 }
 
-.modal.show {
-  display: block !important;
-  pointer-events: auto !important;
+.tableFixHead::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.modal-dialog {
-  pointer-events: auto !important;
-  margin: 1rem auto !important;
-  max-width: 95vw !important;
-  position: relative !important;
-  z-index: 999998 !important;
+.tableFixHead::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
 }
 
-.modal-lg {
-  max-width: min(900px, 90vw) !important;
+.tableFixHead::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-tertiary);
+  z-index: 10;
+}
+
+/* ===== FRESH MODAL CSS - MINIMAL AND CLEAN ===== */
+
+/* Bootstrap Modal Base Styles */
+/* All modal CSS removed - using Bootstrap defaults */
+
+/* =============================================================================
+   1) FORCE MODAL + BACKDROP TO BE CLICKABLE & ON TOP
+   ============================================================================= */
+.modal-backdrop,
+.modal,
+.modal-dialog,
 .modal-content {
+  /* ensure clicks go through to your modal and its buttons */
   pointer-events: auto !important;
-  opacity: 1 !important;
-  background: var(--bg-glass) !important;
-  backdrop-filter: blur(20px) !important;
-  border: 1px solid var(--border-glass) !important;
-  border-radius: var(--radius-lg) !important;
-  box-shadow: var(--shadow-xl) !important;
-  position: relative !important;
-  z-index: 999999 !important;
 }
 
+/* Bootstrap 4.0.0 compatible z-index values - high enough to be above everything */
 .modal-backdrop {
-  z-index: 999990 !important;
-  pointer-events: none !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
+  z-index: 1040 !important;
+}
+.modal {
+  z-index: 1050 !important;
 }
 
-/* Ensure buttons and form elements work in modals */
-.modal button,
-.modal .btn,
-.modal .close,
-.modal .form-control,
-.modal .nav-link,
-.modal input,
-.modal select,
-.modal textarea,
-.modal a,
-.modal th,
-.modal td,
-.modal tr,
-.modal .table,
-.modal .nav-item,
-.modal .modern-btn,
-.modal .nav-pills .nav-link,
-#highscoreModal *,
-#testModal *,
-#versionModal * {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  position: relative !important;
-  z-index: 999999 !important;
-}
-
-.modal .form-control,
-.modal input,
-.modal textarea {
-  cursor: text !important;
-}
-
-/* Force override any conflicting styles */
-.modal *, 
-.modal-dialog *, 
-.modal-content *,
-.modal-header *,
-.modal-body *,
-.modal-footer * {
-  pointer-events: auto !important;
-}
-
-/* Specific modal targeting */
-#highscoreModal,
-#testModal,
-#versionModal {
-  pointer-events: auto !important;
-  z-index: 999999 !important;
-}
-
-#highscoreModal *,
-#testModal *,
-#versionModal * {
-  pointer-events: auto !important;
-}
-
-/* Ensure body doesn't block modal interactions */
+/* =============================================================================
+   2) OPTIONAL: make the page content inert when modal is open
+   ============================================================================= */
 body.modal-open {
-  pointer-events: auto !important;
-  overflow: hidden !important;
+  overflow: hidden; /* prevent scroll behind */
 }
 
-/* Bootstrap modal overrides */
-.modal.fade.show {
-  display: block !important;
-  opacity: 1 !important;
+/* only disable clicks on your game/content wrapper—never on the modal itself */
+body.modal-open .typing-game,
+body.modal-open .game-section {
+  pointer-events: none !important;
 }
 
-.modal-backdrop.fade.show {
-  opacity: 0.5 !important;
-}
-
-/* CRITICAL Z-INDEX FIX: Ensure modal content is above backdrop */
-.modal .modal-dialog,
-.modal .modal-content,
-.modal .modal-header,
-.modal .modal-body,
-.modal .modal-footer {
-  position: relative !important;
-  z-index: 999999 !important;
-  pointer-events: auto !important;
-}
-
-/* Force test modal specifically to work */
-#testDebugModal,
-#testDebugModal .modal-dialog,
-#testDebugModal .modal-content,
-#testDebugModal .modal-header,
-#testDebugModal .modal-body,
-#testDebugModal * {
-  position: relative !important;
-  z-index: 999999 !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
+/* =============================================================================
+   3) SCOPE YOUR "TEXT-SPAN" POINTER-EVENTS: NONE
+   ============================================================================= */
+/* wrap your entire typing game in <div class="typing-game">…</div> */
+.typing-game .text-current,
+.typing-game .text-previous,
+.typing-game .text-next {
+  pointer-events: none !important;
 }

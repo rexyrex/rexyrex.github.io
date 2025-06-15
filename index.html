@@ -98,6 +98,13 @@
                                         View Projects
                                     </span>
                                 </a>
+                                <!-- TEMPORARY TEST BUTTON -->
+                                <button type="button" class="btn btn-warning hero-btn" data-toggle="modal" data-target="#testModal">
+                                    <span class="btn-text">
+                                        <i class="fas fa-bug"></i>
+                                        Test Modal
+                                    </span>
+                                </button>
                             </div>
 
                             <div class="social-links">
@@ -369,6 +376,65 @@
                 </div>
             </div>
         </footer>
+
+        <!-- TEMPORARY TEST MODAL -->
+        <div id="testModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="testModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="testModalLabel">
+                            <i class="fas fa-bug"></i> Test Modal
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Modal Functionality Test</h4>
+                        <p>This is a test modal to check if modal interactions work properly on the main page.</p>
+                        
+                        <div class="form-group">
+                            <label for="testInput">Test Input Field:</label>
+                            <input type="text" class="form-control" id="testInput" placeholder="Type something here...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="testSelect">Test Select:</label>
+                            <select class="form-control" id="testSelect">
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="testCheckbox">
+                            <label class="form-check-label" for="testCheckbox">
+                                Test checkbox
+                            </label>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h5>Scrollable Content Test</h5>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        <p>Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="alert('Button clicked!')">
+                            <i class="fas fa-check"></i> Test Action
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Romantic Easter Egg Modal -->
         <div id="romanticModal" class="modal fade romantic-modal" tabindex="-1" role="dialog" aria-labelledby="romanticModalLabel" aria-hidden="true">

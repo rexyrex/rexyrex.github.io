@@ -4,7 +4,7 @@ function getNavbarPath() {
     const path = window.location.pathname;
     
     // If we're in a subdirectory like /typing/ or /parser/, we need to go up one level
-    if (path.includes('/typing/') || path.includes('/parser/') || path.includes('/deadlyBalloons/')) {
+    if (path.includes('/typing/') || path.includes('/parser/') || path.includes('/deadlyBalloons/') || path.includes('/music/')) {
         return "../navbar.html";
     }
     
@@ -33,6 +33,8 @@ $(document).ready(function() {
             $('#gamesDropdown').addClass('active');
         } else if (path.includes('/deadlyBalloons/')) {
             $('#gamesDropdown').addClass('active');
+        } else if (path.includes('/music/')) {
+            $('#musicDropdown').addClass('active');
         } else if (path.includes('/parser/')) {
             $('#parserDropdown').addClass('active');
         } else if (path.includes('/animation.html')) {
