@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>개인정보 처리방침 — 카카오톡 대화 분석기 (KakaoParser)</title>
+<meta name="description" content="카카오톡 대화 분석기(KakaoParser) Android 앱의 개인정보 처리방침.">
+<meta name="robots" content="index,follow">
+<meta name="plyctl-app-id" content="kakaoparser">
+<meta name="plyctl-app-root" content="/Users/rexyrex/StudioProjects/AndroidKakaoParser">
+<link rel="canonical" href="https://rexyrex.github.io/apps/kakaoparser/privacy-policy/">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/index.css">
+<style>
+  body { background: #0a0a0f; color: #e2e8f0; }
+  main.privacy-article {
+    max-width: 760px;
+    margin: 80px auto 96px;
+    padding: 0 24px;
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  main.privacy-article h1,
+  main.privacy-article h2,
+  main.privacy-article h3,
+  main.privacy-article h4 {
+    color: #ffffff;
+    line-height: 1.25;
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+    font-weight: 600;
+  }
+  main.privacy-article h1 {
+    font-size: 2.1rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 0.2em;
+  }
+  main.privacy-article h2 { font-size: 1.5rem; color: #c7d2fe; }
+  main.privacy-article h3 { font-size: 1.2rem; color: #e2e8f0; }
+  main.privacy-article a {
+    color: #818cf8;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(129,140,248,0.5);
+  }
+  main.privacy-article a:hover {
+    color: #a5b4fc;
+    border-bottom-color: #a5b4fc;
+  }
+  main.privacy-article code {
+    background: rgba(255,255,255,0.06);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    font-size: 0.9em;
+  }
+  main.privacy-article blockquote {
+    border-left: 3px solid rgba(99,102,241,0.5);
+    padding: 0.4em 1em;
+    margin: 1.2em 0;
+    background: rgba(99,102,241,0.05);
+    color: #cbd5e1;
+  }
+  main.privacy-article hr {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin: 2.2em 0;
+  }
+  main.privacy-article ul,
+  main.privacy-article ol { padding-left: 1.4em; }
+  main.privacy-article li { margin: 0.3em 0; }
+  main.privacy-article table {
+    border-collapse: collapse;
+    margin: 1em 0;
+    width: 100%;
+  }
+  main.privacy-article th,
+  main.privacy-article td {
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 0.5em 0.8em;
+    text-align: left;
+  }
+  main.privacy-article th { background: rgba(99,102,241,0.08); }
+  .privacy-meta {
+    margin-top: 3em;
+    font-size: 0.85em;
+    color: #64748b;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<main class="privacy-article">
+<h1>카카오톡 대화 분석기 개인정보 처리방침</h1>
+<p><strong>시행일자:</strong> 2026년 5월 14일</p>
+<p>본 개인정보 처리방침은 김민형(이하 "개발자", "당사", "우리")이 제공하는 Android 모바일 애플리케이션 <strong>카카오톡 대화 분석기</strong>(영문명 KakaoParser, 패키지명 <code>com.rexyrex.kakaoparser</code>, 이하 "본 앱")에서 이용자의 정보가 어떻게 수집·이용·공유·보관되는지를 설명합니다. 본 앱은 카카오톡에서 내보낸 대화 텍스트 파일을 분석하여 통계, 키워드 빈도, 시그니처 단어(TF-IDF), 잠수왕, 링크 도메인 분석 등 다양한 인사이트를 제공하는 도구입니다.</p>
+<p>본 앱을 설치하거나 사용함으로써 이용자는 본 방침에 따른 정보 처리에 동의하는 것으로 간주됩니다. 본 방침에 동의하지 않는 경우 본 앱을 사용하지 마시기 바랍니다.</p>
+<h2>1. 수집하는 정보</h2>
+<p>본 앱은 일부 정보를 이용자의 직접적인 행위를 통해, 일부 정보를 자동으로 수집합니다.</p>
+<h3>1.1 이용자가 직접 제공하는 정보 — 카카오톡 대화 데이터</h3>
+<p>본 앱의 핵심 기능은 이용자가 카카오톡에서 내보낸 대화 텍스트 파일(.txt)을 본 앱에 직접 가져와 분석하는 것입니다. 이용자가 공유 시트(Android Share) 또는 파일 열기를 통해 본 앱에 전달한 대화 내용에는 다음과 같은 정보가 포함될 수 있습니다.</p>
+<ul>
+<li>대화방 참여자의 표시 이름(닉네임)</li>
+<li>메시지 본문, 전송 시각, 발신자 이름</li>
+<li>대화 중 언급된 사진/동영상/링크에 대한 텍스트 표시(실제 미디어 파일은 분석하지 않습니다)</li>
+</ul>
+<p>대화 데이터는 기본적으로 <strong>이용자 기기 내부의 로컬 데이터베이스(Room/SQLite)</strong>에 저장됩니다. 본 앱은 통계 개선과 오류 진단 목적으로 일부 대화 파일을 <strong>비식별 처리된 형태</strong>로 개발자의 클라우드 저장소(Firebase Storage / Firestore)에 업로드할 수 있습니다(아래 10항 참조). 이용자는 본 앱의 설정에서 해당 업로드를 비활성화할 수 있습니다.</p>
+<h3>1.2 자동으로 수집되는 정보</h3>
+<p>이용자가 본 앱을 사용할 때 다음과 같은 비식별 또는 익명 식별 정보가 자동으로 수집될 수 있습니다.</p>
+<ul>
+<li>기기 모델, OS 종류 및 버전, 기기 언어 및 지역 설정</li>
+<li>앱 버전, 빌드 번호, Firebase 인스턴스 ID</li>
+<li>앱 실행, 화면 조회, 분석 완료, 광고 표시·종료 등 비식별 사용 이벤트</li>
+<li>비정상 종료(크래시) 발생 시의 스택 트레이스, 기기 상태, 직전 동작 로그</li>
+<li>광고 식별자(Android 광고 ID, AAID)</li>
+</ul>
+<h3>1.3 광고 식별자</h3>
+<p>본 앱은 Google AdMob을 통해 광고를 표시합니다. 광고 표시·빈도 제한·성과 측정을 위해 다음 식별자가 사용될 수 있습니다.</p>
+<ul>
+<li>Android 광고 ID(AAID)</li>
+<li>대략적 IP 기반 위치 추정</li>
+<li>기기 모델, OS 버전 등 비식별 기기 정보</li>
+</ul>
+<p>이용자는 OS 설정에서 광고 식별자를 재설정하거나 맞춤 광고를 제한할 수 있습니다(설정 → Google → 광고 → "광고 ID 삭제" 또는 "맞춤 광고 선택 해제").</p>
+<h3>1.4 익명 사용자 식별자 (UUID)</h3>
+<p>본 앱은 최초 실행 시 임의의 UUID를 생성하여 이용자 기기에 저장하고, 이 UUID는 크래시 로그 식별과 일부 원격 설정(예: 기능 점진 배포)을 위해 사용됩니다. UUID는 이용자의 실명, 연락처, 카카오톡 계정 등 식별 정보와 연결되지 않습니다.</p>
+<h3>1.5 기기에 저장되는 환경설정</h3>
+<p>이용자의 분석 캐시, 온보딩 진행 상태, 분석 포인트, 알림 설정 등이 Android의 <code>SharedPreferences</code> 및 로컬 SQLite 데이터베이스(Room)에 저장됩니다. 이러한 데이터는 이용자 기기 내부에만 존재하며, 앱을 삭제하면 함께 삭제됩니다.</p>
+<h3>1.6 알림 권한</h3>
+<p>이용자가 알림 권한(<code>POST_NOTIFICATIONS</code>)에 동의하는 경우, 본 앱은 분석 완료 알림, 업데이트 공지, 이벤트 안내 등 푸시 알림 및 로컬 알림을 표시할 수 있습니다.</p>
+<h2>2. 정보의 이용 목적</h2>
+<p>수집된 정보는 다음과 같은 목적으로만 이용됩니다.</p>
+<ul>
+<li>본 앱의 핵심 기능인 대화 분석 결과 제공</li>
+<li>앱의 안정성 확보 및 비정상 종료 원인 파악</li>
+<li>기능 사용 패턴 분석을 통한 사용성 개선</li>
+<li>광고 노출, 광고 빈도 제어, 광고 성과 측정</li>
+<li>리워드 광고 시청 시 보상(분석 포인트) 지급</li>
+<li>원격 설정값을 통한 기능 점진적 배포 및 긴급 조정</li>
+<li>푸시 알림을 통한 공지 및 사용자 안내</li>
+<li>이용자가 제기한 문의나 신고에 대한 대응</li>
+</ul>
+<h2>3. 처리의 법적 근거</h2>
+<p>본 앱은 다음 근거에 따라 정보를 처리합니다.</p>
+<ul>
+<li><strong>이용자의 동의</strong>: 광고 추적, 알림 표시, 대화 데이터 업로드 등</li>
+<li><strong>계약의 이행</strong>: 이용자가 요청한 분석 기능을 제공하기 위한 처리</li>
+<li><strong>정당한 이익</strong>: 앱 안정성 유지, 오용 방지, 보안 사고 대응</li>
+<li><strong>법적 의무 준수</strong>: 관련 법령에 따라 요구되는 보존·제공 의무</li>
+</ul>
+<p>이용자는 OS 권한 설정, 앱 내 설정, 또는 앱 삭제를 통해 언제든 동의를 철회할 수 있습니다.</p>
+<h2>4. 정보의 공유</h2>
+<p>본 앱은 이용자의 정보를 판매하지 않으며, 다음과 같은 외부 서비스 제공자에게만 필요한 범위에서 위탁·전송합니다. 각 서비스는 자체 개인정보 처리방침에 따라 데이터를 처리합니다.</p>
+<ul>
+<li><strong>Google Firebase</strong> — Analytics, Crashlytics, Cloud Messaging, Remote Config, Firestore, Storage. 사용 이벤트, 크래시 로그, 원격 설정 조회, 푸시 알림 토큰, 그리고 본 방침 10항에 따라 업로드되는 비식별 대화 파일이 포함될 수 있습니다. <a href="https://firebase.google.com/support/privacy" rel="noopener nofollow">Firebase 개인정보 보호</a>, <a href="https://policies.google.com/privacy" rel="noopener nofollow">Google 개인정보처리방침</a></li>
+<li><strong>Google AdMob</strong> — 광고 송출 및 광고 식별자 처리. <a href="https://policies.google.com/technologies/partner-sites" rel="noopener nofollow">Google의 데이터 사용 방식</a></li>
+<li><strong>Google Play 서비스 / Google Play 인앱 리뷰</strong> — 앱 설치, 업데이트, 인앱 평점 요청 처리. <a href="https://policies.google.com/privacy" rel="noopener nofollow">Google 개인정보처리방침</a></li>
+</ul>
+<p>향후 광고 매개(Mediation) 도입 시 추가되는 광고 네트워크는 본 항목에 명시적으로 추가되며, 시행일자가 갱신됩니다.</p>
+<p><strong>우리는 이용자의 개인정보를 제3자에게 판매하지 않습니다.</strong></p>
+<h2>5. 광고 및 추적</h2>
+<p>본 앱은 Google AdMob을 통해 다음 형식의 광고를 표시할 수 있습니다.</p>
+<ul>
+<li><strong>배너 광고</strong>: 홈, 분석 결과, 인물 상세, 단어 상세 등 주요 화면 하단</li>
+<li><strong>전면 광고(Interstitial)</strong>: 대화 분석 완료 시점, 퀴즈 종료 시점</li>
+<li><strong>리워드 광고(Rewarded)</strong>: 이용자가 분석 포인트를 얻기 위해 자발적으로 시청하는 광고</li>
+</ul>
+<p>광고 송출 과정에서 다음이 발생할 수 있습니다.</p>
+<ul>
+<li>Android 광고 ID(AAID), 대략적 IP 기반 위치, 기기 종류, 광고 상호작용 데이터의 처리</li>
+<li>빈도 제한 및 사기 방지를 위한 비식별 식별자 처리</li>
+</ul>
+<p>이용자는 다음 방법으로 맞춤 광고를 제한할 수 있습니다.</p>
+<ul>
+<li>설정 → Google → 광고 → "광고 ID 삭제" 또는 "맞춤 광고 선택 해제"</li>
+</ul>
+<h2>6. 분석(Analytics)</h2>
+<p>본 앱은 Firebase Analytics를 사용하여 어떤 기능이 자주 쓰이고 어디에서 이용자가 이탈하는지 등을 익명으로 측정합니다. 측정되는 항목은 화면 조회, 분석 완료, 광고 표시/종료, 버튼 탭과 같은 비식별 이벤트, 세션 길이, 기기/OS/앱 버전 정보 등이며, 이용자가 가져온 대화 본문 자체는 Analytics에 전송되지 않습니다.</p>
+<h2>7. 충돌 보고(Crash Reporting)</h2>
+<p>본 앱은 Firebase Crashlytics를 사용하여 비정상 종료 발생 시 스택 트레이스, 기기 상태, OS 버전, 앱 버전, 직전의 비식별 동작 로그를 수집합니다. 개인을 식별할 수 있는 정보를 의도적으로 포함하지 않으나, 예외 상황에서는 스택 트레이스에 일부 데이터가 우연히 포함될 가능성이 있습니다. Crashlytics에는 1.4항에서 설명한 익명 UUID가 전달되어 동일 기기에서 반복 발생하는 크래시를 식별하는 데 사용됩니다.</p>
+<h2>8. 원격 설정(Remote Config)</h2>
+<p>본 앱은 Firebase Remote Config를 사용해 일부 기능 플래그(예: 대화 업로드 활성화 여부, 광고 노출 여부, 공지 메시지 등)와 기본값을 서버에서 가져옵니다. 이 과정에서 개인정보를 전송하지 않으며, 익명 인스턴스 ID와 앱 버전 정도만 사용됩니다.</p>
+<h2>9. 푸시 알림 (Firebase Cloud Messaging)</h2>
+<p>본 앱은 Firebase Cloud Messaging(FCM)을 사용하여 공지, 업데이트 안내, 분석 관련 알림 등 푸시 메시지를 발송할 수 있습니다. FCM 등록을 위해 익명 디바이스 토큰이 Google 서버에 등록됩니다. 이용자는 OS 알림 설정에서 본 앱의 알림 권한을 언제든 해제할 수 있으며, 권한이 없으면 푸시 알림이 표시되지 않습니다.</p>
+<h2>10. 대화 데이터의 외부 전송 (선택 기능)</h2>
+<p>본 앱은 통계 개선, 파싱 알고리즘 개선, 오류 사례 분석 등의 목적으로 일부 대화 텍스트 파일을 개발자의 Firebase Storage 및 Firestore에 업로드할 수 있습니다. 업로드 여부는 Firebase Remote Config의 <code>saveChat</code> 플래그 및 본 앱 내 설정에 따라 제어됩니다.</p>
+<ul>
+<li>업로드되는 대화는 본 앱이 자동 생성한 익명 UUID와 연결되며, 이용자의 실명·전화번호·카카오 계정과 연결되지 않습니다.</li>
+<li>일정 길이를 초과하거나, 차단 목록(blacklist)에 포함되거나, 이용자가 설정에서 비활성화한 경우 업로드되지 않습니다.</li>
+<li>이용자는 본 앱 설정에서 업로드 동의를 철회할 수 있으며, 이미 업로드된 데이터의 삭제를 원하는 경우 본 방침 마지막의 연락처로 요청해 주시기 바랍니다(요청 시 합리적 기간 내에 삭제합니다).</li>
+</ul>
+<p>업로드 기능을 사용하지 않는 경우, 어떠한 대화 본문도 외부로 전송되지 않습니다.</p>
+<h2>11. 데이터 보관 기간</h2>
+<ul>
+<li><strong>로컬 데이터(분석 캐시, 환경설정, 가져온 대화)</strong>: 이용자가 본 앱 내에서 삭제하거나 앱을 삭제할 때까지 기기에 저장됩니다.</li>
+<li><strong>분석 및 크래시 로그</strong>: 각 서비스 제공자(Google)의 보관 정책을 따릅니다(통상 14개월~수년).</li>
+<li><strong>클라우드 업로드 파일</strong>: 이용자가 삭제 요청 시 합리적 기간 내에 삭제합니다.</li>
+</ul>
+<h2>12. 이용자의 권리</h2>
+<p>이용자는 관련 법령(개인정보 보호법, GDPR, CCPA 등)에 따라 다음 권리를 가집니다.</p>
+<ul>
+<li>처리되는 정보에 대한 열람 요청</li>
+<li>부정확한 정보의 정정 요청</li>
+<li>정보의 삭제 요청</li>
+<li>처리 제한 또는 반대 요청</li>
+<li>데이터 이동 요청</li>
+<li>동의 철회</li>
+</ul>
+<p>위 권리를 행사하려면 본 방침 마지막의 연락처로 문의해 주시기 바랍니다. 또한 OS 설정에서 알림, 광고 추적 등 권한을 직접 변경하거나 앱을 삭제함으로써 즉시 데이터 처리를 중단시킬 수 있습니다.</p>
+<h2>13. 아동의 개인정보 보호</h2>
+<p>본 앱은 만 13세 미만(또는 해당 국가 법령상 최소 연령 미만)의 아동을 대상으로 하지 않으며, 그러한 이용자로부터 의도적으로 정보를 수집하지 않습니다. 만약 아동이 본 앱을 통해 정보를 제공한 사실을 알게 된 경우 즉시 삭제하겠습니다. 보호자께서 이러한 사실을 발견하시면 본 방침의 연락처로 알려주시기 바랍니다.</p>
+<h2>14. 데이터 보안</h2>
+<p>본 앱은 다음과 같은 합리적 보안 조치를 적용합니다.</p>
+<ul>
+<li>외부 통신 시 HTTPS/TLS 암호화 사용</li>
+<li>이용자 기기 내부의 민감 설정 저장 시 Android의 보안 저장소 활용</li>
+<li>외부 서비스는 신뢰할 수 있는 사업자(Google 등)만 사용</li>
+</ul>
+<p>다만, 인터넷을 통한 어떠한 전송 방식과 저장 방식도 100% 안전을 보장할 수는 없습니다. 본 앱은 합리적 노력을 다하지만 절대적 보안을 보장하지 않습니다.</p>
+<h2>15. 국외 이전</h2>
+<p>본 앱이 사용하는 외부 서비스 제공자(Google 등)는 글로벌 인프라를 통해 데이터를 처리하므로, 이용자의 일부 데이터가 이용자가 거주하는 국가 외부의 서버에서 처리될 수 있습니다. 해당 사업자는 자체적으로 표준 계약 조항(SCC) 등 적절한 안전장치를 적용합니다.</p>
+<h2>16. 본 방침의 변경</h2>
+<p>본 방침은 법령, 서비스 정책, 외부 서비스 제공자의 변경(예: 광고 매개 네트워크 추가)에 따라 개정될 수 있습니다. 중요한 변경이 있는 경우 시행일자를 갱신하고 필요 시 앱 내 공지를 통해 이용자에게 안내합니다. 변경 후에도 본 앱을 계속 사용하는 경우 변경된 방침에 동의하는 것으로 간주됩니다.</p>
+<h2>17. 연락처</h2>
+<p>본 방침 또는 개인정보 처리에 관한 문의, 권리 행사 요청은 아래로 연락해 주시기 바랍니다.</p>
+<p><strong>김민형 (rexyrex)</strong>
+이메일: <a href="mailto:rexyrex.dev@gmail.com" rel="noopener nofollow">rexyrex.dev@gmail.com</a></p>
+<div class="privacy-meta">kakaoparser — Android</div>
+</main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/common.js"></script>
+</body>
+</html>
