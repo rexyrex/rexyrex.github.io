@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Project Manager — SmartThings sign-in</title>
+</head>
+<body style="font-family: -apple-system, sans-serif; text-align: center; padding-top: 4em">
+<p>Handing off to Project Manager…</p>
+<script>
+  // SmartThings' OAuth server refuses localhost redirect URIs, so it redirects
+  // here instead; this page immediately hands the authorization code to the
+  // Project Manager menu bar app listening on localhost.
+  location.replace("http://localhost:51823/callback" + location.search);
+</script>
+<noscript><p>JavaScript is disabled — this hand-off needs it.</p></noscript>
+</body>
+</html>
