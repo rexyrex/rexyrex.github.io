@@ -393,6 +393,7 @@ body {
   line-height: 1.8;
   letter-spacing: -0.01em;
   margin: 0;
+  min-height: 3.6em; /* reserve space while the typing effect fills in */
 }
 
 /* Hero Stats - Enhanced Card Design */
@@ -1735,6 +1736,11 @@ html.custom-cursor-active body * {
   font-size: 2rem;
   z-index: 10;
   transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .romantic-close:hover {
@@ -1746,6 +1752,10 @@ html.custom-cursor-active body * {
 .romantic-container {
   position: relative;
   z-index: 2;
+}
+
+.footer-cta {
+  margin: 1.5rem 0;
 }
 
 /* Floating Hearts Animation - Simple Oval */
