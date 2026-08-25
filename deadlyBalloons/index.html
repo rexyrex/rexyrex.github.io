@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+	<meta charset="UTF-8">
 	<title>Deadly Balloons 2</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="icon" href="/favicon.ico">
 	<link rel="stylesheet" href="/css/navbar.css">
 	<link type="text/css" rel="stylesheet" href="style.css">
 	<style>
@@ -17,16 +18,25 @@
 			transform: none !important;
 			animation: none !important;
 		}
+		#balloon-area img {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 260px;
+			height: 260px;
+			z-index: 1;
+			will-change: transform;
+		}
 	</style>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 </head>
 <body>
     <div id="nav-placeholder"></div>
-    
+
     <div id="balloon-area"></div>
-    
+
 	<div class="main-container">
 		<div class="content-card">
 			<div class="header-section">
@@ -37,13 +47,13 @@
 				<h1 class="game-title">Deadly Balloons 2.0</h1>
 				<p class="game-subtitle">A game for only the hardcore balloon poppers</p>
 			</div>
-			
+
 			<div class="video-section">
 				<div class="video-container">
 					<iframe src="https://www.youtube.com/embed/_L_c12JEX6M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</div>
 			</div>
-			
+
 			<div class="buttons-section">
 				<button class="game-btn primary-btn" onclick="download();">
 					<span class="btn-text">
@@ -51,7 +61,7 @@
 						Download Game
 					</span>
 				</button>
-				
+
 				<button class="game-btn secondary-btn" onclick="github();">
 					<span class="btn-text">
 						<i class="fab fa-github"></i>
@@ -62,115 +72,133 @@
 		</div>
 	</div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="/js/common.js"></script>
 
 <script>
 	function download() {
 		location.href = "/downloads/DeadlyBalloons2.rar"
 	}
-    
+
     function github() {
 		location.href = "https://github.com/rexyrex/Deadly-Balloons-2"
 	}
 </script>
 
 <script>
-// Balloon Animation Script
+// Balloon Animation: persistent <img> elements moved with transforms in a
+// single requestAnimationFrame loop (velocities are scaled by frame delta
+// to match the original 30ms tick speed).
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Starting balloon animation...');
-    
     const image_width = 256;
     const image_height = 256;
-    var total_size = 50;
+    const total_size = 50;
     const balloon_image_count = 3;
     const speed_factor = 1;
+    const BASE_TICK_MS = 30;
 
-    const max_y = window.innerHeight + image_height;
-    const max_x = window.innerWidth - image_width;
-        
-    var balloon_list = [];
-    const template = "<img src='res/img/balloon%c.png' style='position:absolute;bottom:%ypx;left:%xpx;-webkit-transform: rotate(%rdeg);-moz-transform: rotate(%rdeg);-o-transform: rotate(%rdeg);-ms-transform: rotate(%rdeg);transform: rotate(%rdeg);z-index:1;width:260px;height:260px;'>";
-    const rexTempGreen = "<img src='res/img/rexGreenSmall.png' style='position:absolute;bottom:%ypx;left:%xpx;-webkit-transform: rotate(%rdeg);-moz-transform: rotate(%rdeg);-o-transform: rotate(%rdeg);-ms-transform: rotate(%rdeg);transform: rotate(%rdeg);z-index:1;width:260px;height:260px;'>";
-    const rexTempRed = "<img src='res/img/rexRedSmall.png' style='position:absolute;bottom:%ypx;left:%xpx;-webkit-transform: rotate(%rdeg);-moz-transform: rotate(%rdeg);-o-transform: rotate(%rdeg);-ms-transform: rotate(%rdeg);transform: rotate(%rdeg);z-index:1;width:260px;height:260px;'>";
+    let max_y = window.innerHeight + image_height;
+    let max_x = window.innerWidth - image_width;
 
-    function make_balloon(num, init){
-        if(init) {
-            for(i = 0; i < num; i++) {
-                var rexType;
-                if(Math.random() > 0.9){
-                    rexType = "rexGreen"
-                } else if(Math.random() > 0.9) { 
-                    rexType = "rexRed"
-                } else {
-                    rexType = "balloon"
-                }
-                balloon_list.push({y: Math.floor(Math.random() * max_y), x:Math.floor(Math.random() * max_x), r:30 * Math.random(), xa:Math.random() * 5 + 2, ya:Math.random() * 10 - 5, c:Math.floor(Math.random() * balloon_image_count), type:rexType});
-            }
+    window.addEventListener('resize', function() {
+        max_y = window.innerHeight + image_height;
+        max_x = window.innerWidth - image_width;
+    });
+
+    const balloonArea = document.getElementById('balloon-area');
+    if (!balloonArea) return;
+
+    function randomType(threshold) {
+        if (Math.random() > threshold) return 'rexGreen';
+        if (Math.random() > threshold) return 'rexRed';
+        return 'balloon';
+    }
+
+    function srcFor(type, c) {
+        if (type === 'rexGreen') return 'res/img/rexGreenSmall.png';
+        if (type === 'rexRed') return 'res/img/rexRedSmall.png';
+        return 'res/img/balloon' + c + '.png';
+    }
+
+    function spawnState(balloon, init) {
+        balloon.type = randomType(init ? 0.9 : 0.87);
+        balloon.c = Math.floor(Math.random() * balloon_image_count);
+        if (init) {
+            balloon.y = Math.floor(Math.random() * max_y);
+            balloon.x = Math.floor(Math.random() * max_x);
+            balloon.r = 30 * Math.random();
+            balloon.xa = Math.random() * 5 + 2;
+            balloon.ya = Math.random() * 10 - 5;
         } else {
-            for(i = 0; i < num; i++) {
-                var rexType;
-                if(Math.random() > 0.87){
-                    rexType = "rexGreen"
-                } else if(Math.random() > 0.87) { 
-                    rexType = "rexRed"
-                } else {
-                    rexType = "balloon"
-                }
-                balloon_list.push({y: -image_height - Math.floor(100 * Math.random()), x:Math.floor(Math.random() * max_x), r:0, xa:Math.random() * 4 - 2, ya:Math.random() * 4 - 2, c:Math.floor(Math.random() * balloon_image_count), type:rexType});
+            balloon.y = -image_height - Math.floor(100 * Math.random());
+            balloon.x = Math.floor(Math.random() * max_x);
+            balloon.r = 0;
+            balloon.xa = Math.random() * 4 - 2;
+            balloon.ya = Math.random() * 4 - 2;
+        }
+        balloon.el.src = srcFor(balloon.type, balloon.c);
+    }
+
+    const balloons = [];
+    for (let i = 0; i < total_size; i++) {
+        const el = document.createElement('img');
+        el.alt = '';
+        const balloon = { el: el };
+        spawnState(balloon, true);
+        balloonArea.appendChild(el);
+        balloons.push(balloon);
+    }
+
+    let lastTime = null;
+    let rafId = null;
+
+    function step(now) {
+        if (lastTime === null) lastTime = now;
+        // Clamp the delta so a background tab or long frame can't teleport balloons
+        const f = Math.min((now - lastTime) / BASE_TICK_MS, 3);
+        lastTime = now;
+
+        for (let i = 0; i < balloons.length; i++) {
+            const b = balloons[i];
+            b.ya += (3 * Math.random() * speed_factor - 1 * speed_factor) * f;
+            b.xa += (2 * Math.random() * speed_factor - 1 * speed_factor) * f;
+
+            b.y += b.ya * f;
+            b.x += b.xa * f;
+            b.r += (3 * Math.random() - 1) * f;
+
+            if (b.y >= max_y - image_height) {
+                // Off the top: recycle in place as a fresh balloon below the viewport
+                spawnState(b, false);
             }
+
+            // bottom-anchored: positive y moves the balloon up the screen
+            b.el.style.transform = 'translate3d(' + b.x + 'px, ' + (-b.y) + 'px, 0) rotate(' + b.r + 'deg)';
+        }
+
+        rafId = requestAnimationFrame(step);
+    }
+
+    function start() {
+        if (rafId === null) {
+            lastTime = null;
+            rafId = requestAnimationFrame(step);
         }
     }
 
-    make_balloon(total_size, true);
-    console.log('Initial balloons created:', balloon_list.length);
+    function stop() {
+        if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+        }
+    }
 
-    setInterval(function(){
-        var html = "";
-        
-        const remain_list = [];
-        
-        for(i = 0; i < balloon_list.length; i++) {
-            balloon_list[i].ya += 3 * Math.random() * speed_factor - 1 * speed_factor;
-            balloon_list[i].xa += 2 * Math.random() * speed_factor - 1 * speed_factor;
-            
-            balloon_list[i].y += balloon_list[i].ya;
-            balloon_list[i].x += balloon_list[i].xa;
-            
-            balloon_list[i].r += 3 * Math.random() - 1;
-        
-            if(balloon_list[i].type == "balloon"){
-                html += template.replace("%y", balloon_list[i].y).replace("%x", balloon_list[i].x).replace(/%r/g, balloon_list[i].r).replace("%c", balloon_list[i].c);
-            } else if(balloon_list[i].type == "rexGreen") {
-                html += rexTempGreen.replace("%y", balloon_list[i].y).replace("%x", balloon_list[i].x).replace(/%r/g, balloon_list[i].r);
-            } else {
-                html += rexTempRed.replace("%y", balloon_list[i].y).replace("%x", balloon_list[i].x).replace(/%r/g, balloon_list[i].r);
-            }
-            
-            if(balloon_list[i].y < max_y - image_height) {
-                remain_list.push(balloon_list[i]);
-            }
-        }
-        
-        balloon_list = remain_list;
-        make_balloon(total_size - remain_list.length, false);
-        
-        const balloonArea = document.getElementById("balloon-area");
-        if (balloonArea) {
-            balloonArea.innerHTML = html;
-            // Debug: log the first few times to see if HTML is being generated
-            if (Math.random() < 0.01) { // Log ~1% of the time
-                console.log('Balloon HTML length:', html.length, 'Active balloons:', balloon_list.length);
-                if (html.length > 0) {
-                    console.log('Sample HTML:', html.substring(0, 200) + '...');
-                }
-            }
-        }
-    }, 30);
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) { stop(); } else { start(); }
+    });
+
+    start();
 });
 </script>
 
 </body>
-</html> 
+</html>
