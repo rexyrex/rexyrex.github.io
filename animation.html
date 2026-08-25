@@ -1,15 +1,14 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Animation Showcase - Rexyrex</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="/favicon.ico">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-        <script src="./js/vue.js"></script>    
-        <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@3.5.41/dist/vue.global.prod.js" integrity="sha384-arPHRzOKPl8g3Rbe/cQBWYPnq4HcxfPFSFWD3qvI/hc2XQf+4GkVqkOlWgjN5mD3" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="/css/index.css">
         <style>
             /* Fix cursor visibility */
@@ -2544,32 +2543,10 @@
         </div>
 
        <script>
-           var vm = new Vue ({
-               el: '#app',
-               data: {
-                   rexText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis enim libero, at lacinia diam fermentum id. Pellentesque habitant morbi tristique senectus et netus.',
-                   items: [1,2,3,4,5,6,7,8,9],
-                    nextNum: 10,
-                   show:true,
+           const vm = Vue.createApp({
+               data() {
+                   return {
                    isInitialLoad: true,
-                   show2:true,
-                   show3:true,
-                   show4:true,
-                   show5:true,
-                   show6:true,
-                   show7:true,
-                   show8:true,
-                   show9:true,
-                   show10:true,
-                   show11:true,
-                   show12:true,
-                   show13:true,
-                   show14:true,
-                   show15:true,
-                   show16:true,
-                   progress: 0,
-                   iterations: 0,
-                   f_iterations: 0,
                    randomEffectActive: false,
                    currentRandomEffect: {},
                    autoRefreshTimer: null,
@@ -3028,21 +3005,7 @@
                            style: 'color: #3f51b5; font-weight: bold;'
                        }
                    ]
-               },
-               computed: {
-                   rexStyle: function(newR, oldR){
-                       return "width: " + this.progress + "%"
-                   },
-                   matrixText: function(){
-                       return this.rexText.split('').map((char, index) => 
-                           `<span class="matrix-char" style="animation-delay: ${index * 0.05}s">${char}</span>`
-                       ).join('');
-                   },
-                   waveText: function(){
-                       return this.rexText.split('').map((char, index) => 
-                           `<span class="wave-char" style="animation-delay: ${index * 0.1}s">${char === ' ' ? '&nbsp;' : char}</span>`
-                       ).join('');
-                   }
+                   };
                },
                mounted: function() {
                    // Disable initial load animations after they complete
@@ -3051,97 +3014,6 @@
                    }, 1500); // After all initial animations complete
                },
                methods: {
-
-                   beforeEnter: function (el) {
-                    el.style.opacity = 0
-                    },
-                    enter: function (el, done) {
-                    Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
-                    Velocity(el, { fontSize: '1em' }, { complete: done })
-                    },
-                    leave: function (el, done) {
-                    Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
-                    Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
-                    Velocity(el, {
-                        rotateZ: '45deg',
-                        translateY: '30px',
-                        translateX: '30px',
-                        opacity: 0
-                    }, { complete: done })
-                    },
-                    randomIndex: function () {
-                        return Math.floor(Math.random() * this.items.length)
-                    },
-                    add: function () {
-                        this.items.splice(this.randomIndex(), 0, this.nextNum++)
-                    },
-                    remove: function () {
-                        this.items.splice(this.randomIndex(), 1)
-                    },
-                    addSeveral: function(){
-                        nToAdd = Math.floor((Math.random() * this.items.length/2) + 1);
-                        for(i=0; i<nToAdd; i++){
-                            this.items.splice(this.randomIndex(), 0, this.nextNum++)
-                        }
-                    },
-                    removeSeveral: function(){
-                        nToRm = Math.floor((Math.random() * (this.items.length/3)) + 1);
-                        for(i=0; i<nToRm; i++){
-                            this.items.splice(this.randomIndex(), 1)
-                        }
-                    },
-                    gocrazy: function(){
-                        this.iterations = Math.floor((Math.random() * (20)) + 10);
-                        this.f_iterations = 0;
-                        for(i=0; i<this.iterations; i++){
-                            setTimeout(() => {
-                                this.addSeveral(); 
-                                this.f_iterations++; 
-                                this.progress=this.f_iterations/this.iterations*100;                                
-                                }, 120*i);
-                            setTimeout(() => {this.removeSeveral(); }, 120*i);                            
-                        }
-                    },
-                    createExplosion: function(){
-                        if (!this.$refs.explosionContainer) return;
-                        
-                        // Clear existing particles
-                        const existingParticles = this.$refs.explosionContainer.querySelectorAll('.explosion-particle');
-                        existingParticles.forEach(p => p.remove());
-                        
-                        // Create new particles
-                        const particleCount = 20;
-                        const container = this.$refs.explosionContainer;
-                        const rect = container.getBoundingClientRect();
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        
-                        for(let i = 0; i < particleCount; i++){
-                            const particle = document.createElement('div');
-                            particle.className = 'explosion-particle';
-                            
-                            const angle = (Math.PI * 2 * i) / particleCount;
-                            const velocity = 50 + Math.random() * 100;
-                            const dx = Math.cos(angle) * velocity;
-                            const dy = Math.sin(angle) * velocity;
-                            
-                            particle.style.cssText = `
-                                left: ${centerX}px;
-                                top: ${centerY}px;
-                                --dx: ${dx}px;
-                                --dy: ${dy}px;
-                                animation: explodeParticle 1.5s ease-out forwards;
-                                animation-delay: ${Math.random() * 0.2}s;
-                            `;
-                            
-                            container.appendChild(particle);
-                            
-                            // Remove particle after animation
-                            setTimeout(() => {
-                                if(particle.parentNode) particle.remove();
-                            }, 1700);
-                        }
-                    },
                     startRandomShow: function(){
                         this.isInitialLoad = false; // Disable initial load animations
                         this.randomEffectActive = true;
@@ -3434,13 +3306,6 @@
                     }
                },
                watch: {
-                   show7: function(newVal) {
-                       if(newVal) {
-                           this.$nextTick(() => {
-                               setTimeout(() => this.createExplosion(), 100);
-                           });
-                       }
-                   },
                    randomEffectActive: function(newVal) {
                        if(newVal) {
                            // Generate a new random effect every time it's toggled on
@@ -3452,18 +3317,15 @@
                        }
                    }
                },
-               beforeDestroy() {
-                   // Clean up timers when component is destroyed
+               beforeUnmount() {
+                   // Clean up timers when the app is torn down
                    this.stopAutoRefresh();
                    this.stopCountdown();
                    this.stopSelectedAnimationTimer();
                }
-           })
+           }).mount('#app')
         </script>
 
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="/js/common.js"></script>
     </body>
 </html>
