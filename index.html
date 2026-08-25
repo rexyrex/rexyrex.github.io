@@ -1,11 +1,13 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Rexyrex - Developer & Composer</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <meta name="description" content="Portfolio of Rexyrex — developer and composer. Web apps, games, and music, including a multilingual typing speed game and the Deadly Balloons arcade game.">
+        <link rel="icon" href="/favicon.ico">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="/css/index.css">
     </head>
@@ -98,17 +100,10 @@
                                         View Projects
                                     </span>
                                 </a>
-                                <!-- TEMPORARY TEST BUTTON -->
-                                <button type="button" class="btn btn-warning hero-btn" data-toggle="modal" data-target="#testModal">
-                                    <span class="btn-text">
-                                        <i class="fas fa-bug"></i>
-                                        Test Modal
-                                    </span>
-                                </button>
                             </div>
 
                             <div class="social-links">
-                                <a href="https://www.youtube.com/channel/UCq3yY-SCoglG8xm6Z1_udaw" target="_blank" class="social-card youtube">
+                                <a href="https://www.youtube.com/channel/UCq3yY-SCoglG8xm6Z1_udaw" target="_blank" rel="noopener noreferrer" class="social-card youtube">
                                     <div class="social-icon">
                                         <i class="fab fa-youtube"></i>
                                     </div>
@@ -117,7 +112,7 @@
                                         <span class="social-subtitle">Video Content</span>
                                     </div>
                                 </a>
-                                <a href="https://rexyrex.newgrounds.com/" target="_blank" class="social-card newgrounds">
+                                <a href="https://rexyrex.newgrounds.com/" target="_blank" rel="noopener noreferrer" class="social-card newgrounds">
                                     <div class="social-icon">
                                         <i class="fas fa-music"></i>
                                     </div>
@@ -126,7 +121,7 @@
                                         <span class="social-subtitle">Music Portfolio</span>
                                     </div>
                                 </a>
-                                <a href="https://github.com/rexyrex" target="_blank" class="social-card github">
+                                <a href="https://github.com/rexyrex" target="_blank" rel="noopener noreferrer" class="social-card github">
                                     <div class="social-icon">
                                         <i class="fab fa-github"></i>
                                     </div>
@@ -351,10 +346,8 @@
                             <div class="footer-content">
                                 <div class="footer-main">
                                     <h4 class="footer-title">Let's Build Something Amazing</h4>
-                                    <div style="margin: 1.5rem 0;">
-                                        <a href="mailto:rexyrex.dev@gmail.com" 
-                                           class="btn btn-primary hero-btn"
-                                           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: 500; transition: all 0.3s ease; border: none; cursor: pointer;">
+                                    <div class="footer-cta">
+                                        <a href="mailto:rexyrex.dev@gmail.com" class="btn btn-primary hero-btn">
                                             <span class="btn-text">
                                                 <i class="fas fa-envelope"></i>
                                                 Get In Touch
@@ -367,7 +360,7 @@
                                 </div>
                                 <div class="footer-meta">
                                     <p class="footer-subtext">
-                                        © 2025 All rights reserved. Ready to collaborate on your next project.
+                                        © <span id="footer-year">2026</span> All rights reserved. Ready to collaborate on your next project.
                                     </p>
                                 </div>
                             </div>
@@ -377,71 +370,12 @@
             </div>
         </footer>
 
-        <!-- TEMPORARY TEST MODAL -->
-        <div id="testModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="testModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="testModalLabel">
-                            <i class="fas fa-bug"></i> Test Modal
-                        </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h4>Modal Functionality Test</h4>
-                        <p>This is a test modal to check if modal interactions work properly on the main page.</p>
-                        
-                        <div class="form-group">
-                            <label for="testInput">Test Input Field:</label>
-                            <input type="text" class="form-control" id="testInput" placeholder="Type something here...">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="testSelect">Test Select:</label>
-                            <select class="form-control" id="testSelect">
-                                <option>Option 1</option>
-                                <option>Option 2</option>
-                                <option>Option 3</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="testCheckbox">
-                            <label class="form-check-label" for="testCheckbox">
-                                Test checkbox
-                            </label>
-                        </div>
-                        
-                        <hr>
-                        
-                        <h5>Scrollable Content Test</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
-                        <p>Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            <i class="fas fa-times"></i> Close
-                        </button>
-                        <button type="button" class="btn btn-primary" onclick="alert('Button clicked!')">
-                            <i class="fas fa-check"></i> Test Action
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Romantic Easter Egg Modal -->
-        <div id="romanticModal" class="modal fade romantic-modal" tabindex="-1" role="dialog" aria-labelledby="romanticModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+        <div id="romanticModal" class="modal fade romantic-modal" tabindex="-1" aria-labelledby="romanticModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content romantic-content">
                     <div class="modal-body romantic-body">
-                        <button type="button" class="close romantic-close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="romantic-close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <div class="romantic-container">
@@ -521,84 +455,57 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
         <script src="/js/common.js"></script>
         <script src="/js/index.js"></script>
-        
+
         <script>
         // Romantic Easter Egg - Long Press on Code Icon
-        $(document).ready(function() {
-            let longPressTimer;
+        (function() {
+            const avatar = document.querySelector('.avatar-inner');
+            const modalEl = document.getElementById('romanticModal');
+            if (!avatar || !modalEl) return;
+
             const longPressDuration = 2000; // 2 seconds
-            let isPressed = false;
-            
-            $('.avatar-inner').on('mousedown touchstart', function(e) {
+            let longPressTimer = null;
+
+            avatar.addEventListener('pointerdown', function(e) {
                 e.preventDefault();
-                isPressed = true;
-                
-                // Add visual feedback for long press
-                $(this).addClass('long-press-active');
-                
+                avatar.classList.add('long-press-active');
+                clearTimeout(longPressTimer);
                 longPressTimer = setTimeout(function() {
-                    if (isPressed) {
-                        // Show romantic modal
-                        $('#romanticModal').modal('show');
-                        $('.avatar-inner').removeClass('long-press-active');
-                    }
+                    avatar.classList.remove('long-press-active');
+                    bootstrap.Modal.getOrCreateInstance(modalEl).show();
                 }, longPressDuration);
             });
-            
-            $(document).on('mouseup touchend', function() {
-                isPressed = false;
-                clearTimeout(longPressTimer);
-                $('.avatar-inner').removeClass('long-press-active');
+
+            ['pointerup', 'pointercancel'].forEach(function(type) {
+                document.addEventListener(type, function() {
+                    clearTimeout(longPressTimer);
+                    avatar.classList.remove('long-press-active');
+                });
             });
-            
+
             // Prevent context menu on long press
-            $('.avatar-inner').on('contextmenu', function(e) {
+            avatar.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
             });
-            
-            // Fix animation restart when modal reopens
-            $('#romanticModal').on('show.bs.modal', function() {
-                // Remove and re-add animation classes to restart animations
-                const hearts = $('.floating-hearts i');
-                const sparkles = $('.sparkle');
-                const particles = $('.particle');
-                const glowRings = $('.glow-ring');
-                const romanticMessage = $('.romantic-message');
-                const nameContainers = $('.name-container');
-                const mainHeart = $('.main-heart');
-                const radiantLight = $('.radiant-light');
-                
-                // Remove animations temporarily
-                hearts.css('animation', 'none');
-                sparkles.css('animation', 'none');
-                particles.css('animation', 'none');
-                glowRings.css('animation', 'none');
-                romanticMessage.css('animation', 'none');
-                nameContainers.css('animation', 'none');
-                mainHeart.css('animation', 'none');
-                radiantLight.css('animation', 'none');
-                
-                // Force reflow
-                if (hearts[0]) hearts[0].offsetHeight;
-                
-                // Restore animations
+
+            // Restart the CSS animations every time the modal reopens
+            modalEl.addEventListener('show.bs.modal', function() {
+                const animated = modalEl.querySelectorAll(
+                    '.floating-hearts i, .sparkle, .particle, .glow-ring, ' +
+                    '.romantic-message, .name-container, .main-heart, .radiant-light'
+                );
+                animated.forEach(function(el) { el.style.animation = 'none'; });
+                if (animated[0]) void animated[0].offsetHeight; // force reflow
                 setTimeout(function() {
-                    hearts.css('animation', '');
-                    sparkles.css('animation', '');
-                    particles.css('animation', '');
-                    glowRings.css('animation', '');
-                    romanticMessage.css('animation', '');
-                    nameContainers.css('animation', '');
-                    mainHeart.css('animation', '');
-                    radiantLight.css('animation', '');
+                    animated.forEach(function(el) { el.style.animation = ''; });
                 }, 50);
             });
-        });
+        })();
+
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
         </script>
     </body>
 </html>

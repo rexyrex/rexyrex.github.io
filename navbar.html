@@ -1,139 +1,87 @@
-<!doctype html>
-<html>
-    <head>
-        <title>Rexyrex</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/css/navbar.css">
-    </head>
-
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="/index.html">
-                    <img src="/assets/rexGreenSmall.png" alt="Rexyrex Logo">
-                    Rexyrex
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup">
-                    <span class="navbar-toggler-icon"></span>
+<!-- Shared navbar fragment. Injected into #nav-placeholder by /js/common.js (styles: /css/navbar.css). Not a standalone page. -->
+<nav class="navbar site-navbar" aria-label="Main navigation">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="/index.html">
+            <img src="/assets/rexGreenSmall.png" alt="Rexyrex logo">
+            Rexyrex
+        </a>
+        <button class="navbar-toggler" type="button" aria-controls="site-nav-links" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-links" id="site-nav-links">
+            <div class="nav-item dropdown">
+                <button class="nav-link dropdown-toggle" type="button" id="gamesDropdown" aria-expanded="false" aria-haspopup="true">
+                    <i class="fas fa-gamepad"></i> Games
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav ml-auto">
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="gamesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-gamepad"></i> Games
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="gamesDropdown">
-                                <a class="dropdown-item" href="/typing/index.html">
-                                    <i class="fas fa-keyboard"></i> Typing Speed Test
-                                </a>
-                                <a class="dropdown-item" href="/deadlyBalloons/index.html">
-                                    <i class="fas fa-gamepad"></i> Deadly Balloons
-                                </a>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="musicDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-music"></i> Music
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="musicDropdown">
-                                <a class="dropdown-item" href="/music/showcase.html">
-                                    <i class="fas fa-headphones"></i> Music Showcase
-                                </a>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-flask"></i> Test
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="testDropdown">
-                                <a class="dropdown-item" href="/animation.html">
-                                    <i class="fas fa-magic"></i> Animation Showcase
-                                </a>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown" style="display: none;">
-                            <a class="nav-link dropdown-toggle" href="#" id="parserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-code"></i> Parser
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="parserDropdown">
-                                <a class="dropdown-item" href="/parser/index.html">
-                                    <i class="fas fa-home"></i> Parser Home
-                                </a>
-                                <a class="dropdown-item" href="/parser/parserQuery.html">
-                                    <i class="fas fa-search"></i> Parser Query
-                                </a>
-                                <a class="dropdown-item" href="/parser/parserDownload.html">
-                                    <i class="fas fa-download"></i> Parser Download
-                                </a>
-                                <a class="dropdown-item" href="/parser/kakaoParserAgree.html">
-                                    <i class="fas fa-check-circle"></i> Agreement
-                                </a>
-                                <a class="dropdown-item" href="/parser/kakaoParserFAQ.html">
-                                    <i class="fas fa-question-circle"></i> FAQ
-                                </a>
-                                <a class="dropdown-item" href="/parser/kakaoParserErrorHelp1.html">
-                                    <i class="fas fa-exclamation-circle"></i> Error Help 1
-                                </a>
-                                <a class="dropdown-item" href="/parser/kakaoParserErrorHelp2.html">
-                                    <i class="fas fa-exclamation-circle"></i> Error Help 2
-                                </a>
-                                <a class="dropdown-item" href="/parser/kakaoParserIphoneConvert.html">
-                                    <i class="fas fa-mobile-alt"></i> iPhone Convert
-                                </a>
-                            </div>
-                        </div>
-                        <a class="nav-item nav-link" href="https://github.com/rexyrex" target="_blank">
-                            <i class="fab fa-github"></i> GitHub
-                        </a>
-                    </div>
+                <div class="dropdown-menu" aria-labelledby="gamesDropdown">
+                    <a class="dropdown-item" href="/typing/index.html">
+                        <i class="fas fa-keyboard"></i> Typing Speed Test
+                    </a>
+                    <a class="dropdown-item" href="/deadlyBalloons/index.html">
+                        <i class="fas fa-gamepad"></i> Deadly Balloons
+                    </a>
                 </div>
             </div>
-        </nav>
-
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                // Handle mobile dropdown
-                if (window.innerWidth < 992) {
-                    $('.dropdown-toggle').on('click', function(e) {
-                        e.preventDefault();
-                        $(this).dropdown('toggle');
-                    });
-                }
-                
-                // Add hover delay to keep dropdown open longer
-                var dropdownTimeout;
-                $('.dropdown').hover(
-                    function() {
-                        clearTimeout(dropdownTimeout);
-                        $('.dropdown-menu').not($(this).children('.dropdown-menu')).removeClass('show');
-                        $(this).children('.dropdown-menu').addClass('show');
-                    },
-                    function() {
-                        var $this = $(this);
-                        dropdownTimeout = setTimeout(function() {
-                            $this.children('.dropdown-menu').removeClass('show');
-                        }, 500); // 500ms delay before hiding
-                    }
-                );
-                
-                // Also add hover delay to dropdown items
-                $('.dropdown-menu').hover(
-                    function() {
-                        clearTimeout(dropdownTimeout);
-                    },
-                    function() {
-                        var $dropdown = $(this).closest('.dropdown');
-                        dropdownTimeout = setTimeout(function() {
-                            $dropdown.children('.dropdown-menu').removeClass('show');
-                        }, 500); // 500ms delay before hiding
-                    }
-                );
-            });
-        </script>
-    </body>
-</html>
+            <div class="nav-item dropdown">
+                <button class="nav-link dropdown-toggle" type="button" id="musicDropdown" aria-expanded="false" aria-haspopup="true">
+                    <i class="fas fa-music"></i> Music
+                </button>
+                <div class="dropdown-menu" aria-labelledby="musicDropdown">
+                    <a class="dropdown-item" href="/music/showcase.html">
+                        <i class="fas fa-headphones"></i> Music Showcase
+                    </a>
+                </div>
+            </div>
+            <div class="nav-item dropdown">
+                <button class="nav-link dropdown-toggle" type="button" id="testDropdown" aria-expanded="false" aria-haspopup="true">
+                    <i class="fas fa-flask"></i> Test
+                </button>
+                <div class="dropdown-menu" aria-labelledby="testDropdown">
+                    <a class="dropdown-item" href="/animation.html">
+                        <i class="fas fa-magic"></i> Animation Showcase
+                    </a>
+                </div>
+            </div>
+            <div class="nav-item dropdown d-none-nav">
+                <button class="nav-link dropdown-toggle" type="button" id="parserDropdown" aria-expanded="false" aria-haspopup="true">
+                    <i class="fas fa-code"></i> Parser
+                </button>
+                <div class="dropdown-menu" aria-labelledby="parserDropdown">
+                    <a class="dropdown-item" href="/parser/index.html">
+                        <i class="fas fa-home"></i> Parser Home
+                    </a>
+                    <a class="dropdown-item" href="/parser/parserQuery.html">
+                        <i class="fas fa-search"></i> Parser Query
+                    </a>
+                    <a class="dropdown-item" href="/parser/parserDownload.html">
+                        <i class="fas fa-download"></i> Parser Download
+                    </a>
+                    <a class="dropdown-item" href="/parser/kakaoParserAgree.html">
+                        <i class="fas fa-check-circle"></i> Agreement
+                    </a>
+                    <a class="dropdown-item" href="/parser/kakaoParserFAQ.html">
+                        <i class="fas fa-question-circle"></i> FAQ
+                    </a>
+                    <a class="dropdown-item" href="/parser/kakaoParserErrorHelp1.html">
+                        <i class="fas fa-exclamation-circle"></i> Error Help 1
+                    </a>
+                    <a class="dropdown-item" href="/parser/kakaoParserErrorHelp2.html">
+                        <i class="fas fa-exclamation-circle"></i> Error Help 2
+                    </a>
+                    <a class="dropdown-item" href="/parser/kakaoParserIphoneConvert.html">
+                        <i class="fas fa-mobile-alt"></i> iPhone Convert
+                    </a>
+                </div>
+            </div>
+            <a class="nav-item nav-link" id="appsLink" href="/apps/">
+                <i class="fas fa-mobile-alt"></i> Apps
+            </a>
+            <a class="nav-item nav-link" id="supportLink" href="/support/">
+                <i class="fas fa-life-ring"></i> Support
+            </a>
+            <a class="nav-item nav-link" href="https://github.com/rexyrex" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+        </div>
+    </div>
+</nav>

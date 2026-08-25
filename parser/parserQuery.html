@@ -1,11 +1,12 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Parser Query</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="parserDownload/parserDownload.css">
+    <link rel="icon" href="/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="download/parserDownload.css">
   </head>
 
   <body> 
@@ -14,7 +15,7 @@
         <h1>Parser Query v1</h1>
 
         <div id="uuidDiv" class="blackOutline">
-          <input id="uuidInput" type="text" class="form-control" placeholder="">
+          <input id="uuidInput" type="text" class="form-control" placeholder="Enter user UUID">
           <button type="button" class="btn btn-primary btn-lg" onclick="searchUUID()">Search</button>
           <p id="searchRes">No Search Results</p>
         </div>
@@ -50,7 +51,7 @@
               <thead>
                 <tr>
                   <th scope="col">KEY</th>
-                  <th scope="col word-wrap:break-word">VALUE</th>
+                  <th scope="col" style="word-break: break-word">VALUE</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,7 +71,7 @@
       </div>
     </div>
 
-  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.8/firebase-app.js"></script>
@@ -107,7 +108,6 @@ var quizCount;
     firebase.analytics();
     db = firebase.firestore();
     resetCounts();
-    $('#uuidInput').val("ab6cc5ab-41de-49ff-a3e9-bc1b534461d9");
     //storage = firebase.storage();
     //storageRef = storage.ref();
     //listRef = storageRef;//.child('');
@@ -124,9 +124,16 @@ var quizCount;
     $('#quizInfoBtn').text("Quiz Info (" + quizCount + ")");
   }
 
+  // Escape user/Firestore-provided values before injecting them as HTML
+  function escapeHtml(s){
+    return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
   function searchUUID(uuid){
     var uuidInput = $('#uuidInput').val();
-    $('#searchRes').html('Searching for ' + uuidInput);
+    $('#searchRes').text('Searching for ' + uuidInput);
     resetCounts();
     updateCountUi();
     var usersRef = db.collection("users2");
@@ -213,7 +220,7 @@ var quizCount;
     id = "A" + id;
     var html = `
     <button id="` + id + `Btn" class="btn btn-primary" type="button">
-            `+ data.ChatTitle +`
+            `+ escapeHtml(data.ChatTitle) +`
           </button>
 
           <div class="collapse" id="` + id + `TableDiv">
@@ -221,7 +228,7 @@ var quizCount;
               <thead>
                 <tr>
                   <th scope="col">KEY</th>
-                  <th scope="col word-wrap:break-word">VALUE</th>
+                  <th scope="col" style="word-break: break-word">VALUE</th>
                 </tr>
               </thead>
               <tbody>
@@ -229,7 +236,6 @@ var quizCount;
               </tbody>
             </table>
           </div>
-        </div>
     `
     $('#chatsResDiv').append(html);
     var idStr = "#" + id + "Btn";
@@ -250,7 +256,7 @@ var quizCount;
             arr.sort(GetSortOrder("key"));
 
             for(var i=0; i<arr.length; i++){
-              table.append("<tr><td>" + arr[i].key + "</td><td>"+ arr[i].value + "</td>");
+              table.append("<tr><td>" + escapeHtml(arr[i].key) + "</td><td>"+ escapeHtml(arr[i].value) + "</td></tr>");
             }
   }
 
@@ -269,7 +275,7 @@ var quizCount;
   </script>
 
   
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
   </body>
   
