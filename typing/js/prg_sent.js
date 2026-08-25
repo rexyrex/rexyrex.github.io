@@ -40,14 +40,6 @@ function getPrgSent2(){
 
 function getPrgSent3(){
     var shortVarStr = shortVarStrList[ri(shortVarStrList.length)];
-    var longVarStr = longVarStrList[ri(longVarStrList.length)]; 
-    var listTypeStr = listTypeStrList[ri(listTypeStrList.length)]; 
-
-    return `for(int ${shortVarStr}=` + getRandomInt(0,100) + `; ${shortVarStr}&lt${longVarStr}${listTypeStr}.length(); ${shortVarStr}++)`
-}
-
-function getPrgSent3(){
-    var shortVarStr = shortVarStrList[ri(shortVarStrList.length)];
     return `System.out.println("${shortVarStr}="+${shortVarStr});`;
 }
 

@@ -1,11 +1,12 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rex Typing Game</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" type="text/css" href="css/typespeed2.css">
@@ -21,9 +22,9 @@
         opacity: 1;
       }
     </style>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
     <script src="/js/common.js"></script>
   </head>
 
@@ -576,57 +577,34 @@
       //alert(textgen.sentence());
     });
 
-    function setScoreTab(tabType){
-      // Update custom modal tabs with subtle styling
-      $('#customKorTab, #customEngTab, #customPrgTab').css({
-        'background': 'transparent',
-        'color': '#6c757d',
-        'border': 'none',
-        'box-shadow': 'none',
-        'transform': 'translateY(0)'
+    // Escape user/Firestore-provided values before injecting them as HTML
+    function escapeHtml(s){
+      return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
       });
-      
+    }
+
+    function setScoreTab(tabType){
       if(tabType=='kor'){
         for(var i=0; i<scoreTabs.length; i++){
           $('#' + scoreTabs[i]).removeClass('active');
         }
         $('#scoreTitle').text("한타 순위" + (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
-        $('#customScoreTitle').text("한타 순위" + (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
         $('#korScoreTab').addClass('active');
-        $('#customKorTab').css({
-          'background': '#ffffff',
-          'color': '#495057',
-          'border': '1px solid #dee2e6',
-          'box-shadow': '0 2px 4px rgba(0,0,0,0.06)'
-        });
         loadHighscoreData('kor');
       } else if(tabType=='eng'){
         for(var i=0; i<scoreTabs.length; i++){
           $('#' + scoreTabs[i]).removeClass('active');
         }
         $('#scoreTitle').text("English Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
-        $('#customScoreTitle').text("English Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
         $('#engScoreTab').addClass('active');
-        $('#customEngTab').css({
-          'background': '#ffffff',
-          'color': '#495057',
-          'border': '1px solid #dee2e6',
-          'box-shadow': '0 2px 4px rgba(0,0,0,0.06)'
-        });
         loadHighscoreData('eng');
       } else if(tabType=='prg'){
         for(var i=0; i<scoreTabs.length; i++){
           $('#' + scoreTabs[i]).removeClass('active');
         }
         $('#scoreTitle').text("Programmer Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
-        $('#customScoreTitle').text("Programmer Ranking"+ (daily ? ' (' + moment().format('MM-DD-YYYY') + ')' : ' (역대)'));
         $('#prgScoreTab').addClass('active');
-        $('#customPrgTab').css({
-          'background': '#ffffff',
-          'color': '#495057',
-          'border': '1px solid #dee2e6',
-          'box-shadow': '0 2px 4px rgba(0,0,0,0.06)'
-        });
         loadHighscoreData('prg');
       }
     }
@@ -692,7 +670,7 @@
 
           $('#versionTable tbody').empty();
           for(var i=0; i<versionList.length; i++){
-            $('#versionTable tbody').append("<tr><td>" + versionList[i].ver + "</td><td>"+ versionList[i].desc + "</td>");
+            $('#versionTable tbody').append("<tr><td>" + escapeHtml(versionList[i].ver) + "</td><td>"+ escapeHtml(versionList[i].desc) + "</td></tr>");
           }
       })
       .catch((error) => {
@@ -972,20 +950,9 @@
                 highList.push(doc.data());
             });
             $('#highLoading').css("visibility", "hidden");
-            $('#customLoading').hide();
             $('#highScoreTable tbody').empty();
-            $('#customTableBody').empty();
             for(var i=0; i<highList.length; i++){
-              $('#highScoreTable tbody').append("<tr><th scope='row'>" + (i+1) + "</th><td>" + highList[i].id + "</td><td>"+ highList[i].rank + "</td><td>"+ highList[i].score + "</td>");
-              var rankBadge = '';
-              var rankColor = '#6c757d';
-              if (i < 3) {
-                var medals = ['🥇', '🥈', '🥉'];
-                var colors = ['#FFD700', '#C0C0C0', '#CD7F32'];
-                rankBadge = medals[i];
-                rankColor = colors[i];
-              }
-              $('#customTableBody').append('<tr style="transition: all 0.3s ease !important; border-bottom: 1px solid #f8f9fa !important;" onmouseover="this.style.background=\'#f8f9fa\'; this.style.transform=\'translateX(3px)\';" onmouseout="this.style.background=\'transparent\'; this.style.transform=\'translateX(0)\';"><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 600 !important; font-size: 15px !important;"><span style="display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 28px !important; height: 28px !important; background: ' + rankColor + ' !important; color: white !important; border-radius: 50% !important; font-size: 13px !important; font-weight: 600 !important; margin-right: 8px !important;">' + (rankBadge || (i+1)) + '</span></td><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 500 !important; font-size: 14px !important;">' + highList[i].id + '</td><td style="padding: 14px 20px !important; color: #6c757d !important; font-weight: 500 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 0.3px !important;">' + highList[i].rank + '</td><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 600 !important; font-size: 15px !important;">' + highList[i].score + '</td></tr>');
+              $('#highScoreTable tbody').append("<tr><th scope='row'>" + (i+1) + "</th><td>" + escapeHtml(highList[i].id) + "</td><td>"+ escapeHtml(highList[i].rank) + "</td><td>"+ escapeHtml(highList[i].score) + "</td></tr>");
             }
         })
         .catch((error) => {
@@ -1002,20 +969,9 @@
                 highList.push(doc.data());
             });
             $('#highLoading').css("visibility", "hidden");
-            $('#customLoading').hide();
             $('#highScoreTable tbody').empty();
-            $('#customTableBody').empty();
             for(var i=0; i<highList.length; i++){
-              $('#highScoreTable tbody').append("<tr><th scope='row'>" + (i+1) + "</th><td>" + (highList[i].id == '' ?  '익명 유저' : highList[i].id)+ "</td><td>"+ highList[i].rank + "</td><td>"+ highList[i].score + "</td>");
-              var rankBadge = '';
-              var rankColor = '#6c757d';
-              if (i < 3) {
-                var medals = ['🥇', '🥈', '🥉'];
-                var colors = ['#FFD700', '#C0C0C0', '#CD7F32'];
-                rankBadge = medals[i];
-                rankColor = colors[i];
-              }
-              $('#customTableBody').append('<tr style="transition: all 0.3s ease !important; border-bottom: 1px solid #f8f9fa !important;" onmouseover="this.style.background=\'#f8f9fa\'; this.style.transform=\'translateX(3px)\';" onmouseout="this.style.background=\'transparent\'; this.style.transform=\'translateX(0)\';"><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 600 !important; font-size: 15px !important;"><span style="display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 28px !important; height: 28px !important; background: ' + rankColor + ' !important; color: white !important; border-radius: 50% !important; font-size: 13px !important; font-weight: 600 !important; margin-right: 8px !important;">' + (rankBadge || (i+1)) + '</span></td><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 500 !important; font-size: 14px !important;">' + (highList[i].id == '' ? '익명 유저' : highList[i].id) + '</td><td style="padding: 14px 20px !important; color: #6c757d !important; font-weight: 500 !important; font-size: 13px !important; text-transform: uppercase !important; letter-spacing: 0.3px !important;">' + highList[i].rank + '</td><td style="padding: 14px 20px !important; color: #495057 !important; font-weight: 600 !important; font-size: 15px !important;">' + highList[i].score + '</td></tr>');
+              $('#highScoreTable tbody').append("<tr><th scope='row'>" + (i+1) + "</th><td>" + (highList[i].id == '' ?  '익명 유저' : escapeHtml(highList[i].id))+ "</td><td>"+ escapeHtml(highList[i].rank) + "</td><td>"+ escapeHtml(highList[i].score) + "</td></tr>");
             }
         })
         .catch((error) => {
@@ -1143,17 +1099,6 @@
     function retry(){
       reset();
       // Don't call start() directly, let startCountDown() handle the flow
-    }
-
-    function fadeIn(elemId){
-      $('#' + elemId).css("visibility", "visible").css("opacity", 0);
-      //animate(elemId, "animateFadeIn", function(){$('#' + elemId).css("visibility", "visible").css("opacity", 1);});
-      $('#' + elemId).transition({opacity:1},4000, "snap"); 
-    }
-
-    function fadeIn2(elemId){
-      $('#' + elemId).css("visibility", "visible").css("opacity", 0);
-      $('#' + elemId).transition({opacity:0.27},4000, "snap");
     }
 
     function fadeOut(elemId){
@@ -1627,7 +1572,7 @@
             $('#incList').empty();
             for(var i=0; i<incWordArr.length; i++){
                 //console.log((i+1) + ". " + incWordArr[i] + " ('" + attmpWordArr[i] + "')");
-                $('#incList').append('<li>' + (i+1) + ". " + incWordArr[i] + " ('" + attmpWordArr[i] + "')" + '</li>')
+                $('#incList').append('<li>' + (i+1) + ". " + escapeHtml(incWordArr[i]) + " ('" + escapeHtml(attmpWordArr[i]) + "')" + '</li>')
             }
 
             if(!isNaN(score)){
@@ -2055,9 +2000,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <!-- Removed duplicate jQuery loads to fix mark.js conflicts -->
   <script src="js/transit.js"></script>  
-  <script src="js/sent_generator.js"></script> 
-  <script src="js/sent_generator_kr.js"></script> 
-  <script src="js/prg_sent.js"></script> 
+  <script src="js/sent_generator.js"></script>
+  <script src="js/prg_sent.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/ko.js"></script>
     <!-- Removed duplicate popper, bootstrap, and mark.js - now loaded in head -->
