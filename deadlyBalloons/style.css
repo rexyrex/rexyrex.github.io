@@ -398,14 +398,6 @@ html {
 	transition: none;
 }
 
-/* Navbar should always be visible and fixed - no animations */
-#nav-placeholder {
-	opacity: 1;
-	transform: translateY(0);
-	position: relative;
-	z-index: 1000;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
 	.main-container {

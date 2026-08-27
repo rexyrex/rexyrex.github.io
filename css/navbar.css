@@ -1,20 +1,38 @@
 /* Self-contained site navbar (fragment: /navbar.html, behavior: /js/common.js).
-   No framework dependency. Uses the site tokens from /css/index.css with literal
-   fallbacks for pages that don't load it. */
+   No framework dependency, but several host pages also load Bootstrap 4 or 5,
+   whose .navbar/.dropdown-* rules would otherwise leak in — every Bootstrap
+   default that changes behavior (dropdown display, toggler icon, margins) is
+   explicitly neutralized here so the navbar behaves identically on every page.
+   Uses the site tokens from /css/index.css with literal fallbacks for pages
+   that don't load it. */
+
+/* The placeholder starts hidden and fades in once /js/common.js injects the
+   fragment and adds .loaded — same load behavior on every page. */
+#nav-placeholder {
+    visibility: hidden;
+    opacity: 0;
+}
+
+#nav-placeholder.loaded {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.15s ease;
+}
 
 .site-navbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    display: block;
     z-index: 1000;
     background: var(--bg-glass, rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-glass, rgba(255, 255, 255, 0.1));
     box-shadow: var(--shadow-md, 0 8px 25px rgba(0, 0, 0, 0.15));
     padding: 1rem 1.5rem;
-    transition: var(--transition-normal, 0.3s ease);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .navbar-inner {
@@ -88,7 +106,8 @@
     margin: 0 8px;
     padding: 0.75rem 1.25rem;
     border-radius: var(--radius-md, 12px);
-    transition: var(--transition-normal, 0.3s ease);
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease,
+                transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
     cursor: pointer;
@@ -107,7 +126,7 @@
     bottom: 0;
     background: var(--gradient-primary, linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%));
     opacity: 0;
-    transition: var(--transition-normal, 0.3s ease);
+    transition: opacity 0.3s ease;
     z-index: -1;
 }
 
@@ -136,6 +155,11 @@
     position: absolute;
     top: 100%;
     left: 0;
+    /* display + margin beat Bootstrap's `.dropdown-menu { display: none;
+       margin: ... }` so hover/open works whether or not Bootstrap is loaded;
+       the menu is kept non-interactive while closed via visibility/opacity. */
+    display: block;
+    margin: 0;
     min-width: 220px;
     background: var(--bg-tertiary, #1a1a2e);
     border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.1));
@@ -144,11 +168,9 @@
     padding: 0.75rem;
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
     visibility: hidden;
     pointer-events: none;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     z-index: 1001;
 }
 
@@ -166,7 +188,7 @@
     align-items: center;
     border-radius: var(--radius-md, 12px);
     padding: 0.75rem 1rem;
-    transition: var(--transition-normal, 0.3s ease);
+    transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
     color: var(--text-secondary, #e2e8f0);
     position: relative;
     overflow: hidden;
@@ -184,7 +206,7 @@
     bottom: 0;
     background: var(--gradient-primary, linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%));
     opacity: 0;
-    transition: var(--transition-normal, 0.3s ease);
+    transition: opacity 0.3s ease;
     z-index: -1;
 }
 
@@ -202,7 +224,7 @@
     width: 20px;
     margin-right: 10px;
     color: var(--primary, #6366f1);
-    transition: var(--transition-normal, 0.3s ease);
+    transition: color 0.3s ease;
 }
 
 .site-navbar .dropdown-item:hover i {
@@ -226,6 +248,8 @@
 .site-navbar .navbar-toggler-icon {
     display: block;
     position: relative;
+    /* background none: Bootstrap 5 paints its own SVG hamburger here */
+    background: none;
     border-bottom: 2px solid var(--text-primary, #ffffff);
     transition: all 300ms linear;
     width: 22px;
@@ -316,8 +340,6 @@
         margin-top: 1rem;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.1));
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
     }
 
     .site-navbar .navbar-links.open {

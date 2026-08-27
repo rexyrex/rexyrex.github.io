@@ -7,6 +7,7 @@
         <link rel="icon" href="/favicon.ico">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/css/navbar.css">
         <style>
             :root {
                 --bg-primary: #0a0a0f;
@@ -112,7 +113,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 2rem;
+                padding: 7rem 2rem 2rem; /* top clears the fixed navbar */
             }
 
             .support-card {
@@ -298,6 +299,8 @@
     </head>
 
     <body>
+        <div id="nav-placeholder"></div>
+
         <!-- Animated Background -->
         <div class="animated-bg">
             <div class="floating-shapes">
@@ -343,5 +346,7 @@
                 </a>
             </div>
         </div>
+
+        <script src="/js/common.js"></script>
     </body>
 </html>

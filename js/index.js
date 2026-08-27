@@ -106,6 +106,9 @@ function initRoleRotation() {
 // Modern Custom Cursor - only on devices with a fine pointer; the CSS that
 // hides the native cursor is gated on html.custom-cursor-active, so the
 // native cursor survives if this never runs.
+// Positions are written as --cursor-x/--cursor-y custom properties consumed
+// by a translate3d() in the CSS — no left/top writes, so tracking the mouse
+// never forces layout.
 function initCustomCursor() {
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
@@ -129,7 +132,11 @@ function initCustomCursor() {
     trail.className = 'cursor-trail';
     document.body.appendChild(trail);
 
-    // Initialize cursor positions to center of screen to avoid positioning issues
+    function setPos(el, x, y) {
+        el.style.setProperty('--cursor-x', x + 'px');
+        el.style.setProperty('--cursor-y', y + 'px');
+    }
+
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
@@ -141,21 +148,15 @@ function initCustomCursor() {
     let trailY = centerY;
     let animationId = null;
 
-    // Set initial positions
-    instantCursor.style.left = centerX + 'px';
-    instantCursor.style.top = centerY + 'px';
-    cursor.style.left = centerX + 'px';
-    cursor.style.top = centerY + 'px';
-    trail.style.left = centerX + 'px';
-    trail.style.top = centerY + 'px';
-
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
 
+        // The cursors stay invisible until the mouse position is first known
+        document.documentElement.classList.add('cursor-ready');
+
         // Instant cursor follows mouse exactly (no throttling)
-        instantCursor.style.left = mouseX + 'px';
-        instantCursor.style.top = mouseY + 'px';
+        setPos(instantCursor, mouseX, mouseY);
     });
 
     // Optimized animation for smooth cursors
@@ -177,18 +178,17 @@ function initCustomCursor() {
             trailX += (cursorX - trailX) * trailEase;
             trailY += (cursorY - trailY) * trailEase;
 
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
-            trail.style.left = trailX + 'px';
-            trail.style.top = trailY + 'px';
+            setPos(cursor, cursorX, cursorY);
+            setPos(trail, trailX, trailY);
         }
 
         animationId = requestAnimationFrame(animateCursors);
     }
     animateCursors();
 
-    // Enhanced hover effects - improved detection for nested elements
-    const hoverElements = document.querySelectorAll('a, button, .btn, .card, .tag, .social-card, .skill-card, .project-card, .stat-card');
+    // Hover effects via delegation so late-injected elements (e.g. the navbar,
+    // which /js/common.js fetches after DOMContentLoaded) are picked up too.
+    const HOVER_SELECTOR = 'a, button, .btn, .card, .tag, .social-card, .skill-card, .project-card, .stat-card';
 
     function setHover(on) {
         instantCursor.classList.toggle('cursor-hover', on);
@@ -196,9 +196,16 @@ function initCustomCursor() {
         trail.classList.toggle('cursor-hover', on);
     }
 
-    hoverElements.forEach(el => {
-        el.addEventListener('mouseenter', () => setHover(true));
-        el.addEventListener('mouseleave', () => setHover(false));
+    document.addEventListener('mouseover', (e) => {
+        setHover(!!(e.target.closest && e.target.closest(HOVER_SELECTOR)));
+    });
+
+    // Hide the cursor when the mouse leaves the window entirely
+    document.documentElement.addEventListener('mouseleave', () => {
+        document.documentElement.classList.remove('cursor-ready');
+    });
+    document.documentElement.addEventListener('mouseenter', () => {
+        document.documentElement.classList.add('cursor-ready');
     });
 
     // Clean up on page unload
@@ -254,7 +261,9 @@ function createLightParticle(container, index) {
     container.appendChild(particle);
 }
 
-// Enhanced Scroll Progress Bar
+// Enhanced Scroll Progress Bar.
+// rAF-throttled and driven by transform: scaleX() on a full-width bar, so
+// updating it never animates width or re-runs layout on every scroll event.
 function initScrollProgress() {
     const progressBar = document.createElement('div');
     progressBar.className = 'scroll-progress';
@@ -262,18 +271,34 @@ function initScrollProgress() {
         position: fixed;
         top: 0;
         left: 0;
-        width: 0%;
+        width: 100%;
         height: 3px;
         background: linear-gradient(90deg, #6366f1, #8b5cf6);
-        z-index: 9999;
-        transition: width 0.3s ease;
+        z-index: 10000;
+        transform: scaleX(0);
+        transform-origin: 0 50%;
+        will-change: transform;
+        pointer-events: none;
     `;
     document.body.appendChild(progressBar);
 
+    let ticking = false;
+
+    function update() {
+        ticking = false;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+        progressBar.style.transform = 'scaleX(' + scrolled + ')';
+    }
+
     window.addEventListener('scroll', () => {
-        const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-        progressBar.style.width = scrolled + '%';
-    });
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+        }
+    }, { passive: true });
+
+    update();
 }
 
 // Typing Effect for Hero Description. The full text stays available to

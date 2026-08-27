@@ -533,11 +533,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Ensure cursor highlights work properly on buttons (only while the JS custom cursor is active) */
-html.custom-cursor-active .hero-btn,
-html.custom-cursor-active .hero-btn * {
-  cursor: none !important;
-}
+/* (hero buttons inherit cursor: none from the global custom-cursor rule) */
 
 .btn-primary {
   background: var(--gradient-primary);
@@ -1530,120 +1526,123 @@ html.custom-cursor-active .hero-btn * {
   }
 }
 
-/* Modern Custom Cursor Styles - Safari Optimized */
-.instant-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 8px;
-  height: 8px;
-  background: var(--primary);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 500; /* Reduced from 100000 to be below modals */
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, -50%);
-  will-change: left, top;
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.8);
-}
-
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  background: var(--primary);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 499; /* Reduced from 99999 to be below modals */
-  transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  opacity: 0.8;
-  visibility: visible;
-  box-shadow: 
-    0 0 20px rgba(99, 102, 241, 0.6),
-    0 0 40px rgba(99, 102, 241, 0.3);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  will-change: left, top;
-}
-
+/* Modern Custom Cursor Styles.
+   Movement: js/index.js writes --cursor-x/--cursor-y (px) per frame; the
+   transform composites on the GPU, so tracking never triggers layout. The
+   hover scale rides the same transform via --cursor-scale. Transform is
+   deliberately NOT transitioned — a transition there would restart every
+   frame and lag the cursor.
+   Stacking: above everything, including the navbar (z-index 1000); while a
+   Bootstrap modal is open (body.modal-open) the trio hides and the native
+   cursor returns, so there is exactly one visible cursor at all times. */
+.instant-cursor,
+.custom-cursor,
 .cursor-trail {
   position: fixed;
   top: 0;
   left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0; /* revealed via html.cursor-ready on first mousemove */
+  transform: translate3d(var(--cursor-x, 50vw), var(--cursor-y, 50vh), 0)
+             translate(-50%, -50%)
+             scale(var(--cursor-scale, 1));
+  will-change: transform;
+}
+
+.instant-cursor {
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  z-index: 100002;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.8);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+}
+
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  background: var(--primary);
+  z-index: 100001;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+  box-shadow:
+    0 0 20px rgba(99, 102, 241, 0.6),
+    0 0 40px rgba(99, 102, 241, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.cursor-trail {
   width: 40px;
   height: 40px;
   border: 2px solid var(--primary);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 498; /* Reduced from 99998 to be below modals */
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  opacity: 0.4;
-  visibility: visible;
+  z-index: 100000;
+  transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
   background: rgba(99, 102, 241, 0.1);
-  transform: translate(-50%, -50%);
-  will-change: left, top;
 }
 
+html.cursor-ready .instant-cursor { opacity: 1; }
+html.cursor-ready .custom-cursor { opacity: 0.8; }
+html.cursor-ready .cursor-trail { opacity: 0.4; }
+
 .instant-cursor.cursor-hover {
-  transform: translate(-50%, -50%) scale(1.5);
+  --cursor-scale: 1.5;
   background: var(--accent);
   box-shadow: 0 0 12px rgba(236, 72, 153, 1);
 }
 
 .custom-cursor.cursor-hover {
-  transform: translate(-50%, -50%) scale(1.5);
+  --cursor-scale: 1.5;
   background: var(--accent);
-  box-shadow: 
+  box-shadow:
     0 0 30px rgba(236, 72, 153, 0.8),
     0 0 60px rgba(236, 72, 153, 0.4);
 }
 
 .cursor-trail.cursor-hover {
-  transform: translate(-50%, -50%) scale(1.3);
+  --cursor-scale: 1.3;
   border-color: var(--accent);
   background: rgba(236, 72, 153, 0.2);
-  opacity: 0.8;
 }
+
+html.cursor-ready .cursor-trail.cursor-hover { opacity: 0.8; }
 
 /* Hide default cursor only while the JS custom cursor is running
    (js/index.js adds .custom-cursor-active to <html>); if JS fails or the
-   device has no fine pointer, the native cursor stays. */
-html.custom-cursor-active body * {
+   device has no fine pointer, the native cursor stays. While a Bootstrap
+   modal is open the native cursor comes back instead. */
+html.custom-cursor-active body:not(.modal-open) * {
   cursor: none !important;
 }
 
-/* Restore cursor for modal elements */
+body.modal-open .instant-cursor,
+body.modal-open .custom-cursor,
+body.modal-open .cursor-trail {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
+/* Belt and braces: modals always use the native cursor */
 .modal,
 .modal *,
 .modal-backdrop {
   cursor: auto !important;
 }
 
-/* Safari-specific optimizations */
+/* Safari: cheaper glows */
 @media not all and (min-resolution:.001dpcm) {
   @supports (-webkit-appearance:none) {
-    /* Safari-specific cursor optimizations */
     .instant-cursor {
       box-shadow: 0 0 6px rgba(99, 102, 241, 0.6);
     }
-    
+
     .custom-cursor {
-      transition: none;
       box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
     }
-    
-    .cursor-trail {
-      transition: none;
-      opacity: 0.3;
-    }
-    
+
     .instant-cursor.cursor-hover {
       box-shadow: 0 0 8px rgba(236, 72, 153, 0.8);
     }
-    
+
     .custom-cursor.cursor-hover {
       box-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
     }
