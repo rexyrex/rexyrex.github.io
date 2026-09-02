@@ -1,193 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Deadly Balloons 2</title>
-	<link rel="icon" href="/favicon.ico">
-	<link rel="stylesheet" href="/css/navbar.css">
-	<link type="text/css" rel="stylesheet" href="style.css">
-	<style>
-		#balloon-area img {
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			width: 260px;
-			height: 260px;
-			z-index: 1;
-			will-change: transform;
-		}
-	</style>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Deadly Balloons 2 — Rexyrex</title>
+    <meta name="description" content="Deadly Balloons 2, a desktop balloon-popping game by rexyrex written in Java. Watch the trailer, download the game, or read the source.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" href="/favicon.ico">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
 
-    <div id="balloon-area"></div>
+    <div id="balloon-area" aria-hidden="true"></div>
 
-	<div class="main-container">
-		<div class="content-card">
-			<div class="header-section">
-				<div class="game-badge">
-					<i class="fas fa-gamepad"></i>
-					<span>Java Game</span>
-				</div>
-				<h1 class="game-title">Deadly Balloons 2.0</h1>
-				<p class="game-subtitle">A game for only the hardcore balloon poppers</p>
-			</div>
+    <main class="wrap game-main">
+        <article class="card game-card">
+            <p class="eyebrow">/deadlyBalloons/</p>
+            <h1>Deadly Balloons 2</h1>
+            <p class="lede">A game for only the hardcore balloon poppers. Desktop, written in Java.</p>
 
-			<div class="video-section">
-				<div class="video-container">
-					<iframe src="https://www.youtube.com/embed/_L_c12JEX6M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-				</div>
-			</div>
+            <div class="embed embed-16x9 game-video">
+                <iframe
+                    src="https://www.youtube.com/embed/_L_c12JEX6M"
+                    title="Deadly Balloons 2 trailer"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
 
-			<div class="buttons-section">
-				<button class="game-btn primary-btn" onclick="download();">
-					<span class="btn-text">
-						<i class="fas fa-download"></i>
-						Download Game
-					</span>
-				</button>
+            <div class="game-actions">
+                <a class="btn btn-primary btn-lg" href="/downloads/DeadlyBalloons2.rar" download>Download the game <span class="arrow">↓</span></a>
+                <a class="btn btn-ghost btn-lg" href="https://github.com/rexyrex/Deadly-Balloons-2" target="_blank" rel="noopener noreferrer">Source on GitHub</a>
+            </div>
 
-				<button class="game-btn secondary-btn" onclick="github();">
-					<span class="btn-text">
-						<i class="fab fa-github"></i>
-						View Source
-					</span>
-				</button>
-			</div>
-		</div>
-	</div>
+            <dl class="facts game-facts">
+                <div><dt>file</dt><dd>DeadlyBalloons2.rar · 21 MB</dd></div>
+                <div><dt>built</dt><dd>Java</dd></div>
+                <div><dt>mobile</dt><dd>A separate mobile version exists. <a href="/apps/deadly_balloons/privacy-policy/">Its privacy policy</a> is under /apps/.</dd></div>
+            </dl>
+        </article>
+    </main>
 
-<script src="/js/common.js"></script>
+    <script src="/js/common.js"></script>
 
-<script>
-	function download() {
-		location.href = "/downloads/DeadlyBalloons2.rar"
-	}
+    <script>
+    // Balloon rain: persistent <img> elements moved with transforms in a
+    // single requestAnimationFrame loop (velocities are scaled by frame delta
+    // to match the original 30ms tick speed). Respects reduced motion.
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    function github() {
-		location.href = "https://github.com/rexyrex/Deadly-Balloons-2"
-	}
-</script>
+        const image_width = 256;
+        const image_height = 256;
+        const total_size = 50;
+        const balloon_image_count = 3;
+        const speed_factor = 1;
+        const BASE_TICK_MS = 30;
 
-<script>
-// Balloon Animation: persistent <img> elements moved with transforms in a
-// single requestAnimationFrame loop (velocities are scaled by frame delta
-// to match the original 30ms tick speed).
-document.addEventListener('DOMContentLoaded', function() {
-    const image_width = 256;
-    const image_height = 256;
-    const total_size = 50;
-    const balloon_image_count = 3;
-    const speed_factor = 1;
-    const BASE_TICK_MS = 30;
+        let max_y = window.innerHeight + image_height;
+        let max_x = window.innerWidth - image_width;
 
-    let max_y = window.innerHeight + image_height;
-    let max_x = window.innerWidth - image_width;
+        window.addEventListener('resize', function() {
+            max_y = window.innerHeight + image_height;
+            max_x = window.innerWidth - image_width;
+        });
 
-    window.addEventListener('resize', function() {
-        max_y = window.innerHeight + image_height;
-        max_x = window.innerWidth - image_width;
-    });
+        const balloonArea = document.getElementById('balloon-area');
+        if (!balloonArea) return;
 
-    const balloonArea = document.getElementById('balloon-area');
-    if (!balloonArea) return;
-
-    function randomType(threshold) {
-        if (Math.random() > threshold) return 'rexGreen';
-        if (Math.random() > threshold) return 'rexRed';
-        return 'balloon';
-    }
-
-    function srcFor(type, c) {
-        if (type === 'rexGreen') return 'res/img/rexGreenSmall.png';
-        if (type === 'rexRed') return 'res/img/rexRedSmall.png';
-        return 'res/img/balloon' + c + '.png';
-    }
-
-    function spawnState(balloon, init) {
-        balloon.type = randomType(init ? 0.9 : 0.87);
-        balloon.c = Math.floor(Math.random() * balloon_image_count);
-        if (init) {
-            balloon.y = Math.floor(Math.random() * max_y);
-            balloon.x = Math.floor(Math.random() * max_x);
-            balloon.r = 30 * Math.random();
-            balloon.xa = Math.random() * 5 + 2;
-            balloon.ya = Math.random() * 10 - 5;
-        } else {
-            balloon.y = -image_height - Math.floor(100 * Math.random());
-            balloon.x = Math.floor(Math.random() * max_x);
-            balloon.r = 0;
-            balloon.xa = Math.random() * 4 - 2;
-            balloon.ya = Math.random() * 4 - 2;
+        function randomType(threshold) {
+            if (Math.random() > threshold) return 'rexGreen';
+            if (Math.random() > threshold) return 'rexRed';
+            return 'balloon';
         }
-        balloon.el.src = srcFor(balloon.type, balloon.c);
-    }
 
-    const balloons = [];
-    for (let i = 0; i < total_size; i++) {
-        const el = document.createElement('img');
-        el.alt = '';
-        const balloon = { el: el };
-        spawnState(balloon, true);
-        balloonArea.appendChild(el);
-        balloons.push(balloon);
-    }
+        function srcFor(type, c) {
+            if (type === 'rexGreen') return 'res/img/rexGreenSmall.png';
+            if (type === 'rexRed') return 'res/img/rexRedSmall.png';
+            return 'res/img/balloon' + c + '.png';
+        }
 
-    let lastTime = null;
-    let rafId = null;
+        function spawnState(balloon, init) {
+            balloon.type = randomType(init ? 0.9 : 0.87);
+            balloon.c = Math.floor(Math.random() * balloon_image_count);
+            if (init) {
+                balloon.y = Math.floor(Math.random() * max_y);
+                balloon.x = Math.floor(Math.random() * max_x);
+                balloon.r = 30 * Math.random();
+                balloon.xa = Math.random() * 5 + 2;
+                balloon.ya = Math.random() * 10 - 5;
+            } else {
+                balloon.y = -image_height - Math.floor(100 * Math.random());
+                balloon.x = Math.floor(Math.random() * max_x);
+                balloon.r = 0;
+                balloon.xa = Math.random() * 4 - 2;
+                balloon.ya = Math.random() * 4 - 2;
+            }
+            balloon.el.src = srcFor(balloon.type, balloon.c);
+        }
 
-    function step(now) {
-        if (lastTime === null) lastTime = now;
-        // Clamp the delta so a background tab or long frame can't teleport balloons
-        const f = Math.min((now - lastTime) / BASE_TICK_MS, 3);
-        lastTime = now;
+        const balloons = [];
+        for (let i = 0; i < total_size; i++) {
+            const el = document.createElement('img');
+            el.alt = '';
+            const balloon = { el: el };
+            spawnState(balloon, true);
+            balloonArea.appendChild(el);
+            balloons.push(balloon);
+        }
 
-        for (let i = 0; i < balloons.length; i++) {
-            const b = balloons[i];
-            b.ya += (3 * Math.random() * speed_factor - 1 * speed_factor) * f;
-            b.xa += (2 * Math.random() * speed_factor - 1 * speed_factor) * f;
+        let lastTime = null;
+        let rafId = null;
 
-            b.y += b.ya * f;
-            b.x += b.xa * f;
-            b.r += (3 * Math.random() - 1) * f;
+        function step(now) {
+            if (lastTime === null) lastTime = now;
+            // Clamp the delta so a background tab or long frame can't teleport balloons
+            const f = Math.min((now - lastTime) / BASE_TICK_MS, 3);
+            lastTime = now;
 
-            if (b.y >= max_y - image_height) {
-                // Off the top: recycle in place as a fresh balloon below the viewport
-                spawnState(b, false);
+            for (let i = 0; i < balloons.length; i++) {
+                const b = balloons[i];
+                b.ya += (3 * Math.random() * speed_factor - 1 * speed_factor) * f;
+                b.xa += (2 * Math.random() * speed_factor - 1 * speed_factor) * f;
+
+                b.y += b.ya * f;
+                b.x += b.xa * f;
+                b.r += (3 * Math.random() - 1) * f;
+
+                if (b.y >= max_y - image_height) {
+                    // Off the top: recycle in place as a fresh balloon below the viewport
+                    spawnState(b, false);
+                }
+
+                // bottom-anchored: positive y moves the balloon up the screen
+                b.el.style.transform = 'translate3d(' + b.x + 'px, ' + (-b.y) + 'px, 0) rotate(' + b.r + 'deg)';
             }
 
-            // bottom-anchored: positive y moves the balloon up the screen
-            b.el.style.transform = 'translate3d(' + b.x + 'px, ' + (-b.y) + 'px, 0) rotate(' + b.r + 'deg)';
-        }
-
-        rafId = requestAnimationFrame(step);
-    }
-
-    function start() {
-        if (rafId === null) {
-            lastTime = null;
             rafId = requestAnimationFrame(step);
         }
-    }
 
-    function stop() {
-        if (rafId !== null) {
-            cancelAnimationFrame(rafId);
-            rafId = null;
+        function start() {
+            if (rafId === null) {
+                lastTime = null;
+                rafId = requestAnimationFrame(step);
+            }
         }
-    }
 
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) { stop(); } else { start(); }
+        function stop() {
+            if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) { stop(); } else { start(); }
+        });
+
+        start();
     });
-
-    start();
-});
-</script>
-
+    </script>
 </body>
 </html>

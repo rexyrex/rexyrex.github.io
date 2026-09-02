@@ -1,87 +1,54 @@
-<!-- Shared navbar fragment. Injected into #nav-placeholder by /js/common.js (styles: /css/navbar.css). Not a standalone page. -->
-<nav class="navbar site-navbar" aria-label="Main navigation">
-    <div class="navbar-inner">
-        <a class="navbar-brand" href="/index.html">
-            <img src="/assets/rexGreenSmall.png" alt="Rexyrex logo">
-            Rexyrex
+<!-- Shared site chrome fragment (not a standalone page).
+     Injected into #nav-placeholder by /js/common.js; styled by /css/navbar.css.
+     Contains the fixed top bar and the fixed bottom status bar. -->
+<nav class="site-navbar" aria-label="Main navigation">
+    <div class="site-navbar-inner">
+        <a class="site-brand" href="/index.html">
+            <img src="/assets/rexGreenSmall.png" alt="" width="26" height="26">
+            <span>rexyrex<span class="site-brand-host">.github.io</span></span>
         </a>
-        <button class="navbar-toggler" type="button" aria-controls="site-nav-links" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button class="site-nav-toggle" type="button" aria-controls="site-nav-links" aria-expanded="false" aria-label="Toggle navigation">
+            <span></span>
         </button>
-        <div class="navbar-links" id="site-nav-links">
-            <div class="nav-item dropdown">
-                <button class="nav-link dropdown-toggle" type="button" id="gamesDropdown" aria-expanded="false" aria-haspopup="true">
-                    <i class="fas fa-gamepad"></i> Games
-                </button>
-                <div class="dropdown-menu" aria-labelledby="gamesDropdown">
-                    <a class="dropdown-item" href="/typing/index.html">
-                        <i class="fas fa-keyboard"></i> Typing Speed Test
-                    </a>
-                    <a class="dropdown-item" href="/deadlyBalloons/index.html">
-                        <i class="fas fa-gamepad"></i> Deadly Balloons
-                    </a>
+        <div class="site-nav-links" id="site-nav-links">
+            <a class="site-nav-link" href="/typing/index.html">typing</a>
+            <a class="site-nav-link" href="/deadlyBalloons/index.html">balloons</a>
+            <a class="site-nav-link" href="/music/showcase.html">music</a>
+            <a class="site-nav-link" href="/animation.html">lab</a>
+            <a class="site-nav-link" href="/apps/">apps</a>
+            <a class="site-nav-link" href="/support/">support</a>
+            <div class="site-nav-item d-none-nav">
+                <button class="site-nav-link site-dropdown-toggle" type="button" id="parserDropdown" aria-expanded="false" aria-haspopup="true">parser</button>
+                <div class="site-dropdown-menu" aria-labelledby="parserDropdown">
+                    <a class="site-dropdown-item" href="/parser/index.html">Parser home</a>
+                    <a class="site-dropdown-item" href="/parser/parserQuery.html">Query</a>
+                    <a class="site-dropdown-item" href="/parser/parserDownload.html">Download</a>
+                    <a class="site-dropdown-item" href="/parser/kakaoParserAgree.html">Agreement</a>
+                    <a class="site-dropdown-item" href="/parser/kakaoParserFAQ.html">FAQ</a>
+                    <a class="site-dropdown-item" href="/parser/kakaoParserErrorHelp1.html">Error help 1</a>
+                    <a class="site-dropdown-item" href="/parser/kakaoParserErrorHelp2.html">Error help 2</a>
+                    <a class="site-dropdown-item" href="/parser/kakaoParserIphoneConvert.html">iPhone convert</a>
                 </div>
             </div>
-            <div class="nav-item dropdown">
-                <button class="nav-link dropdown-toggle" type="button" id="musicDropdown" aria-expanded="false" aria-haspopup="true">
-                    <i class="fas fa-music"></i> Music
-                </button>
-                <div class="dropdown-menu" aria-labelledby="musicDropdown">
-                    <a class="dropdown-item" href="/music/showcase.html">
-                        <i class="fas fa-headphones"></i> Music Showcase
-                    </a>
-                </div>
-            </div>
-            <div class="nav-item dropdown">
-                <button class="nav-link dropdown-toggle" type="button" id="testDropdown" aria-expanded="false" aria-haspopup="true">
-                    <i class="fas fa-flask"></i> Test
-                </button>
-                <div class="dropdown-menu" aria-labelledby="testDropdown">
-                    <a class="dropdown-item" href="/animation.html">
-                        <i class="fas fa-magic"></i> Animation Showcase
-                    </a>
-                </div>
-            </div>
-            <div class="nav-item dropdown d-none-nav">
-                <button class="nav-link dropdown-toggle" type="button" id="parserDropdown" aria-expanded="false" aria-haspopup="true">
-                    <i class="fas fa-code"></i> Parser
-                </button>
-                <div class="dropdown-menu" aria-labelledby="parserDropdown">
-                    <a class="dropdown-item" href="/parser/index.html">
-                        <i class="fas fa-home"></i> Parser Home
-                    </a>
-                    <a class="dropdown-item" href="/parser/parserQuery.html">
-                        <i class="fas fa-search"></i> Parser Query
-                    </a>
-                    <a class="dropdown-item" href="/parser/parserDownload.html">
-                        <i class="fas fa-download"></i> Parser Download
-                    </a>
-                    <a class="dropdown-item" href="/parser/kakaoParserAgree.html">
-                        <i class="fas fa-check-circle"></i> Agreement
-                    </a>
-                    <a class="dropdown-item" href="/parser/kakaoParserFAQ.html">
-                        <i class="fas fa-question-circle"></i> FAQ
-                    </a>
-                    <a class="dropdown-item" href="/parser/kakaoParserErrorHelp1.html">
-                        <i class="fas fa-exclamation-circle"></i> Error Help 1
-                    </a>
-                    <a class="dropdown-item" href="/parser/kakaoParserErrorHelp2.html">
-                        <i class="fas fa-exclamation-circle"></i> Error Help 2
-                    </a>
-                    <a class="dropdown-item" href="/parser/kakaoParserIphoneConvert.html">
-                        <i class="fas fa-mobile-alt"></i> iPhone Convert
-                    </a>
-                </div>
-            </div>
-            <a class="nav-item nav-link" id="appsLink" href="/apps/">
-                <i class="fas fa-mobile-alt"></i> Apps
-            </a>
-            <a class="nav-item nav-link" id="supportLink" href="/support/">
-                <i class="fas fa-life-ring"></i> Support
-            </a>
-            <a class="nav-item nav-link" href="https://github.com/rexyrex" target="_blank" rel="noopener noreferrer">
-                <i class="fab fa-github"></i> GitHub
-            </a>
+            <a class="site-nav-link" href="https://github.com/rexyrex" target="_blank" rel="noopener noreferrer">github</a>
         </div>
     </div>
 </nav>
+<footer class="site-statusbar" aria-label="Page status">
+    <span class="statusbar-item statusbar-branch">
+        <a href="https://github.com/rexyrex/rexyrex.github.io" target="_blank" rel="noopener noreferrer" title="Source on GitHub">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="4" cy="3.5" r="1.8"/><circle cx="4" cy="12.5" r="1.8"/><circle cx="12" cy="5" r="1.8"/><path d="M4 5.3v5.4M12 6.8c0 2.6-2.5 3-4.5 3.4C5.8 10.6 4 11 4 12.5"/></svg>
+            <span>master</span>
+        </a>
+    </span>
+    <span class="statusbar-item statusbar-path" aria-live="off"><b>~</b></span>
+    <span class="statusbar-spacer"></span>
+    <span class="statusbar-item statusbar-pos"><span class="statusbar-ln">Ln 1</span>, <span class="statusbar-col">Col 1</span></span>
+    <span class="statusbar-item statusbar-pct">0%</span>
+    <span class="statusbar-item statusbar-encoding">UTF-8</span>
+    <span class="statusbar-item statusbar-status"><span class="statusbar-dot" aria-hidden="true"></span><span>ok</span></span>
+    <button class="statusbar-theme" type="button" aria-label="Switch color theme" title="Switch color theme">
+        <span class="statusbar-theme-icon" aria-hidden="true">◐</span>
+        <span class="statusbar-theme-label">theme</span>
+    </button>
+</footer>

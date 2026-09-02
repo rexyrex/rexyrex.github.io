@@ -1,0 +1,814 @@
+/* ============================================================
+   Landing-page easter egg. Long-press the rex logo for two seconds
+   and a full-screen <dialog id="romanticModal"> opens. Loaded only by
+   /index.html. Everything below the header is the original animation
+   set, kept intact; only the container changed from a Bootstrap modal
+   to a native dialog.
+   ============================================================ */
+
+.hero-logo.long-press-active {
+  transform: scale(0.94);
+  filter: brightness(1.15);
+  animation: longPressGlow 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes longPressGlow {
+  0% {
+    box-shadow:
+      0 0 0 4px rgba(255, 105, 180, 0.3),
+      0 0 30px rgba(255, 105, 180, 0.4);
+  }
+  100% {
+    box-shadow:
+      0 0 0 8px rgba(255, 105, 180, 0.5),
+      0 0 50px rgba(255, 105, 180, 0.6);
+  }
+}
+
+dialog.romantic-modal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  z-index: 2000;
+}
+
+dialog.romantic-modal::backdrop {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+dialog.romantic-modal:not([open]) {
+  display: none;
+}
+
+.romantic-content {
+  background: #000;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  animation: modalSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalSlideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-10deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.romantic-body {
+  padding: 4rem;
+  text-align: center;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.romantic-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: #fff;
+  opacity: 0.8;
+  font-size: 2rem;
+  z-index: 10;
+  transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+  font-family: var(--font-mono, monospace);
+}
+
+.romantic-close:hover {
+  opacity: 1;
+  transform: scale(1.2) rotate(90deg);
+  color: #ff69b4;
+}
+
+.romantic-container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Floating Hearts Animation - Simple Oval */
+.floating-hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.floating-hearts i {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 2rem;
+  top: 50%;
+  left: 50%;
+  filter: 
+    drop-shadow(0 0 20px rgba(255, 255, 255, 0.9))
+    drop-shadow(0 0 40px rgba(255, 192, 203, 0.6))
+    drop-shadow(0 0 60px rgba(255, 182, 193, 0.4));
+  z-index: 10;
+  animation-timing-function: ease-in-out;
+}
+
+.heart-1 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: 0s;
+}
+
+.heart-2 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -0.83s;
+}
+
+.heart-3 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -1.67s;
+}
+
+.heart-4 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -2.5s;
+}
+
+.heart-5 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -3.33s;
+}
+
+.heart-6 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -4.17s;
+}
+
+.heart-7 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -5s;
+}
+
+.heart-8 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -5.83s;
+}
+
+.heart-9 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -6.67s;
+}
+
+.heart-10 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -7.5s;
+}
+
+.heart-11 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -8.33s;
+}
+
+.heart-12 {
+  animation: heartCircle 10s linear infinite;
+  animation-delay: -9.17s;
+}
+
+/* Smooth circular animation using trigonometry for perfect circle */
+@keyframes heartCircle {
+  0% { 
+    transform: translate(-50%, -50%) translateX(350px) translateY(0px); 
+    opacity: 0.9; 
+  }
+  8.33% { 
+    transform: translate(-50%, -50%) translateX(303px) translateY(-175px); 
+    opacity: 1; 
+  }
+  16.67% { 
+    transform: translate(-50%, -50%) translateX(175px) translateY(-303px); 
+    opacity: 0.9; 
+  }
+  25% { 
+    transform: translate(-50%, -50%) translateX(0px) translateY(-350px); 
+    opacity: 1; 
+  }
+  33.33% { 
+    transform: translate(-50%, -50%) translateX(-175px) translateY(-303px); 
+    opacity: 0.9; 
+  }
+  41.67% { 
+    transform: translate(-50%, -50%) translateX(-303px) translateY(-175px); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: translate(-50%, -50%) translateX(-350px) translateY(0px); 
+    opacity: 0.9; 
+  }
+  58.33% { 
+    transform: translate(-50%, -50%) translateX(-303px) translateY(175px); 
+    opacity: 1; 
+  }
+  66.67% { 
+    transform: translate(-50%, -50%) translateX(-175px) translateY(303px); 
+    opacity: 0.9; 
+  }
+  75% { 
+    transform: translate(-50%, -50%) translateX(0px) translateY(350px); 
+    opacity: 1; 
+  }
+  83.33% { 
+    transform: translate(-50%, -50%) translateX(175px) translateY(303px); 
+    opacity: 0.9; 
+  }
+  91.67% { 
+    transform: translate(-50%, -50%) translateX(303px) translateY(175px); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) translateX(350px) translateY(0px); 
+    opacity: 0.9; 
+  }
+}
+
+/* Main Romantic Message */
+.romantic-message {
+  margin: 3rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  animation: messageGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes messageGlow {
+  0% {
+    text-shadow: 
+      0 3px 6px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    text-shadow: 
+      0 3px 6px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(255, 255, 255, 0.8),
+      0 0 50px rgba(255, 192, 203, 0.6);
+  }
+}
+
+/* Name Containers */
+.name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: nameFloat 3s ease-in-out infinite;
+}
+
+.name-2-container {
+  animation-delay: 1.5s;
+}
+
+@keyframes nameFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Main Names */
+.name-1, .name-2 {
+  font-size: 5rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.6);
+}
+
+/* Usernames */
+.username-1, .username-2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.4);
+  margin-top: 1rem;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.main-heart {
+  color: #ff1493;
+  animation: heartBeat 1.5s ease-in-out infinite;
+  font-size: 6rem;
+  filter: drop-shadow(0 0 25px rgba(255, 20, 147, 0.8));
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(1.25);
+  }
+}
+
+
+
+/* Beautiful Twinkle Sparkles */
+.romantic-sparkles {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 1000;
+}
+
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 2s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+.sparkle::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 16px;
+  background: linear-gradient(to bottom, transparent, white, transparent);
+  opacity: 0.8;
+}
+
+.sparkle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, white, transparent);
+  opacity: 0.8;
+}
+
+/* Center concentrated sparkles - more in center, fewer on edges */
+.sparkle-1 {
+  top: 45%;
+  left: 48%;
+  animation-delay: 0s;
+  animation-duration: 1.8s;
+}
+
+.sparkle-2 {
+  top: 55%;
+  left: 52%;
+  animation-delay: 0.3s;
+  animation-duration: 2.2s;
+}
+
+.sparkle-3 {
+  top: 42%;
+  left: 55%;
+  animation-delay: 0.6s;
+  animation-duration: 2s;
+}
+
+.sparkle-4 {
+  top: 58%;
+  left: 45%;
+  animation-delay: 0.9s;
+  animation-duration: 1.6s;
+}
+
+.sparkle-5 {
+  top: 50%;
+  left: 48%;
+  animation-delay: 1.2s;
+  animation-duration: 2.4s;
+}
+
+.sparkle-6 {
+  top: 46%;
+  left: 52%;
+  animation-delay: 1.5s;
+  animation-duration: 1.8s;
+}
+
+.sparkle-7 {
+  top: 54%;
+  left: 49%;
+  animation-delay: 1.8s;
+  animation-duration: 2.2s;
+}
+
+.sparkle-8 {
+  top: 48%;
+  left: 51%;
+  animation-delay: 2.1s;
+  animation-duration: 2s;
+}
+
+/* Medium distance from center */
+.sparkle-9 {
+  top: 40%;
+  left: 60%;
+  animation-delay: 0.2s;
+  animation-duration: 2.1s;
+}
+
+.sparkle-10 {
+  top: 60%;
+  left: 40%;
+  animation-delay: 0.4s;
+  animation-duration: 1.9s;
+}
+
+.sparkle-11 {
+  top: 35%;
+  left: 45%;
+  animation-delay: 0.7s;
+  animation-duration: 2.3s;
+}
+
+.sparkle-12 {
+  top: 65%;
+  left: 55%;
+  animation-delay: 1.1s;
+  animation-duration: 1.7s;
+}
+
+.sparkle-13 {
+  top: 38%;
+  left: 50%;
+  animation-delay: 1.4s;
+  animation-duration: 2.2s;
+}
+
+.sparkle-14 {
+  top: 62%;
+  left: 50%;
+  animation-delay: 1.7s;
+  animation-duration: 1.8s;
+}
+
+.sparkle-15 {
+  top: 50%;
+  left: 35%;
+  animation-delay: 2.0s;
+  animation-duration: 2.1s;
+}
+
+.sparkle-16 {
+  top: 50%;
+  left: 65%;
+  animation-delay: 2.3s;
+  animation-duration: 1.9s;
+}
+
+/* Fewer sparkles on the outer edges */
+.sparkle-17 {
+  top: 25%;
+  left: 45%;
+  animation-delay: 2.6s;
+  animation-duration: 2.0s;
+}
+
+.sparkle-18 {
+  top: 75%;
+  left: 55%;
+  animation-delay: 2.9s;
+  animation-duration: 2.2s;
+}
+
+.sparkle-19 {
+  top: 45%;
+  left: 25%;
+  animation-delay: 3.2s;
+  animation-duration: 1.8s;
+}
+
+.sparkle-20 {
+  top: 55%;
+  left: 75%;
+  animation-delay: 3.5s;
+  animation-duration: 2.1s;
+}
+
+/* Enhanced twinkle animation with rotation and color */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  }
+  25% {
+    opacity: 0.7;
+    transform: scale(0.8) rotate(90deg);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.9), 0 0 18px rgba(255, 192, 203, 0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(180deg);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 192, 203, 0.8);
+  }
+  75% {
+    opacity: 0.8;
+    transform: scale(1.2) rotate(270deg);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 192, 203, 0.7);
+  }
+}
+
+/* Magical floating particles */
+.magical-particles {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 998;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 192, 203, 0.7) 40%, rgba(255, 182, 193, 0.5) 70%, transparent 100%);
+  border-radius: 50%;
+  animation: particleFloat 12s ease-in-out infinite;
+  box-shadow: 
+    0 0 15px rgba(255, 255, 255, 0.8),
+    0 0 25px rgba(255, 192, 203, 0.6),
+    0 0 35px rgba(255, 182, 193, 0.4);
+}
+
+.particle-1 {
+  top: 20%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.particle-2 {
+  top: 80%;
+  left: 85%;
+  animation-delay: -1.5s;
+}
+
+.particle-3 {
+  top: 30%;
+  left: 75%;
+  animation-delay: -3s;
+}
+
+.particle-4 {
+  top: 70%;
+  left: 25%;
+  animation-delay: -4.5s;
+}
+
+.particle-5 {
+  top: 10%;
+  left: 50%;
+  animation-delay: -6s;
+}
+
+.particle-6 {
+  top: 90%;
+  left: 50%;
+  animation-delay: -7.5s;
+}
+
+.particle-7 {
+  top: 50%;
+  left: 10%;
+  animation-delay: -9s;
+}
+
+.particle-8 {
+  top: 50%;
+  left: 90%;
+  animation-delay: -10.5s;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(0.8);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translateY(-30px) translateX(15px) scale(1.3);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-60px) translateX(-10px) scale(1.1);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-30px) translateX(-20px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Romantic glow effects */
+.romantic-glow-effects {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 997;
+}
+
+.glow-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  animation: glowRing 8s ease-in-out infinite;
+}
+
+.glow-ring-1 {
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  animation-delay: 0s;
+}
+
+.glow-ring-2 {
+  width: 800px;
+  height: 800px;
+  transform: translate(-50%, -50%);
+  animation-delay: -2.7s;
+}
+
+.glow-ring-3 {
+  width: 1000px;
+  height: 1000px;
+  transform: translate(-50%, -50%);
+  animation-delay: -5.3s;
+}
+
+@keyframes glowRing {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7) rotate(0deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+  }
+}
+
+/* Clean romantic container without visible box */
+.romantic-container {
+  position: relative;
+  z-index: 5;
+}
+
+/* Radiant light effect from center */
+.radiant-light {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 192, 203, 0.25) 15%,
+    rgba(255, 182, 193, 0.2) 30%,
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(255, 192, 203, 0.1) 60%,
+    rgba(255, 182, 193, 0.05) 75%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 996;
+  animation: radiantPulse 4s ease-in-out infinite;
+}
+
+@keyframes radiantPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  25% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+  75% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+
+
+
+
+/* Responsive Design for Romantic Modal */
+@media (max-width: 768px) {
+  
+  .romantic-message {
+    gap: 2rem;
+  }
+  
+  .name-1, .name-2 {
+    font-size: 3.5rem;
+  }
+  
+  .username-1, .username-2 {
+    font-size: 1.2rem;
+  }
+  
+  .main-heart {
+    font-size: 4rem;
+  }
+  
+  .romantic-body {
+    padding: 3rem;
+  }
+  
+  .romantic-close {
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  
+  .romantic-message {
+    gap: 1.5rem;
+    flex-direction: column;
+  }
+  
+  .name-1, .name-2 {
+    font-size: 2.5rem;
+  }
+  
+  .username-1, .username-2 {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .main-heart {
+    font-size: 3rem;
+  }
+  
+  .romantic-body {
+    padding: 2rem;
+  }
+  
+  .romantic-close {
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+  }
+}

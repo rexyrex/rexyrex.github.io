@@ -3,16 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rexyrex Parser</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>KakaoParser — Rexyrex</title>
+    <meta name="robots" content="noindex">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" href="/favicon.ico">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="help.css">
 </head>
 <body>
-    <div class="container">
-        <button onclick="location.href = 'parserQuery.html';">Parser Query</button>
-        <button onclick="location.href = 'parserDownload.html';">Download App</button>
-        <button onclick="window.open('https://github.com/rexyrex/AndroidKakaoParser')">Github Repo</button>
-    </div>
+    <div id="nav-placeholder"></div>
+
+    <main class="wrap">
+        <header class="page-head">
+            <p class="eyebrow">/parser/</p>
+            <h1>KakaoParser</h1>
+            <p class="lede">Companion pages for the KakaoTalk chat analyzer: admin tools, and the help documents the Android app links to.</p>
+        </header>
+
+        <div class="article">
+            <h2>Tools</h2>
+            <ul class="help-links">
+                <li><a href="parserQuery.html"><span>Query<span class="desc">Look up a user by UUID in Firestore.</span></span><span class="path">parserQuery.html</span></a></li>
+                <li><a href="parserDownload.html"><span>Download<span class="desc">Batch-download the stored file list.</span></span><span class="path">parserDownload.html</span></a></li>
+                <li><a href="https://github.com/rexyrex/AndroidKakaoParser" target="_blank" rel="noopener noreferrer"><span>Source<span class="desc">AndroidKakaoParser on GitHub.</span></span><span class="path">github.com</span></a></li>
+            </ul>
+
+            <h2>Help documents</h2>
+            <ul class="help-links">
+                <li><a href="kakaoParserAgree.html"><span>이용약관<span class="desc">Terms of use (Korean).</span></span><span class="path">kakaoParserAgree.html</span></a></li>
+                <li><a href="kakaoParserFAQ.html"><span>자주 물어보는 질문<span class="desc">FAQ (Korean).</span></span><span class="path">kakaoParserFAQ.html</span></a></li>
+                <li><a href="kakaoParserErrorHelp1.html"><span>내보낸 대화가 앱에 안 뜰 때<span class="desc">Exported chats not showing up.</span></span><span class="path">kakaoParserErrorHelp1.html</span></a></li>
+                <li><a href="kakaoParserErrorHelp2.html"><span>듀얼 메신저 분석 방법<span class="desc">Analyzing a dual-messenger export.</span></span><span class="path">kakaoParserErrorHelp2.html</span></a></li>
+                <li><a href="kakaoParserIphoneConvert.html"><span>iPhone 대화내용 내보내기<span class="desc">Exporting chats from iPhone.</span></span><span class="path">kakaoParserIphoneConvert.html</span></a></li>
+            </ul>
+
+            <p class="article-foot"><a href="/">← back to index</a></p>
+        </div>
+    </main>
+
+    <script src="/js/common.js"></script>
 </body>
 </html>

@@ -1,50 +1,92 @@
-/* Shared styling for the KakaoParser help / info pages */
+/* KakaoParser help / info pages (Korean). Tokens, typography and the
+   .article layout come from /css/index.css; this only adds page bits. */
 
-body {
-    background: #f8f9fa;
-    color: #212529;
-    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    line-height: 1.7;
+.article .help-links {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    border-top: 1px solid var(--line);
 }
 
-.container {
-    max-width: 720px;
-    padding: 2.5rem 1.25rem 4rem;
+.article .help-links li {
+    margin: 0;
 }
 
-h1, h2, h3 {
-    margin: 1.5rem 0 1rem;
-    line-height: 1.4;
+.help-links a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.25rem 1rem;
+    align-items: baseline;
+    padding: 0.8rem 0.6rem;
+    margin: 0 -0.6rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--fg);
+    text-decoration: none;
+    transition: background-color 0.15s var(--ease);
 }
 
-p, li {
-    margin-bottom: 0.5rem;
+.help-links a:hover {
+    background: var(--bg-hover);
 }
 
-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    margin: 0.75rem 0;
-}
-
-.container > div > button,
-.container > button {
+.help-links .desc {
     display: block;
-    width: 100%;
-    max-width: 320px;
-    margin: 0.75rem auto;
-    padding: 0.75rem 1.25rem;
-    font-size: 1rem;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    background: #ffffff;
-    cursor: pointer;
-    transition: background 0.2s ease;
+    color: var(--fg-muted);
+    font-size: 0.92rem;
 }
 
-.container > div > button:hover,
-.container > button:hover {
-    background: #e9ecef;
+.help-links .path {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--fg-faint);
+    white-space: nowrap;
+}
+
+.help-links a:hover .path {
+    color: var(--accent);
+}
+
+.help-links a[target="_blank"] .path::after {
+    content: " ↗";
+}
+
+.article .steps {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+}
+
+.steps > li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 2.4rem;
+    margin: 0.6rem 0;
+}
+
+.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+}
+
+.article .path-move {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    background: var(--bg-inset);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    white-space: nowrap;
 }

@@ -1,30 +1,151 @@
-.redOutline{
-    outline-color:red; 
-    outline-style:solid;
-    margin: 10px;
-    padding: 10px;
-  }
+/* KakaoParser admin tools (Query / Download). Bootstrap 5 stays loaded
+   for collapse + tables; these rules re-skin it with the site tokens
+   from /css/index.css. */
 
-  .greenOutline{
-    outline-color:green; 
-    outline-style:solid;
-    margin: 10px;
-    padding: 10px;
-  }
+body {
+    font-family: var(--font-sans);
+}
 
-  .blackOutline{
-    outline-color:black; 
-    outline-style:solid;
-    margin: 10px;
-    padding: 10px;
-  }
+.tool-main {
+    padding-bottom: 3rem;
+}
 
-  .glowbox:hover{
-    background: yellow; /* make this whatever you want */
-  }
+.tool-main h1 {
+    margin-bottom: 0.25rem;
+}
 
+.tool-main .tool-note {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--fg-muted);
+    margin-bottom: 1.5rem;
+}
 
-  hr {
-      background:black;
-      height: 5px;
-  }
+.tool-main .tool-note code {
+    color: var(--fg);
+}
+
+/* Legacy panel classes used by the tool markup and its scripts */
+.blackOutline,
+.greenOutline,
+.redOutline {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.15rem;
+    margin: 0 0 1rem;
+}
+
+.greenOutline {
+    border-color: var(--ok);
+}
+
+.redOutline {
+    border-color: var(--danger);
+}
+
+.glowbox:hover {
+    background: var(--accent-soft);
+}
+
+.tool-main hr {
+    margin: 1.25rem 0;
+}
+
+.tool-main h3,
+.tool-main h5 {
+    font-size: 0.95rem;
+    margin: 0 0 0.5rem;
+}
+
+.tool-main p {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+}
+
+.tool-main p span {
+    color: var(--fg);
+}
+
+.tool-main ol {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--fg-muted);
+    max-height: 50vh;
+    overflow: auto;
+    padding-left: 2.5rem;
+}
+
+.tool-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Bootstrap re-skin */
+.tool-main .btn {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: var(--radius);
+    padding: 0.6rem 1rem;
+}
+
+.tool-main .btn-primary {
+    --bs-btn-bg: var(--accent);
+    --bs-btn-border-color: var(--accent);
+    --bs-btn-color: var(--accent-ink);
+    --bs-btn-hover-bg: var(--accent-strong);
+    --bs-btn-hover-border-color: var(--accent-strong);
+    --bs-btn-hover-color: var(--accent-ink);
+    --bs-btn-active-bg: var(--accent-strong);
+    --bs-btn-active-border-color: var(--accent-strong);
+    --bs-btn-active-color: var(--accent-ink);
+    --bs-btn-focus-shadow-rgb: 143, 208, 105;
+}
+
+.tool-main .form-control {
+    background: var(--bg-inset);
+    border: 1px solid var(--line-strong);
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    border-radius: var(--radius);
+    margin-bottom: 0.75rem;
+}
+
+.tool-main .form-control:focus {
+    background: var(--bg-inset);
+    color: var(--fg);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.tool-main .form-control::placeholder {
+    color: var(--fg-faint);
+}
+
+.tool-main .table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--fg);
+    --bs-table-border-color: var(--line);
+    --bs-table-striped-bg: var(--bg-inset);
+    --bs-table-striped-color: var(--fg);
+    color: var(--fg);
+    font-size: 0.875rem;
+    margin-top: 0.75rem;
+}
+
+.tool-main .table th {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+    background: var(--bg-inset);
+}
+
+.tool-main .table td {
+    word-break: break-word;
+}

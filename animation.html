@@ -3,239 +3,306 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Animation Showcase - Rexyrex</title>
+        <title>Animation Lab — Rexyrex</title>
+        <meta name="description" content="A scratchpad of CSS text effects by rexyrex, built on Vue 3. Pick an effect or let it shuffle.">
+        <meta name="color-scheme" content="dark light">
         <link rel="icon" href="/favicon.ico">
+        <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/vue@3.5.41/dist/vue.global.prod.js" integrity="sha384-arPHRzOKPl8g3Rbe/cQBWYPnq4HcxfPFSFWD3qvI/hc2XQf+4GkVqkOlWgjN5mD3" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="/css/navbar.css">
         <link rel="stylesheet" href="/css/index.css">
+        <link rel="stylesheet" href="/css/navbar.css">
         <style>
-            /* Force dark theme for animation page */
-            body {
-                background: #0a0a0a !important;
-                color: #ffffff !important;
-                min-height: 100vh;
-            }
-            
-            /* Animation page specific styles */
+            /* Page chrome — tokens from /css/index.css. The effect styles
+               below this block are the lab's content and are left as they are. */
             .animation-section {
-                min-height: 100vh;
-                padding: 6rem 2rem 2rem 2rem; /* Top padding for navbar */
+                padding: clamp(2rem, 5vw, 3.5rem) 0 3rem;
                 position: relative;
-                z-index: 10;
             }
-            
-            .animation-card {
-                background: rgba(255, 255, 255, 0.02) !important;
-                backdrop-filter: blur(20px);
-                border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                border-radius: 20px;
-                padding: 2rem;
+
+            .animation-section .container {
+                max-width: var(--measure);
+            }
+
+            .page-header {
                 margin-bottom: 2rem;
-                transition: all 0.3s ease;
+            }
+
+            .page-header::before {
+                content: "/animation.html";
+                display: block;
+                font-family: var(--font-mono);
+                font-size: 0.8rem;
+                font-weight: 500;
+                color: var(--accent);
+                margin-bottom: 0.75rem;
+            }
+
+            .page-title {
+                font-size: clamp(1.75rem, 1.2rem + 2.6vw, 2.75rem);
+                margin-bottom: 0.5rem;
+            }
+
+            .page-subtitle {
+                font-size: 1.1rem;
+                color: var(--fg-muted);
+                max-width: 60ch;
+                margin: 0;
+            }
+
+            .animation-card {
+                background: var(--bg-raised);
+                border: 1px solid var(--line);
+                border-radius: var(--radius-lg);
+                padding: clamp(1.25rem, 3vw, 2rem);
+                margin-bottom: 1.5rem;
                 position: relative;
                 overflow: hidden;
-                color: #ffffff !important;
+                color: var(--fg);
             }
-            
-            .animation-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-                pointer-events: none;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-            
-            .animation-card:hover::before {
-                opacity: 1;
-            }
-            
-            .animation-card:hover {
-                transform: translateY(-5px);
-                border-color: rgba(100, 255, 218, 0.3);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            }
-            
+
             .animation-card h3 {
-                color: #64ffda !important;
-                font-weight: 600;
-                margin-bottom: 1.5rem;
+                font-size: 1.05rem;
+                margin-bottom: 1.25rem;
                 display: flex;
                 align-items: center;
                 gap: 0.5rem;
             }
-            
+
             .animation-card h3 i {
-                font-size: 1.2rem;
+                color: var(--accent);
             }
-            
+
+            .showcase-title {
+                font-size: 1.1rem;
+                margin: 0 0 1rem;
+                text-align: left;
+            }
+
+            .showcase-title::before {
+                content: "stage";
+                font-size: 0.8rem;
+                font-weight: 500;
+                color: var(--accent);
+                margin-right: 1rem;
+            }
+
+            .showcase-controls {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.6rem;
+                margin-bottom: 1rem;
+            }
+
+            .control-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-family: var(--font-mono);
+                font-size: 0.875rem;
+                font-weight: 500;
+                line-height: 1;
+                padding: 0.75rem 1.05rem;
+                border-radius: var(--radius);
+                border: 1px solid var(--line-strong);
+                background: transparent;
+                color: var(--fg);
+                cursor: pointer;
+                transition: background-color 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease);
+            }
+
+            .control-btn:hover {
+                background: var(--bg-hover);
+                border-color: var(--fg-muted);
+            }
+
+            .control-btn--primary {
+                background: var(--accent);
+                border-color: var(--accent);
+                color: var(--accent-ink);
+            }
+
+            .control-btn--primary:hover {
+                background: var(--accent-strong);
+                border-color: var(--accent-strong);
+            }
+
+            .control-btn--stop {
+                border-color: var(--danger);
+                color: var(--danger);
+            }
+
+            .control-btn--stop:hover {
+                background: color-mix(in srgb, var(--danger) 12%, transparent);
+                border-color: var(--danger);
+            }
+
+            .effect-select {
+                font-family: var(--font-mono);
+                font-size: 0.875rem;
+                min-width: min(100%, 320px);
+                padding: 0.7rem 0.9rem;
+                background: var(--bg-inset);
+                color: var(--fg);
+                border: 1px solid var(--line-strong);
+                border-radius: var(--radius);
+            }
+
+            .effect-select:focus {
+                outline: none;
+                border-color: var(--accent);
+                box-shadow: 0 0 0 3px var(--accent-soft);
+            }
+
             .demo-content {
-                background: rgba(0, 0, 0, 0.5) !important;
-                border-radius: 10px;
+                background: var(--bg-inset);
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
                 padding: 1.5rem;
                 margin: 1rem 0;
-                border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 min-height: 100px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
-            
+
             .demo-text {
-                color: rgba(255, 255, 255, 0.95) !important;
+                color: var(--fg);
                 text-align: center;
                 line-height: 1.6;
             }
-            
-            .control-btn {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-                border: none !important;
-                border-radius: 10px;
-                padding: 0.75rem 1.5rem;
-                color: white !important;
-                font-weight: 500;
-                transition: all 0.3s ease;
+
+            /* The stage where effects play. Effects assume a big bold face. */
+            .stage {
+                min-height: 320px;
                 position: relative;
-                overflow: hidden;
-            }
-            
-            .control-btn::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                transition: left 0.5s ease;
-            }
-            
-            .control-btn:hover::before {
-                left: 100%;
-            }
-            
-            .control-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-            }
-            
-            .master-btn {
-                background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-                border: none;
-                border-radius: 15px;
-                padding: 1.5rem 3rem;
-                color: white;
+                font-size: 2.5rem;
                 font-weight: 700;
-                font-size: 1.5rem;
-                transition: all 0.3s ease;
-                position: relative;
                 overflow: hidden;
+            }
+
+            .stage-inner {
                 width: 100%;
-                margin-bottom: 3rem;
+                min-height: 200px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
-            
-            .master-btn:hover {
-                transform: scale(1.05);
-                box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+
+            .stage-empty {
+                text-align: center;
+                color: var(--fg-muted);
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                font-weight: 400;
+                line-height: 1.7;
             }
-            
+
+            .stage-empty i {
+                display: block;
+                font-size: 2rem;
+                color: var(--accent);
+                margin-bottom: 0.75rem;
+            }
+
+            .stage-empty small {
+                color: var(--fg-faint);
+                font-size: 0.85em;
+            }
+
+            .stage-status {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.75rem 1.25rem;
+                font-family: var(--font-mono);
+                font-size: 0.8rem;
+                color: var(--fg-muted);
+            }
+
+            .stage-status .current {
+                color: var(--fg);
+            }
+
+            .stage-status .current b {
+                font-weight: 500;
+                color: var(--accent);
+            }
+
+            .stage-meter {
+                width: 160px;
+                height: 4px;
+                background: var(--bg-inset);
+                border: 1px solid var(--line);
+                border-radius: 999px;
+                overflow: hidden;
+            }
+
+            .stage-meter > div {
+                height: 100%;
+                background: var(--accent);
+                transition: width 0.1s linear;
+            }
+
+            .stage-next {
+                color: var(--fg-faint);
+            }
+
+            .master-btn {
+                background: var(--accent);
+                border: 1px solid var(--accent);
+                border-radius: var(--radius);
+                padding: 1rem 2rem;
+                color: var(--accent-ink);
+                font-family: var(--font-mono);
+                font-weight: 600;
+                font-size: 1.1rem;
+                width: 100%;
+                margin-bottom: 2rem;
+                cursor: pointer;
+            }
+
             .number-controls {
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
             }
-            
-            .number-controls .control-btn {
-                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                margin-bottom: 0.5rem;
-            }
-            
-            .number-controls .control-btn.danger {
-                background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            }
-            
+
             .number-line {
-                background: rgba(0, 0, 0, 0.7) !important;
-                border-radius: 10px;
+                background: var(--bg-inset);
+                border-radius: var(--radius);
                 padding: 2rem;
-                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                border: 1px solid var(--line);
                 min-height: 200px;
             }
-            
+
             .list-item {
                 display: inline-block;
                 margin: 0.25rem;
-                padding: 0.5rem 1rem;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-                color: white !important;
-                border-radius: 25px;
-                font-weight: 500;
-                transition: all 0.3s ease;
+                padding: 0.4rem 0.8rem;
+                background: var(--accent-soft);
+                color: var(--accent);
+                border: 1px solid var(--line);
+                border-radius: 999px;
+                font-family: var(--font-mono);
+                font-size: 0.85rem;
             }
-            
+
             .progress {
-                background: rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 20px;
+                background: var(--bg-inset);
+                border-radius: 999px;
+                height: 8px;
                 margin: 1rem 0;
                 overflow: hidden;
             }
-            
+
             .progress-bar {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                border-radius: 10px;
+                background: var(--accent);
                 transition: width 0.3s ease;
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            .page-header {
-                text-align: center;
-                margin-bottom: 3rem;
-            }
-            
-            .page-title {
-                font-size: 3rem;
-                font-weight: 700;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                margin-bottom: 1rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 1rem;
-            }
-            
-            .page-title-icon {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                width: 60px;
-                height: 60px;
-                border-radius: 15px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.8rem;
-                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-                flex-shrink: 0;
-            }
-            
-            .page-subtitle {
-                color: rgba(255, 255, 255, 0.8) !important;
-                font-size: 1.2rem;
-                max-width: 600px;
-                margin: 0 auto;
             }
 
             /* Advanced Fancy Animation Styles */
@@ -2423,68 +2490,51 @@
     <body>
         <div id="nav-placeholder"></div>
         
-        <!-- Animated Background -->
-        <div class="animated-bg">
-            <div class="floating-shapes">
-                <div class="shape shape-1"></div>
-                <div class="shape shape-2"></div>
-                <div class="shape shape-3"></div>
-                <div class="shape shape-4"></div>
-                <div class="shape shape-5"></div>
-            </div>
-        </div>
-
         <div id="app" class="animation-section">
             <div class="container">
                 <!-- Page Header -->
                 <div class="page-header page-load-animation">
                     <h1 class="page-title title-load-animation">
-                        <span>Animation Showcase</span>
+                        <span>Animation lab</span>
                     </h1>
                     <p class="page-subtitle subtitle-load-animation">
-                        This is a page to test animations and visual effects
+                        A scratchpad of CSS text effects. Pick one, or let it shuffle every few seconds.
                     </p>
                 </div>
 
                 <!-- Random Effect Showcase - MOVED TO TOP -->
                 <div class="row mb-5">
                     <div class="col-12">
-                        <div class="animation-card" style="min-height: 500px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: 3px solid #ff6b35; box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);">
-                            <h2 class="text-center mb-4" style="font-size: 3rem; font-weight: bold; background: linear-gradient(45deg, #ff6b35, #f093fb, #f5576c, #4facfe, #00f2fe); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientShift 3s ease infinite;">
-                                🎭 RANDOM EFFECT SHOWCASE 🎭
-                            </h2>
-                            <div class="text-center mb-4">
+                        <div class="animation-card showcase-card">
+                            <h2 class="showcase-title">Text effect stage</h2>
+                            <div class="showcase-controls">
                                 <button v-if="!randomEffectActive && !selectMode" 
-                                        :class="['control-btn', { 'initial-load': isInitialLoad }]" 
-                                        @click="startRandomShow" 
-                                        style="font-size: 1.3rem; padding: 15px 30px; background: linear-gradient(45deg, #ff6b35, #f093fb); border: none; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4); transform: scale(1); transition: all 0.3s ease; margin-right: 15px;">
-                                    🎲 Start Random Show
+                                        :class="['control-btn', 'control-btn--primary', { 'initial-load': isInitialLoad }]"
+                                        @click="startRandomShow">
+                                    Shuffle effects
                                 </button>
                                 <button v-if="!randomEffectActive && !selectMode" 
-                                        :class="['control-btn', { 'initial-load': isInitialLoad }]" 
-                                        @click="showDropdown" 
-                                        style="font-size: 1.3rem; padding: 15px 30px; background: linear-gradient(45deg, #4facfe, #00f2fe); border: none; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4); transform: scale(1); transition: all 0.3s ease;">
-                                    📋 Select Animation
+                                        :class="['control-btn', { 'initial-load': isInitialLoad }]"
+                                        @click="showDropdown">
+                                    Pick an effect
                                 </button>
                                 <button v-if="randomEffectActive || selectMode" 
-                                        @click="resetToInitial" 
-                                        class="control-btn" 
-                                        style="font-size: 1.1rem; padding: 12px 25px; background: linear-gradient(45deg, #ff4757, #ff3742); border: none; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4); transition: all 0.3s ease;">
-                                    🛑 Stop & Reset
+                                        @click="resetToInitial"
+                                        class="control-btn control-btn--stop">
+                                    Stop
                                 </button>
                             </div>
-                            <div v-if="selectMode && !randomEffectActive" class="text-center mb-4">
-                                <select v-model="selectedAnimation" @change="playSelectedAnimation" 
-                                        style="font-size: 1.1rem; padding: 12px 20px; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 15px; color: white; min-width: 300px; backdrop-filter: blur(10px);">
-                                    <option value="" style="color: #333;">Choose an animation...</option>
-                                    <option v-for="effect in randomEffects" :key="effect.name" :value="effect.name" style="color: #333;">
+                            <div v-if="selectMode && !randomEffectActive" class="showcase-controls">
+                                <select v-model="selectedAnimation" @change="playSelectedAnimation" class="effect-select">
+                                    <option value="">Choose an effect…</option>
+                                    <option v-for="effect in randomEffects" :key="effect.name" :value="effect.name">
                                         {{effect.name}}
                                     </option>
                                 </select>
                             </div>
-                            <div class="demo-content" style="min-height: 300px; display: flex; align-items: center; justify-content: center; position: relative; font-size: 2.5rem; font-weight: bold;">
+                            <div class="demo-content stage">
                                 <!-- Fixed size placeholder to prevent layout shift -->
-                                <div style="min-height: 200px; min-width: 500px; display: flex; align-items: center; justify-content: center;">
+                                <div class="stage-inner">
                                     <div v-if="randomEffectActive || (selectMode && currentRandomEffect.name)" 
                                          :class="currentRandomEffect.class" 
                                          :style="currentRandomEffect.style"
@@ -2494,35 +2544,24 @@
                                          class="demo-text random-effect-container"
                                          style="font-size: 2.5rem; font-weight: bold; z-index: 10; text-align: center; display: block;">
                                     </div>
-                                    <div v-else-if="selectMode && !currentRandomEffect.name" style="text-align: center; color: rgba(255,255,255,0.8); font-size: 1.5rem;">
-                                        <i class="fas fa-list" style="font-size: 4rem; margin-bottom: 20px; color: #4facfe;"></i><br>
-                                        Select an animation from the dropdown! 📋<br>
-                                        <small style="opacity: 0.7;">Choose your favorite effect!</small>
+                                    <div v-else-if="selectMode && !currentRandomEffect.name" class="stage-empty">
+                                        <i class="fas fa-list"></i>
+                                        Pick an effect from the list.<br>
+                                        <small>It plays here.</small>
                                     </div>
-                                    <div v-else style="text-align: center; color: rgba(255,255,255,0.8); font-size: 1.5rem;">
-                                        <i class="fas fa-magic" style="font-size: 4rem; margin-bottom: 20px; color: #ff6b35;"></i><br>
-                                        Choose your adventure! 🎭<br>
-                                        <small style="opacity: 0.7;">🎲 Random Show or 📋 Select Animation</small>
+                                    <div v-else class="stage-empty">
+                                        <i class="fas fa-magic"></i>
+                                        Nothing playing.<br>
+                                        <small>Shuffle effects, or pick one.</small>
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-center mt-3">
-                                <div style="text-align: center;">
-                                    <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 10px;">
-                                        Current Effect: <span style="color: #ff6b35; font-weight: bold; font-size: 1.2rem;">{{(randomEffectActive || selectMode) ? currentRandomEffect.name : 'None'}}</span>
-                                    </p>
-                                    <div v-if="randomEffectActive" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                        <div style="width: 200px; height: 10px; background: rgba(255, 255, 255, 0.2); border-radius: 5px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
-                                            <div style="height: 100%; background: linear-gradient(90deg, #ff6b35, #f093fb); border-radius: 5px; transition: width 0.1s linear; box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);" :style="{width: progressBarWidth + '%'}"></div>
-                                        </div>
-                                        <span style="background: rgba(255, 107, 53, 0.2); border-radius: 15px; padding: 8px 15px; color: #ff6b35; font-weight: bold; font-size: 1rem;">
-                                            ⏱️ Next in: {{secondsLeft}}s
-                                        </span>
-                                    </div>
-                                </div>
-                                <p v-if="!randomEffectActive && !selectMode" style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 5px;">
-                                    🎬 This is a page to test animations and visual effects
-                                </p>
+                            <div class="stage-status">
+                                <span class="current">effect: <b>{{(randomEffectActive || selectMode) ? currentRandomEffect.name : 'none'}}</b></span>
+                                <template v-if="randomEffectActive">
+                                    <span class="stage-meter"><div :style="{width: progressBarWidth + '%'}"></div></span>
+                                    <span class="stage-next">next in {{secondsLeft}}s</span>
+                                </template>
                             </div>
                         </div>
                     </div>
