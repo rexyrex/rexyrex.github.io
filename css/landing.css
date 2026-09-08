@@ -892,6 +892,14 @@ html.motion-off .sky-hud-hint {
   color: var(--tint);
 }
 
+.phone-stores {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--fg-faint);
+}
+
 /* UI kit shared by the mockups: one tint per app. */
 .ui-status {
   display: flex;
@@ -1738,6 +1746,89 @@ html.motion-off .love-fill {
   text-align: right;
   color: var(--fg);
   font-weight: 500;
+}
+
+/* Exif editor */
+.exif-photo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1px;
+  aspect-ratio: 4 / 3;
+  padding: 7px 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(60% 50% at 78% 22%, rgba(255, 236, 190, 0.55), transparent 70%),
+    linear-gradient(160deg, #2b3a4a 0%, #4b6a7c 45%, #c9a46a 100%);
+}
+
+.exif-photo b {
+  position: relative;
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.exif-photo .exif-dim {
+  position: relative;
+  font-style: normal;
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.78);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.exif-pin {
+  position: absolute;
+  top: 30%;
+  left: 60%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--tint);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tint) 35%, transparent);
+}
+
+/* Saju: the four pillars */
+.saju-pillars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.saju-pillars > span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 4px 0 5px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-inset) 70%, transparent);
+}
+
+.saju-pillars i {
+  font-style: normal;
+  font-size: 7.5px;
+  letter-spacing: 0.1em;
+  color: var(--fg-faint);
+  margin-bottom: 2px;
+}
+
+.saju-pillars b {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.15;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.saju-pillars b + b {
+  color: var(--tint);
 }
 
 /* ---------- 8. /music/ — waveform ------------------------------ */

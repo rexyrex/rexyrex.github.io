@@ -1,6 +1,6 @@
 # rexyrex.github.io
 
-Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) (Minhyung Kim) — an index of the things he ships: mobile apps, games, music, and the privacy-policy / support pages for published apps.
+Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) — an index of what Rexyrex ships: mobile apps (eight on Google Play, two on the App Store), self-hosted browser games, music, and the privacy-policy / support pages for published apps.
 
 ## Pages
 
@@ -35,7 +35,7 @@ The landing page is an Apple-style scroll story. Files: `css/landing.css` (hero,
 - **Statement** — SplitText words scrubbed from faint to full, then the section pins for ~130% of the viewport while the dot charges, flashes and bursts across the screen (`window.rexHero.burst`). Rendering pauses once the burst is over.
 - **/typing/** — a plain section; the editor mockup types generic Korean, English and Java sentences on its own (time-based, human-ish rhythm) while it is on screen, cycling through the tabs.
 - **/deadlyBalloons/** — pinned sky with thirty generated balloons at random depths (nearer = bigger, faster, on top; far = small and soft). A dozen pop on their own along the ride — ring flash, shards, "+100" — and every other balloon pops when clicked. A HUD keeps score.
-- **/apps/** — pinned horizontal track of six CSS phones, each a small app mockup (status bar, app bar, cards, charts, chat, a mini game) with one tint per app. Phones tilt toward the pointer; their bars, rings and sparklines animate in when they come on screen. Native snap scrolling on narrow screens and in windows under 700px tall.
+- **/apps/** — pinned horizontal track of eight CSS phones, each a small app mockup (status bar, app bar, cards, charts, chat, a mini game) with one tint per app. Phones tilt toward the pointer; their bars, rings and sparklines animate in when they come on screen. Native snap scrolling on narrow screens and in windows under 700px tall.
 - **/music/** — waveform bars that grow in on scroll and rise under the pointer.
 - **Headlines** slide up out of line masks, the e-mail rises letter by letter, index rows get a light sweep on hover.
 
