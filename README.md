@@ -6,7 +6,7 @@ Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) (Minhyung K
 
 | Path | What it is |
 |---|---|
-| `/` | Landing page: intro, the site index, published apps, contact (vanilla HTML/CSS/JS) |
+| `/` | Landing page: a scroll story — particle rex hero, word-by-word statement, pinned chapters for typing / balloons / apps / music, then the site index and contact (GSAP + Three.js, see below) |
 | `/typing/` | Typing speed game — Korean / English / programmer modes, Firebase leaderboards (jQuery + Bootstrap 4.6 + Firebase compat 8) |
 | `/deadlyBalloons/` | Landing page for the Deadly Balloons 2 desktop game (dependency-free) |
 | `/music/showcase.html` | Music page with a SoundCloud embed and links out |
@@ -26,6 +26,24 @@ Everything is styled from `/css/index.css`:
 - **Eyebrows are real paths.** Section labels like `/apps/` and `/typing/` are the actual URLs of what they introduce.
 
 The typing game has its own stylesheet (`typing/css/typespeed2.css`) layered on top of Bootstrap 4 and `index.css`; the animation lab keeps its effect CSS inline and only its page chrome uses the tokens.
+
+## Landing page motion (`/index.html`)
+
+The landing page is an Apple-style scroll story. Files: `css/landing.css` (hero, chapters, mockups, motion gating), `js/landing.js` (GSAP orchestration), `js/hero-particles.js` (Three.js, ES module).
+
+- **Hero** — the rex mascot rendered as ~7k particles sampled from `assets/rexGreenSmall.png` (colours included) on a fixed canvas. Assembles from a cloud on load, turns and drifts to the screen centre as you scroll, collapses into a single dot while the statement lights up "…by one developer", then bursts and fades. Rendering pauses once it's off screen. Long-pressing the rex still opens the easter egg (`js/index.js`) and makes the particles buzz.
+- **Statement** — SplitText words scrubbed from faint to full as the paragraph passes through the viewport.
+- **/typing/** — pinned stage; the editor mockup types three passages (한타, 영타, 개발자) in sync with scroll, with Ln/Col and a score readout. Scrubbed without pinning on narrow screens.
+- **/deadlyBalloons/** — pinned sky using the game's own balloon PNGs (`assets/img/`) rising with depth-based parallax; one pops into shards, both rexes peek in.
+- **/apps/** — pinned horizontal track of six CSS phones with hand-built mini UIs, one tint per app. Native snap scrolling on narrow screens and in windows under 700px tall.
+- **/music/** — waveform bars that grow in on scroll.
+
+Rules that keep it working:
+
+- Every ScrollTrigger is created inside one `gsap.matchMedia()` callback, top to bottom in page order. Pinned sections must be created in DOM order or ScrollTrigger measures the ones below them wrongly.
+- Reveal targets start hidden only under `html.js:not(.motion-off)` and `prefers-reduced-motion: no-preference`. If GSAP fails to load or the visitor prefers reduced motion, `landing.js` adds `html.motion-off` and the page is fully static (PNG rex, no pinning).
+- `window.rexHero` is the only contract between `landing.js` (writes `t`, the 0–1 scroll progress, and `excite`) and `hero-particles.js` (reads them, reports `rexhero:ready` / `rexhero:failed`). If the module never reports in, the PNG rex is shown.
+- Three.js resolves through the import map in `index.html`; the map's `integrity` block pins both module files.
 
 ## Shared chrome: navbar + status bar
 
@@ -56,6 +74,8 @@ python3 -m http.server 8000
 
 ## Dependencies (CDN, pinned + SRI)
 
+- GSAP 3.15.0 + ScrollTrigger + SplitText (landing page; both plugins are free since 3.13)
+- Three.js 0.185.1 as an ES module via import map (landing page hero)
 - Google Fonts: IBM Plex Mono, IBM Plex Sans KR
 - Font Awesome 6.7.2 (landing page easter egg, typing game, animation lab)
 - Bootstrap 4.6.2 + Popper 1.16.1 + jQuery 3.7.1 (typing game only)

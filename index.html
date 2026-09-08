@@ -2,70 +2,256 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Rexyrex — Minhyung Kim</title>
     <meta name="description" content="Minhyung Kim (rexyrex) builds mobile apps, games, and music. A typing speed game, Deadly Balloons, Flutter apps on the app stores, and KakaoTalk chat analyzers.">
     <meta name="color-scheme" content="dark light">
     <link rel="icon" href="/favicon.ico">
-    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/landing.css">
     <link rel="stylesheet" href="/css/easter-egg.css">
+    <!-- Three.js for the particle rex in the hero (loaded as an ES module by /js/hero-particles.js).
+         The import map pins the version; the integrity block is honoured by browsers that support it. -->
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js"
+      },
+      "integrity": {
+        "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js": "sha384-QHQk1LzjJlJYNdthXjKCmffpDRZL3EqJ7LfqBzyKyvGgjAYM2ZVuYtFGg42NcAJ/",
+        "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.core.min.js": "sha384-rx+KIp/9ptjArhnFAcpVoOc/ynktDsRtRJKIbC7YVKylEvFu8sgmzk9RmQ+CIV48"
+      }
+    }
+    </script>
 </head>
 
-<body>
+<body class="landing">
     <div id="nav-placeholder"></div>
 
-    <main>
-        <!-- Hero -->
-        <section class="hero wrap">
-            <div class="hero-grid">
-                <div class="hero-text">
-                    <p class="eyebrow reveal" style="--d: 0ms">rexyrex.github.io</p>
-                    <h1 class="reveal" style="--d: 60ms">Minhyung Kim builds apps, games, and music.</h1>
-                    <p class="hero-lede reveal" style="--d: 120ms">
-                        Solo developer in Korea, working as <strong>rexyrex</strong>. Flutter apps on the app stores,
+    <!-- Fixed WebGL layer: the rex mascot as a point cloud. Purely decorative. -->
+    <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
+
+    <main class="landing-main">
+
+        <!-- 00 · Hero -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="wrap hero-inner">
+                <div class="hero-visual" id="heroVisual">
+                    <img class="hero-rex-fallback" id="heroRexFallback" src="/assets/rexGreenSmall.png" alt="" width="256" height="256" decoding="async" draggable="false">
+                    <button type="button" id="rexLogo" class="hero-logo" aria-label="Rex, the green dinosaur mascot"></button>
+                </div>
+                <div class="hero-copy">
+                    <p class="eyebrow hero-eyebrow" data-hero>rexyrex.github.io</p>
+                    <h1 class="hero-title" id="hero-title">Apps, games, and music,<br>built by one person.</h1>
+                    <p class="hero-lede" data-hero>
+                        Minhyung Kim, working as <strong>rexyrex</strong> from Korea. Flutter apps on the app stores,
                         a Korean and English typing game with live leaderboards, a balloon-popping game in Java,
-                        and a couple of KakaoTalk chat analyzers. Everything here is built and maintained by one person.
+                        and a couple of KakaoTalk chat analyzers.
                     </p>
-                    <div class="hero-actions reveal" style="--d: 180ms">
+                    <div class="hero-actions" data-hero>
                         <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
                         <a class="link-mono" href="https://github.com/rexyrex" target="_blank" rel="noopener noreferrer">GitHub</a>
                         <a class="link-mono" href="https://www.youtube.com/channel/UCq3yY-SCoglG8xm6Z1_udaw" target="_blank" rel="noopener noreferrer">YouTube</a>
                         <a class="link-mono" href="https://soundcloud.com/rexyrex-1" target="_blank" rel="noopener noreferrer">SoundCloud</a>
                         <a class="link-mono" href="https://rexyrex.newgrounds.com/" target="_blank" rel="noopener noreferrer">Newgrounds</a>
                     </div>
+                    <p class="hero-cue" data-hero aria-hidden="true"><span class="hero-cue-line"></span><span>scroll</span></p>
                 </div>
-                <aside class="hero-aside reveal" style="--d: 240ms">
-                    <img class="hero-logo" id="rexLogo" src="/assets/rexGreenSmall.png" alt="Rex, the green dinosaur mascot" width="96" height="96" draggable="false">
-                    <dl class="facts">
-                        <div><dt>handle</dt><dd>rexyrex</dd></div>
-                        <div><dt>name</dt><dd>김민형 · Minhyung Kim</dd></div>
-                        <div><dt>base</dt><dd>Korea</dd></div>
-                        <div><dt>mail</dt><dd><a href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a></dd></div>
-                    </dl>
-                </aside>
             </div>
         </section>
 
-        <!-- Index: the site's own directory listing -->
+        <!-- 01 · Statement: lights up word by word as you scroll -->
+        <section class="statement" aria-label="About this site">
+            <div class="wrap">
+                <p class="statement-text" id="statementText">Six apps on the stores. A typing game in two languages. A balloon-popping game in Java. A few tracks. Everything here is designed, built and maintained by one developer in Korea.</p>
+            </div>
+        </section>
+
+        <!-- 02 · /typing/ — the editor types the passage as you scroll -->
+        <section class="chapter chapter-typing" id="typing" aria-labelledby="typing-title">
+            <div class="stage" id="typingStage">
+                <div class="wrap stage-grid">
+                    <div class="chapter-copy" data-reveal-group>
+                        <span class="eyebrow">/typing/</span>
+                        <h2 id="typing-title">Type faster, in Korean or English.</h2>
+                        <p>Four modes — 한타, 영타, a company mode and a developer mode — with daily and all-time leaderboards on Firebase. Keep scrolling and the editor types for you.</p>
+                        <div class="chapter-actions">
+                            <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
+                        </div>
+                    </div>
+                    <div class="editor" id="typingEditor" aria-hidden="true">
+                        <div class="editor-bar">
+                            <span class="editor-tab is-active" data-tab="0"><b>한타</b><i>korean.txt</i></span>
+                            <span class="editor-tab" data-tab="1"><b>영타</b><i>english.txt</i></span>
+                            <span class="editor-tab" data-tab="2"><b>개발자</b><i>Main.java</i></span>
+                            <span class="editor-bar-spacer"></span>
+                            <span class="editor-bar-meta">UTF-8</span>
+                        </div>
+                        <pre class="editor-body" id="typingBody"><code><span class="editor-typed" id="typingTyped"></span><span class="editor-caret" id="typingCaret"></span><span class="editor-rest" id="typingRest">키스의 고유조건은 입술끼리 만나야 하고 특별한 기술은 필요치 않다.</span></code></pre>
+                        <div class="editor-status">
+                            <span>Ln <b id="typingLn">1</b>, Col <b id="typingCol">1</b></span>
+                            <span class="editor-status-spacer"></span>
+                            <span>점수 <b id="typingScore">0</b></span>
+                            <span>정확도 <b>100%</b></span>
+                            <span class="editor-status-mode" id="typingMode">한타</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 · /deadlyBalloons/ — the game's own balloon art rises with parallax; one pops -->
+        <section class="chapter chapter-balloons" id="balloons" aria-labelledby="balloons-title">
+            <div class="stage stage-sky" id="balloonStage">
+                <div class="sky" aria-hidden="true">
+                    <div class="bl" data-depth="0.9" style="--x: 40%; --y: 95%; --w: 230px; --sd: -1s; --b: 4%"><span class="bl-sway"><img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
+                    <div class="bl" data-depth="0.5" style="--x: 20%; --y: 80%; --w: 140px; --sd: -3s; --b: 30%"><span class="bl-sway"><img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
+                    <div class="bl bl-hero" id="popBalloon" data-depth="1.15" style="--x: 5%; --y: 100%; --w: 300px; --sd: -2s; --b: 8%">
+                        <span class="bl-sway"><img src="/assets/img/balloon-green.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span>
+                        <i class="shard"></i><i class="shard"></i><i class="shard"></i><i class="shard"></i><i class="shard"></i>
+                        <i class="shard"></i><i class="shard"></i><i class="shard"></i><i class="shard"></i><i class="shard"></i>
+                    </div>
+                    <div class="bl" data-depth="0.35" style="--x: 66%; --y: 70%; --w: 110px; --sd: -4s; --b: 45%"><span class="bl-sway"><img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
+                    <div class="bl" data-depth="0.8" style="--x: 76%; --y: 100%; --w: 200px; --sd: -0.5s; --b: 6%"><span class="bl-sway"><img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
+                    <div class="bl" data-depth="0.45" style="--x: 88%; --y: 88%; --w: 130px; --sd: -2.5s; --b: 34%"><span class="bl-sway"><img src="/assets/img/balloon-green.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
+                    <div class="bl" data-depth="0.65" style="--x: 54%; --y: 110%; --w: 90px; --sd: -1.5s; --b: 55%"><span class="bl-sway"><img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
+                    <div class="bl" data-depth="1.0" style="--x: 0%; --y: 120%; --w: 120px; --sd: -3.5s; --b: 50%"><span class="bl-sway"><img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
+                    <img class="sky-rex sky-rex-green" src="/assets/rexGreenSmall.png" alt="" width="256" height="256" loading="lazy" decoding="async">
+                    <img class="sky-rex sky-rex-red" src="/assets/img/rexRedSmall.png" alt="" width="256" height="256" loading="lazy" decoding="async">
+                </div>
+                <div class="wrap">
+                    <div class="chapter-copy chapter-copy-glass" data-reveal-group>
+                        <span class="eyebrow">/deadlyBalloons/</span>
+                        <h2 id="balloons-title">Pop everything. Don't get popped.</h2>
+                        <p>Deadly Balloons 2 is a desktop game written in Java, for the hardcore balloon poppers. Watch the trailer, download it, or read the source.</p>
+                        <div class="chapter-actions">
+                            <a class="btn btn-primary" href="/deadlyBalloons/index.html">See the game <span class="arrow">→</span></a>
+                            <a class="link-mono" href="/apps/deadly_balloons/privacy-policy/">also on mobile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04 · /apps/ — six phones scroll sideways as you scroll down -->
+        <section class="chapter chapter-apps" id="apps" aria-labelledby="apps-title">
+            <div class="stage stage-apps" id="appsStage">
+                <div class="wrap chapter-copy chapter-copy-wide" data-reveal-group>
+                    <span class="eyebrow">/apps/</span>
+                    <h2 id="apps-title">Six apps on the stores.</h2>
+                    <p>Flutter apps, built and published solo. Every phone links to that app's privacy policy, which is also where the store listing points.</p>
+                </div>
+                <div class="apps-track" id="appsTrack">
+                    <a class="phone" href="/apps/age_calculator/privacy-policy/" style="--tint: var(--tok-num)">
+                        <span class="phone-screen" aria-hidden="true">
+                            <span class="ui ui-age">
+                                <span class="ui-kicker">exact age</span>
+                                <span class="ui-big">31<small>y</small> 2<small>m</small> 9<small>d</small></span>
+                                <span class="ui-kicker">test-based age</span>
+                                <span class="ui-gauge"><span></span></span>
+                                <span class="ui-list"><span>reaction</span><span>memory</span><span>math</span><span>vision</span><span>hearing</span></span>
+                            </span>
+                        </span>
+                        <span class="phone-label"><b>Age Calculator</b><i>age_calculator</i></span>
+                    </a>
+                    <a class="phone" href="/apps/qr_scanner/privacy-policy/" style="--tint: var(--accent)">
+                        <span class="phone-screen" aria-hidden="true">
+                            <span class="ui ui-qr">
+                                <span class="qr-wrap"><span class="qr" id="qrGrid"></span><span class="qr-scan"></span></span>
+                                <span class="ui-kicker">scanning…</span>
+                                <span class="ui-list"><span>history</span><span>generate</span><span>export</span></span>
+                            </span>
+                        </span>
+                        <span class="phone-label"><b>QR Scanner</b><i>qr_scanner</i></span>
+                    </a>
+                    <a class="phone" href="/apps/reverse_image_search/privacy-policy/" style="--tint: var(--tok-kw)">
+                        <span class="phone-screen" aria-hidden="true">
+                            <span class="ui ui-ris">
+                                <span class="ris-photo"><span class="ris-lens"></span></span>
+                                <span class="ui-kicker">results</span>
+                                <span class="ris-results"><i style="--i: 0"></i><i style="--i: 1"></i><i style="--i: 2"></i><i style="--i: 3"></i><i style="--i: 4"></i><i style="--i: 5"></i></span>
+                            </span>
+                        </span>
+                        <span class="phone-label"><b>Reverse Image Search</b><i>reverse_image_search</i></span>
+                    </a>
+                    <a class="phone" href="/apps/deadly_balloons/privacy-policy/" style="--tint: var(--danger)">
+                        <span class="phone-screen" aria-hidden="true">
+                            <span class="ui ui-db">
+                                <span class="db-score"><span>score <b>1,240</b></span><span>♥♥♥</span></span>
+                                <span class="db-sky">
+                                    <img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 8%; --y: 6%; --sd: -0.4s">
+                                    <img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 55%; --y: 22%; --sd: -1.6s">
+                                    <img src="/assets/img/balloon-green.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 30%; --y: 44%; --sd: -2.4s">
+                                    <span class="db-shot"></span>
+                                    <img class="db-rex" src="/assets/rexGreenSmall.png" alt="" width="256" height="256" loading="lazy" decoding="async">
+                                </span>
+                            </span>
+                        </span>
+                        <span class="phone-label"><b>Deadly Balloons</b><i>deadly_balloons</i></span>
+                    </a>
+                    <a class="phone" href="/apps/kakaoparser/privacy-policy/" style="--tint: var(--tok-str)">
+                        <span class="phone-screen" aria-hidden="true">
+                            <span class="ui ui-kp">
+                                <span class="chat"><i>오늘 뭐해?</i><i class="me">코딩 ㅋㅋ</i><i>또?? 진짜 ㅋㅋㅋ</i></span>
+                                <span class="ui-kicker">top words</span>
+                                <span class="bars"><i style="--h: 92%"></i><i style="--h: 64%"></i><i style="--h: 48%"></i><i style="--h: 36%"></i><i style="--h: 22%"></i></span>
+                                <span class="bars-labels"><i>ㅋㅋ</i><i>진짜</i><i>오늘</i><i>ㅇㅇ</i><i>내일</i></span>
+                            </span>
+                        </span>
+                        <span class="phone-label"><b>카카오톡 대화 분석기</b><i>kakaoparser</i></span>
+                    </a>
+                    <a class="phone" href="/apps/kakao_love_analyzer/privacy-policy/" style="--tint: #f08aa8">
+                        <span class="phone-screen" aria-hidden="true">
+                            <span class="ui ui-love">
+                                <span class="ui-big">나 <em>♥</em> 너</span>
+                                <span class="love-ring" style="--p: 87"><b>87%</b></span>
+                                <span class="love-rows"><span>답장 속도<b>빠름</b></span><span>먼저 연락<b>58%</b></span><span>이모티콘<b>많음</b></span></span>
+                            </span>
+                        </span>
+                        <span class="phone-label"><b>카톡 연애 분석기</b><i>kakao_love_analyzer</i></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05 · /music/ -->
+        <section class="chapter chapter-music" id="music" aria-labelledby="music-title">
+            <div class="wrap music-grid">
+                <div class="chapter-copy" data-reveal-group>
+                    <span class="eyebrow">/music/</span>
+                    <h2 id="music-title">And a few tracks.</h2>
+                    <p>SuperPose streams from SoundCloud. The rest of the audio is on SoundCloud and Newgrounds.</p>
+                    <div class="chapter-actions">
+                        <a class="btn btn-ghost" href="/music/showcase.html">Listen on /music/ <span class="arrow">→</span></a>
+                    </div>
+                </div>
+                <div class="wave" id="wave" aria-hidden="true">
+                    <div class="wave-bars" id="waveBars"></div>
+                    <div class="wave-meta"><span class="wave-title">SuperPose</span><span class="tag">SoundCloud</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06 · Index: the site's own directory listing -->
         <section class="section wrap" id="index">
-            <div class="section-head">
+            <div class="section-head" data-reveal>
                 <span class="eyebrow">/</span>
                 <h2>What's here</h2>
             </div>
-            <div class="index">
+            <div class="index" data-reveal-group>
                 <div class="index-head" aria-hidden="true">
                     <span>path</span>
                     <span>what it is</span>
                     <span>built with</span>
                     <span></span>
                 </div>
-                <a class="index-row reveal" style="--d: 260ms" href="/typing/index.html">
+                <a class="index-row" href="/typing/index.html">
                     <span class="index-path">/typing/</span>
                     <span class="index-body">
                         <span class="index-name">Typing speed test</span>
@@ -74,7 +260,7 @@
                     <span class="index-meta">JavaScript · Firebase</span>
                     <span class="index-arrow" aria-hidden="true">→</span>
                 </a>
-                <a class="index-row reveal" style="--d: 300ms" href="/deadlyBalloons/index.html">
+                <a class="index-row" href="/deadlyBalloons/index.html">
                     <span class="index-path">/deadlyBalloons/</span>
                     <span class="index-body">
                         <span class="index-name">Deadly Balloons 2</span>
@@ -83,7 +269,7 @@
                     <span class="index-meta">Java</span>
                     <span class="index-arrow" aria-hidden="true">→</span>
                 </a>
-                <a class="index-row reveal" style="--d: 340ms" href="/apps/">
+                <a class="index-row" href="/apps/">
                     <span class="index-path">/apps/</span>
                     <span class="index-body">
                         <span class="index-name">Published apps</span>
@@ -92,7 +278,7 @@
                     <span class="index-meta">Flutter · Android</span>
                     <span class="index-arrow" aria-hidden="true">→</span>
                 </a>
-                <a class="index-row reveal" style="--d: 380ms" href="/music/showcase.html">
+                <a class="index-row" href="/music/showcase.html">
                     <span class="index-path">/music/</span>
                     <span class="index-body">
                         <span class="index-name">Music</span>
@@ -101,7 +287,7 @@
                     <span class="index-meta">SoundCloud</span>
                     <span class="index-arrow" aria-hidden="true">→</span>
                 </a>
-                <a class="index-row reveal" style="--d: 420ms" href="/animation.html">
+                <a class="index-row" href="/animation.html">
                     <span class="index-path">/animation.html</span>
                     <span class="index-body">
                         <span class="index-name">Animation lab</span>
@@ -110,7 +296,7 @@
                     <span class="index-meta">Vue 3</span>
                     <span class="index-arrow" aria-hidden="true">→</span>
                 </a>
-                <a class="index-row reveal" style="--d: 460ms" href="/support/">
+                <a class="index-row" href="/support/">
                     <span class="index-path">/support/</span>
                     <span class="index-body">
                         <span class="index-name">Support</span>
@@ -122,71 +308,34 @@
             </div>
         </section>
 
-        <!-- Apps -->
-        <section class="section wrap" id="apps">
-            <div class="section-head">
-                <span class="eyebrow">/apps/</span>
-                <h2>Published apps</h2>
-                <p class="section-note">Mobile apps I ship to the stores. Each card links to the app's privacy policy, which is also where store listings point.</p>
-            </div>
-            <div class="apps-grid">
-                <a class="card app-card" href="/apps/age_calculator/privacy-policy/">
-                    <span class="app-id">age_calculator</span>
-                    <span class="app-name">Age Calculator</span>
-                    <p class="app-desc">Works out your exact age, then estimates a test-based age from quick reaction, memory, math, vision and hearing tests.</p>
-                    <span class="app-link">privacy policy →</span>
-                </a>
-                <a class="card app-card" href="/apps/qr_scanner/privacy-policy/">
-                    <span class="app-id">qr_scanner</span>
-                    <span class="app-name">QR Scanner</span>
-                    <p class="app-desc">Scans QR codes and barcodes, keeps a searchable history, and generates QR images you can export.</p>
-                    <span class="app-link">privacy policy →</span>
-                </a>
-                <a class="card app-card" href="/apps/reverse_image_search/privacy-policy/">
-                    <span class="app-id">reverse_image_search</span>
-                    <span class="app-name">Reverse Image Search</span>
-                    <p class="app-desc">Pick or capture a photo and look it up across the major visual search engines.</p>
-                    <span class="app-link">privacy policy →</span>
-                </a>
-                <a class="card app-card" href="/apps/deadly_balloons/privacy-policy/">
-                    <span class="app-id">deadly_balloons</span>
-                    <span class="app-name">Deadly Balloons</span>
-                    <p class="app-desc">The mobile take on the balloon game: a portrait bullet-hell arcade shooter with online leaderboards.</p>
-                    <span class="app-link">privacy policy →</span>
-                </a>
-                <a class="card app-card" href="/apps/kakaoparser/privacy-policy/">
-                    <span class="app-id">kakaoparser</span>
-                    <span class="app-name">카카오톡 대화 분석기 (KakaoParser)</span>
-                    <p class="app-desc">Statistics, keyword frequency and signature words (TF-IDF) from an exported KakaoTalk chat. Android.</p>
-                    <span class="app-link">개인정보 처리방침 →</span>
-                </a>
-                <a class="card app-card" href="/apps/kakao_love_analyzer/privacy-policy/">
-                    <span class="app-id">kakao_love_analyzer</span>
-                    <span class="app-name">카톡 연애 분석기</span>
-                    <p class="app-desc">Reads an exported KakaoTalk chat and surfaces relationship and affinity insights.</p>
-                    <span class="app-link">개인정보 처리방침 →</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Contact -->
-        <section class="section wrap" id="contact">
-            <div class="section-head">
+        <!-- 07 · Contact -->
+        <section class="section wrap contact" id="contact">
+            <div class="section-head" data-reveal>
                 <span class="eyebrow">/support/</span>
                 <h2>Contact</h2>
             </div>
-            <a class="contact-email" href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a>
-            <p class="muted" style="max-width: 58ch;">For app support, include the app name, your device model and the app version. I usually reply within a day or two.</p>
-            <p class="stack">
-                <span class="stack-label">stack</span>
-                <span>Flutter</span><span class="faint">·</span>
-                <span>Dart</span><span class="faint">·</span>
-                <span>Java</span><span class="faint">·</span>
-                <span>Android</span><span class="faint">·</span>
-                <span>JavaScript</span><span class="faint">·</span>
-                <span>Vue</span><span class="faint">·</span>
-                <span>Firebase</span>
-            </p>
+            <div data-reveal-group>
+                <a class="contact-email" href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a>
+                <p class="muted" style="max-width: 58ch;">For app support, include the app name, your device model and the app version. I usually reply within a day or two.</p>
+                <div class="contact-grid">
+                    <dl class="facts">
+                        <div><dt>handle</dt><dd>rexyrex</dd></div>
+                        <div><dt>name</dt><dd>김민형 · Minhyung Kim</dd></div>
+                        <div><dt>base</dt><dd>Korea</dd></div>
+                        <div><dt>mail</dt><dd><a href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a></dd></div>
+                    </dl>
+                    <p class="stack">
+                        <span class="stack-label">stack</span>
+                        <span>Flutter</span><span class="faint">·</span>
+                        <span>Dart</span><span class="faint">·</span>
+                        <span>Java</span><span class="faint">·</span>
+                        <span>Android</span><span class="faint">·</span>
+                        <span>JavaScript</span><span class="faint">·</span>
+                        <span>Vue</span><span class="faint">·</span>
+                        <span>Firebase</span>
+                    </p>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -199,7 +348,7 @@
         </span>
     </footer>
 
-    <!-- Easter egg: long-press the rex logo -->
+    <!-- Easter egg: long-press the rex in the hero -->
     <dialog id="romanticModal" class="romantic-modal" aria-label="A surprise">
         <div class="romantic-content">
             <div class="romantic-body">
@@ -275,7 +424,13 @@
         </div>
     </dialog>
 
+    <!-- GSAP 3.15 (ScrollTrigger and SplitText are free plugins as of 3.13) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" integrity="sha384-wl5TeDVvOWt30Pbf8aSo2ZrzsOjddu3avOBvHe+p+OhJt9gP6w9YXmDkN5DK2/dF" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js" integrity="sha384-SWJ0lLVRoipvHh59xj0pL7uC7Ih51F+5smaFtrG+2nr+TlDZU5SYJHmxfolbeNTr" crossorigin="anonymous"></script>
     <script src="/js/common.js"></script>
     <script src="/js/index.js"></script>
+    <script src="/js/landing.js"></script>
+    <script type="module" src="/js/hero-particles.js"></script>
 </body>
 </html>
