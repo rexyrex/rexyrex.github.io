@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/motion.css">
     <style>
         .support-actions {
             display: flex;
@@ -60,6 +61,33 @@
         .policy-list a:hover .path {
             color: var(--accent);
         }
+
+        .reply-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--fg-muted);
+        }
+
+        .reply-status i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--ok);
+            box-shadow: 0 0 0 0 var(--accent-soft);
+            animation: statusPulse 2s ease-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 45%, transparent); }
+            100% { box-shadow: 0 0 0 9px transparent; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reply-status i { animation: none; }
+        }
     </style>
 </head>
 
@@ -67,17 +95,17 @@
     <div id="nav-placeholder"></div>
 
     <main class="wrap">
-        <header class="page-head">
+        <header class="page-head" data-reveal-group>
             <p class="eyebrow">/support/</p>
             <h1>Support</h1>
             <p class="lede">Questions, bugs or feedback about any of my apps? Email me. Every app here is built and supported by one person, so you are writing to the developer directly.</p>
         </header>
 
-        <div class="article">
+        <div class="article" data-reveal-group>
             <a class="contact-email" href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a>
             <div class="support-actions">
                 <a class="btn btn-primary" href="mailto:rexyrex.dev@gmail.com?subject=App%20support">Write an email <span class="arrow">→</span></a>
-                <span class="muted small">I usually reply within a day or two.</span>
+                <span class="reply-status"><i aria-hidden="true"></i>usually replies within a day or two</span>
             </div>
 
             <h2>What to include</h2>
@@ -104,5 +132,6 @@
     </main>
 
     <script src="/js/common.js"></script>
+    <script src="/js/motion.js"></script>
 </body>
 </html>

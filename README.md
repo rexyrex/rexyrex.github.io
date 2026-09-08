@@ -31,12 +31,13 @@ The typing game has its own stylesheet (`typing/css/typespeed2.css`) layered on 
 
 The landing page is an Apple-style scroll story. Files: `css/landing.css` (hero, chapters, mockups, motion gating), `js/landing.js` (GSAP orchestration), `js/hero-particles.js` (Three.js, ES module).
 
-- **Hero** — the rex mascot rendered as ~7k particles sampled from `assets/rexGreenSmall.png` (colours included) on a fixed canvas. Assembles from a cloud on load, turns and drifts to the screen centre as you scroll, collapses into a single dot while the statement lights up "…by one developer", then bursts and fades. Rendering pauses once it's off screen. Long-pressing the rex still opens the easter egg (`js/index.js`) and makes the particles buzz.
-- **Statement** — SplitText words scrubbed from faint to full as the paragraph passes through the viewport.
-- **/typing/** — pinned stage; the editor mockup types three passages (한타, 영타, 개발자) in sync with scroll, with Ln/Col and a score readout. Scrubbed without pinning on narrow screens.
-- **/deadlyBalloons/** — pinned sky using the game's own balloon PNGs (`assets/img/`) rising with depth-based parallax; one pops into shards, both rexes peek in.
-- **/apps/** — pinned horizontal track of six CSS phones with hand-built mini UIs, one tint per app. Native snap scrolling on narrow screens and in windows under 700px tall.
-- **/music/** — waveform bars that grow in on scroll.
+- **Hero** — the rex mascot rendered as ~7k particles sampled from `assets/rexGreenSmall.png` (colours included) on a fixed canvas, over a slow aurora. Assembles from a cloud on load, turns and drifts to the screen centre as you scroll, collapses into a single dot while the statement lights up "…by one developer". Long-pressing the rex still opens the easter egg (`js/index.js`) and makes the particles buzz.
+- **Statement** — SplitText words scrubbed from faint to full, then the section pins for ~130% of the viewport while the dot charges, flashes and bursts across the screen (`window.rexHero.burst`). Rendering pauses once the burst is over.
+- **/typing/** — a plain section; the editor mockup types generic Korean, English and Java sentences on its own (time-based, human-ish rhythm) while it is on screen, cycling through the tabs.
+- **/deadlyBalloons/** — pinned sky with thirty generated balloons at random depths (nearer = bigger, faster, on top; far = small and soft). A dozen pop on their own along the ride — ring flash, shards, "+100" — and every other balloon pops when clicked. A HUD keeps score.
+- **/apps/** — pinned horizontal track of six CSS phones, each a small app mockup (status bar, app bar, cards, charts, chat, a mini game) with one tint per app. Phones tilt toward the pointer; their bars, rings and sparklines animate in when they come on screen. Native snap scrolling on narrow screens and in windows under 700px tall.
+- **/music/** — waveform bars that grow in on scroll and rise under the pointer.
+- **Headlines** slide up out of line masks, the e-mail rises letter by letter, index rows get a light sweep on hover.
 
 Rules that keep it working:
 
@@ -44,6 +45,14 @@ Rules that keep it working:
 - Reveal targets start hidden only under `html.js:not(.motion-off)` and `prefers-reduced-motion: no-preference`. If GSAP fails to load or the visitor prefers reduced motion, `landing.js` adds `html.motion-off` and the page is fully static (PNG rex, no pinning).
 - `window.rexHero` is the only contract between `landing.js` (writes `t`, the 0–1 scroll progress, and `excite`) and `hero-particles.js` (reads them, reports `rexhero:ready` / `rexhero:failed`). If the module never reports in, the PNG rex is shown.
 - Three.js resolves through the import map in `index.html`; the map's `integrity` block pins both module files.
+
+### Sub-page motion
+
+`css/motion.css` + `js/motion.js` (dependency-free) reveal `[data-reveal]` elements and the children of `[data-reveal-group]` as they scroll in; nothing is hidden unless JS confirms it can reveal it. Page extras:
+
+- `/typing/` — `typing/js/keyboard-hero.js` draws a QWERTY + 두벌식 keyboard in the landing hero and types sample sentences on it, decomposing Hangul syllables into the real jamo keystrokes so the right keys light up (real key presses light them too). It lives inside `.hero-section-typing`, so the game's show/hide logic still covers it.
+- `/deadlyBalloons/` — the balloon rain now varies in size and depth, and balloons pop when clicked (shards, ring, "+100", a counter in the card).
+- `/music/` — a CSS equaliser above the player. `/support/` — a pulsing "replies within a day or two" status.
 
 ## Shared chrome: navbar + status bar
 

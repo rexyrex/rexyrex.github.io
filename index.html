@@ -34,8 +34,10 @@
 <body class="landing">
     <div id="nav-placeholder"></div>
 
-    <!-- Fixed WebGL layer: the rex mascot as a point cloud. Purely decorative. -->
+    <!-- Fixed layers behind the page: soft aurora, the particle rex, the burst flash. Decorative. -->
+    <div class="aurora" id="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
     <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-flash" id="heroFlash" aria-hidden="true"></div>
 
     <main class="landing-main">
 
@@ -47,7 +49,7 @@
                     <button type="button" id="rexLogo" class="hero-logo" aria-label="Rex, the green dinosaur mascot"></button>
                 </div>
                 <div class="hero-copy">
-                    <p class="eyebrow hero-eyebrow" data-hero>rexyrex.github.io</p>
+                    <p class="eyebrow hero-eyebrow" id="heroEyebrow" data-hero>rexyrex.github.io</p>
                     <h1 class="hero-title" id="hero-title">Apps, games, and music,<br>built by one person.</h1>
                     <p class="hero-lede" data-hero>
                         Minhyung Kim, working as <strong>rexyrex</strong> from Korea. Flutter apps on the app stores,
@@ -66,69 +68,61 @@
             </div>
         </section>
 
-        <!-- 01 · Statement: lights up word by word as you scroll -->
-        <section class="statement" aria-label="About this site">
+        <!-- 01 · Statement: lights up word by word, then holds while the rex bursts -->
+        <section class="statement" id="statement" aria-label="About this site">
             <div class="wrap">
                 <p class="statement-text" id="statementText">Six apps on the stores. A typing game in two languages. A balloon-popping game in Java. A few tracks. Everything here is designed, built and maintained by one developer in Korea.</p>
             </div>
         </section>
 
-        <!-- 02 · /typing/ — the editor types the passage as you scroll -->
+        <!-- 02 · /typing/ — the editor types on its own while it is on screen -->
         <section class="chapter chapter-typing" id="typing" aria-labelledby="typing-title">
-            <div class="stage" id="typingStage">
-                <div class="wrap stage-grid">
-                    <div class="chapter-copy" data-reveal-group>
-                        <span class="eyebrow">/typing/</span>
-                        <h2 id="typing-title">Type faster, in Korean or English.</h2>
-                        <p>Four modes — 한타, 영타, a company mode and a developer mode — with daily and all-time leaderboards on Firebase. Keep scrolling and the editor types for you.</p>
-                        <div class="chapter-actions">
-                            <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
-                        </div>
+            <div class="wrap chapter-grid">
+                <div class="chapter-copy" data-reveal-group>
+                    <span class="eyebrow">/typing/</span>
+                    <h2 id="typing-title" data-lines>Type faster, in Korean or English.</h2>
+                    <p>Four modes — 한타, 영타, a company mode and a developer mode — with daily and all-time leaderboards on Firebase. The editor here is only warming up; the real thing keeps score.</p>
+                    <div class="chapter-actions">
+                        <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
                     </div>
-                    <div class="editor" id="typingEditor" aria-hidden="true">
-                        <div class="editor-bar">
-                            <span class="editor-tab is-active" data-tab="0"><b>한타</b><i>korean.txt</i></span>
-                            <span class="editor-tab" data-tab="1"><b>영타</b><i>english.txt</i></span>
-                            <span class="editor-tab" data-tab="2"><b>개발자</b><i>Main.java</i></span>
-                            <span class="editor-bar-spacer"></span>
-                            <span class="editor-bar-meta">UTF-8</span>
-                        </div>
-                        <pre class="editor-body" id="typingBody"><code><span class="editor-typed" id="typingTyped"></span><span class="editor-caret" id="typingCaret"></span><span class="editor-rest" id="typingRest">키스의 고유조건은 입술끼리 만나야 하고 특별한 기술은 필요치 않다.</span></code></pre>
-                        <div class="editor-status">
-                            <span>Ln <b id="typingLn">1</b>, Col <b id="typingCol">1</b></span>
-                            <span class="editor-status-spacer"></span>
-                            <span>점수 <b id="typingScore">0</b></span>
-                            <span>정확도 <b>100%</b></span>
-                            <span class="editor-status-mode" id="typingMode">한타</span>
-                        </div>
+                </div>
+                <div class="editor" id="typingEditor" data-reveal aria-hidden="true">
+                    <div class="editor-bar">
+                        <span class="editor-tab is-active" data-tab="0"><b>한타</b><i>korean.txt</i></span>
+                        <span class="editor-tab" data-tab="1"><b>영타</b><i>english.txt</i></span>
+                        <span class="editor-tab" data-tab="2"><b>개발자</b><i>Main.java</i></span>
+                        <span class="editor-bar-spacer"></span>
+                        <span class="editor-bar-meta">UTF-8</span>
+                    </div>
+                    <pre class="editor-body" id="typingBody"><code><span class="editor-typed" id="typingTyped"></span><span class="editor-caret" id="typingCaret"></span><span class="editor-rest" id="typingRest">가는 말이 고와야 오는 말이 곱다.</span></code></pre>
+                    <div class="editor-status">
+                        <span>Ln <b id="typingLn">1</b>, Col <b id="typingCol">1</b></span>
+                        <span class="editor-status-spacer"></span>
+                        <span>점수 <b id="typingScore">0</b></span>
+                        <span>정확도 <b>100%</b></span>
+                        <span class="editor-status-mode" id="typingMode">한타</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 03 · /deadlyBalloons/ — the game's own balloon art rises with parallax; one pops -->
+        <!-- 03 · /deadlyBalloons/ — a sky full of the game's balloon art; scripted pops, and you can pop the rest -->
         <section class="chapter chapter-balloons" id="balloons" aria-labelledby="balloons-title">
             <div class="stage stage-sky" id="balloonStage">
-                <div class="sky" aria-hidden="true">
-                    <div class="bl" data-depth="0.9" style="--x: 40%; --y: 95%; --w: 230px; --sd: -1s; --b: 4%"><span class="bl-sway"><img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
-                    <div class="bl" data-depth="0.5" style="--x: 20%; --y: 80%; --w: 140px; --sd: -3s; --b: 30%"><span class="bl-sway"><img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
-                    <div class="bl bl-hero" id="popBalloon" data-depth="1.15" style="--x: 5%; --y: 100%; --w: 300px; --sd: -2s; --b: 8%">
-                        <span class="bl-sway"><img src="/assets/img/balloon-green.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span>
-                        <i class="shard"></i><i class="shard"></i><i class="shard"></i><i class="shard"></i><i class="shard"></i>
-                        <i class="shard"></i><i class="shard"></i><i class="shard"></i><i class="shard"></i><i class="shard"></i>
-                    </div>
-                    <div class="bl" data-depth="0.35" style="--x: 66%; --y: 70%; --w: 110px; --sd: -4s; --b: 45%"><span class="bl-sway"><img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
-                    <div class="bl" data-depth="0.8" style="--x: 76%; --y: 100%; --w: 200px; --sd: -0.5s; --b: 6%"><span class="bl-sway"><img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
-                    <div class="bl" data-depth="0.45" style="--x: 88%; --y: 88%; --w: 130px; --sd: -2.5s; --b: 34%"><span class="bl-sway"><img src="/assets/img/balloon-green.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
-                    <div class="bl" data-depth="0.65" style="--x: 54%; --y: 110%; --w: 90px; --sd: -1.5s; --b: 55%"><span class="bl-sway"><img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
-                    <div class="bl" data-depth="1.0" style="--x: 0%; --y: 120%; --w: 120px; --sd: -3.5s; --b: 50%"><span class="bl-sway"><img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span></div>
+                <div class="sky" id="sky" aria-hidden="true">
+                    <!-- balloons are generated by /js/landing.js -->
                     <img class="sky-rex sky-rex-green" src="/assets/rexGreenSmall.png" alt="" width="256" height="256" loading="lazy" decoding="async">
                     <img class="sky-rex sky-rex-red" src="/assets/img/rexRedSmall.png" alt="" width="256" height="256" loading="lazy" decoding="async">
+                </div>
+                <div class="sky-hud" aria-hidden="true">
+                    <span>score <b id="skyScore">0</b></span>
+                    <span>popped <b id="skyPopped">0</b></span>
+                    <span class="sky-hud-hint">click a balloon</span>
                 </div>
                 <div class="wrap">
                     <div class="chapter-copy chapter-copy-glass" data-reveal-group>
                         <span class="eyebrow">/deadlyBalloons/</span>
-                        <h2 id="balloons-title">Pop everything. Don't get popped.</h2>
+                        <h2 id="balloons-title" data-lines>Pop everything. Don't get popped.</h2>
                         <p>Deadly Balloons 2 is a desktop game written in Java, for the hardcore balloon poppers. Watch the trailer, download it, or read the source.</p>
                         <div class="chapter-actions">
                             <a class="btn btn-primary" href="/deadlyBalloons/index.html">See the game <span class="arrow">→</span></a>
@@ -144,78 +138,150 @@
             <div class="stage stage-apps" id="appsStage">
                 <div class="wrap chapter-copy chapter-copy-wide" data-reveal-group>
                     <span class="eyebrow">/apps/</span>
-                    <h2 id="apps-title">Six apps on the stores.</h2>
+                    <h2 id="apps-title" data-lines>Six apps on the stores.</h2>
                     <p>Flutter apps, built and published solo. Every phone links to that app's privacy policy, which is also where the store listing points.</p>
                 </div>
                 <div class="apps-track" id="appsTrack">
+
                     <a class="phone" href="/apps/age_calculator/privacy-policy/" style="--tint: var(--tok-num)">
-                        <span class="phone-screen" aria-hidden="true">
-                            <span class="ui ui-age">
-                                <span class="ui-kicker">exact age</span>
-                                <span class="ui-big">31<small>y</small> 2<small>m</small> 9<small>d</small></span>
-                                <span class="ui-kicker">test-based age</span>
-                                <span class="ui-gauge"><span></span></span>
-                                <span class="ui-list"><span>reaction</span><span>memory</span><span>math</span><span>vision</span><span>hearing</span></span>
+                        <span class="phone-frame" aria-hidden="true">
+                            <span class="phone-screen">
+                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
+                                <span class="ui-appbar"><b>Age Calculator</b><i class="ui-icon">⚙</i></span>
+                                <span class="ui-card ui-card-hero">
+                                    <span class="ui-kicker">your age</span>
+                                    <span class="ui-big">31<small>y</small> 2<small>m</small> 9<small>d</small></span>
+                                    <span class="ui-row-stats"><span><b>11,392</b> days</span><span><b>273,408</b> hours</span></span>
+                                    <span class="ui-bar ui-bar-wide"><span style="--p: 19%"></span></span>
+                                    <span class="ui-fine">next birthday in 297 days</span>
+                                </span>
+                                <span class="ui-card">
+                                    <span class="ui-card-head"><span class="ui-kicker">test-based age</span><b class="ui-badge">27</b></span>
+                                    <span class="ui-test"><i>reaction</i><span class="ui-bar"><span style="--p: 82%"></span></span><b>212 ms</b></span>
+                                    <span class="ui-test"><i>memory</i><span class="ui-bar"><span style="--p: 70%"></span></span><b>7 digits</b></span>
+                                    <span class="ui-test"><i>math</i><span class="ui-bar"><span style="--p: 92%"></span></span><b>92%</b></span>
+                                    <span class="ui-test"><i>vision</i><span class="ui-bar"><span style="--p: 88%"></span></span><b>20/20</b></span>
+                                    <span class="ui-test"><i>hearing</i><span class="ui-bar"><span style="--p: 64%"></span></span><b>16 kHz</b></span>
+                                </span>
+                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
                             </span>
+                            <span class="phone-glare"></span>
                         </span>
                         <span class="phone-label"><b>Age Calculator</b><i>age_calculator</i></span>
                     </a>
+
                     <a class="phone" href="/apps/qr_scanner/privacy-policy/" style="--tint: var(--accent)">
-                        <span class="phone-screen" aria-hidden="true">
-                            <span class="ui ui-qr">
-                                <span class="qr-wrap"><span class="qr" id="qrGrid"></span><span class="qr-scan"></span></span>
-                                <span class="ui-kicker">scanning…</span>
-                                <span class="ui-list"><span>history</span><span>generate</span><span>export</span></span>
+                        <span class="phone-frame" aria-hidden="true">
+                            <span class="phone-screen">
+                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
+                                <span class="ui-appbar"><b>QR Scanner</b><i class="ui-icon">⚡</i></span>
+                                <span class="qr-cam">
+                                    <span class="qr-frame"><i></i><i></i><i></i><i></i></span>
+                                    <span class="qr" id="qrGrid"></span>
+                                    <span class="qr-scan"></span>
+                                </span>
+                                <span class="ui-sheet">
+                                    <span class="ui-sheet-row"><i class="ui-dot"></i><span class="ui-sheet-text"><b>rexyrex.github.io</b><i>URL · just now</i></span></span>
+                                    <span class="ui-chips"><span class="on">open</span><span>copy</span><span>share</span></span>
+                                </span>
+                                <span class="ui-kicker">history</span>
+                                <span class="ui-rows">
+                                    <span><i class="ui-tag">wifi</i>Home network<b>2h</b></span>
+                                    <span><i class="ui-tag">text</i>Table 12 · order<b>1d</b></span>
+                                    <span><i class="ui-tag">url</i>github.com/rexyrex<b>3d</b></span>
+                                </span>
+                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
                             </span>
+                            <span class="phone-glare"></span>
                         </span>
                         <span class="phone-label"><b>QR Scanner</b><i>qr_scanner</i></span>
                     </a>
+
                     <a class="phone" href="/apps/reverse_image_search/privacy-policy/" style="--tint: var(--tok-kw)">
-                        <span class="phone-screen" aria-hidden="true">
-                            <span class="ui ui-ris">
-                                <span class="ris-photo"><span class="ris-lens"></span></span>
-                                <span class="ui-kicker">results</span>
-                                <span class="ris-results"><i style="--i: 0"></i><i style="--i: 1"></i><i style="--i: 2"></i><i style="--i: 3"></i><i style="--i: 4"></i><i style="--i: 5"></i></span>
+                        <span class="phone-frame" aria-hidden="true">
+                            <span class="phone-screen">
+                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
+                                <span class="ui-appbar"><b>Reverse Image Search</b><i class="ui-icon">⌕</i></span>
+                                <span class="ris-photo"><i class="ris-sun"></i><i class="ris-mtn ris-mtn-1"></i><i class="ris-mtn ris-mtn-2"></i><i class="ris-crop"></i></span>
+                                <span class="ui-kicker">search on</span>
+                                <span class="ui-chips ui-chips-engines"><span class="on">Google</span><span>Bing</span><span>Yandex</span><span>TinEye</span></span>
+                                <span class="ui-card-head"><span class="ui-kicker">similar images</span><b class="ui-fine">12 matches</b></span>
+                                <span class="ris-results"><i style="--i: 0; --hue: 205"></i><i style="--i: 1; --hue: 32"></i><i style="--i: 2; --hue: 150"></i><i style="--i: 3; --hue: 275"></i><i style="--i: 4; --hue: 12"></i><i style="--i: 5; --hue: 190"></i></span>
+                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
                             </span>
+                            <span class="phone-glare"></span>
                         </span>
                         <span class="phone-label"><b>Reverse Image Search</b><i>reverse_image_search</i></span>
                     </a>
+
                     <a class="phone" href="/apps/deadly_balloons/privacy-policy/" style="--tint: var(--danger)">
-                        <span class="phone-screen" aria-hidden="true">
-                            <span class="ui ui-db">
-                                <span class="db-score"><span>score <b>1,240</b></span><span>♥♥♥</span></span>
+                        <span class="phone-frame" aria-hidden="true">
+                            <span class="phone-screen ui-db">
+                                <span class="ui-status ui-status-dark"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
+                                <span class="db-hud"><span>score <b>01240</b></span><span>wave <b>3</b></span><span class="db-lives">♥♥♥</span></span>
                                 <span class="db-sky">
-                                    <img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 8%; --y: 6%; --sd: -0.4s">
-                                    <img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 55%; --y: 22%; --sd: -1.6s">
-                                    <img src="/assets/img/balloon-green.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 30%; --y: 44%; --sd: -2.4s">
-                                    <span class="db-shot"></span>
+                                    <img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 6%; --y: 4%; --s: 0.9; --sd: -0.4s">
+                                    <img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 58%; --y: 14%; --s: 1.1; --sd: -1.6s">
+                                    <img src="/assets/img/balloon-green.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 30%; --y: 30%; --s: 1; --sd: -2.4s">
+                                    <img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 70%; --y: 42%; --s: 0.7; --sd: -0.9s">
+                                    <span class="db-popper" style="--x: 14%; --y: 50%; --s: 0.85; --sd: -3s"><img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span>
+                                    <i class="db-burst"></i>
+                                    <b class="db-plus">+100</b>
+                                    <i class="db-shot" style="--d: 0s"></i><i class="db-shot" style="--d: -0.4s"></i><i class="db-shot" style="--d: -0.8s"></i>
                                     <img class="db-rex" src="/assets/rexGreenSmall.png" alt="" width="256" height="256" loading="lazy" decoding="async">
                                 </span>
+                                <span class="db-bar"><span>❚❚ pause</span><span>top 10</span></span>
                             </span>
+                            <span class="phone-glare"></span>
                         </span>
                         <span class="phone-label"><b>Deadly Balloons</b><i>deadly_balloons</i></span>
                     </a>
+
                     <a class="phone" href="/apps/kakaoparser/privacy-policy/" style="--tint: var(--tok-str)">
-                        <span class="phone-screen" aria-hidden="true">
-                            <span class="ui ui-kp">
-                                <span class="chat"><i>오늘 뭐해?</i><i class="me">코딩 ㅋㅋ</i><i>또?? 진짜 ㅋㅋㅋ</i></span>
-                                <span class="ui-kicker">top words</span>
-                                <span class="bars"><i style="--h: 92%"></i><i style="--h: 64%"></i><i style="--h: 48%"></i><i style="--h: 36%"></i><i style="--h: 22%"></i></span>
-                                <span class="bars-labels"><i>ㅋㅋ</i><i>진짜</i><i>오늘</i><i>ㅇㅇ</i><i>내일</i></span>
+                        <span class="phone-frame" aria-hidden="true">
+                            <span class="phone-screen">
+                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
+                                <span class="ui-appbar"><b>대화 분석기</b><i class="ui-icon">≡</i></span>
+                                <span class="kp-summary"><span><b>12,480</b><i>메시지</i></span><span><b>2</b><i>참여자</i></span><span><b>1y 3m</b><i>기간</i></span></span>
+                                <span class="chat">
+                                    <i class="them">오늘 뭐해?<em>21:02</em></i>
+                                    <i class="me">코딩 ㅋㅋ<em>21:03</em></i>
+                                    <i class="them">또?? 진짜 ㅋㅋㅋ<em>21:03</em></i>
+                                </span>
+                                <span class="ui-card-head"><span class="ui-kicker">월별 대화량</span><b class="ui-fine">↑ 12%</b></span>
+                                <svg class="kp-spark" viewBox="0 0 100 32" preserveAspectRatio="none"><path class="kp-area" d="M0,26 L10,22 L20,24 L30,15 L40,18 L50,9 L60,12 L70,6 L80,10 L90,4 L100,7 L100,32 L0,32 Z"/><polyline class="kp-line" points="0,26 10,22 20,24 30,15 40,18 50,9 60,12 70,6 80,10 90,4 100,7"/></svg>
+                                <span class="ui-kicker">signature words</span>
+                                <span class="ui-chips"><span class="on">ㅋㅋㅋ</span><span>진짜</span><span>오늘</span><span>내일</span><span>ㅇㅇ</span></span>
+                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
                             </span>
+                            <span class="phone-glare"></span>
                         </span>
                         <span class="phone-label"><b>카카오톡 대화 분석기</b><i>kakaoparser</i></span>
                     </a>
+
                     <a class="phone" href="/apps/kakao_love_analyzer/privacy-policy/" style="--tint: #f08aa8">
-                        <span class="phone-screen" aria-hidden="true">
-                            <span class="ui ui-love">
-                                <span class="ui-big">나 <em>♥</em> 너</span>
-                                <span class="love-ring" style="--p: 87"><b>87%</b></span>
-                                <span class="love-rows"><span>답장 속도<b>빠름</b></span><span>먼저 연락<b>58%</b></span><span>이모티콘<b>많음</b></span></span>
+                        <span class="phone-frame" aria-hidden="true">
+                            <span class="phone-screen">
+                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
+                                <span class="ui-appbar"><b>연애 분석기</b><i class="ui-icon">♥</i></span>
+                                <span class="love-pair"><i class="love-avatar">나</i><b>♥</b><i class="love-avatar love-avatar-2">너</i></span>
+                                <span class="love-ring-wrap">
+                                    <svg class="love-ring" viewBox="0 0 100 100"><circle class="love-track" cx="50" cy="50" r="42"/><circle class="love-fill" cx="50" cy="50" r="42" style="--p: 87"/></svg>
+                                    <span class="love-ring-label"><b>87%</b><i>궁합 A+</i></span>
+                                </span>
+                                <span class="love-rows">
+                                    <span><i>답장 속도</i><span class="ui-bar"><span style="--p: 90%"></span></span><b>빠름</b></span>
+                                    <span><i>먼저 연락</i><span class="ui-bar"><span style="--p: 58%"></span></span><b>58%</b></span>
+                                    <span><i>이모티콘</i><span class="ui-bar"><span style="--p: 76%"></span></span><b>많음</b></span>
+                                    <span><i>하트</i><span class="ui-bar"><span style="--p: 84%"></span></span><b>142</b></span>
+                                </span>
+                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
                             </span>
+                            <span class="phone-glare"></span>
                         </span>
                         <span class="phone-label"><b>카톡 연애 분석기</b><i>kakao_love_analyzer</i></span>
                     </a>
+
                 </div>
             </div>
         </section>
@@ -225,13 +291,13 @@
             <div class="wrap music-grid">
                 <div class="chapter-copy" data-reveal-group>
                     <span class="eyebrow">/music/</span>
-                    <h2 id="music-title">And a few tracks.</h2>
-                    <p>SuperPose streams from SoundCloud. The rest of the audio is on SoundCloud and Newgrounds.</p>
+                    <h2 id="music-title" data-lines>And a few tracks.</h2>
+                    <p>SuperPose streams from SoundCloud. The rest of the audio is on SoundCloud and Newgrounds. Run your pointer across the bars.</p>
                     <div class="chapter-actions">
                         <a class="btn btn-ghost" href="/music/showcase.html">Listen on /music/ <span class="arrow">→</span></a>
                     </div>
                 </div>
-                <div class="wave" id="wave" aria-hidden="true">
+                <div class="wave" id="wave" data-reveal aria-hidden="true">
                     <div class="wave-bars" id="waveBars"></div>
                     <div class="wave-meta"><span class="wave-title">SuperPose</span><span class="tag">SoundCloud</span></div>
                 </div>
@@ -315,26 +381,14 @@
                 <h2>Contact</h2>
             </div>
             <div data-reveal-group>
-                <a class="contact-email" href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a>
+                <a class="contact-email" href="mailto:rexyrex.dev@gmail.com" data-chars>rexyrex.dev@gmail.com</a>
                 <p class="muted" style="max-width: 58ch;">For app support, include the app name, your device model and the app version. I usually reply within a day or two.</p>
-                <div class="contact-grid">
-                    <dl class="facts">
-                        <div><dt>handle</dt><dd>rexyrex</dd></div>
-                        <div><dt>name</dt><dd>김민형 · Minhyung Kim</dd></div>
-                        <div><dt>base</dt><dd>Korea</dd></div>
-                        <div><dt>mail</dt><dd><a href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a></dd></div>
-                    </dl>
-                    <p class="stack">
-                        <span class="stack-label">stack</span>
-                        <span>Flutter</span><span class="faint">·</span>
-                        <span>Dart</span><span class="faint">·</span>
-                        <span>Java</span><span class="faint">·</span>
-                        <span>Android</span><span class="faint">·</span>
-                        <span>JavaScript</span><span class="faint">·</span>
-                        <span>Vue</span><span class="faint">·</span>
-                        <span>Firebase</span>
-                    </p>
-                </div>
+                <dl class="facts contact-facts">
+                    <div><dt>handle</dt><dd>rexyrex</dd></div>
+                    <div><dt>name</dt><dd>김민형 · Minhyung Kim</dd></div>
+                    <div><dt>base</dt><dd>Korea</dd></div>
+                    <div><dt>mail</dt><dd><a href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a></dd></div>
+                </dl>
             </div>
         </section>
     </main>

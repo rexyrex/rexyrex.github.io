@@ -2,18 +2,19 @@
    Samples the opaque pixels (and their colours) of /assets/rexGreenSmall.png
    and renders them as ~7k points with Three.js on the fixed #heroCanvas.
 
-   Timeline, driven by window.rexHero.t (0..1, written by /js/landing.js):
-     load          scattered cloud  →  assembles into the rex
-     t 0.00–0.50   the rex holds its spot, turns, drifts to the screen centre
-     t 0.50–0.85   collapses into a single dot ("…by one developer")
-     t 0.85–1.00   bursts outward and fades; rendering pauses at 1
+   Timeline, driven by window.rexHero (written by /js/landing.js):
+     load            scattered cloud  →  assembles into the rex
+     t 0.00–0.60     the rex holds its spot, turns, drifts to the screen centre
+     t 0.60–1.00     collapses into a single dot ("…by one developer")
+     burst 0.00–1.00 (the statement is pinned) charges, then bursts outward
+                     with a swirl and fades; rendering pauses at 1
 
    `three` resolves through the import map in index.html. Reports back
    with the rexhero:ready / rexhero:failed events so the page can show
    the plain PNG when WebGL or the CDN is unavailable. */
 import * as THREE from 'three';
 
-const state = window.rexHero || (window.rexHero = { t: 0, excite: 0, ready: false, failed: false });
+const state = window.rexHero || (window.rexHero = { t: 0, burst: 0, excite: 0, ready: false, failed: false });
 const canvas = document.getElementById('heroCanvas');
 const visual = document.getElementById('heroVisual');
 const root = document.documentElement;
@@ -267,10 +268,10 @@ async function boot() {
             shapes.dot[i3 + 1] = dirs[i3 + 1] * rd;
             shapes.dot[i3 + 2] = dirs[i3 + 2] * rd;
 
-            const rb = S * 1.6 + rad2[k] * S * 2.6;
+            const rb = S * 1.8 + rad2[k] * S * 3.4;
             shapes.burst[i3] = dirs[i3] * rb;
             shapes.burst[i3 + 1] = dirs[i3 + 1] * rb;
-            shapes.burst[i3 + 2] = dirs[i3 + 2] * rb * 0.6;
+            shapes.burst[i3 + 2] = dirs[i3 + 2] * rb * 1.5;
         }
     }
 
@@ -334,6 +335,7 @@ async function boot() {
     let introStart = -1;
     let introDone = false;
     let ts = clamp(state.t, 0, 1);
+    let bs = clamp(state.burst || 0, 0, 1);
     let excite = 0;
     let running = false;
 
@@ -341,9 +343,12 @@ async function boot() {
         const now = performance.now();
         const time = (now - t0) / 1000;
         const target = clamp(state.t, 0, 1);
+        const burstTarget = clamp(state.burst || 0, 0, 1);
 
         ts += (target - ts) * 0.14;
         if (Math.abs(target - ts) < 0.0005) ts = target;
+        bs += (burstTarget - bs) * 0.14;
+        if (Math.abs(burstTarget - bs) < 0.0005) bs = burstTarget;
         excite += (state.excite - excite) * 0.2;
         pointer.x += (pointer.tx - pointer.x) * 0.06;
         pointer.y += (pointer.ty - pointer.y) * 0.06;
@@ -352,8 +357,24 @@ async function boot() {
         let opacity = 1;
         let size = baseSize;
         let drift = 1.2;
+        let swirl = 40;
+        let extraSpin = 0;
+        let extraScale = 0;
 
-        if (ts < 0.5) {
+        if (bs > 0.0005) {
+            // The statement is pinned: the dot charges up, then blows apart.
+            introDone = true;
+            setSegment('burst');
+            const charge = smoothstep(0, 0.12, bs);
+            const fly = smoothstep(0.1, 1, bs);
+            mix = fly;
+            opacity = 1 - smoothstep(0.62, 1, bs);
+            size = baseSize * (3.2 + charge * 2.4 - fly * 3.2);
+            drift = 0;
+            swirl = 40 + fly * 110;
+            extraSpin = fly * 1.8;
+            extraScale = fly * 0.9;
+        } else if (ts < 0.6) {
             setSegment('rex');
             if (!introDone) {
                 if (introStart < 0) introStart = now;
@@ -363,25 +384,19 @@ async function boot() {
             } else {
                 mix = 1;
             }
-        } else if (ts < 0.85) {
-            introDone = true;
-            setSegment('collapse');
-            mix = (ts - 0.5) / 0.35;
-            size = baseSize * (1 + mix * 2.2);
-            drift = 1.2 * (1 - mix);
         } else {
             introDone = true;
-            setSegment('burst');
-            mix = (ts - 0.85) / 0.15;
-            opacity = 1 - easeInQuad(mix);
-            size = baseSize * (3.2 - mix * 2.4);
-            drift = 0;
+            setSegment('collapse');
+            mix = (ts - 0.6) / 0.4;
+            size = baseSize * (1 + mix * 2.2);
+            drift = 1.2 * (1 - mix);
         }
 
         uniforms.uMix.value = mix;
         uniforms.uOpacity.value = opacity;
         uniforms.uSize.value = size;
         uniforms.uDrift.value = drift;
+        uniforms.uSwirl.value = swirl;
         uniforms.uTime.value = time;
         uniforms.uExcite.value = excite;
 
@@ -389,9 +404,9 @@ async function boot() {
         const k = smoothstep(0, 0.5, ts);
         group.position.lerpVectors(home, centre, k);
         group.position.y += Math.sin(time * 0.9) * 4 * (1 - k);
-        group.scale.setScalar(1 + 0.15 * k);
-        group.rotation.y = pointer.x * 0.35 + Math.sin(time * 0.35) * 0.06 + ts * 1.3;
-        group.rotation.x = -pointer.y * 0.22 + Math.sin(time * 0.27) * 0.04;
+        group.scale.setScalar(1 + 0.15 * k + extraScale);
+        group.rotation.y = pointer.x * 0.35 + Math.sin(time * 0.35) * 0.06 + ts * 1.3 + extraSpin;
+        group.rotation.x = -pointer.y * 0.22 + Math.sin(time * 0.27) * 0.04 + extraSpin * 0.25;
 
         renderer.render(scene, camera);
 
@@ -400,7 +415,7 @@ async function boot() {
             state.failed = false;
             document.dispatchEvent(new CustomEvent('rexhero:ready'));
         }
-        if (ts >= 1 && target >= 1) stop();
+        if (bs >= 1 && burstTarget >= 1) stop();
     }
 
     function start() {
@@ -415,13 +430,15 @@ async function boot() {
         renderer.setAnimationLoop(null);
     }
 
+    const offScreen = () => (state.burst || 0) >= 1;
+
     window.addEventListener('scroll', () => {
-        if (!running && !document.hidden && state.t < 1) start();
+        if (!running && !document.hidden && !offScreen()) start();
     }, { passive: true });
 
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) stop();
-        else if (state.t < 1) start();
+        else if (!offScreen()) start();
     });
 
     let resizeTimer = null;

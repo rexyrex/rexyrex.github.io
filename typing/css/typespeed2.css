@@ -1177,3 +1177,262 @@ body.modal-open .game-section {
     padding: 1rem;
   }
 }
+
+
+/* ---------- Landing hero: keyboard demo ------------------------ */
+/* Added 2026-09. The hero gets a dotted backdrop, a key-cap avatar,
+   a self-typing sentence and a two-layout keyboard whose keys light up
+   (see js/keyboard-hero.js). Everything sits inside .hero-section-typing
+   so the game's show/hide logic still covers it. */
+
+.hero-section-typing {
+  position: relative;
+  padding: clamp(0.5rem, 2vw, 1.5rem) 0 0.25rem;
+}
+
+.hero-section-typing::before {
+  content: "";
+  position: absolute;
+  inset: -2rem -3rem 0;
+  background-image: radial-gradient(var(--line-strong) 1px, transparent 1.6px);
+  background-size: 22px 22px;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(ellipse 60% 75% at 50% 35%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse 60% 75% at 50% 35%, #000 15%, transparent 72%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.avatar-inner {
+  border-radius: 12px;
+  box-shadow: 0 3px 0 var(--line-strong);
+  animation: keyGlow 2.8s ease-in-out infinite;
+}
+
+@keyframes keyGlow {
+  0%, 100% { box-shadow: 0 3px 0 var(--line-strong), 0 0 0 0 var(--accent-soft); }
+  50% { box-shadow: 0 3px 0 var(--line-strong), 0 0 0 9px var(--accent-soft); }
+}
+
+.hero-title-typing {
+  font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem);
+  letter-spacing: -0.04em;
+}
+
+.hero-demo {
+  max-width: 760px;
+  margin: 1.75rem auto 0;
+  text-align: left;
+  animation: reveal 0.6s var(--ease) 0.25s both;
+}
+
+.demo-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  font-family: var(--font-mono);
+  font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.15rem);
+}
+
+.demo-mode {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  color: var(--accent);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.15em 0.45em;
+}
+
+.demo-text {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.demo-typed {
+  color: var(--fg);
+}
+
+.demo-rest {
+  color: var(--fg-faint);
+}
+
+.demo-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin: 0 1px;
+  vertical-align: -0.15em;
+  background: var(--accent);
+  animation: demoCaret 1s steps(2, start) infinite;
+}
+
+@keyframes demoCaret {
+  50% { opacity: 0; }
+}
+
+.demo-stat {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+
+.demo-stat b {
+  color: var(--fg);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.kbd {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  background: linear-gradient(180deg, var(--bg-raised), var(--bg-inset));
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.kbd-row {
+  display: flex;
+  gap: 5px;
+}
+
+.key {
+  --w: 1;
+  flex: var(--w) 1 0;
+  min-width: 0;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 0 var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--fg-muted);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.08s ease, background-color 0.14s ease, box-shadow 0.08s ease, color 0.14s ease, border-color 0.14s ease;
+}
+
+.key b {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.key i {
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  color: var(--fg-faint);
+  margin-top: 2px;
+}
+
+.key-wide {
+  font-size: 0.62rem;
+}
+
+.key.down {
+  transform: translateY(2px);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 0 0 0 var(--line-strong), 0 0 16px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.key.down i {
+  color: var(--accent-ink);
+  opacity: 0.85;
+}
+
+/* Start button: idle ring, shine on hover */
+.mega-start-btn {
+  margin-top: 1.5rem;
+}
+
+.mega-start-btn::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  animation: startRing 2.6s ease-out infinite;
+}
+
+@keyframes startRing {
+  0% { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(1.1); opacity: 0; }
+}
+
+.mega-btn-bg {
+  display: block;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mega-btn-bg::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -60%;
+  width: 35%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.7s var(--ease);
+}
+
+.mega-start-btn:hover .mega-btn-bg::before {
+  left: 125%;
+}
+
+@media (max-width: 600px) {
+  .key {
+    height: 30px;
+    font-size: 0.58rem;
+  }
+
+  .key i {
+    display: none;
+  }
+
+  .kbd {
+    padding: 6px;
+    gap: 4px;
+  }
+
+  .kbd-row {
+    gap: 3px;
+  }
+
+  .demo-line {
+    padding: 0.6rem 0.75rem;
+    gap: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-inner,
+  .mega-start-btn::after,
+  .demo-caret,
+  .hero-demo {
+    animation: none;
+  }
+}

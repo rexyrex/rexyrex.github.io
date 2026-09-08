@@ -13,19 +13,20 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/motion.css">
     <link rel="stylesheet" href="help.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
 
     <main class="wrap">
-        <header class="page-head">
+        <header class="page-head" data-reveal-group>
             <p class="eyebrow">/parser/</p>
             <h1>KakaoParser</h1>
             <p class="lede">Companion pages for the KakaoTalk chat analyzer: admin tools, and the help documents the Android app links to.</p>
         </header>
 
-        <div class="article">
+        <div class="article" data-reveal-group>
             <h2>Tools</h2>
             <ul class="help-links">
                 <li><a href="parserQuery.html"><span>Query<span class="desc">Look up a user by UUID in Firestore.</span></span><span class="path">parserQuery.html</span></a></li>
@@ -47,5 +48,6 @@
     </main>
 
     <script src="/js/common.js"></script>
+    <script src="/js/motion.js"></script>
 </body>
 </html>

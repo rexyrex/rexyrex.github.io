@@ -1,0 +1,23 @@
+/* ============================================================
+   Shared scroll reveals for the hand-written sub-pages.
+   Pair with /js/motion.js. Elements marked data-reveal (or the
+   children of data-reveal-group) rise in once they scroll into view.
+   Nothing here hides content unless JS has confirmed it can reveal
+   it (html.motion-ready), and reduced motion turns it all off.
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.motion-ready [data-reveal],
+  html.motion-ready [data-reveal-group] > * {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.75s var(--ease, ease), transform 0.75s var(--ease, ease);
+    transition-delay: var(--rd, 0ms);
+  }
+
+  html.motion-ready [data-reveal].is-in,
+  html.motion-ready [data-reveal-group].is-in > * {
+    opacity: 1;
+    transform: none;
+  }
+}

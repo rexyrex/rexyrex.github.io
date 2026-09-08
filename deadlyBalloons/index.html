@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/motion.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,7 +22,7 @@
     <div id="balloon-area" aria-hidden="true"></div>
 
     <main class="wrap game-main">
-        <article class="card game-card">
+        <article class="card game-card" data-reveal-group>
             <p class="eyebrow">/deadlyBalloons/</p>
             <h1>Deadly Balloons 2</h1>
             <p class="lede">A game for only the hardcore balloon poppers. Desktop, written in Java.</p>
@@ -43,17 +44,20 @@
             <dl class="facts game-facts">
                 <div><dt>file</dt><dd>DeadlyBalloons2.rar · 21 MB</dd></div>
                 <div><dt>built</dt><dd>Java</dd></div>
+                <div><dt>popped</dt><dd><b id="popCount">0</b> <span class="faint">· click the balloons floating past</span></dd></div>
                 <div><dt>mobile</dt><dd>A separate mobile version exists. <a href="/apps/deadly_balloons/privacy-policy/">Its privacy policy</a> is under /apps/.</dd></div>
             </dl>
         </article>
     </main>
 
     <script src="/js/common.js"></script>
+    <script src="/js/motion.js"></script>
 
     <script>
     // Balloon rain: persistent <img> elements moved with transforms in a
     // single requestAnimationFrame loop (velocities are scaled by frame delta
-    // to match the original 30ms tick speed). Respects reduced motion.
+    // to match the original 30ms tick speed). Balloons vary in size and depth
+    // and pop when clicked. Respects reduced motion.
     document.addEventListener('DOMContentLoaded', function() {
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -63,6 +67,7 @@
         const balloon_image_count = 3;
         const speed_factor = 1;
         const BASE_TICK_MS = 30;
+        const SHARD = ['#2456c4', '#c11c1c', '#22a52d'];
 
         let max_y = window.innerHeight + image_height;
         let max_x = window.innerWidth - image_width;
@@ -74,6 +79,8 @@
 
         const balloonArea = document.getElementById('balloon-area');
         if (!balloonArea) return;
+        const countEl = document.getElementById('popCount');
+        let popped = 0;
 
         function randomType(threshold) {
             if (Math.random() > threshold) return 'rexGreen';
@@ -90,6 +97,8 @@
         function spawnState(balloon, init) {
             balloon.type = randomType(init ? 0.9 : 0.87);
             balloon.c = Math.floor(Math.random() * balloon_image_count);
+            balloon.s = 0.5 + Math.random() * 0.65;
+            balloon.popping = false;
             if (init) {
                 balloon.y = Math.floor(Math.random() * max_y);
                 balloon.x = Math.floor(Math.random() * max_x);
@@ -104,17 +113,74 @@
                 balloon.ya = Math.random() * 4 - 2;
             }
             balloon.el.src = srcFor(balloon.type, balloon.c);
+            balloon.el.className = balloon.type === 'balloon' ? 'is-balloon' : 'is-rex';
+            balloon.el.style.zIndex = String(Math.round(balloon.s * 10));
+        }
+
+        // Pop pieces are dropped into the fixed area at viewport coordinates.
+        function burst(cx, cy, color) {
+            const frag = document.createDocumentFragment();
+            const ring = document.createElement('i');
+            ring.className = 'db-pop-ring';
+            ring.style.left = cx + 'px';
+            ring.style.top = cy + 'px';
+            frag.appendChild(ring);
+            for (let i = 0; i < 9; i++) {
+                const shard = document.createElement('i');
+                const a = (i / 9) * Math.PI * 2 + Math.random() * 0.5;
+                const d = 80 + Math.random() * 90;
+                shard.className = 'db-pop-shard';
+                shard.style.left = cx + 'px';
+                shard.style.top = cy + 'px';
+                shard.style.setProperty('--dx', Math.cos(a) * d + 'px');
+                shard.style.setProperty('--dy', Math.sin(a) * d - 30 + 'px');
+                shard.style.setProperty('--rot', Math.round(Math.random() * 360) + 'deg');
+                shard.style.setProperty('--c', color);
+                frag.appendChild(shard);
+            }
+            const score = document.createElement('b');
+            score.className = 'db-pop-score';
+            score.textContent = '+100';
+            score.style.left = cx + 'px';
+            score.style.top = cy + 'px';
+            frag.appendChild(score);
+            balloonArea.appendChild(frag);
+            setTimeout(function() {
+                balloonArea.querySelectorAll('.db-pop-ring, .db-pop-shard, .db-pop-score').forEach(function(el) {
+                    if (el.parentNode && !el.dataset.keep) el.remove();
+                });
+            }, 900);
+        }
+
+        function pop(balloon, cx, cy) {
+            if (balloon.type !== 'balloon' || balloon.popping) return;
+            balloon.popping = true;
+            balloon.s *= 1.25;
+            balloon.el.classList.add('popping');
+            burst(cx, cy, SHARD[balloon.c]);
+            popped++;
+            if (countEl) countEl.textContent = String(popped);
+            setTimeout(function() { spawnState(balloon, false); }, 220);
         }
 
         const balloons = [];
         for (let i = 0; i < total_size; i++) {
             const el = document.createElement('img');
             el.alt = '';
+            el.draggable = false;
             const balloon = { el: el };
+            el._balloon = balloon;
             spawnState(balloon, true);
             balloonArea.appendChild(el);
             balloons.push(balloon);
         }
+
+        balloonArea.addEventListener('pointerdown', function(e) {
+            const el = e.target && e.target.closest ? e.target.closest('img.is-balloon') : null;
+            if (!el || !el._balloon) return;
+            e.preventDefault();
+            pop(el._balloon, e.clientX, e.clientY);
+        });
 
         let lastTime = null;
         let rafId = null;
@@ -130,7 +196,7 @@
                 b.ya += (3 * Math.random() * speed_factor - 1 * speed_factor) * f;
                 b.xa += (2 * Math.random() * speed_factor - 1 * speed_factor) * f;
 
-                b.y += b.ya * f;
+                b.y += b.ya * f * (0.6 + b.s * 0.5);
                 b.x += b.xa * f;
                 b.r += (3 * Math.random() - 1) * f;
 
@@ -140,7 +206,7 @@
                 }
 
                 // bottom-anchored: positive y moves the balloon up the screen
-                b.el.style.transform = 'translate3d(' + b.x + 'px, ' + (-b.y) + 'px, 0) rotate(' + b.r + 'deg)';
+                b.el.style.transform = 'translate3d(' + b.x + 'px, ' + (-b.y) + 'px, 0) rotate(' + b.r + 'deg) scale(' + b.s.toFixed(3) + ')';
             }
 
             rafId = requestAnimationFrame(step);

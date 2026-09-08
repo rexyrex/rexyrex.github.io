@@ -101,3 +101,93 @@
         height: 180px;
     }
 }
+
+
+/* ---------- Click-to-pop (2026-09) ----------------------------- */
+
+#balloon-area img.is-balloon {
+    pointer-events: auto;
+    cursor: crosshair;
+    transition: opacity 0.2s ease;
+}
+
+#balloon-area img.is-balloon:hover {
+    opacity: 0.95;
+}
+
+#balloon-area img.popping {
+    pointer-events: none;
+    animation: balloonPop 0.22s ease-out forwards;
+}
+
+@keyframes balloonPop {
+    0% { opacity: 0.8; filter: brightness(1); }
+    45% { opacity: 1; filter: brightness(1.6); }
+    100% { opacity: 0; filter: brightness(2.2); }
+}
+
+.db-pop-ring,
+.db-pop-shard,
+.db-pop-score {
+    position: absolute;
+    pointer-events: none;
+    z-index: 30;
+}
+
+.db-pop-ring {
+    width: 120px;
+    height: 120px;
+    margin: -60px 0 0 -60px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 26px rgba(255, 255, 255, 0.45), inset 0 0 18px rgba(255, 255, 255, 0.35);
+    animation: ringPop 0.45s ease-out forwards;
+}
+
+@keyframes ringPop {
+    from { transform: scale(0.3); opacity: 1; }
+    to { transform: scale(1.7); opacity: 0; }
+}
+
+.db-pop-shard {
+    width: 16px;
+    height: 9px;
+    border-radius: 45%;
+    background: var(--c, #22a52d);
+    animation: shardFly 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+@keyframes shardFly {
+    0% { transform: translate(-50%, -50%) scale(0.6); opacity: 1; }
+    55% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)) scale(1.1); opacity: 1; }
+    100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 140px)) rotate(var(--rot)) scale(0.9); opacity: 0; }
+}
+
+.db-pop-score {
+    transform: translate(-50%, -50%);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+    animation: scoreFloat 0.85s ease-out forwards;
+}
+
+@keyframes scoreFloat {
+    to { transform: translate(-50%, -170%); opacity: 0; }
+}
+
+.game-facts b {
+    color: var(--accent);
+    font-weight: 500;
+}
+
+/* Interactive rain is the point of this page: the card should not
+   swallow pointer events outside its own box. */
+.game-main {
+    pointer-events: none;
+}
+
+.game-card {
+    pointer-events: auto;
+}
