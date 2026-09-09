@@ -1,0 +1,12 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+  html, body { margin: 0; overflow: hidden; }
+  body { width: 512px; height: 512px; background: #0f1214; position: relative; }
+  .glow { position: absolute; inset: 0; background: radial-gradient(circle at 50% 40%, rgba(143,208,105,.28), transparent 62%); }
+  img { position: absolute; left: 50%; top: 50%; width: var(--w); height: var(--w); transform: translate(-50%, -50%); image-rendering: auto; }
+</style></head><body><div class="glow"></div><img id="i" src="" alt=""><script>
+  const q = new URLSearchParams(location.search);
+  document.body.style.width = document.body.style.height = (q.get('size') || 512) + 'px';
+  const i = document.getElementById('i'); i.style.setProperty('--w', q.get('rex') + 'px'); i.src = q.get('img');
+  i.onload = () => { window.__rexDone = true; }; i.onerror = () => { window.__rexDone = true; };
+</script></body></html>

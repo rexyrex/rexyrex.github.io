@@ -1138,7 +1138,37 @@ body > main.privacy-article ul.apps-index li > a:hover .path {
   color: var(--accent);
 }
 
-/* ---------- 8. Responsive ------------------------------------- */
+/* ---------- 8. Cross-document view transitions ---------------- */
+/* Every page opts in, so same-origin navigations crossfade instead of
+   flashing. The top bar and status bar carry view-transition-names
+   (navbar.css), so they hold still while the page underneath changes.
+   common.js mounts the chrome from a sessionStorage copy before the
+   first paint, which is what makes that possible. */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* Skip-link targets take focus programmatically; no ring needed. */
+main:focus,
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* ---------- 9. Responsive ------------------------------------- */
 
 @media (max-width: 860px) {
   .hero-grid {

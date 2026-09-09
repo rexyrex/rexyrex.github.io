@@ -136,6 +136,7 @@ void main() {
 
 const fragmentShader = /* glsl */ `
 uniform float uOpacity;
+uniform float uTint;
 varying vec3 vColor;
 
 void main() {
@@ -143,7 +144,7 @@ void main() {
     float r2 = dot(c, c);
     if (r2 > 0.25) discard;
     float a = smoothstep(0.25, 0.06, r2);
-    gl_FragColor = vec4(vColor, a * uOpacity);
+    gl_FragColor = vec4(vColor * uTint, a * uOpacity);
 }
 `;
 
@@ -224,6 +225,7 @@ async function boot() {
         uSize: { value: baseSize },
         uExcite: { value: 0 },
         uOpacity: { value: 1 },
+        uTint: { value: 1 },
         uPixelRatio: { value: renderer.getPixelRatio() },
         uFocal: { value: 1 },
         uDrift: { value: 1.2 },
@@ -241,6 +243,20 @@ async function boot() {
     const points = new THREE.Points(geometry, material);
     points.frustumCulled = false;
     group.add(points);
+
+    // The sampled greens are lifted for dark surfaces; on the light theme
+    // the cloud is darkened a little so it keeps its contrast.
+    function syncTint() {
+        const theme = root.getAttribute('data-theme')
+            || ((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark');
+        uniforms.uTint.value = theme === 'light' ? 0.74 : 1;
+    }
+    syncTint();
+    document.addEventListener('rex:theme', syncTint);
+    if (window.matchMedia) {
+        const mq = window.matchMedia('(prefers-color-scheme: light)');
+        if (mq.addEventListener) mq.addEventListener('change', syncTint);
+    }
 
     /* Shapes — rebuilt on resize because the rex is sized to the hero box. */
     const shapes = { cloud: new Float32Array(N * 3), rex: new Float32Array(N * 3), dot: new Float32Array(N * 3), burst: new Float32Array(N * 3) };

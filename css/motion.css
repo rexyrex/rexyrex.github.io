@@ -1,9 +1,17 @@
 /* ============================================================
    Shared scroll reveals for the hand-written sub-pages.
    Pair with /js/motion.js. Elements marked data-reveal (or the
-   children of data-reveal-group) rise in once they scroll into view.
-   Nothing here hides content unless JS has confirmed it can reveal
-   it (html.motion-ready), and reduced motion turns it all off.
+   children of data-reveal-group) rise in as they scroll into view.
+
+   Two implementations, one of which is always the one in charge:
+   1. Browsers with CSS scroll-driven animations run the reveal in
+      pure CSS (animation-timeline: view()) — no observers, no JS,
+      and the work stays off the main thread. motion.js steps aside
+      when it detects support.
+   2. Everywhere else motion.js marks html.motion-ready and toggles
+      .is-in with an IntersectionObserver.
+   Nothing here hides content unless one of the two can reveal it,
+   and reduced motion turns both off.
    ============================================================ */
 
 @media (prefers-reduced-motion: no-preference) {
@@ -17,6 +25,27 @@
 
   html.motion-ready [data-reveal].is-in,
   html.motion-ready [data-reveal-group].is-in > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  @supports (animation-timeline: view()) and (animation-range: entry 0% entry 40%) {
+    [data-reveal],
+    [data-reveal-group] > * {
+      animation: motionReveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+@keyframes motionReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
     opacity: 1;
     transform: none;
   }

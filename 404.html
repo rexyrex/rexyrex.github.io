@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 · file not found — Rexyrex</title>
+    <meta name="robots" content="noindex">
+    <meta name="description" content="Nothing lives at this path on rexyrex.github.io.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0f1214" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f7f4" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:title" content="404 · file not found — Rexyrex">
+    <meta property="og:description" content="Nothing lives at this path. The rex looked everywhere.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/404.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/404.png">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/motion.css">
+    <style>
+        /* GitHub Pages serves this file for every unknown path, so all
+           URLs here are absolute. Styled in the editor voice: the path
+           that failed, a terminal that says so, and the closest matches. */
+        .nf {
+            min-height: calc(100vh - var(--nav-h) - var(--statusbar-h));
+            display: grid;
+            align-items: center;
+            padding-top: clamp(2rem, 6vw, 4rem);
+            padding-bottom: clamp(2rem, 6vw, 4rem);
+        }
+
+        .nf-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+            gap: clamp(2rem, 5vw, 4rem);
+            align-items: center;
+        }
+
+        .nf h1 {
+            font-size: clamp(2.2rem, 1.4rem + 4vw, 4.2rem);
+            margin-bottom: 0.9rem;
+        }
+
+        .nf-sep {
+            color: var(--fg-faint);
+            margin: 0 0.25em;
+            font-weight: 400;
+        }
+
+        .nf .eyebrow {
+            overflow-wrap: anywhere;
+        }
+
+        .nf-term {
+            margin: 1.5rem 0 0;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .nf-term b {
+            font-weight: 500;
+            color: var(--fg);
+        }
+
+        .nf-prompt {
+            color: var(--accent);
+        }
+
+        .nf-caret {
+            display: inline-block;
+            width: 0.55em;
+            height: 1.05em;
+            vertical-align: -0.15em;
+            background: var(--accent);
+            animation: nfBlink 1s steps(2, start) infinite;
+        }
+
+        @keyframes nfBlink {
+            50% { opacity: 0; }
+        }
+
+        .nf-suggest {
+            margin-top: 1.75rem;
+        }
+
+        .nf-suggest h2 {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--fg-faint);
+            margin-bottom: 0.5rem;
+        }
+
+        .nf-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            border-top: 1px solid var(--line);
+            max-width: 34rem;
+        }
+
+        .nf-list a {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+            gap: 0.25rem 1rem;
+            align-items: baseline;
+            padding: 0.7rem 0.5rem;
+            margin: 0 -0.5rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--fg);
+            text-decoration: none;
+            transition: background-color 0.15s var(--ease);
+        }
+
+        .nf-list a:hover {
+            background: var(--bg-hover);
+            text-decoration: none;
+        }
+
+        .nf-list .path {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .nf-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem 1rem;
+            margin-top: 1.75rem;
+        }
+
+        .nf-actions kbd {
+            font-size: 0.7em;
+            padding: 0.1em 0.4em;
+            margin-left: 0.25em;
+            border-bottom-width: 2px;
+            background: transparent;
+        }
+
+        .nf-visual {
+            position: relative;
+            display: grid;
+            place-items: center;
+            min-height: 240px;
+        }
+
+        .nf-rex {
+            width: min(60vw, 260px);
+            height: auto;
+            animation: nfLook 4.5s ease-in-out infinite;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.35));
+            -webkit-user-drag: none;
+        }
+
+        @keyframes nfLook {
+            0%, 38% { transform: scaleX(1); }
+            50%, 88% { transform: scaleX(-1); }
+            100% { transform: scaleX(1); }
+        }
+
+        .nf-bubble {
+            position: absolute;
+            top: 6%;
+            left: 62%;
+            width: 2.2rem;
+            height: 2.2rem;
+            display: grid;
+            place-items: center;
+            border-radius: 50% 50% 50% 8px;
+            background: var(--bg-raised);
+            border: 1px solid var(--line-strong);
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--accent);
+            box-shadow: var(--shadow);
+            animation: nfBob 2.2s ease-in-out infinite alternate;
+        }
+
+        @keyframes nfBob {
+            to { transform: translateY(-6px); }
+        }
+
+        @media (max-width: 720px) {
+            .nf-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nf-list a {
+                grid-template-columns: 1fr;
+            }
+
+            .nf-list .path {
+                text-align: left;
+            }
+
+            .nf-visual {
+                order: -1;
+                min-height: 0;
+            }
+
+            .nf-rex {
+                width: min(45vw, 180px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nf-rex,
+            .nf-bubble,
+            .nf-caret {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <main class="wrap nf" id="main">
+        <div class="nf-grid">
+            <div class="nf-copy" data-reveal-group>
+                <p class="eyebrow" id="nfEyebrow">/</p>
+                <h1>404<span class="nf-sep">·</span>file not found</h1>
+                <p class="lede">Nothing lives at this path. It may have moved, or it never existed. The rex looked everywhere.</p>
+                <pre class="nf-term" aria-label="Terminal"><code><span class="nf-prompt">$</span> ls <b id="nfPath1"></b>
+ls: <b id="nfPath2"></b>: No such file or directory
+<span class="nf-prompt">$</span> <span class="nf-caret" aria-hidden="true"></span></code></pre>
+                <section class="nf-suggest" id="nfSuggest" hidden aria-labelledby="nfSuggestTitle">
+                    <h2 id="nfSuggestTitle">Did you mean</h2>
+                    <ul class="nf-list" id="nfList"></ul>
+                </section>
+                <div class="nf-actions">
+                    <a class="btn btn-primary" href="/">Back to the index <span class="arrow">→</span></a>
+                    <button class="btn btn-ghost" type="button" data-palette-open>Search the site <kbd data-palette-kbd>⌘K</kbd></button>
+                </div>
+            </div>
+            <div class="nf-visual" aria-hidden="true" data-reveal>
+                <img class="nf-rex" src="/assets/rexGreenSmall.png" alt="" width="256" height="256">
+                <span class="nf-bubble">?</span>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/motion.js"></script>
+    <script>
+    // Show the path that failed and the closest pages from the site index
+    // (published by /js/palette.js, which common.js loads on every page).
+    (function () {
+        'use strict';
+        var path;
+        try { path = decodeURIComponent(window.location.pathname || '/'); } catch (e) { path = window.location.pathname || '/'; }
+        // Local preview only: python's http.server never serves this file for a
+        // missing path, so ?path=/what/failed stands in for it while testing.
+        var m = /[?&]path=([^&]+)/.exec(window.location.search || '');
+        if (m && /^\/[\w\-./%]*$/.test(decodeURIComponent(m[1]))) path = decodeURIComponent(m[1]);
+        var eyebrow = document.getElementById('nfEyebrow');
+        if (eyebrow) eyebrow.textContent = path;
+        var p1 = document.getElementById('nfPath1');
+        var p2 = document.getElementById('nfPath2');
+        var shown = path.length > 60 ? path.slice(0, 57) + '…' : path;
+        if (p1) p1.textContent = shown;
+        if (p2) p2.textContent = shown;
+        document.title = '404 · ' + shown + ' — Rexyrex';
+
+        function tokens(s) {
+            return String(s || '').toLowerCase().split(/[^a-z0-9가-힣]+/).filter(function (t) { return t.length > 1; });
+        }
+
+        function lev(a, b) {
+            if (a === b) return 0;
+            if (!a.length) return b.length;
+            if (!b.length) return a.length;
+            var prev = [];
+            for (var j = 0; j <= b.length; j++) prev[j] = j;
+            for (var i = 1; i <= a.length; i++) {
+                var cur = [i];
+                for (var k = 1; k <= b.length; k++) {
+                    cur[k] = Math.min(prev[k] + 1, cur[k - 1] + 1, prev[k - 1] + (a[i - 1] === b[k - 1] ? 0 : 1));
+                }
+                prev = cur;
+            }
+            return prev[b.length];
+        }
+
+        function lastSegment(p) {
+            var parts = String(p).replace(/\/index\.html$/, '/').replace(/\.html$/, '').split('/').filter(Boolean);
+            return (parts[parts.length - 1] || '').toLowerCase();
+        }
+
+        function suggest(index) {
+            var list = document.getElementById('nfList');
+            var box = document.getElementById('nfSuggest');
+            if (!list || !box || !index) return;
+            var here = tokens(path);
+            var seg = lastSegment(path);
+            var cands = [].concat(index.pages || [], (index.apps || []).filter(function (a) { return /^\//.test(a.path); }));
+            var scored = cands.map(function (c) {
+                var ts = tokens(c.path + ' ' + c.title + ' ' + (c.keys || ''));
+                var shared = 0;
+                here.forEach(function (t) { if (ts.indexOf(t) !== -1) shared++; });
+                var d = seg ? lev(seg, lastSegment(c.path) || c.title.toLowerCase()) : 99;
+                var s = shared * 10 + (d <= 2 ? 8 - d * 2 : 0) + (seg && lastSegment(c.path).indexOf(seg) === 0 ? 4 : 0);
+                return { c: c, s: s };
+            }).filter(function (r) { return r.s > 0; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 3);
+            if (!scored.length) return;
+            list.innerHTML = '';
+            scored.forEach(function (r) {
+                var li = document.createElement('li');
+                var a = document.createElement('a');
+                a.href = r.c.path;
+                var t = document.createElement('span');
+                t.textContent = r.c.title;
+                var pth = document.createElement('span');
+                pth.className = 'path';
+                pth.textContent = r.c.hint || r.c.path;
+                a.appendChild(t);
+                a.appendChild(pth);
+                li.appendChild(a);
+                list.appendChild(li);
+            });
+            box.hidden = false;
+        }
+
+        if (window.rexSiteIndex) suggest(window.rexSiteIndex);
+        else document.addEventListener('rex:site-index', function (e) { suggest(e.detail || window.rexSiteIndex); });
+    })();
+    </script>
+</body>
+</html>

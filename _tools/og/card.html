@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body { position: relative; background: #0f1214; color: #e6ebe8; font-family: "IBM Plex Sans KR", sans-serif; -webkit-font-smoothing: antialiased; }
+  .blob { position: absolute; width: 900px; height: 900px; border-radius: 50%; filter: blur(90px); opacity: .55; mix-blend-mode: screen; }
+  .b1 { left: -320px; top: -420px; background: radial-gradient(circle, rgba(143,208,105,.42), transparent 65%); }
+  .b2 { right: -380px; top: -300px; background: radial-gradient(circle, rgba(127,184,230,.32), transparent 65%); }
+  .b3 { left: 420px; bottom: -560px; background: radial-gradient(circle, rgba(199,146,234,.22), transparent 65%); }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 100%); }
+  .top { position: absolute; left: 72px; top: 56px; display: flex; align-items: center; gap: 14px; font-family: "IBM Plex Mono", monospace; font-size: 22px; font-weight: 600; }
+  .top img { width: 34px; height: 34px; }
+  .top span { color: #626e6a; font-weight: 400; }
+  .copy { position: absolute; left: 72px; top: 170px; width: 700px; }
+  .path { font-family: "IBM Plex Mono", monospace; font-size: 24px; font-weight: 500; color: #8fd069; margin: 0 0 22px; }
+  .path::after { content: ""; display: inline-block; width: 13px; height: 26px; background: #8fd069; margin-left: 8px; vertical-align: -4px; }
+  h1 { font-family: "IBM Plex Mono", monospace; font-size: 64px; line-height: 1.08; letter-spacing: -.045em; font-weight: 600; margin: 0 0 26px; text-wrap: balance; }
+  h1.small { font-size: 54px; }
+  p.desc { font-size: 26px; line-height: 1.45; color: #9aa6a1; margin: 0; max-width: 620px; }
+  canvas { position: absolute; right: 70px; top: 120px; width: 400px; height: 400px; }
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 52px; background: #161b1e; border-top: 1px solid #242c30; display: flex; align-items: center; gap: 28px; padding: 0 72px; font-family: "IBM Plex Mono", monospace; font-size: 18px; color: #9aa6a1; }
+  .bar b { color: #e6ebe8; font-weight: 400; }
+  .bar .sp { flex: 1; }
+  .bar .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #8fd069; margin-right: 8px; vertical-align: 1px; }
+</style>
+</head>
+<body>
+  <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+  <div class="grid"></div>
+  <div class="top"><img id="brandImg" src="" alt=""><div>rexyrex<span>.github.io</span></div></div>
+  <div class="copy">
+    <p class="path" id="path"></p>
+    <h1 id="title"></h1>
+    <p class="desc" id="desc"></p>
+  </div>
+  <canvas id="rex" width="800" height="800"></canvas>
+  <div class="bar"><span>⎇ master</span><span><b>~</b><span id="file"></span></span><span class="sp"></span><span>Ln 1, Col 1</span><span>UTF-8</span><span><span class="dot"></span>ok</span></div>
+  <script>
+    const q = new URLSearchParams(location.search);
+    const path = q.get('path') || '/';
+    document.getElementById('path').textContent = q.get('eyebrow') || path;
+    const h1 = document.getElementById('title');
+    h1.textContent = q.get('title') || '';
+    if ((q.get('title') || '').length > 34) h1.classList.add('small');
+    document.getElementById('desc').textContent = q.get('desc') || '';
+    document.getElementById('file').textContent = q.get('file') || path;
+    const src = q.get('img') || '';
+    document.getElementById('brandImg').src = src;
+    // Dot-matrix rex: sample the PNG and draw one circle per opaque pixel.
+    const img = new Image();
+    img.onload = () => {
+      const s = 256, off = document.createElement('canvas'); off.width = s; off.height = s;
+      const octx = off.getContext('2d'); octx.drawImage(img, 0, 0, s, s);
+      const px = octx.getImageData(0, 0, s, s).data;
+      const c = document.getElementById('rex'), ctx = c.getContext('2d');
+      const step = 3, scale = 800 / s;
+      for (let y = 0; y < s; y += step) for (let x = 0; x < s; x += step) {
+        const i = (y * s + x) * 4; if (px[i + 3] < 90) continue;
+        ctx.fillStyle = `rgba(${px[i]},${px[i+1]},${px[i+2]},${(px[i+3]/255*0.95).toFixed(2)})`;
+        ctx.beginPath(); ctx.arc(x * scale + 4, y * scale + 4, 4.2, 0, Math.PI * 2); ctx.fill();
+      }
+      window.__rexDone = true;
+    };
+    img.onerror = () => { window.__rexDone = true; };
+    img.src = src;
+  </script>
+</body>
+</html>

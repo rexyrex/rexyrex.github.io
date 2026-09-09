@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How the particle rex works — Rexyrex</title>
+    <meta name="description" content="Seven thousand points sampled from a 256-pixel PNG, one shader that moves them between four shapes, and a scroll position that drives the whole thing.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="canonical" href="https://rexyrex.github.io/log/particle-rex.html">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0f1214" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f7f4" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/log/particle-rex.html">
+    <meta property="og:title" content="How the particle rex works">
+    <meta property="og:description" content="Seven thousand points sampled from a 256-pixel PNG, one shader that moves them between four shapes, and a scroll position that drives the whole thing.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/log.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Devlog — Rexyrex">
+    <meta property="article:published_time" content="2026-09-08">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How the particle rex works">
+    <meta name="twitter:description" content="Seven thousand points sampled from a 256-pixel PNG, one shader that moves them between four shapes, and a scroll position that drives the whole thing.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/log.png">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/motion.css">
+    <link rel="stylesheet" href="/log/log.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <main class="wrap" id="main">
+        <header class="post-head" data-reveal-group>
+            <p class="eyebrow">/log/particle-rex.html</p>
+            <h1>How the particle rex works</h1>
+            <p class="post-meta"><time datetime="2026-09-08">2026-09-08</time><span>·</span><span>three.js · gsap · landing page</span><span>·</span><span>6 min</span></p>
+            <p class="lede">The mascot on the front page is not an image. It is about seven thousand points that assemble into the rex, turn as you scroll, collapse into a single dot and burst. This is how it is put together, and what it cost.</p>
+        </header>
+
+        <article class="article post" data-reveal-group>
+            <h2>Sampling the PNG</h2>
+            <p>There is only one source asset: <code>/assets/rexGreenSmall.png</code>, a 256×256 PNG of the rex. On load the module draws it onto an offscreen canvas, reads the pixels back and keeps every one whose alpha is above a threshold, together with its colour. That gives around eleven thousand candidates. A seeded pseudo-random shuffle picks a fixed subset of them, up to 7,000 on a desktop and 3,400 on a touch device, so the cloud looks the same every visit and never costs more than the phone can afford.</p>
+            <p>Each surviving pixel becomes one point with a handful of constants: its colour, a seed, a small sub-pixel jitter (so the grid of the bitmap does not show through), a random direction on the unit sphere and two random radii. Those constants never change; everything else is derived from them at render time.</p>
+
+            <h2>Four shapes, one shader</h2>
+            <p>The points are a single <code>THREE.Points</code> object with a custom <code>ShaderMaterial</code>. The geometry carries two positions per point, <code>position</code> (where it is coming from) and <code>aTo</code> (where it is going), and a uniform <code>uMix</code> that blends between them. The blend is not uniform across points: each one waits for a delay taken from its seed before it starts moving, so a shape never snaps into place, it pours.</p>
+<pre><code>float delay = aSeed * 0.45;
+float m = smoothstep(delay, delay + 0.55, uMix);
+vec3 p = mix(position, aTo, m);
+
+float arc = m * (1.0 - m);           // only while in transit
+p += breathing(uTime, ph) * uDrift;   // idle sway
+p += swirl(ph, uTime) * arc * uSwirl; // curls along the way
+p += buzz(uTime, ph) * uExcite * 7.0; // while the rex is held</code></pre>
+            <p>Four target shapes are built once, and rebuilt on resize because the rex is sized to its box in the hero:</p>
+            <ul>
+                <li><strong>cloud</strong>: a sphere slightly larger than the rex, with a cube-root radius so the volume is filled evenly rather than bunched at the centre.</li>
+                <li><strong>rex</strong>: the sampled pixel positions, centred, scaled, with a little depth from the jitter so it reads as a slab rather than a sheet.</li>
+                <li><strong>dot</strong>: the same points inside a sphere of radius 1.6. From a distance that is one bright point.</li>
+                <li><strong>burst</strong>: a shell two to five rex-widths out, stretched along the depth axis so it flies past the camera.</li>
+            </ul>
+            <p>A "segment" is a pair of shapes. Switching segment copies the pair into the two attribute buffers and flags them for upload, which happens three times over the whole story: cloud→rex, rex→dot, dot→burst. The GPU does all of the actual moving.</p>
+
+            <h2>The scroll drives it</h2>
+            <p>The particle module never looks at the scroll position itself. The landing page's GSAP orchestration writes three numbers into a shared object, <code>window.rexHero</code>, and the module reads them every frame:</p>
+            <ul>
+                <li><code>t</code>, from 0 at the top of the page to 1 when the statement paragraph is centred. A ScrollTrigger with no tweens attached produces it.</li>
+                <li><code>burst</code>, from 0 to 1 across the stretch where the statement is pinned.</li>
+                <li><code>excite</code>, 1 while the rex is being held down (the same long-press that opens the easter egg).</li>
+            </ul>
+            <p>The frame loop eases towards those targets rather than using them raw, so a fast wheel flick still produces a smooth move. Then it decides which segment and mix to use:</p>
+            <ol class="timeline">
+                <li><b>load</b>The intro: cloud→rex over 2.2 seconds with a cubic ease-out, independent of scrolling.</li>
+                <li><b>t 0 → 0.5</b>The whole group lerps from its spot in the hero to the centre of the screen and grows about fifteen percent. The rotation follows the pointer, a slow idle sway, and the scroll.</li>
+                <li><b>t 0.6 → 1</b>rex→dot. Point size grows as they crowd together so the dot stays bright, and the breathing fades out.</li>
+                <li><b>burst 0 → 0.12</b>The dot charges: point size swells while nothing moves yet.</li>
+                <li><b>burst 0.1 → 1</b>dot→burst with extra swirl and spin, opacity fading over the last third. A CSS flash fires underneath from the same timeline.</li>
+            </ol>
+            <p>The camera is set up so one world unit is one CSS pixel on the z = 0 plane, which makes "put the rex where the hero box is" a matter of reading a <code>getBoundingClientRect()</code>. When the burst finishes the render loop stops entirely. Scrolling back up starts it again; a hidden tab stops it too.</p>
+
+            <h2>When it cannot run</h2>
+            <p>The plain PNG is always in the document, hidden only while the point cloud is alive. The module fails on purpose when WebGL is missing, when the visitor prefers reduced motion, when the browser reports a data-saver connection, or when the Three.js module never arrives from the CDN. Each of those dispatches <code>rexhero:failed</code> and the PNG fades in; if nothing at all reports back within six seconds the page shows the PNG anyway. The first successful frame dispatches <code>rexhero:ready</code>.</p>
+            <p>The shader also takes a <code>uTint</code> uniform. The sampled greens are lifted for dark surfaces, so on the light theme the cloud is multiplied down a little to keep its contrast, and it follows the theme toggle live.</p>
+
+            <h2>Two lessons</h2>
+            <p><strong>ScrollTrigger pins must be created in page order.</strong> The balloon sky and the phone track are both pinned sections, and a pin changes the position of everything below it. Creating a trigger for a lower section before an upper one measures against the wrong layout. Every trigger on the page is therefore created inside one <code>gsap.matchMedia()</code> callback, top to bottom, and the reveal animations come last.</p>
+            <p><strong>Three.js is the heaviest thing on the page.</strong> Two module files, about 186 KB over the wire, for what is ultimately one draw call of points with a custom shader. A raw WebGL program would do it in a few kilobytes. It stays for now because the effect is the best thing on the page and the rest of the page is light, but it is the first thing to go if the load number ever matters.</p>
+
+            <nav class="post-nav" aria-label="Post navigation">
+                <a href="/log/">← all posts</a>
+                <a href="https://github.com/rexyrex/rexyrex.github.io/blob/master/js/hero-particles.js" target="_blank" rel="noopener noreferrer">hero-particles.js on GitHub ↗</a>
+                <a href="/">the rex itself →</a>
+            </nav>
+        </article>
+    </main>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/motion.js"></script>
+</body>
+</html>

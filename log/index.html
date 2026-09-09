@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devlog — Rexyrex</title>
+    <meta name="description" content="Notes on how the things on rexyrex.github.io are built: the particle rex, the scroll story, the site chrome.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="canonical" href="https://rexyrex.github.io/log/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0f1214" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f7f4" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/log/">
+    <meta property="og:title" content="Devlog — Rexyrex">
+    <meta property="og:description" content="Notes on how the things on this site are built.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/log.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Devlog — Rexyrex">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Devlog — Rexyrex">
+    <meta name="twitter:description" content="Notes on how the things on this site are built.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/log.png">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/motion.css">
+    <link rel="stylesheet" href="/log/log.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <main class="wrap" id="main">
+        <header class="page-head" data-reveal-group>
+            <p class="eyebrow">/log/</p>
+            <h1>Devlog</h1>
+            <p class="lede">Notes on how the things here are built, written when something was worth writing down. Newest first.</p>
+        </header>
+
+        <div class="log-list" data-reveal-group>
+            <a class="log-row" href="/log/2026-09-renewal.html">
+                <span class="log-date"><time datetime="2026-09-09">2026-09-09</time></span>
+                <span class="log-body">
+                    <span class="log-title">A command palette, page transitions and a sixth game</span>
+                    <span class="log-desc">What changed on the site in September: ⌘K everywhere, cross-document view transitions, a games chapter fed by the portal, social cards, a 404 page, a manifest.</span>
+                </span>
+                <span class="log-tags"><i>site</i><i>chrome</i></span>
+                <span class="log-arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="log-row" href="/log/particle-rex.html">
+                <span class="log-date"><time datetime="2026-09-08">2026-09-08</time></span>
+                <span class="log-body">
+                    <span class="log-title">How the particle rex works</span>
+                    <span class="log-desc">Seven thousand points sampled from a 256-pixel PNG, one shader that moves them between four shapes, and a scroll position that drives the whole thing.</span>
+                </span>
+                <span class="log-tags"><i>three.js</i><i>gsap</i><i>landing</i></span>
+                <span class="log-arrow" aria-hidden="true">→</span>
+            </a>
+        </div>
+
+        <p class="article-foot"><a href="/">← back to index</a></p>
+    </main>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/motion.js"></script>
+</body>
+</html>

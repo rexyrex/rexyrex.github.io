@@ -4,9 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Rexyrex</title>
-    <meta name="description" content="Rexyrex builds mobile apps, games, and music from Korea. Eight apps on Google Play, two on the App Store, five multiplayer browser games, a Korean and English typing game, Deadly Balloons, and KakaoTalk chat analyzers.">
+    <meta name="description" content="Rexyrex builds mobile apps, games, and music from Korea. Eight apps on Google Play, two on the App Store, six multiplayer browser games, a Korean and English typing game, Deadly Balloons, and KakaoTalk chat analyzers.">
     <meta name="color-scheme" content="dark light">
     <link rel="icon" href="/favicon.ico">
+    <link rel="canonical" href="https://rexyrex.github.io/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0f1214" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f7f4" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/">
+    <meta property="og:title" content="Rexyrex — apps, games, and music, built by one person">
+    <meta property="og:description" content="Eight apps on Google Play, two on the App Store, six self-hosted browser games, a Korean and English typing game, Deadly Balloons, and a few tracks.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/home.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Rexyrex — apps, games, and music, built by one person">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rexyrex — apps, games, and music, built by one person">
+    <meta name="twitter:description" content="Eight apps on Google Play, two on the App Store, six self-hosted browser games, a Korean and English typing game, Deadly Balloons, and a few tracks.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/home.png">
     <script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,9 +70,8 @@
                     <p class="eyebrow hero-eyebrow" id="heroEyebrow" data-hero>rexyrex.github.io</p>
                     <h1 class="hero-title" id="hero-title">Apps, games, and music,<br>built by one person.</h1>
                     <p class="hero-lede" data-hero>
-                        <strong>Rexyrex</strong>, building from Korea. Eight apps on Google Play and two on the App Store,
-                        five multiplayer browser games, a Korean and English typing game with live leaderboards,
-                        a balloon-popping game in Java, and seventy-odd repos on GitHub.
+                        <strong>Rexyrex</strong>, building from Korea: mobile apps on both stores, six multiplayer
+                        browser games on a homelab, a typing game with live leaderboards, and the occasional track.
                     </p>
                     <div class="hero-actions" data-hero>
                         <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
@@ -71,7 +88,7 @@
         <!-- 01 · Statement: lights up word by word, then holds while the rex bursts -->
         <section class="statement" id="statement" aria-label="About this site">
             <div class="wrap">
-                <p class="statement-text" id="statementText">Eight apps on Google Play. Two on the App Store. Five browser games. A typing game in two languages. A balloon-popping game in Java. A few tracks. Everything here is designed, built and maintained by one developer in Korea.</p>
+                <p class="statement-text" id="statementText">Eight apps on Google Play. Two on the App Store. Six browser games. A typing game in two languages. A balloon-popping game in Java. A few tracks. Everything here is designed, built and maintained by one developer in Korea.</p>
             </div>
         </section>
 
@@ -339,7 +356,97 @@
             </div>
         </section>
 
-        <!-- 05 · /music/ -->
+        <!-- 05 · games.rexy.win — six self-hosted browser games -->
+        <section class="chapter chapter-games" id="games" aria-labelledby="games-title">
+            <div class="wrap">
+                <div class="chapter-copy chapter-copy-wide games-copy" data-reveal-group>
+                    <span class="eyebrow">games.rexy.win</span>
+                    <h2 id="games-title" data-lines>Six browser games, served from a box at home.</h2>
+                    <p>A dino party brawler, a 3D arena shooter, a circuit-board RTS, a cute-horror house, a draw-and-guess party and 3D chess. Multiplayer over WebSockets, no installs, one link each.</p>
+                    <div class="chapter-actions">
+                        <a class="btn btn-primary" href="https://games.rexy.win" target="_blank" rel="noopener noreferrer">Pick a game</a>
+                        <span class="net-pill" id="gamesNet" data-state="idle"><i class="net-dot" aria-hidden="true"></i><span>dino network</span><b id="gamesNetLabel">6 games</b></span>
+                    </div>
+                </div>
+                <div class="games-grid" data-reveal-group>
+
+                    <a class="game" href="https://crazy.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #ff9b2f; --c2: #ff5e7d">
+                        <span class="game-window" aria-hidden="true">
+                            <span class="game-titlebar"><i></i><i></i><i></i><b>crazy.rexy.win</b></span>
+                            <span class="game-art art-party"><i class="art-egg e1"></i><i class="art-egg e2"></i><i class="art-egg e3"></i><i class="art-blast"></i><span class="game-emoji">🦕</span></span>
+                        </span>
+                        <span class="game-meta">
+                            <b>Rexy Arcade</b>
+                            <span class="game-tagline">Bomberman-style dino party mayhem.</span>
+                            <span class="game-tags"><i>Party · Action</i><i>1–8 players</i><i>Canvas 2D</i></span>
+                        </span>
+                    </a>
+
+                    <a class="game" href="https://fps.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #ff4d4d; --c2: #2f81f7">
+                        <span class="game-window" aria-hidden="true">
+                            <span class="game-titlebar"><i></i><i></i><i></i><b>fps.rexy.win</b></span>
+                            <span class="game-art art-shooter"><i class="art-floor"></i><i class="art-cross"></i><i class="art-hit h1"></i><i class="art-hit h2"></i><span class="game-emoji">🎯</span></span>
+                        </span>
+                        <span class="game-meta">
+                            <b>FRONTLINE</b>
+                            <span class="game-tagline">3D multiplayer arena shooter.</span>
+                            <span class="game-tags"><i>FPS · Arena</i><i>Multiplayer</i><i>Three.js</i></span>
+                        </span>
+                    </a>
+
+                    <a class="game" href="https://overclock.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #ff8de0; --c2: #34e2ff">
+                        <span class="game-window" aria-hidden="true">
+                            <span class="game-titlebar"><i></i><i></i><i></i><b>overclock.rexy.win</b></span>
+                            <span class="game-art art-strategy"><i class="art-trace t1"></i><i class="art-trace t2"></i><i class="art-trace t3"></i><i class="art-node n1"></i><i class="art-node n2"></i><i class="art-node n3"></i><i class="art-core"></i><span class="game-emoji">⚡</span></span>
+                        </span>
+                        <span class="game-meta">
+                            <b>OVERCLOCK</b>
+                            <span class="game-tagline">Circuit-board real-time strategy.</span>
+                            <span class="game-tags"><i>RTS · Strategy</i><i>1v1 · 2v2 · FFA</i><i>PixiJS</i></span>
+                        </span>
+                    </a>
+
+                    <a class="game" href="https://spooky.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #b9a8ff; --c2: #ff9bb8">
+                        <span class="game-window" aria-hidden="true">
+                            <span class="game-titlebar"><i></i><i></i><i></i><b>spooky.rexy.win</b></span>
+                            <span class="game-art art-spooky"><i class="art-beam"></i><i class="art-eye l"></i><i class="art-eye r"></i><span class="game-emoji">👻</span></span>
+                        </span>
+                        <span class="game-meta">
+                            <b>SPOOKY FRIENDS</b>
+                            <span class="game-tagline">무섭지만… 귀여운 반전 호러.</span>
+                            <span class="game-tags"><i>Horror(?) · Adventure</i><i>Solo</i><i>Three.js</i></span>
+                        </span>
+                    </a>
+
+                    <a class="game" href="https://draw.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #ff8fbb; --c2: #7fe0c4">
+                        <span class="game-window" aria-hidden="true">
+                            <span class="game-titlebar"><i></i><i></i><i></i><b>draw.rexy.win</b></span>
+                            <span class="game-art art-doodle"><svg viewBox="0 0 200 120" preserveAspectRatio="none"><path class="doodle-1" d="M14 88 C 40 20, 70 20, 92 70 S 140 110, 150 46 S 178 30, 190 60"/><path class="doodle-2" d="M30 100 C 60 60, 110 118, 170 92"/></svg><i class="art-guess">cat?</i><span class="game-emoji">🎨</span></span>
+                        </span>
+                        <span class="game-meta">
+                            <b>DOODLINGS</b>
+                            <span class="game-tagline">Draw something silly. Guess even sillier.</span>
+                            <span class="game-tags"><i>Party · Drawing</i><i>2–12 players</i><i>WebSockets</i></span>
+                        </span>
+                    </a>
+
+                    <a class="game" href="https://chess.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #f07da2; --c2: #83c6a2">
+                        <span class="game-window" aria-hidden="true">
+                            <span class="game-titlebar"><i></i><i></i><i></i><b>chess.rexy.win</b></span>
+                            <span class="game-art art-chess"><i class="art-board"></i><i class="art-piece p1">♞</i><i class="art-piece p2">♛</i><i class="art-piece p3">♟</i><span class="game-emoji">♛</span></span>
+                        </span>
+                        <span class="game-meta">
+                            <b>CHESSLINGS</b>
+                            <span class="game-tagline">Tiny champions. Grand strategy.</span>
+                            <span class="game-tags"><i>Chess · Strategy</i><i>Solo · 2 players</i><i>Three.js</i></span>
+                        </span>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 06 · /music/ -->
         <section class="chapter chapter-music" id="music" aria-labelledby="music-title">
             <div class="wrap music-grid">
                 <div class="chapter-copy" data-reveal-group>
@@ -357,7 +464,7 @@
             </div>
         </section>
 
-        <!-- 06 · Index: the site's own directory listing -->
+        <!-- 07 · Index: the site's own directory listing -->
         <section class="section wrap" id="index">
             <div class="section-head" data-reveal>
                 <span class="eyebrow">/</span>
@@ -401,7 +508,7 @@
                     <span class="index-path">games.rexy.win</span>
                     <span class="index-body">
                         <span class="index-name">Browser games</span>
-                        <span class="index-desc">Five multiplayer browser games, self-hosted on a homelab: Rexy Arcade, FRONTLINE, OVERCLOCK, SPOOKY FRIENDS and CHESSLINGS.</span>
+                        <span class="index-desc">Six multiplayer browser games, self-hosted on a homelab: Rexy Arcade, FRONTLINE, OVERCLOCK, SPOOKY FRIENDS, DOODLINGS and CHESSLINGS.</span>
                     </span>
                     <span class="index-meta">Node · WebSockets · Three.js</span>
                     <span class="index-arrow" aria-hidden="true">↗</span>
@@ -424,6 +531,15 @@
                     <span class="index-meta">Vue 3</span>
                     <span class="index-arrow" aria-hidden="true">→</span>
                 </a>
+                <a class="index-row" href="/log/">
+                    <span class="index-path">/log/</span>
+                    <span class="index-body">
+                        <span class="index-name">Devlog</span>
+                        <span class="index-desc">Notes on how the things here are built. First up: the particle rex.</span>
+                    </span>
+                    <span class="index-meta">writing</span>
+                    <span class="index-arrow" aria-hidden="true">→</span>
+                </a>
                 <a class="index-row" href="/support/">
                     <span class="index-path">/support/</span>
                     <span class="index-body">
@@ -436,21 +552,34 @@
             </div>
         </section>
 
-        <!-- 07 · Contact -->
+        <!-- 08 · Contact -->
         <section class="section wrap contact" id="contact">
             <div class="section-head" data-reveal>
                 <span class="eyebrow">/support/</span>
                 <h2>Contact</h2>
             </div>
-            <div data-reveal-group>
-                <a class="contact-email" href="mailto:rexyrex.dev@gmail.com" data-chars>rexyrex.dev@gmail.com</a>
-                <p class="muted" style="max-width: 58ch;">For app support, include the app name, your device model and the app version. I usually reply within a day or two.</p>
-                <dl class="facts contact-facts">
-                    <div><dt>handle</dt><dd>rexyrex</dd></div>
-                    <div><dt>stores</dt><dd>Google Play · App Store</dd></div>
-                    <div><dt>base</dt><dd>Korea</dd></div>
-                    <div><dt>mail</dt><dd><a href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a></dd></div>
-                </dl>
+            <div class="contact-grid">
+                <div data-reveal-group>
+                    <a class="contact-email" href="mailto:rexyrex.dev@gmail.com" data-chars>rexyrex.dev@gmail.com</a>
+                    <p class="muted" style="max-width: 58ch;">For app support, include the app name, your device model and the app version. I usually reply within a day or two.</p>
+                    <dl class="facts contact-facts">
+                        <div><dt>handle</dt><dd>rexyrex</dd></div>
+                        <div><dt>stores</dt><dd>Google Play · App Store</dd></div>
+                        <div><dt>base</dt><dd>Korea</dd></div>
+                        <div><dt>mail</dt><dd><a href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a></dd></div>
+                    </dl>
+                </div>
+                <aside class="now" data-reveal-group aria-labelledby="now-title">
+                    <span class="eyebrow">now</span>
+                    <h3 id="now-title">What's moving</h3>
+                    <ul class="now-list">
+                        <li><i class="now-dot is-live" aria-hidden="true"></i><span><b>DOODLINGS</b> just joined the games portal as the sixth game.</span></li>
+                        <li><i class="now-dot" aria-hidden="true"></i><span><b>Reverse Image Search</b> is being prepared for the App Store.</span></li>
+                        <li><i class="now-dot" aria-hidden="true"></i><span>A handful of unreleased apps are in the lab.</span></li>
+                        <li><i class="now-dot" aria-hidden="true"></i><span>This site: a command palette (<kbd data-palette-kbd>⌘K</kbd>), a <a href="/log/">devlog</a>, social cards, page transitions.</span></li>
+                    </ul>
+                    <span class="now-stamp">updated 2026-09-09</span>
+                </aside>
             </div>
         </section>
     </main>
@@ -459,6 +588,7 @@
         <span>© <span id="footer-year">2026</span> Rexyrex</span>
         <span>
             <a href="https://github.com/rexyrex/rexyrex.github.io" target="_blank" rel="noopener noreferrer">source</a>
+            · <a href="/log/">devlog</a>
             · <a href="/apps/">privacy policies</a>
             · <a href="/support/">support</a>
         </span>

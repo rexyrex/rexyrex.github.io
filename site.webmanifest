@@ -1,0 +1,48 @@
+{
+  "name": "rexyrex.github.io",
+  "short_name": "rexyrex",
+  "description": "Apps, games, and music, built by one person. Eight apps on Google Play, two on the App Store, six self-hosted browser games, a typing game.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f1214",
+  "theme_color": "#0f1214",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Typing Speed Test",
+      "short_name": "Typing",
+      "url": "/typing/index.html",
+      "icons": [
+        {
+          "src": "/assets/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Support",
+      "short_name": "Support",
+      "url": "/support/"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /parser/parserQuery.html
+Disallow: /parser/parserDownload.html
+Disallow: /smartthings-callback.html
+
+Sitemap: https://rexyrex.github.io/sitemap.xml
