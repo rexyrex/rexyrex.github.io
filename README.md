@@ -1,12 +1,12 @@
 # rexyrex.github.io
 
-Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) — an index of what Rexyrex ships: mobile apps (Google Play and the App Store), multiplayer browser games, music, a devlog, and the privacy-policy / support pages for published apps.
+Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) — an index of what Rexyrex ships: mobile apps (Google Play and the App Store), native macOS apps, multiplayer browser games, a live dashboard for a car, music, a devlog, and the privacy-policy / support pages for published apps.
 
 ## Pages
 
 | Path | What it is |
 |---|---|
-| `/` | Landing page: a scroll story — particle rex hero, word-by-word statement, pinned chapters for typing / balloons / apps, the games chapter, music, then the site index, a "now" card and contact (GSAP + Three.js, see below) |
+| `/` | Landing page: a scroll story — particle rex hero, word-by-word statement, pinned chapters for typing / balloons / apps, the games chapter, the macOS apps, the car dashboard, music, then the site index, a "now" card and contact (GSAP + Three.js, see below) |
 | `/typing/` | Typing speed game — Korean / English / programmer modes, Firebase leaderboards (jQuery + Bootstrap 4.6 + Firebase compat 8) |
 | `/deadlyBalloons/` | Landing page for the Deadly Balloons 2 desktop game (dependency-free) |
 | `/music/showcase.html` | Music page with a SoundCloud embed and links out |
@@ -38,10 +38,12 @@ The landing page is an Apple-style scroll story. Files: `css/landing.css` (hero,
 
 - **Hero** — the rex mascot rendered as ~7k particles sampled from `assets/rexGreenSmall.png` (colours included) on a fixed canvas, over a slow aurora. Assembles from a cloud on load, turns and drifts to the screen centre as you scroll, collapses into a single dot while the statement lights up "…by one developer". Long-pressing the rex still opens the easter egg (`js/index.js`) and makes the particles buzz. A `uTint` uniform darkens the cloud a little on the light theme (follows the toggle live). Written up in `/log/particle-rex.html`.
 - **Statement** — SplitText words scrubbed from faint to full, then the section pins for ~130% of the viewport while the dot charges, flashes and bursts across the screen (`window.rexHero.burst`). Rendering pauses once the burst is over.
-- **/typing/** — a plain section; the editor mockup types generic Korean, English and Java sentences on its own (time-based, human-ish rhythm) while it is on screen, cycling through the tabs.
+- **/typing/** — a plain section; the editor mockup types generic Korean, English and code sentences on its own (time-based, human-ish rhythm) while it is on screen, cycling through the tabs.
 - **/deadlyBalloons/** — pinned sky with thirty generated balloons at random depths (nearer = bigger, faster, on top; far = small and soft). A dozen pop on their own along the ride — ring flash, shards, "+100" — and every other balloon pops when clicked. A HUD keeps score.
 - **/apps/** — pinned horizontal track of eight CSS phones, each a small app mockup (status bar, app bar, cards, charts, chat, a mini game) with one tint per app. Phones tilt toward the pointer; their bars, rings and sparklines animate in when they come on screen. Native snap scrolling on narrow screens and in windows under 700px tall.
 - **games.rexy.win** — a plain reveal section (not pinned): one "browser window" per game, each drawn in CSS in the game's two accent colours from the portal's registry (tile maze + fire eggs, crosshair over a perspective floor, circuit traces, flashlight beam + blinking eyes, a self-drawing scribble, a chessboard). The "dino network" pill turns green when `rexChrome.pingGames()` resolves. The cards are static HTML — when the portal adds a game, add a card here, a row in the index and an entry in `js/palette.js`. Keep the copy count-free: the public pages describe the portal with adjectives ("multiplayer browser games"), never a tally, and never say where it is hosted.
+- **/Applications/** — a plain reveal section: one little macOS desktop per native app — a menu bar with the app's own status item, and a window or a popover hanging from it, all drawn in CSS. Bars fill, the pixel rex in Rex Boing's menu bar gallops and the usage ring lights once a card is on screen (`.is-live`, the same observer as the phones). Rex Boing links to its GitHub repo and releases; App Manager, Project Manager and AI Usage Tracker are in-house tools and their cards are static.
+- **~/teslamate-dashboard/** — the car's own screen: a dark map with a route that draws itself and a dot that follows it (SMIL `animateMotion`, removed under reduced motion), glass cards and four rolling charts. The speed counts up once on screen. The dashboard itself is private: nothing here links to it, and the copy never says where it runs.
 - **/music/** — waveform bars that grow in on scroll and rise under the pointer.
 - **Index + now + contact** — the directory listing, then a two-column contact section with a dated "now" card (`.now`, hand-edited; keep the stamp honest).
 - **Headlines** slide up out of line masks, the e-mail rises letter by letter, index rows get a light sweep on hover.
@@ -74,7 +76,7 @@ Rules that keep it working:
 
 ### Command palette (`/js/palette.js`)
 
-`⌘K` / `Ctrl K`, any `[data-palette-open]` button, or `window.rexPalette.open()`. A `<dialog>` listing pages, the games, every published app (privacy policy or store page), actions (toggle theme, copy / write e-mail, scroll to top, view this page's source) and the outbound links. Substring scoring with a subsequence fallback on titles; arrows / Tab / Enter / Esc; keystrokes inside the dialog are stopped so the typing game's document-level handler never counts them. The site index is also published as `window.rexSiteIndex` (event `rex:site-index`), which `/404.html` uses for its suggestions. Add a page or app there when you add one to the site.
+`⌘K` / `Ctrl K`, any `[data-palette-open]` button, or `window.rexPalette.open()`. A `<dialog>` listing pages, the games, every published app (privacy policy or store page), the macOS apps (Rex Boing to GitHub, the in-house tools to `/#mac`), actions (toggle theme, copy / write e-mail, scroll to top, view this page's source) and the outbound links. Substring scoring with a subsequence fallback on titles; arrows / Tab / Enter / Esc; keystrokes inside the dialog are stopped so the typing game's document-level handler never counts them. The site index is also published as `window.rexSiteIndex` (event `rex:site-index`), which `/404.html` uses for its suggestions. Add a page or app there when you add one to the site.
 
 Because the chrome is fetched at runtime, pages must be served over HTTP — `file://` won't show it:
 

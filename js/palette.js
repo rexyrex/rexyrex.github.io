@@ -14,13 +14,14 @@
         pages: [
             { title: 'Home', path: '/', hint: 'rexyrex.github.io', keys: 'index start landing rex home' },
             { title: 'Typing Speed Test', path: '/typing/index.html', hint: '/typing/', keys: 'typing 한타 영타 타자 keyboard wpm leaderboard game' },
-            { title: 'Deadly Balloons 2', path: '/deadlyBalloons/index.html', hint: '/deadlyBalloons/', keys: 'balloons java desktop game download trailer' },
+            { title: 'Deadly Balloons 2', path: '/deadlyBalloons/index.html', hint: '/deadlyBalloons/', keys: 'balloons desktop game download trailer' },
             { title: 'Music', path: '/music/showcase.html', hint: '/music/', keys: 'music soundcloud superpose newgrounds tracks audio' },
             { title: 'Animation lab', path: '/animation.html', hint: '/animation.html', keys: 'lab css text effects vue scratchpad animation' },
             { title: 'Apps & privacy policies', path: '/apps/', hint: '/apps/', keys: 'apps privacy policy store google play app store' },
             { title: 'Devlog', path: '/log/', hint: '/log/', keys: 'log blog devlog notes writing how it works' },
             { title: 'Support', path: '/support/', hint: '/support/', keys: 'support contact email help bug feedback' },
-            { title: 'KakaoParser help', path: '/parser/index.html', hint: '/parser/', keys: 'kakaoparser kakaotalk 카카오톡 faq 이용약관 help docs' }
+            { title: 'KakaoParser help', path: '/parser/index.html', hint: '/parser/', keys: 'kakaoparser kakaotalk 카카오톡 faq 이용약관 help docs' },
+            { title: 'TeslaMate dashboard', path: '/#tesla', hint: 'live car telemetry · on the home page', keys: 'tesla teslamate dashboard car telemetry mqtt map drive battery ev' }
         ],
         games: [
             { title: 'Rexy Arcade', path: 'https://crazy.rexy.win', hint: 'Bomberman-style dino party · 1–8 players', keys: 'rexy arcade crazy bomberman party' },
@@ -39,6 +40,12 @@
             { title: '카카오톡 대화 분석기 (KakaoParser)', path: '/apps/kakaoparser/privacy-policy/', hint: 'Google Play · App Store · privacy policy', keys: 'kakaoparser kakaotalk 카카오톡 대화 분석기 chat analyzer' },
             { title: '카톡 연애 분석기', path: '/apps/kakao_love_analyzer/privacy-policy/', hint: 'Google Play · App Store · privacy policy', keys: 'kakao love analyzer 연애 분석기 궁합' },
             { title: '사주 분석기', path: 'https://play.google.com/store/apps/details?id=com.rexyrex.saju', hint: 'Google Play', keys: 'saju 사주 운세 fortune' }
+        ],
+        mac: [
+            { title: 'Rex Boing', path: 'https://github.com/rexyrex/Rex-Boing', hint: 'menu bar telemetry · open source', keys: 'rex boing macos mac menu bar system monitor cpu gpu memory thermals telemetry dinosaur swift' },
+            { title: 'App Manager', path: '/#mac', hint: 'macOS · dashboard for the store apps', keys: 'app manager macos mac store portfolio fastlane deploy metadata screenshots swift' },
+            { title: 'Project Manager', path: '/#mac', hint: 'macOS · projects, processes and stray dev servers', keys: 'project manager macos mac dev servers processes ports git build install swift' },
+            { title: 'AI Usage Tracker', path: '/#mac', hint: 'macOS · how much Claude and Codex are left', keys: 'ai usage tracker claude codex limits quota menu bar macos mac swift' }
         ],
         links: [
             { title: 'games.rexy.win', path: 'https://games.rexy.win', hint: 'the game portal', keys: 'games portal arcade play' },
@@ -69,6 +76,7 @@
     addGroup('page', INDEX.pages);
     addGroup('game', INDEX.games);
     addGroup('app', INDEX.apps);
+    addGroup('mac', INDEX.mac);
 
     var actions = [
         { kind: 'action', title: 'Toggle theme', hint: 'light ↔ dark', keys: 'theme dark light mode toggle switch', run: function () {
@@ -96,8 +104,8 @@
     items = items.concat(actions);
     addGroup('link', INDEX.links);
 
-    var KIND_LABEL = { page: 'page', game: 'game', app: 'app', action: 'action', link: 'link' };
-    var GROUP_TITLE = { page: 'Pages', game: 'Games · games.rexy.win', app: 'Apps', action: 'Actions', link: 'Elsewhere' };
+    var KIND_LABEL = { page: 'page', game: 'game', app: 'app', mac: 'mac', action: 'action', link: 'link' };
+    var GROUP_TITLE = { page: 'Pages', game: 'Games · games.rexy.win', app: 'Apps', mac: 'macOS apps', action: 'Actions', link: 'Elsewhere' };
 
     /* ---------- Search ------------------------------------------ */
 

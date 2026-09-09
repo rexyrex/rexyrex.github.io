@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Rexyrex</title>
-    <meta name="description" content="Rexyrex builds mobile apps, games, and music from Korea. Apps on Google Play and the App Store, multiplayer browser games, a Korean and English typing game, Deadly Balloons, and KakaoTalk chat analyzers.">
+    <meta name="description" content="Rexyrex builds mobile apps, games, and music from Korea. Apps on Google Play and the App Store, native macOS apps, multiplayer browser games, a Korean and English typing game, Deadly Balloons, and KakaoTalk chat analyzers.">
     <meta name="color-scheme" content="dark light">
     <link rel="icon" href="/favicon.ico">
     <link rel="canonical" href="https://rexyrex.github.io/">
@@ -16,14 +16,14 @@
     <meta property="og:site_name" content="rexyrex.github.io">
     <meta property="og:url" content="https://rexyrex.github.io/">
     <meta property="og:title" content="Rexyrex — apps, games, and music, built by one person">
-    <meta property="og:description" content="Apps on Google Play and the App Store, multiplayer browser games, a Korean and English typing game, Deadly Balloons, and a few tracks.">
+    <meta property="og:description" content="Apps on Google Play and the App Store, native macOS apps, multiplayer browser games, a Korean and English typing game, Deadly Balloons, and a few tracks.">
     <meta property="og:image" content="https://rexyrex.github.io/assets/og/home.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Rexyrex — apps, games, and music, built by one person">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Rexyrex — apps, games, and music, built by one person">
-    <meta name="twitter:description" content="Apps on Google Play and the App Store, multiplayer browser games, a Korean and English typing game, Deadly Balloons, and a few tracks.">
+    <meta name="twitter:description" content="Apps on Google Play and the App Store, native macOS apps, multiplayer browser games, a Korean and English typing game, Deadly Balloons, and a few tracks.">
     <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/home.png">
     <script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,8 +70,8 @@
                     <p class="eyebrow hero-eyebrow" id="heroEyebrow" data-hero>rexyrex.github.io</p>
                     <h1 class="hero-title" id="hero-title">Apps, games, and music,<br>built by one person.</h1>
                     <p class="hero-lede" data-hero>
-                        <strong>Rexyrex</strong>, building from Korea: mobile apps on both stores, multiplayer
-                        browser games, a typing game with live leaderboards, and the occasional track.
+                        <strong>Rexyrex</strong>, building from Korea: mobile apps on both stores, native macOS apps,
+                        multiplayer browser games, a typing game with live leaderboards, and the occasional track.
                     </p>
                     <div class="hero-actions" data-hero>
                         <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
@@ -88,7 +88,7 @@
         <!-- 01 · Statement: lights up word by word, then holds while the rex bursts -->
         <section class="statement" id="statement" aria-label="About this site">
             <div class="wrap">
-                <p class="statement-text" id="statementText">Apps on Google Play and the App Store. A handful of multiplayer browser games. A typing game in Korean and English. A balloon-popping game in Java. A few tracks. Everything here is designed, built and maintained by one developer in Korea.</p>
+                <p class="statement-text" id="statementText">Apps on Google Play and the App Store. A handful of multiplayer browser games. A few native apps for the Mac. A typing game in Korean and English. A balloon-popping game for the desktop. A live dashboard for a car. A few tracks. Everything here is designed, built and maintained by one developer in Korea.</p>
             </div>
         </section>
 
@@ -140,7 +140,7 @@
                     <div class="chapter-copy chapter-copy-glass" data-reveal-group>
                         <span class="eyebrow">/deadlyBalloons/</span>
                         <h2 id="balloons-title" data-lines>Pop everything. Don't get popped.</h2>
-                        <p>Deadly Balloons 2 is a desktop game written in Java, for the hardcore balloon poppers. Watch the trailer, download it, or read the source.</p>
+                        <p>Deadly Balloons 2 is a desktop game for the hardcore balloon poppers. Watch the trailer, download it, or read the source.</p>
                         <div class="chapter-actions">
                             <a class="btn btn-primary" href="/deadlyBalloons/index.html">See the game <span class="arrow">→</span></a>
                             <a class="link-mono" href="/apps/deadly_balloons/privacy-policy/">also on mobile</a>
@@ -446,7 +446,182 @@
             </div>
         </section>
 
-        <!-- 06 · /music/ -->
+        <!-- 06 · /Applications/ — native macOS apps, each on its own little desktop -->
+        <section class="chapter chapter-mac" id="mac" aria-labelledby="mac-title">
+            <div class="wrap">
+                <div class="chapter-copy chapter-copy-wide mac-copy" data-reveal-group>
+                    <span class="eyebrow">/Applications/</span>
+                    <h2 id="mac-title" data-lines>Native on the Mac, menu bar first.</h2>
+                    <p>All Swift and SwiftUI. A tyrannosaur that runs faster when the Mac is busy, a dashboard for the store apps, a keeper of stray dev servers, and a gauge for how much Claude and Codex are left. Rex Boing is open source; the others are in-house tools.</p>
+                    <div class="chapter-actions">
+                        <a class="btn btn-primary" href="https://github.com/rexyrex/Rex-Boing/releases" target="_blank" rel="noopener noreferrer">Get Rex Boing</a>
+                        <a class="link-mono" href="https://github.com/rexyrex/Rex-Boing" target="_blank" rel="noopener noreferrer">source on GitHub</a>
+                    </div>
+                </div>
+                <div class="mac-grid" data-reveal-group>
+
+                    <a class="mac" href="https://github.com/rexyrex/Rex-Boing" target="_blank" rel="noopener noreferrer" style="--tint: var(--accent)">
+                        <span class="mac-desktop" aria-hidden="true">
+                            <span class="mac-menubar">
+                                <i class="mac-apple"></i><b>Rex Boing</b><i class="mac-menu">Dashboard</i><i class="mac-menu">Gallery</i>
+                                <span class="mac-menubar-right">
+                                    <span class="mac-item mac-item-on"><svg class="rex-run" viewBox="0 0 13 12" shape-rendering="crispEdges"><path d="M8 0h5v1h-5zM8 1h1v1h-1zM10 1h3v1h-3zM8 2h5v1h-5zM8 3h4v1h-4zM8 4h2v1h-2zM0 5h1v1h-1zM7 5h4v1h-4zM0 6h1v1h-1zM6 6h5v1h-5zM0 7h2v1h-2zM5 7h5v1h-5zM1 8h8v1h-8zM2 9h7v1h-7zM3 10h2v1h-2zM6 10h2v1h-2zM3 11h1v1h-1zM7 11h1v1h-1z"/></svg><b>37%</b></span>
+                                    <i class="ui-wifi"></i><i class="ui-bat"></i><i class="mac-clock">12:30</i>
+                                </span>
+                            </span>
+                            <span class="mac-window mac-popover">
+                                <span class="mac-body">
+                                    <span class="ui-card-head"><span class="ui-kicker">processor</span><b class="ui-fine">load 3.1 · die 48°C</b></span>
+                                    <span class="rb-hero"><b class="ui-big">37<small>%</small></b><span class="core-bars"><i style="--h: 22%"></i><i style="--h: 30%"></i><i style="--h: 18%"></i><i style="--h: 26%"></i><i class="p" style="--h: 64%"></i><i class="p" style="--h: 48%"></i><i class="p" style="--h: 82%"></i><i class="p" style="--h: 40%"></i><i class="p" style="--h: 55%"></i><i class="p" style="--h: 71%"></i></span></span>
+                                    <span class="ui-test"><i>GPU</i><span class="ui-bar"><span style="--p: 12%"></span></span><b>12%</b></span>
+                                    <span class="ui-test"><i>Memory</i><span class="ui-bar"><span style="--p: 57%"></span></span><b>18.2 GB</b></span>
+                                    <span class="ui-test"><i>Power</i><span class="ui-bar"><span style="--p: 34%"></span></span><b>11.4 W</b></span>
+                                    <span class="ui-test"><i>Fans</i><span class="ui-bar"><span style="--p: 20%"></span></span><b>1480 rpm</b></span>
+                                    <span class="ui-kicker">top · cpu</span>
+                                    <span class="ui-rows"><span><i class="ui-tag">app</i>Xcode<b>41%</b></span><span><i class="ui-tag">app</i>Google Chrome<b>13%</b></span></span>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="mac-meta">
+                            <b>Rex Boing</b>
+                            <span class="mac-tagline">A tiny tyrannosaur in the menu bar that quickens as the Mac gets busier. Behind it, a dashboard: processor, GPU, memory, thermals, power, network, storage, and which process is to blame.</span>
+                            <span class="mac-tags"><i>Menu bar · Telemetry</i><i>macOS 14+</i><i>Open source · MIT</i></span>
+                        </span>
+                    </a>
+
+                    <div class="mac" style="--tint: var(--tok-num)">
+                        <span class="mac-desktop" aria-hidden="true">
+                            <span class="mac-menubar">
+                                <i class="mac-apple"></i><b>App Manager</b><i class="mac-menu">Apps</i><i class="mac-menu">Deploy</i><i class="mac-menu">Window</i>
+                                <span class="mac-menubar-right"><i class="ui-wifi"></i><i class="ui-bat"></i><i class="mac-clock">12:30</i></span>
+                            </span>
+                            <span class="mac-window">
+                                <span class="mac-titlebar"><i></i><i></i><i></i><b>App Manager</b><em>release train</em></span>
+                                <span class="mac-split">
+                                    <span class="mac-sidebar">
+                                        <span class="ui-kicker">apps</span>
+                                        <i class="on" style="--dot: var(--tok-num)">Age Calculator</i>
+                                        <i style="--dot: var(--accent)">QR Scanner</i>
+                                        <i style="--dot: var(--tok-kw)">Reverse Image Search</i>
+                                        <i style="--dot: #5fc9b5">Exif Editor</i>
+                                        <i style="--dot: var(--tok-str)">KakaoParser</i>
+                                        <i style="--dot: #e8895a">Saju</i>
+                                    </span>
+                                    <span class="mac-main">
+                                        <span class="ui-card-head"><span class="ui-kicker">deploy · ios_testflight</span><b class="ui-badge">running</b></span>
+                                        <span class="am-console"><i>$ fastlane ios_testflight</i><i>[12:30:04] flutter build ipa --release</i><i>[12:31:52] uploading 1.4.2 (39) to TestFlight…</i><i class="ok">[12:33:10] ✓ processing complete</i></span>
+                                        <span class="ui-card-head"><span class="ui-kicker">installs · 14 days</span><b class="ui-fine">↑ 8%</b></span>
+                                        <span class="am-chart"><i style="--h: 40%"></i><i style="--h: 52%"></i><i style="--h: 38%"></i><i style="--h: 60%"></i><i style="--h: 46%"></i><i style="--h: 71%"></i><i style="--h: 58%"></i><i style="--h: 64%"></i><i style="--h: 80%"></i><i style="--h: 62%"></i><i style="--h: 74%"></i><i style="--h: 88%"></i><i style="--h: 70%"></i><i style="--h: 96%"></i></span>
+                                        <span class="ui-card-head"><span class="ui-kicker">listing · en-US</span><b class="ui-fine">title 24/30 · short 71/80</b></span>
+                                    </span>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="mac-meta">
+                            <b>App Manager</b>
+                            <span class="mac-tagline">One window for the whole app portfolio: store metadata and screenshots, fastlane deploys with live logs, store questionnaires, release state, revenue and health, and embedded agent sessions.</span>
+                            <span class="mac-tags"><i>Portfolio · Stores</i><i>In-house</i><i>SwiftUI</i></span>
+                        </span>
+                    </div>
+
+                    <div class="mac" style="--tint: var(--tok-kw)">
+                        <span class="mac-desktop" aria-hidden="true">
+                            <span class="mac-menubar">
+                                <i class="mac-apple"></i><b>Project Manager</b><i class="mac-menu">Projects</i><i class="mac-menu">Tools</i>
+                                <span class="mac-menubar-right">
+                                    <span class="mac-item mac-item-on"><i class="pm-glyph"></i><b>3 running</b></span>
+                                    <i class="ui-wifi"></i><i class="ui-bat"></i><i class="mac-clock">12:30</i>
+                                </span>
+                            </span>
+                            <span class="mac-window">
+                                <span class="mac-titlebar"><i></i><i></i><i></i><b>Project Manager</b><em>~/projects</em></span>
+                                <span class="mac-body">
+                                    <span class="pm-row"><span class="pm-name"><b>teslamate-dashboard</b><i>node · :8088</i></span><span class="pm-inst"><b>2</b> running <em class="pm-dup">duplicate</em></span><span class="pm-who">Claude Code</span><span class="pm-btn">Stop</span></span>
+                                    <span class="pm-row"><span class="pm-name"><b>AppManager</b><i>xcode · mac app</i></span><span class="pm-inst"><b>1</b> running</span><span class="pm-who">Mac app</span><span class="pm-btn">Stop</span></span>
+                                    <span class="pm-row is-idle"><span class="pm-name"><b>rexyrex.github.io</b><i>python · :8123</i></span><span class="pm-inst"><b>0</b> running</span><span class="pm-who">—</span><span class="pm-btn pm-btn-go">Start</span></span>
+                                    <span class="pm-row is-idle"><span class="pm-name"><b>Rex-Boing</b><i>xcodegen · mac app</i></span><span class="pm-inst"><b>0</b> running</span><span class="pm-who">—</span><span class="pm-btn pm-btn-go">Install</span></span>
+                                    <span class="pm-git"><i class="ui-tag">git</i>main · ↑2 · 3 changed<b>commit · push · pull</b></span>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="mac-meta">
+                            <b>Project Manager</b>
+                            <span class="mac-tagline">Watches every project folder, counts what is running, flags the duplicate dev servers an agent spawned and forgot, and builds or installs a Mac app in one click. Git status at a glance.</span>
+                            <span class="mac-tags"><i>Processes · Git</i><i>In-house</i><i>Swift 6</i></span>
+                        </span>
+                    </div>
+
+                    <div class="mac" style="--tint: #5fc9b5">
+                        <span class="mac-desktop" aria-hidden="true">
+                            <span class="mac-menubar">
+                                <i class="mac-apple"></i><b>AI Usage Tracker</b><i class="mac-menu">Refresh</i><i class="mac-menu">Settings</i>
+                                <span class="mac-menubar-right">
+                                    <span class="mac-item mac-item-on"><i class="ai-ring" style="--p: 62"></i><b>62%</b></span>
+                                    <i class="ui-wifi"></i><i class="ui-bat"></i><i class="mac-clock">12:30</i>
+                                </span>
+                            </span>
+                            <span class="mac-window mac-popover">
+                                <span class="mac-body">
+                                    <span class="ui-card-head"><span class="ui-kicker">claude</span><b class="ui-fine">resets in 2h 14m</b></span>
+                                    <span class="ai-row"><i>5-hour</i><span class="ai-bar"><span class="ai-new" style="--p: 62%"></span><span class="ai-old" style="--p: 55%"></span></span><b>62%</b><em>▲ +7%</em></span>
+                                    <span class="ai-row"><i>7-day</i><span class="ai-bar"><span class="ai-new" style="--p: 41%"></span><span class="ai-old" style="--p: 39%"></span></span><b>41%</b><em>▲ +2%</em></span>
+                                    <span class="ui-card-head"><span class="ui-kicker">codex</span><b class="ui-fine">resets in 4h 02m</b></span>
+                                    <span class="ai-row"><i>5-hour</i><span class="ai-bar"><span class="ai-new" style="--p: 18%"></span><span class="ai-old" style="--p: 18%"></span></span><b>18%</b><em></em></span>
+                                    <span class="ai-row"><i>weekly</i><span class="ai-bar"><span class="ai-new" style="--p: 33%"></span><span class="ai-old" style="--p: 30%"></span></span><b>33%</b><em>▲ +3%</em></span>
+                                    <span class="ui-fine">refreshed 40 s ago · every 5 min · ⌘R</span>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="mac-meta">
+                            <b>AI Usage Tracker</b>
+                            <span class="mac-tagline">How much Claude and Codex are left, from the menu bar: every usage window the signed-in accounts expose, a ring that shades toward red, and the slice used since the last refresh in amber.</span>
+                            <span class="mac-tags"><i>Menu bar · Gauges</i><i>In-house</i><i>SwiftUI</i></span>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 07 · ~/teslamate-dashboard/ — live car telemetry, drawn as the car's own screen -->
+        <section class="chapter chapter-tesla" id="tesla" aria-labelledby="tesla-title">
+            <div class="wrap chapter-grid tesla-grid">
+                <div class="chapter-copy" data-reveal-group>
+                    <span class="eyebrow">~/teslamate-dashboard/</span>
+                    <h2 id="tesla-title" data-lines>A dashboard for the car.</h2>
+                    <p>Live telemetry from TeslaMate over MQTT on a dark map with glass cards: speed, power, battery, climate, tire pressure, drive recaps and rolling charts. Plus full-screen visualizer scenes, an AI co-pilot that comments on the drive, and a few tiny games. Built to run in the car's own browser.</p>
+                    <div class="chapter-actions">
+                        <a class="link-mono" href="https://github.com/teslamate-org/teslamate" target="_blank" rel="noopener noreferrer">built on TeslaMate</a>
+                    </div>
+                </div>
+                <div class="car" id="carScreen" data-reveal aria-hidden="true">
+                    <span class="car-screen">
+                        <span class="car-map">
+                            <svg class="car-route" viewBox="0 0 320 200" preserveAspectRatio="none">
+                                <path id="carRoutePath" class="car-route-line" pathLength="1" d="M-12 156 C 38 148, 58 92, 110 98 S 172 154, 212 120 S 250 40, 300 62 L 340 48"/>
+                                <g class="car-dot" transform="translate(212 120)">
+                                    <circle class="car-dot-pulse" r="6"/>
+                                    <circle class="car-dot-core" r="3"/>
+                                    <animateMotion dur="16s" repeatCount="indefinite" rotate="auto"><mpath href="#carRoutePath"/></animateMotion>
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="car-card car-speed"><i class="car-kicker">speed</i><b><span id="carSpeed" data-to="87">0</span><small>km/h</small></b><em class="car-pill">driving</em></span>
+                        <span class="car-card car-battery"><i class="car-kicker">battery</i><b>74<small>%</small></b><span class="car-batbar"><span style="--p: 74%"></span></span><em>est 312 km · rated 338 km</em></span>
+                        <span class="car-card car-climate"><i class="car-kicker">climate</i><b>21<small>°</small></b><em>outside 9°</em></span>
+                        <span class="car-card car-drive"><i class="car-kicker">current drive</i><span class="car-stats"><span><b>24.6</b>km</span><span><b>31</b>min</span><span><b>−12</b>kW</span><span><b>142</b>m ↑</span></span></span>
+                        <span class="car-charts">
+                            <span class="car-chart" style="--c: #3b82f6"><i>speed</i><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,24 8,20 16,22 24,14 32,16 40,9 48,12 56,7 64,10 72,5 80,8 88,4 100,6" vector-effect="non-scaling-stroke"/></svg></span>
+                            <span class="car-chart" style="--c: #10b981"><i>power</i><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,15 8,12 16,18 24,8 32,20 40,10 48,16 56,6 64,22 72,12 80,17 88,9 100,14" vector-effect="non-scaling-stroke"/></svg></span>
+                            <span class="car-chart" style="--c: #f59e0b"><i>elevation</i><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,26 12,24 24,22 36,18 48,17 60,12 72,10 84,7 100,4" vector-effect="non-scaling-stroke"/></svg></span>
+                            <span class="car-chart" style="--c: #a78bfa"><i>tires · psi</i><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,12 50,11 100,12" vector-effect="non-scaling-stroke"/><polyline points="0,14 50,15 100,14" vector-effect="non-scaling-stroke"/><polyline points="0,17 50,16 100,17" vector-effect="non-scaling-stroke"/><polyline points="0,19 50,20 100,19" vector-effect="non-scaling-stroke"/></svg></span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 08 · /music/ -->
         <section class="chapter chapter-music" id="music" aria-labelledby="music-title">
             <div class="wrap music-grid">
                 <div class="chapter-copy" data-reveal-group>
@@ -464,7 +639,7 @@
             </div>
         </section>
 
-        <!-- 07 · Index: the site's own directory listing -->
+        <!-- 09 · Index: the site's own directory listing -->
         <section class="section wrap" id="index">
             <div class="section-head" data-reveal>
                 <span class="eyebrow">/</span>
@@ -492,7 +667,7 @@
                         <span class="index-name">Deadly Balloons 2</span>
                         <span class="index-desc">Desktop balloon-popping game. Trailer, download and source.</span>
                     </span>
-                    <span class="index-meta">Java</span>
+                    <span class="index-meta">desktop</span>
                     <span class="index-arrow" aria-hidden="true">→</span>
                 </a>
                 <a class="index-row" href="/apps/">
@@ -512,6 +687,24 @@
                     </span>
                     <span class="index-meta">Node · WebSockets · Three.js</span>
                     <span class="index-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a class="index-row" href="#mac">
+                    <span class="index-path">/Applications/</span>
+                    <span class="index-body">
+                        <span class="index-name">macOS apps</span>
+                        <span class="index-desc">Rex Boing, App Manager, Project Manager and AI Usage Tracker. Menu bar first; Rex Boing is open source.</span>
+                    </span>
+                    <span class="index-meta">Swift · SwiftUI</span>
+                    <span class="index-arrow" aria-hidden="true">↑</span>
+                </a>
+                <a class="index-row" href="#tesla">
+                    <span class="index-path">~/teslamate-dashboard/</span>
+                    <span class="index-body">
+                        <span class="index-name">TeslaMate dashboard</span>
+                        <span class="index-desc">Live car telemetry on a dark map, built for the car's own browser.</span>
+                    </span>
+                    <span class="index-meta">MQTT · Leaflet · Three.js</span>
+                    <span class="index-arrow" aria-hidden="true">↑</span>
                 </a>
                 <a class="index-row" href="/music/showcase.html">
                     <span class="index-path">/music/</span>
@@ -552,7 +745,7 @@
             </div>
         </section>
 
-        <!-- 08 · Contact -->
+        <!-- 10 · Contact -->
         <section class="section wrap contact" id="contact">
             <div class="section-head" data-reveal>
                 <span class="eyebrow">/support/</span>
@@ -573,6 +766,7 @@
                     <span class="eyebrow">now</span>
                     <h3 id="now-title">What's moving</h3>
                     <ul class="now-list">
+                        <li><i class="now-dot is-live" aria-hidden="true"></i><span><b>Rex Boing</b> 1.0 is out: a tyrannosaur for the Mac menu bar, <a href="https://github.com/rexyrex/Rex-Boing/releases" target="_blank" rel="noopener noreferrer">on GitHub</a>.</span></li>
                         <li><i class="now-dot is-live" aria-hidden="true"></i><span><b>DOODLINGS</b> just joined the games portal.</span></li>
                         <li><i class="now-dot" aria-hidden="true"></i><span><b>Reverse Image Search</b> is being prepared for the App Store.</span></li>
                         <li><i class="now-dot" aria-hidden="true"></i><span>A handful of unreleased apps are in the lab.</span></li>

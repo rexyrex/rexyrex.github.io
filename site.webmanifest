@@ -1,7 +1,7 @@
 {
   "name": "rexyrex.github.io",
   "short_name": "rexyrex",
-  "description": "Apps, games, and music, built by one person. Apps on Google Play and the App Store, multiplayer browser games, a typing game.",
+  "description": "Apps, games, and music, built by one person. Apps on Google Play and the App Store, native macOS apps, multiplayer browser games, a typing game.",
   "id": "/",
   "start_url": "/?source=pwa",
   "scope": "/",

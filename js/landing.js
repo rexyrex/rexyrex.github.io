@@ -268,9 +268,10 @@
         }
     }
 
-    // Phone mockups come alive (bars fill, rings draw) once on screen.
+    // Mockups come alive (bars fill, rings draw, the rex gallops, the
+    // route draws) once on screen: the phones, the Mac desktops, the car.
     (function () {
-        var phones = $$('.phone');
+        var phones = $$('.phone, .mac, .car');
         if (!phones.length) return;
         if (reduce || !hasIO) {
             phones.forEach(function (p) { p.classList.add('is-live'); });
@@ -285,6 +286,45 @@
             });
         }, { threshold: 0.3 });
         phones.forEach(function (p) { io.observe(p); });
+    })();
+
+    // The car screen: the speed counts up once it is on screen. With
+    // reduced motion the number is just set, and the dot on the map stays
+    // put (animateMotion is SMIL, so CSS cannot switch it off).
+    (function () {
+        var car = document.getElementById('carScreen');
+        var speed = document.getElementById('carSpeed');
+        if (!car || !speed) return;
+        var target = parseInt(speed.getAttribute('data-to'), 10) || 0;
+        if (reduce) {
+            speed.textContent = String(target);
+            $$('animateMotion', car).forEach(function (a) { a.parentNode.removeChild(a); });
+            return;
+        }
+        var started = false;
+        function run() {
+            if (started) return;
+            started = true;
+            var t0 = null;
+            function step(now) {
+                if (t0 === null) t0 = now;
+                var p = Math.min(1, (now - t0) / 1500);
+                var e = 1 - Math.pow(1 - p, 3);
+                speed.textContent = String(Math.round(target * e));
+                if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+        if (!hasIO) { run(); return; }
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                    run();
+                    io.unobserve(car);
+                }
+            });
+        }, { threshold: 0.3 });
+        io.observe(car);
     })();
 
     // games.rexy.win pill: "games · up" once the portal answers a ping

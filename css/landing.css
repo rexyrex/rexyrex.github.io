@@ -2580,6 +2580,953 @@ html.motion-off .love-fill {
   }
 }
 
+/* ---------- 11b. /Applications/ — native macOS apps -------------- */
+/* One little desktop per app: a menu bar with the app's own status item
+   and a window (or a popover hanging from the item) drawn in CSS. Bars
+   fill and the rex gallops once the card is on screen (.is-live, the same
+   observer as the phones). A plain reveal section, not a pinned one. */
+
+.chapter-mac {
+  border-top: 1px solid var(--line);
+  padding: clamp(4rem, 12vh, 8rem) 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 0%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%),
+    var(--bg);
+}
+
+.mac-copy {
+  margin-bottom: clamp(2rem, 5vh, 3.5rem);
+}
+
+.mac-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.25rem) clamp(1rem, 2.5vw, 1.75rem);
+}
+
+.mac {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  color: inherit;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.mac:hover {
+  text-decoration: none;
+}
+
+.mac-desktop {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background:
+    radial-gradient(80% 70% at 18% 12%, color-mix(in srgb, var(--tint) 38%, transparent), transparent 62%),
+    radial-gradient(60% 60% at 88% 92%, color-mix(in srgb, var(--tint) 20%, transparent), transparent 60%),
+    var(--bg-inset);
+  box-shadow: var(--shadow);
+  transform: translateZ(0);
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+a.mac:hover .mac-desktop,
+a.mac:focus-visible .mac-desktop {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--tint) 55%, var(--line));
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--tint) 16%, transparent),
+    0 30px 60px -28px color-mix(in srgb, var(--tint) 55%, transparent),
+    var(--shadow);
+}
+
+/* The menu bar */
+.mac-menubar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 9px;
+  background: color-mix(in srgb, var(--bg-raised) 82%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-sans);
+  font-size: 9px;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.mac-apple {
+  width: 9px;
+  height: 10px;
+  border-radius: 50% 50% 46% 46% / 55% 55% 45% 45%;
+  background: var(--fg);
+  flex-shrink: 0;
+}
+
+.mac-menubar > b {
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.mac-menu {
+  font-style: normal;
+}
+
+.mac-menubar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+}
+
+.mac-clock {
+  font-style: normal;
+}
+
+.mac-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 17px;
+  padding: 0 6px;
+  border-radius: 4px;
+  color: var(--fg);
+}
+
+.mac-item b {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.mac-item-on {
+  background: color-mix(in srgb, var(--fg) 12%, transparent);
+}
+
+/* The pixel rex in Rex Boing's status item: the whole silhouette gallops. */
+.rex-run {
+  width: 14px;
+  height: 13px;
+  color: var(--tint);
+  fill: currentColor;
+  transform-origin: 50% 100%;
+}
+
+.is-live .rex-run,
+html.motion-off .rex-run {
+  animation: rexGallop 0.55s ease-in-out infinite;
+}
+
+@keyframes rexGallop {
+  0%, 100% {
+    transform: translateY(0) scale(1.06, 0.92);
+  }
+  45% {
+    transform: translateY(-3px) scale(0.94, 1.08);
+  }
+  70% {
+    transform: translateY(-1px) scale(1, 1);
+  }
+}
+
+/* Project Manager's status item: a tiny stack of running instances. */
+.pm-glyph {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background:
+    linear-gradient(var(--tint), var(--tint)) 0 0 / 100% 2px no-repeat,
+    linear-gradient(var(--tint), var(--tint)) 0 50% / 100% 2px no-repeat,
+    linear-gradient(var(--tint), var(--tint)) 0 100% / 100% 2px no-repeat;
+}
+
+/* AI Usage Tracker's status item: a ring filled to the reading. */
+.ai-ring {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: conic-gradient(var(--tint) calc(var(--p) * 1%), var(--line-strong) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent 55%, #000 58%);
+  mask: radial-gradient(farthest-side, transparent 55%, #000 58%);
+}
+
+/* Windows and popovers */
+.mac-window {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 34px;
+  bottom: -6px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: 9px 9px 0 0;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  background: var(--bg-raised);
+  box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  line-height: 1.35;
+  color: var(--fg-muted);
+}
+
+.mac-popover {
+  left: auto;
+  right: 12px;
+  width: 62%;
+  top: 27px;
+  bottom: auto;
+  max-height: calc(100% - 27px);
+  border-radius: 9px;
+  border-bottom: 1px solid var(--line);
+}
+
+.mac-popover::before {
+  content: "";
+  position: absolute;
+  right: 26px;
+  top: -5px;
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+  background: var(--bg-raised);
+  border-left: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+}
+
+.mac-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 9px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-inset);
+  white-space: nowrap;
+}
+
+.mac-titlebar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  flex-shrink: 0;
+}
+
+.mac-titlebar i:nth-child(1) {
+  background: #ff5f57;
+}
+
+.mac-titlebar i:nth-child(2) {
+  background: #febc2e;
+}
+
+.mac-titlebar i:nth-child(3) {
+  background: #28c840;
+}
+
+.mac-titlebar b {
+  margin-left: 5px;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.mac-titlebar em {
+  margin-left: auto;
+  font-style: normal;
+  color: var(--fg-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mac-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 9px;
+  min-width: 0;
+}
+
+.mac-body .ui-kicker {
+  white-space: nowrap;
+}
+
+.mac-body .ui-fine {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mac-split {
+  display: grid;
+  grid-template-columns: 34% minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+}
+
+.mac-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 6px;
+  border-right: 1px solid var(--line);
+  background: var(--bg-inset);
+  overflow: hidden;
+}
+
+.mac-sidebar .ui-kicker {
+  padding: 0 5px 2px;
+}
+
+.mac-sidebar i {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 8.5px;
+  color: var(--fg-muted);
+  padding: 2px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mac-sidebar i::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--dot, var(--tint));
+  flex-shrink: 0;
+}
+
+.mac-sidebar i.on {
+  background: color-mix(in srgb, var(--tint) 18%, transparent);
+  color: var(--fg);
+}
+
+.mac-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 9px;
+  min-width: 0;
+}
+
+/* Rex Boing: the processor hero and per-core bars (E-cluster dim, P-cluster in the tint) */
+.rb-hero {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.core-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 22px;
+  flex: 1;
+}
+
+.core-bars i {
+  flex: 1;
+  height: 8%;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--tint) 45%, var(--line));
+  transition: height 0.9s var(--ease);
+}
+
+.core-bars i.p {
+  background: var(--tint);
+}
+
+.is-live .core-bars i,
+html.motion-off .core-bars i {
+  height: var(--h);
+}
+
+/* App Manager: a deploy console and an installs chart */
+.am-console {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 5px 7px;
+  border-radius: 6px;
+  background: var(--bg-inset);
+  border: 1px solid var(--line);
+  font-size: 7.5px;
+  color: var(--fg-muted);
+  min-width: 0;
+}
+
+.am-console i {
+  font-style: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.am-console i.ok {
+  color: var(--ok);
+}
+
+.am-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 26px;
+}
+
+.am-chart i {
+  flex: 1;
+  height: 6%;
+  border-radius: 1px 1px 0 0;
+  background: var(--tint);
+  opacity: 0.85;
+  transition: height 0.9s var(--ease);
+}
+
+.is-live .am-chart i,
+html.motion-off .am-chart i {
+  height: var(--h);
+}
+
+/* Project Manager: instance rows */
+.pm-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--bg-inset);
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.pm-row > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pm-name {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.pm-name b {
+  color: var(--fg);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pm-name i {
+  font-style: normal;
+  font-size: 7.5px;
+  color: var(--fg-faint);
+}
+
+.pm-inst b {
+  color: var(--tint);
+  font-weight: 600;
+}
+
+.is-idle .pm-inst b {
+  color: var(--fg-faint);
+}
+
+.pm-dup {
+  font-style: normal;
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0 4px;
+  border-radius: 3px;
+  color: var(--warn);
+  background: color-mix(in srgb, var(--warn) 16%, transparent);
+}
+
+.pm-who {
+  color: var(--fg-faint);
+}
+
+.pm-btn {
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--line-strong);
+  color: var(--fg);
+  font-size: 7.5px;
+}
+
+.pm-btn-go {
+  border-color: color-mix(in srgb, var(--tint) 45%, transparent);
+  color: var(--tint);
+}
+
+.pm-git {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.pm-git b {
+  margin-left: auto;
+  font-weight: 400;
+  color: var(--fg-faint);
+}
+
+/* AI Usage Tracker: each bar carries the slice used since the last refresh in amber */
+.ai-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 30px 34px;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.ai-row i {
+  font-style: normal;
+  color: var(--fg-muted);
+}
+
+.ai-row b {
+  text-align: right;
+  color: var(--fg);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.ai-row em {
+  font-style: normal;
+  font-size: 7.5px;
+  color: var(--warn);
+}
+
+.ai-bar {
+  position: relative;
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.ai-bar > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-radius: 3px;
+  transition: width 1.1s var(--ease);
+}
+
+.ai-bar .ai-new {
+  background: var(--warn);
+}
+
+.ai-bar .ai-old {
+  background: var(--tint);
+}
+
+.is-live .ai-bar > span,
+html.motion-off .ai-bar > span {
+  width: var(--p);
+}
+
+/* Captions under each desktop */
+.mac-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0 0.15rem;
+}
+
+.mac-meta > b {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+
+.mac-tagline {
+  color: var(--fg-muted);
+  font-size: 0.92rem;
+}
+
+.mac-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+}
+
+.mac-tags i {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--fg-faint);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.05em 0.4em;
+  white-space: nowrap;
+}
+
+.mac-tags i:first-child {
+  color: var(--tint);
+  border-color: color-mix(in srgb, var(--tint) 40%, transparent);
+}
+
+/* ---------- 11c. ~/teslamate-dashboard/ — the car screen ------------ */
+/* The dashboard as it looks on the car's display: a dark map with a route
+   that draws itself and a dot that follows it (SMIL animateMotion, so it
+   moves in the SVG's own units), glass cards, four rolling charts. The
+   screen stays dark on the light theme, like a real display would. */
+
+.chapter-tesla {
+  border-top: 1px solid var(--line);
+  padding: clamp(4rem, 12vh, 8rem) 0;
+  background:
+    radial-gradient(ellipse 55% 50% at 85% 100%, rgba(59, 130, 246, 0.12), transparent 70%),
+    var(--bg);
+}
+
+.car {
+  display: block;
+  min-width: 0;
+  padding: 7px;
+  border-radius: 16px;
+  background: #0b0d12;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.car-screen {
+  --map: #0a0e1a;
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--map);
+  color: #e5e7eb;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1.3;
+}
+
+.car-map {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 60% at 65% 45%, rgba(59, 130, 246, 0.14), transparent 70%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 26px),
+    linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.05) 38.4%, rgba(255, 255, 255, 0.05) 40%, transparent 40.4%),
+    linear-gradient(20deg, transparent 58%, rgba(255, 255, 255, 0.045) 58.4%, rgba(255, 255, 255, 0.045) 59.6%, transparent 60%),
+    var(--map);
+}
+
+.car-route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.car-route-line {
+  fill: none;
+  stroke: #3b82f6;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.7));
+}
+
+.car.is-live .car-route-line,
+html.motion-off .car-route-line {
+  animation: routeDraw 2.6s var(--ease) forwards;
+}
+
+@keyframes routeDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.car-dot-core {
+  fill: #3b82f6;
+  stroke: #fff;
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.car-dot-pulse {
+  fill: rgba(59, 130, 246, 0.35);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: carPulse 1.8s ease-out infinite;
+}
+
+@keyframes carPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.car-card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: rgba(15, 20, 35, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+  min-width: 0;
+}
+
+.car-kicker {
+  font-style: normal;
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.car-card > b {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.car-card > b small {
+  font-size: 8.5px;
+  font-weight: 400;
+  color: #9ca3af;
+  margin-left: 3px;
+  letter-spacing: 0;
+}
+
+.car-card > em {
+  font-style: normal;
+  font-size: 7.5px;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.car-speed {
+  left: 4%;
+  top: 6%;
+  width: 30%;
+}
+
+.car-speed > b {
+  font-size: 30px;
+}
+
+.car-pill {
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 7px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.car-battery {
+  left: 4%;
+  top: 44%;
+  width: 30%;
+}
+
+.car-batbar {
+  display: block;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.car-batbar > span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #10b981, #34d399);
+  transition: width 1.2s var(--ease);
+}
+
+.is-live .car-batbar > span,
+html.motion-off .car-batbar > span {
+  width: var(--p);
+}
+
+.car-climate {
+  right: 4%;
+  top: 6%;
+  width: 20%;
+}
+
+.car-drive {
+  right: 4%;
+  top: 34%;
+  width: 34%;
+}
+
+.car-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 8px;
+  font-size: 7.5px;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.car-stats b {
+  display: inline-block;
+  margin-right: 3px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 11px;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.car-charts {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 5%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.car-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 5px 7px 4px;
+  border-radius: 7px;
+  background: rgba(15, 20, 35, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  min-width: 0;
+}
+
+.car-chart i {
+  font-style: normal;
+  font-size: 6.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.car-chart svg {
+  display: block;
+  width: 100%;
+  height: 20px;
+  overflow: visible;
+}
+
+.car-chart polyline {
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--c) 70%, transparent));
+}
+
+/* Landing-page index: the two new paths are long, so the column gets a little wider. */
+@media (min-width: 721px) {
+  .landing .index-head,
+  .landing .index-row {
+    grid-template-columns: minmax(8.5rem, 12.5rem) minmax(0, 1fr) auto 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .mac-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .car-drive {
+    display: none;
+  }
+
+  .car-climate {
+    width: 28%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rex-run,
+  .car-dot-pulse {
+    animation: none;
+  }
+
+  .car-route-line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .car-dot-pulse {
+    opacity: 0.5;
+  }
+}
+
 /* ---------- 12. Contact + now ---------------------------------- */
 
 .contact-grid {
