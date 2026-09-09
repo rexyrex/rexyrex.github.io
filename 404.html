@@ -315,9 +315,28 @@ ls: <b id="nfPath2"></b>: No such file or directory
             var scored = cands.map(function (c) {
                 var ts = tokens(c.path + ' ' + c.title + ' ' + (c.keys || ''));
                 var shared = 0;
-                here.forEach(function (t) { if (ts.indexOf(t) !== -1) shared++; });
-                var d = seg ? lev(seg, lastSegment(c.path) || c.title.toLowerCase()) : 99;
-                var s = shared * 10 + (d <= 2 ? 8 - d * 2 : 0) + (seg && lastSegment(c.path).indexOf(seg) === 0 ? 4 : 0);
+                here.forEach(function (t) {
+                    if (ts.indexOf(t) !== -1) { shared += 10; return; }
+                    // "kakao-parser" should still find "kakaoparser": partial credit
+                    // when a requested token is part of a candidate token or vice versa.
+                    for (var i = 0; i < ts.length; i++) {
+                        var x = ts[i];
+                        if (x.length > 2 && t.length > 2 && (x.indexOf(t) !== -1 || t.indexOf(x) !== -1)) { shared += 6; return; }
+                    }
+                });
+                // Closest edit distance between the failed segment and any part
+                // of the candidate's path or title ("musik" → /music/showcase.html).
+                var parts = tokens(c.path).concat([c.title.toLowerCase(), lastSegment(c.path)]);
+                var d = 99;
+                var prefix = false;
+                if (seg) {
+                    parts.forEach(function (x) {
+                        if (!x) return;
+                        d = Math.min(d, lev(seg, x));
+                        if (x.indexOf(seg) === 0) prefix = true;
+                    });
+                }
+                var s = shared + (d <= 2 ? 8 - d * 2 : 0) + (prefix ? 4 : 0);
                 return { c: c, s: s };
             }).filter(function (r) { return r.s > 0; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 3);
             if (!scored.length) return;
