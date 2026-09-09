@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A command palette, page transitions and a sixth game — Rexyrex</title>
+    <title>A command palette, page transitions and a chapter for the games — Rexyrex</title>
     <meta name="description" content="What changed on rexyrex.github.io in September 2026: a command palette on every page, cross-document view transitions, a games chapter, social cards, a 404 page and a web manifest.">
     <meta name="color-scheme" content="dark light">
     <link rel="icon" href="/favicon.ico">
@@ -15,7 +15,7 @@
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="rexyrex.github.io">
     <meta property="og:url" content="https://rexyrex.github.io/log/2026-09-renewal.html">
-    <meta property="og:title" content="A command palette, page transitions and a sixth game">
+    <meta property="og:title" content="A command palette, page transitions and a chapter for the games">
     <meta property="og:description" content="What changed on the site in September 2026.">
     <meta property="og:image" content="https://rexyrex.github.io/assets/og/log.png">
     <meta property="og:image:width" content="1200">
@@ -23,7 +23,7 @@
     <meta property="og:image:alt" content="Devlog — Rexyrex">
     <meta property="article:published_time" content="2026-09-09">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="A command palette, page transitions and a sixth game">
+    <meta name="twitter:title" content="A command palette, page transitions and a chapter for the games">
     <meta name="twitter:description" content="What changed on the site in September 2026.">
     <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/log.png">
     <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
@@ -41,22 +41,22 @@
     <main class="wrap" id="main">
         <header class="post-head" data-reveal-group>
             <p class="eyebrow">/log/2026-09-renewal.html</p>
-            <h1>A command palette, page transitions and a sixth game</h1>
+            <h1>A command palette, page transitions and a chapter for the games</h1>
             <p class="post-meta"><time datetime="2026-09-09">2026-09-09</time><span>·</span><span>site · chrome</span><span>·</span><span>4 min</span></p>
             <p class="lede">The front page got its scroll story last week. This week is about everything around it: the chrome every page shares, what a shared link looks like, and the things a site is expected to have in 2026.</p>
         </header>
 
         <article class="article post" data-reveal-group>
             <h2>⌘K on every page</h2>
-            <p>Press <kbd>⌘K</kbd> (<kbd>Ctrl K</kbd> elsewhere), or click the search button in the top bar or the status bar. A palette lists every page, all six games, every published app with its privacy policy, and a few actions: toggle the theme, copy the e-mail address, jump to the top, open the current page's source on GitHub. Type to filter, arrows to move, enter to go. It is one dependency-free file, <code>/js/palette.js</code>, that the chrome loader injects everywhere, including the generated privacy-policy pages and the Bootstrap-era typing game, where it also swallows its own keystrokes so the game does not count them.</p>
+            <p>Press <kbd>⌘K</kbd> (<kbd>Ctrl K</kbd> elsewhere), or click the search button in the top bar or the status bar. A palette lists every page, every game, every published app with its privacy policy, and a few actions: toggle the theme, copy the e-mail address, jump to the top, open the current page's source on GitHub. Type to filter, arrows to move, enter to go. It is one dependency-free file, <code>/js/palette.js</code>, that the chrome loader injects everywhere, including the generated privacy-policy pages and the Bootstrap-era typing game, where it also swallows its own keystrokes so the game does not count them.</p>
 
             <h2>Pages crossfade instead of flashing</h2>
             <p>The site is plain multi-page HTML, and it now opts into cross-document view transitions with a single rule, <code>@view-transition { navigation: auto }</code>. Same-origin navigations crossfade; the top bar and the status bar carry <code>view-transition-name</code>s so they hold still while the page underneath changes. The one trick needed: the bars are fetched at runtime, so the loader now keeps a copy of the fragment in <code>sessionStorage</code> and mounts it synchronously on the next page, before the browser snapshots it. Reduced motion turns the transitions off.</p>
 
             <h2>A chapter for the games</h2>
-            <p>Six self-hosted multiplayer games were the most impressive thing on the site and they had one row in the index. They have a chapter now, between the phones and the music: six little browser windows, each drawn in CSS in the game's own two accent colours from the portal's registry, with a tile maze, a crosshair over a floor grid, circuit traces, a flashlight beam with blinking eyes, a scribble that draws itself, and a chessboard. The "dino network" pill turns green when the portal answers a ping.</p>
+            <p>The multiplayer games were the most impressive thing on the site and they had one row in the index. They have a chapter now, between the phones and the music: a little browser window per game, each drawn in CSS in the game's own two accent colours from the portal's registry, with a tile maze, a crosshair over a floor grid, circuit traces, a flashlight beam with blinking eyes, a scribble that draws itself, and a chessboard. The "dino network" pill turns green when the portal answers a ping.</p>
             <p>That ping deserves a note. The portal's status API does not send a CORS header yet, so the page makes an opaque <code>no-cors</code> request: it resolves when the server answers at all and rejects when it does not, which is an honest "up" without a console full of red. When the header lands, the same pill can show per-game status.</p>
-            <p>The count itself was already stale: the copy said five games while the portal served six, DOODLINGS having launched in the meantime. Every number on the page is a hand-typed claim, so this post is also a reminder to check them.</p>
+            <p>The old copy was stale too — it had missed DOODLINGS launching in the meantime. Hand-typed claims about a moving list go out of date, so the copy no longer counts anything: the portal is the source of truth, and the page just points at it.</p>
 
             <h2>What a shared link looks like</h2>
             <p>Every hand-written page now has Open Graph and Twitter card tags and its own 1200×630 image: the page's path, its title, and the rex rendered as a dot matrix from the same PNG the particle hero uses. Pasting a link into KakaoTalk, Discord or X finally shows something. The cards are rendered from an HTML template in headless Chrome, so a new page is a new line in a list.</p>

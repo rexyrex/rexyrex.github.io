@@ -22,7 +22,7 @@ const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/M
 const IMG = pathToFileURL(resolve(ROOT, 'assets/rexGreenSmall.png')).href;
 
 const CARDS = {
-    home:     { path: '/', eyebrow: 'rexyrex.github.io', file: '/index.html', title: 'Apps, games, and music, built by one person.', desc: 'Eight apps on Google Play, two on the App Store, six self-hosted browser games, a typing game, and a few tracks.' },
+    home:     { path: '/', eyebrow: 'rexyrex.github.io', file: '/index.html', title: 'Apps, games, and music, built by one person.', desc: 'Apps on Google Play and the App Store, multiplayer browser games, a typing game, and a few tracks.' },
     typing:   { path: '/typing/', file: '/typing/index.html', title: 'Typing Speed Test', desc: 'Korean, English and programmer modes, with daily and all-time leaderboards.' },
     balloons: { path: '/deadlyBalloons/', file: '/deadlyBalloons/index.html', title: 'Deadly Balloons 2', desc: 'A desktop balloon-popping game written in Java. Trailer, download and source.' },
     music:    { path: '/music/', file: '/music/showcase.html', title: 'Music', desc: 'SuperPose streams from SoundCloud. More tracks on SoundCloud and Newgrounds.' },

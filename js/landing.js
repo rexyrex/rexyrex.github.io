@@ -287,7 +287,7 @@
         phones.forEach(function (p) { io.observe(p); });
     })();
 
-    // games.rexy.win pill: "6 games · up" once the portal answers a ping
+    // games.rexy.win pill: "games · up" once the portal answers a ping
     // (common.js does the opaque request; see rexChrome.pingGames).
     (function () {
         var pill = document.getElementById('gamesNet');
@@ -296,7 +296,7 @@
         window.rexChrome.pingGames().then(function (up) {
             if (up === null) return;
             pill.setAttribute('data-state', up ? 'up' : 'down');
-            if (label) label.textContent = up ? '6 games · up' : '6 games · offline';
+            if (label) label.textContent = up ? 'games · up' : 'games · offline';
         });
     })();
 
