@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>사주 분석기 - 신년운세, 사주, 타로, 연예인 궁합 — Rexyrex</title>
+    <meta name="description" content="태어난 해·달·날·시의 여덟 글자로 사주를 세우고 오늘의 운세, 궁합, 대운, 신년운세, 꿈해몽, 타로까지 쉬운 말로 풀어 주는 사주 앱입니다.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/saju/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/saju/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/saju/img/icon-180.png">
+    <meta name="theme-color" content="#111419" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f1ebdd" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/saju/">
+    <meta property="og:title" content="사주 분석기 - 신년운세, 사주, 타로, 연예인 궁합">
+    <meta property="og:description" content="수천 년 동양 명리학의 지혜를 담은 사주팔자! 운세, 궁합, 대운, 꿈해몽, 타로까지">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/saju.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="사주 분석기 - 신년운세, 사주, 타로, 연예인 궁합">
+    <meta property="og:locale" content="ko_KR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="사주 분석기 - 신년운세, 사주, 타로, 연예인 궁합">
+    <meta name="twitter:description" content="수천 년 동양 명리학의 지혜를 담은 사주팔자! 운세, 궁합, 대운, 꿈해몽, 타로까지">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/saju.jpg">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- IBM Plex stays: the site chrome (top bar, status bar) is set in it. Song Myung (display) + Noto Serif KR (body, hanja) belong to this page. -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@400;600;900&family=Song+Myung&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/apps/saju/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "사주 분석기 - 신년운세, 사주, 타로, 연예인 궁합",
+        "operatingSystem": "Android",
+        "applicationCategory": "LifestyleApplication",
+        "description": "수천 년 동양 명리학의 지혜를 담은 사주팔자! 운세, 궁합, 대운, 꿈해몽, 타로까지",
+        "inLanguage": "ko",
+        "url": "https://rexyrex.github.io/apps/saju/",
+        "image": "https://rexyrex.github.io/apps/saju/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id=com.rexyrex.saju"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-saju">
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <!-- ============ Hero ============ -->
+        <header class="hero">
+            <svg class="peaks" viewBox="0 0 1440 320" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+                <defs>
+                    <linearGradient id="peak-far" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" class="stop-far-top"/>
+                        <stop offset="1" class="stop-fade"/>
+                    </linearGradient>
+                    <linearGradient id="peak-mid" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" class="stop-mid-top"/>
+                        <stop offset="1" class="stop-fade"/>
+                    </linearGradient>
+                    <linearGradient id="peak-near" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" class="stop-near-top"/>
+                        <stop offset=".85" class="stop-near-bottom"/>
+                    </linearGradient>
+                    <filter id="peak-soft" x="-5%" y="-20%" width="110%" height="140%"><feGaussianBlur stdDeviation="2.4"/></filter>
+                </defs>
+                <path fill="url(#peak-far)" filter="url(#peak-soft)" d="M0 320L0 236C15 231 58 220 90 206C122 192 155 152 190 150C225 148 268 193 300 196C332 199 352 184 380 170C408 156 435 111 470 112C505 113 560 170 590 176C620 182 628 170 650 150C672 130 695 62 720 58C745 54 777 111 800 128C823 145 830 166 860 162C890 158 940 100 980 104C1020 108 1067 178 1100 188C1133 198 1153 174 1180 166C1207 158 1230 134 1260 138C1290 142 1330 180 1360 192C1390 204 1427 209 1440 212L1440 320Z"/>
+                <path fill="url(#peak-mid)" d="M0 320L0 262C22 255 88 225 130 222C172 219 205 250 250 246C295 242 353 195 400 196C447 197 493 244 530 250C567 256 592 240 620 232C648 224 663 200 700 204C737 208 790 254 840 256C890 258 945 215 1000 214C1055 213 1117 253 1170 252C1223 251 1275 207 1320 206C1365 205 1420 239 1440 246L1440 320Z"/>
+                <path fill="url(#peak-near)" d="M0 320L0 292C30 287 113 265 180 264C247 263 327 288 400 288C473 288 543 262 620 262C697 262 778 289 860 290C942 291 1037 267 1110 266C1183 265 1245 283 1300 284C1355 285 1417 274 1440 272L1440 320Z"/>
+            </svg>
+
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <p class="eyebrow"><span>/apps/saju/</span></p>
+                    <div class="hero-title">
+                        <img class="hero-icon" src="/apps/saju/img/icon.webp" width="256" height="256" alt="사주 분석기 앱 아이콘">
+                        <h1>사주 분석기</h1>
+                    </div>
+                    <p class="hero-lede">태어난 해·달·날·시의 여덟 글자로 오늘의 흐름부터 인생의 큰 운까지 읽어 드려요.</p>
+                    <p class="hero-sub">사주 풀이, 오늘의 운세, 궁합, 대운, 신년운세, 꿈해몽, 타로를 한 앱에서.</p>
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.saju" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>다운로드하기</small><b>Google Play</b></span>
+                        </a>
+                        <span class="hero-note">안드로이드 무료 앱</span>
+                    </div>
+                </div>
+
+                <div class="hero-stage">
+                    <span class="hero-orb" aria-hidden="true"></span>
+                    <span class="seal seal-hero" aria-hidden="true"><span>四柱八字</span></span>
+                    <figure class="app-device hero-phone">
+                        <span class="app-device-screen"><img src="/apps/saju/img/pillars.webp" width="660" height="1434" alt="사주 상세 화면. 기사년 병자월 병인일 갑오시의 네 기둥이 천간과 지지로 나뉘어 오행 색으로 표시되어 있다."></span>
+                    </figure>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============ Signature: the eight characters ============ -->
+        <section class="palja" id="palja" aria-labelledby="palja-title">
+            <div class="wrap">
+                <div class="sec-head">
+                    <p class="v-label" aria-hidden="true">四柱八字</p>
+                    <div>
+                        <h2 id="palja-title">여덟 글자, 다섯 기운</h2>
+                        <p class="sec-lede">사주<span aria-hidden="true">(四柱)</span>는 태어난 해·달·날·시의 네 기둥이고, 팔자<span aria-hidden="true">(八字)</span>는 그 기둥을 이루는 여덟 글자예요. 위 칸은 하늘의 기운인 천간, 아래 칸은 땅의 기운인 지지. 글자마다 나무·불·흙·쇠·물, 다섯 기운 가운데 하나가 깃들어 있어요.</p>
+                    </div>
+                </div>
+
+                <form class="birth" id="birth-form" novalidate hidden>
+                    <div class="birth-fields">
+                        <label class="field">
+                            <span class="field-label">양력 생년월일</span>
+                            <input type="date" id="birth-date" name="date" value="1990-01-01" min="1900-01-01" max="2050-12-31" required>
+                        </label>
+                        <label class="field">
+                            <span class="field-label">태어난 시각</span>
+                            <input type="time" id="birth-time" name="time" value="12:00">
+                        </label>
+                        <label class="check">
+                            <input type="checkbox" id="birth-notime" name="notime">
+                            <span>시간을 몰라요</span>
+                        </label>
+                        <button type="submit" class="brush-btn">여덟 글자 세우기</button>
+                    </div>
+                    <p class="birth-error" id="birth-error" role="alert"></p>
+                </form>
+
+                <div class="palja-grid">
+                    <div class="board-wrap">
+                        <p class="board-caption" id="board-caption"><span class="board-caption-tag">예시</span> <span id="board-when">1990년 1월 1일 낮 12시, 앱 화면 속 사주와 같아요</span></p>
+                        <div class="board" id="board" role="group" aria-labelledby="board-caption">
+                            <div class="board-rows" aria-hidden="true">
+                                <span><b>天干</b>하늘</span>
+                                <span><b>地支</b>땅</span>
+                            </div>
+                            <div class="pillar" data-p="y">
+                                <p class="pillar-name"><span class="hz" aria-hidden="true">年</span>연주</p>
+                                <button type="button" class="glyph-cell" data-el="토" aria-label="연주 천간 기, 흙(토)"><span class="glyph" aria-hidden="true">己</span><span class="reading" aria-hidden="true">기 · 토</span></button>
+                                <button type="button" class="glyph-cell" data-el="화" aria-label="연주 지지 사, 불(화)"><span class="glyph" aria-hidden="true">巳</span><span class="reading" aria-hidden="true">사 · 화</span></button>
+                            </div>
+                            <div class="pillar" data-p="m">
+                                <p class="pillar-name"><span class="hz" aria-hidden="true">月</span>월주</p>
+                                <button type="button" class="glyph-cell" data-el="화" aria-label="월주 천간 병, 불(화)"><span class="glyph" aria-hidden="true">丙</span><span class="reading" aria-hidden="true">병 · 화</span></button>
+                                <button type="button" class="glyph-cell" data-el="수" aria-label="월주 지지 자, 물(수)"><span class="glyph" aria-hidden="true">子</span><span class="reading" aria-hidden="true">자 · 수</span></button>
+                            </div>
+                            <div class="pillar is-day" data-p="d">
+                                <p class="pillar-name"><span class="hz" aria-hidden="true">日</span>일주</p>
+                                <button type="button" class="glyph-cell is-self" data-el="화" aria-label="일주 천간 병, 불(화). 나를 뜻하는 일간"><span class="glyph" aria-hidden="true">丙</span><span class="reading" aria-hidden="true">병 · 화</span><span class="self-seal" aria-hidden="true">나</span></button>
+                                <button type="button" class="glyph-cell" data-el="목" aria-label="일주 지지 인, 나무(목)"><span class="glyph" aria-hidden="true">寅</span><span class="reading" aria-hidden="true">인 · 목</span></button>
+                            </div>
+                            <div class="pillar" data-p="t">
+                                <p class="pillar-name"><span class="hz" aria-hidden="true">時</span>시주</p>
+                                <button type="button" class="glyph-cell" data-el="목" aria-label="시주 천간 갑, 나무(목)"><span class="glyph" aria-hidden="true">甲</span><span class="reading" aria-hidden="true">갑 · 목</span></button>
+                                <button type="button" class="glyph-cell" data-el="화" aria-label="시주 지지 오, 불(화)"><span class="glyph" aria-hidden="true">午</span><span class="reading" aria-hidden="true">오 · 화</span></button>
+                            </div>
+                        </div>
+                        <p class="board-readout" id="board-readout" aria-live="polite">기사년 병자월 병인일 갑오시. 일간(나)은 병화, 뱀띠예요.</p>
+                    </div>
+
+                    <div class="wheel-wrap">
+                        <div class="wheel" id="wheel" role="group" aria-label="오행의 상생과 상극">
+                            <svg class="wheel-lines" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+                                <defs>
+                                    <marker id="arrow-saeng" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1.2L9 5 0 8.8z" class="arrow-saeng"/></marker>
+                                    <marker id="arrow-geuk" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1.2L9 5 0 8.8z" class="arrow-geuk"/></marker>
+                                </defs>
+                                <circle class="wheel-ring" cx="200" cy="200" r="140"/>
+                                <g class="saeng">
+                                    <path pathLength="1" marker-end="url(#arrow-saeng)" data-from="목" data-to="화" d="M253 70.4A140 140 0 0 1 306.9 109.6"/>
+                                    <path pathLength="1" marker-end="url(#arrow-saeng)" data-from="화" data-to="토" d="M339.6 210.3A140 140 0 0 1 319 273.7"/>
+                                    <path pathLength="1" marker-end="url(#arrow-saeng)" data-from="토" data-to="금" d="M233.3 336A140 140 0 0 1 166.7 336"/>
+                                    <path pathLength="1" marker-end="url(#arrow-saeng)" data-from="금" data-to="수" d="M81 273.7A140 140 0 0 1 60.4 210.3"/>
+                                    <path pathLength="1" marker-end="url(#arrow-saeng)" data-from="수" data-to="목" d="M93.1 109.6A140 140 0 0 1 147 70.4"/>
+                                </g>
+                                <g class="geuk">
+                                    <path pathLength="1" marker-end="url(#arrow-geuk)" data-from="목" data-to="토" d="M216.7 111.4L265.6 261.9"/>
+                                    <path pathLength="1" marker-end="url(#arrow-geuk)" data-from="화" data-to="금" d="M289.5 188.5L161.4 281.5"/>
+                                    <path pathLength="1" marker-end="url(#arrow-geuk)" data-from="토" data-to="수" d="M238.6 281.5L110.5 188.5"/>
+                                    <path pathLength="1" marker-end="url(#arrow-geuk)" data-from="금" data-to="목" d="M134.4 261.9L183.3 111.4"/>
+                                    <path pathLength="1" marker-end="url(#arrow-geuk)" data-from="수" data-to="화" d="M120.9 156.7L279.1 156.7"/>
+                                </g>
+                            </svg>
+                            <span class="wheel-core" aria-hidden="true"><span id="wheel-core-glyph">火</span></span>
+                            <button type="button" class="el el-wood" data-el="목" aria-pressed="false" aria-label="나무(목), 이 사주에 2개"><span class="el-hz" aria-hidden="true">木</span><span class="el-kr" aria-hidden="true">목</span><span class="el-count" aria-hidden="true">2</span></button>
+                            <button type="button" class="el el-fire" data-el="화" aria-pressed="true" aria-label="불(화), 이 사주에 4개"><span class="el-hz" aria-hidden="true">火</span><span class="el-kr" aria-hidden="true">화</span><span class="el-count" aria-hidden="true">4</span></button>
+                            <button type="button" class="el el-earth" data-el="토" aria-pressed="false" aria-label="흙(토), 이 사주에 1개"><span class="el-hz" aria-hidden="true">土</span><span class="el-kr" aria-hidden="true">토</span><span class="el-count" aria-hidden="true">1</span></button>
+                            <button type="button" class="el el-metal is-empty" data-el="금" aria-pressed="false" aria-label="쇠(금), 이 사주에 없음"><span class="el-hz" aria-hidden="true">金</span><span class="el-kr" aria-hidden="true">금</span><span class="el-count" aria-hidden="true">0</span></button>
+                            <button type="button" class="el el-water" data-el="수" aria-pressed="false" aria-label="물(수), 이 사주에 1개"><span class="el-hz" aria-hidden="true">水</span><span class="el-kr" aria-hidden="true">수</span><span class="el-count" aria-hidden="true">1</span></button>
+                        </div>
+                        <p class="wheel-legend"><span class="lg lg-saeng">상생(살려 줌)</span><span class="lg lg-geuk">상극(눌러 줌)</span></p>
+                        <p class="wheel-hint">기운을 가리키거나 눌러 보세요. 사주판의 글자를 눌러도 같은 기운끼리 모여 보여요.</p>
+                    </div>
+
+                    <div class="el-panel" id="el-panel" data-el="화" aria-live="polite" aria-atomic="true">
+                        <p class="el-panel-head"><span class="el-panel-hz" aria-hidden="true">火</span><span class="el-panel-name">불의 기운</span><span class="el-panel-count">이 사주에 4개</span></p>
+                        <p class="el-panel-gist">위로 타오르며 밝히는 기운. 여름, 남쪽, 드러내고 표현하는 힘이에요.</p>
+                        <ul class="el-rel">
+                            <li class="rel-saeng"><span class="rel-k">내가 살리는 기운</span><span class="rel-v"><b>화생토</b> 불이 타고 남은 재는 흙이 돼요.</span></li>
+                            <li class="rel-saeng"><span class="rel-k">나를 살리는 기운</span><span class="rel-v"><b>목생화</b> 나무는 불을 지펴요.</span></li>
+                            <li class="rel-geuk"><span class="rel-k">내가 누르는 기운</span><span class="rel-v"><b>화극금</b> 불은 쇠를 녹여요.</span></li>
+                            <li class="rel-geuk"><span class="rel-k">나를 누르는 기운</span><span class="rel-v"><b>수극화</b> 물은 불을 꺼요.</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p class="palja-note">계산은 앱과 같은 방식이에요. 해는 입춘에, 달은 절기에 들어서는 시각에 바뀌고, 시간을 모르면 세 기둥만 세웁니다. 밤 11시 이후 출생은 보는 방식에 따라 일주가 달라질 수 있어 앱에서 고를 수 있어요. 입력한 날짜는 이 페이지 안에서만 계산되고 어디로도 보내지지 않아요.</p>
+            </div>
+        </section>
+
+        <!-- ============ 사주 풀이 ============ -->
+        <section class="feat feat-reading" aria-labelledby="reading-title">
+            <div class="wrap feat-grid">
+                <div class="feat-copy">
+                    <p class="v-label" aria-hidden="true">原局解釋</p>
+                    <div>
+                        <h2 id="reading-title">내 사주를 쉬운 말로</h2>
+                        <p>네 기둥을 세운 다음, 나를 뜻하는 일간과 다섯 기운의 균형부터 십신, 숨은 천간(지장간), 십이운성, 공망, 납음까지 하나씩 짚어요. 어려운 한자 용어는 AI가 일상 언어로 풀어 써 줍니다.</p>
+                        <dl class="points">
+                            <div><dt>한눈에 보는 사주</dt><dd>타고난 성격과 인생의 테마를 두세 문장으로.</dd></div>
+                            <div><dt>일간 분석</dt><dd>나의 본질, 그리고 강점과 약점 세 가지씩.</dd></div>
+                            <div><dt>오행 분석</dt><dd>다섯 기운이 사주에 몇 개씩 담겼는지 막대로.</dd></div>
+                        </dl>
+                    </div>
+                </div>
+                <div class="feat-media duo">
+                    <figure class="app-device phone-back">
+                        <span class="app-device-screen is-short"><img src="/apps/saju/img/elements.webp" width="660" height="1320" loading="lazy" decoding="async" alt="사주 상세 화면의 기본 정보와 오행 분석. 목 2, 화 4, 토 1, 금 0, 수 1을 막대로 보여 준다."></span>
+                    </figure>
+                    <figure class="app-device phone-front">
+                        <span class="app-device-screen is-short"><img src="/apps/saju/img/reading.webp" width="660" height="1320" loading="lazy" decoding="async" alt="사주 해석 화면. 한눈에 보는 사주 요약과 일간 분석 카드가 보인다."></span>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 오늘의 운세 ============ -->
+        <section class="feat feat-today is-flip" aria-labelledby="today-title">
+            <div class="wrap feat-grid">
+                <div class="feat-copy">
+                    <p class="v-label" aria-hidden="true">今日運勢</p>
+                    <div>
+                        <h2 id="today-title">매일 아침, 오늘의 일진</h2>
+                        <p>오늘 날짜의 간지와 수호신, 길한 날인지 조심할 날인지를 알려 주고 행운의 색·숫자·방위·음식을 짚어 줘요. 하루를 시간대별로 나눠 보고, 어제와 무엇이 달라졌는지도 비교할 수 있어요.</p>
+                        <p class="feat-more">내일의 운세, 이번 주와 이번 달 운세, 올해의 신년운세까지 이어서 볼 수 있어요.</p>
+                    </div>
+                </div>
+                <div class="feat-media">
+                    <figure class="app-device">
+                        <span class="app-device-screen"><img src="/apps/saju/img/daily.webp" width="660" height="1434" loading="lazy" decoding="async" alt="오늘의 운세 화면. 오늘은 병오일이며 수호신은 천뢰, 행운의 색은 연두색, 숫자는 7, 방위는 동쪽이라고 안내한다."></span>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 궁합 ============ -->
+        <section class="feat feat-gunghap" aria-labelledby="gunghap-title">
+            <div class="wrap feat-grid">
+                <div class="feat-copy">
+                    <p class="v-label" aria-hidden="true">宮合</p>
+                    <div>
+                        <h2 id="gunghap-title">두 사람의 여덟 글자를 나란히</h2>
+                        <p>두 사람의 사주를 맞대어 100점 만점의 궁합 점수를 내고, 일간·일지·오행·납음·십신·지지·부부인연 일곱 항목으로 나눠 보여 줘요. 오행의 상생과 상극, 지지의 육합·삼합·충·형·해까지 따져 어디가 잘 맞고 어디서 부딪히는지 짚어 줍니다.</p>
+                        <p class="feat-more">좋아하는 연예인의 공개된 생일로 궁합을 재미 삼아 맞춰 볼 수도 있어요.</p>
+                    </div>
+                </div>
+                <div class="feat-media">
+                    <figure class="app-device">
+                        <span class="app-device-screen is-short"><img src="/apps/saju/img/gunghap.webp" width="660" height="1320" loading="lazy" decoding="async" alt="궁합 결과 화면. 궁합 점수 57점과 일간, 일지, 오행, 납음, 십신, 지지, 부부인연의 항목별 점수가 원형 그래프로 보인다."></span>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 대운 ============ -->
+        <section class="feat feat-daewoon is-flip" aria-labelledby="daewoon-title">
+            <div class="wrap feat-grid">
+                <div class="feat-copy">
+                    <p class="v-label" aria-hidden="true">大運</p>
+                    <div>
+                        <h2 id="daewoon-title">10년마다 바뀌는 큰 흐름</h2>
+                        <p>대운은 인생을 10년 단위로 나눈 큰 물결이에요. 지금 어느 대운을 지나고 있는지, 그 시기에 어떤 기운이 흐르는지 쉬운 말로 알려 주고, 해마다 바뀌는 흐름(류년)도 나이별로 펼쳐 보여 줘요.</p>
+                    </div>
+                </div>
+                <div class="feat-media">
+                    <figure class="app-device">
+                        <span class="app-device-screen"><img src="/apps/saju/img/daewoon.webp" width="660" height="1434" loading="lazy" decoding="async" alt="나의 인생 운세 화면. 20대부터 60대까지 10년 단위 대운이 가로로 놓여 있고, 현재 시기인 30대 결단의 시기 설명과 나이별 흐름이 이어진다."></span>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 더 물어보기 ============ -->
+        <section class="feat feat-more-sec" aria-labelledby="more-title">
+            <div class="wrap feat-grid">
+                <div class="feat-copy">
+                    <p class="v-label" aria-hidden="true">問答</p>
+                    <div>
+                        <h2 id="more-title">궁금한 건 더 물어보세요</h2>
+                        <p>연애, 일, 건강, 인간관계, 언제가 좋을지까지. 130가지 질문을 내 사주에 비춰 답해 드려요.</p>
+                        <ul class="slips">
+                            <li><span class="slip-hz" aria-hidden="true">塔羅</span><b>타로</b><span>원카드와 쓰리카드. 오늘 뽑은 카드는 하루 동안 그대로예요.</span></li>
+                            <li><span class="slip-hz" aria-hidden="true">解夢</span><b>꿈해몽</b><span>간밤의 꿈을 적으면 내 사주와 함께 풀어 줘요.</span></li>
+                            <li><span class="slip-hz" aria-hidden="true">新年</span><b>신년운세</b><span>올 한 해의 흐름을 미리 짚어 봐요.</span></li>
+                            <li><span class="slip-hz" aria-hidden="true">生肖</span><b>띠 운세</b><span>열두 띠의 오늘 운을 점수로 견줘 봐요.</span></li>
+                            <li><span class="slip-hz" aria-hidden="true">姓名</span><b>이름 풀이</b><span>이름 글자의 획수와 오행의 어울림을 따져 봐요.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="feat-media">
+                    <figure class="app-device">
+                        <span class="app-device-screen"><img src="/apps/saju/img/tarot.webp" width="660" height="1434" loading="lazy" decoding="async" alt="오늘의 타로 화면. 원카드로 뽑은 운명의 수레바퀴 카드와 오늘의 조언이 보인다."></span>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 정보 다루는 방식 ============ -->
+        <section class="trust" aria-labelledby="trust-title">
+            <div class="wrap trust-inner">
+                <h2 id="trust-title">정보는 이렇게 다뤄요</h2>
+                <ul class="trust-list">
+                    <li>회원가입이나 로그인 없이 바로 써요.</li>
+                    <li>이름·생년월일·출생 시간·성별을 담은 프로필은 휴대폰에만 저장되고, 앱에서 언제든 지울 수 있어요.</li>
+                    <li>네 기둥과 오행 계산은 휴대폰 안에서 이뤄져 인터넷 없이도 볼 수 있어요.</li>
+                    <li>AI 풀이를 요청하면 사주 정보가 Google Gemini로 전송되어 풀이 글이 만들어져요.</li>
+                    <li>앱은 무료이고 광고가 있어요. 일부 AI 풀이는 보상형 광고를 본 뒤 열려요.</li>
+                </ul>
+                <p class="trust-link"><a href="https://psychedelic-cattle-134.notion.site/33f369f50e3d809ababcf454cf24381f" target="_blank" rel="noopener noreferrer">개인정보처리방침 전문 보기</a></p>
+            </div>
+        </section>
+
+        <!-- ============ 마무리 ============ -->
+        <section class="closing" aria-labelledby="closing-title">
+            <div class="wrap closing-inner">
+                <span class="seal seal-big" aria-hidden="true"><span>四柱八字</span></span>
+                <h2 id="closing-title">여덟 글자의 풀이는 앱에서</h2>
+                <p>생년월일시를 넣으면 바로 내 사주가 세워져요.</p>
+                <div class="store-badges">
+                    <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.saju" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                        <span><small>다운로드하기</small><b>Google Play</b></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="앱 정보">
+            <a href="https://psychedelic-cattle-134.notion.site/33f369f50e3d809ababcf454cf24381f" target="_blank" rel="noopener noreferrer">개인정보처리방침</a>
+            <a href="/support/">문의하기</a>
+            <a href="/#apps">Rexyrex의 다른 앱</a>
+        </nav>
+        <p>만든 사람 <a href="/">Rexyrex</a> · <code>/apps/saju/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/apps/saju/page.js" defer></script>
+</body>
+</html>

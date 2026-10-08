@@ -1,0 +1,1448 @@
+/* ============================================================
+   Reverse Image Search — /apps/reverse_image_search/
+   An optical bench: one image travels through an aperture,
+   becomes a temporary link and splits into four beams, one per
+   engine. Palette from the app's own theme (lib/main.dart):
+   #0A0A0F night, #16161F surface, #6366F1 indigo, #22D3EE cyan,
+   #F472B6 pink. Display: Sora. Text: Instrument Sans.
+   ============================================================ */
+
+/* ---------- Tokens: dark is the app's own theme --------------- */
+
+:root {
+  color-scheme: dark;
+
+  /* site chrome tokens */
+  --bg: #0A0A0F;
+  --bg-raised: #16161F;
+  --bg-inset: #07070B;
+  --bg-hover: #1E1E2E;
+  --line: #24243A;
+  --line-strong: #36364F;
+  --fg: #ECECF6;
+  --fg-muted: #A5A8C8;
+  --fg-faint: #8487A3;
+  --accent: #818CF8;
+  --accent-strong: #A5B4FC;
+  --accent-ink: #0A0A0F;
+  --accent-soft: rgba(99, 102, 241, 0.16);
+
+  /* page */
+  --ris-indigo: #6366F1;
+  --ris-cyan: #22D3EE;
+  --ris-pink: #F472B6;
+  --ris-bracket: #22D3EE;
+  --ris-band: #0E0E16;
+  --ris-card: #14141D;
+  --ris-dot: rgba(165, 168, 200, 0.11);
+  --ris-glow: rgba(99, 102, 241, 0.32);
+  --ris-iris-fill-a: rgba(30, 30, 46, 0.92);
+  --ris-iris-fill-b: rgba(42, 42, 62, 0.92);
+  --ris-iris-line: rgba(34, 211, 238, 0.42);
+  --ris-ring: rgba(165, 168, 200, 0.18);
+  --ris-rail: rgba(165, 168, 200, 0.16);
+  --ris-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+  --beam-1: #22D3EE;
+  --beam-2: #818CF8;
+  --beam-3: #C084FC;
+  --beam-4: #F472B6;
+
+  --ris-display: "Sora", "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --ris-sans: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --app-measure: 1180px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #F3F4FA;
+    --bg-raised: #FFFFFF;
+    --bg-inset: #E8E9F3;
+    --bg-hover: #E4E5F2;
+    --line: #DADCEA;
+    --line-strong: #C3C6DA;
+    --fg: #12131F;
+    --fg-muted: #50536A;
+    --fg-faint: #6E7190;
+    --accent: #4F46E5;
+    --accent-strong: #4338CA;
+    --accent-ink: #FFFFFF;
+    --accent-soft: rgba(79, 70, 229, 0.10);
+    --shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 16px 40px -16px rgba(30, 30, 70, 0.2);
+
+    --ris-indigo: #4F46E5;
+    --ris-cyan: #0891B2;
+    --ris-pink: #DB2777;
+    --ris-bracket: #0891B2;
+    --ris-band: #E9EAF5;
+    --ris-card: #FFFFFF;
+    --ris-dot: rgba(80, 83, 106, 0.16);
+    --ris-glow: rgba(99, 102, 241, 0.22);
+    --ris-iris-fill-a: rgba(255, 255, 255, 0.9);
+    --ris-iris-fill-b: rgba(232, 233, 245, 0.92);
+    --ris-iris-line: rgba(79, 70, 229, 0.38);
+    --ris-ring: rgba(80, 83, 106, 0.2);
+    --ris-rail: rgba(80, 83, 106, 0.2);
+    --ris-shadow: 0 30px 60px -32px rgba(40, 40, 90, 0.35);
+    --beam-1: #0891B2;
+    --beam-2: #4F46E5;
+    --beam-3: #9333EA;
+    --beam-4: #DB2777;
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F3F4FA;
+  --bg-raised: #FFFFFF;
+  --bg-inset: #E8E9F3;
+  --bg-hover: #E4E5F2;
+  --line: #DADCEA;
+  --line-strong: #C3C6DA;
+  --fg: #12131F;
+  --fg-muted: #50536A;
+  --fg-faint: #6E7190;
+  --accent: #4F46E5;
+  --accent-strong: #4338CA;
+  --accent-ink: #FFFFFF;
+  --accent-soft: rgba(79, 70, 229, 0.10);
+  --shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 16px 40px -16px rgba(30, 30, 70, 0.2);
+
+  --ris-indigo: #4F46E5;
+  --ris-cyan: #0891B2;
+  --ris-pink: #DB2777;
+  --ris-bracket: #0891B2;
+  --ris-band: #E9EAF5;
+  --ris-card: #FFFFFF;
+  --ris-dot: rgba(80, 83, 106, 0.16);
+  --ris-glow: rgba(99, 102, 241, 0.22);
+  --ris-iris-fill-a: rgba(255, 255, 255, 0.9);
+  --ris-iris-fill-b: rgba(232, 233, 245, 0.92);
+  --ris-iris-line: rgba(79, 70, 229, 0.38);
+  --ris-ring: rgba(80, 83, 106, 0.2);
+  --ris-rail: rgba(80, 83, 106, 0.2);
+  --ris-shadow: 0 30px 60px -32px rgba(40, 40, 90, 0.35);
+  --beam-1: #0891B2;
+  --beam-2: #4F46E5;
+  --beam-3: #9333EA;
+  --beam-4: #DB2777;
+}
+
+/* ---------- Base ---------------------------------------------- */
+
+.app-reverse_image_search main,
+.app-reverse_image_search .app-foot {
+  font-family: var(--ris-sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.app-reverse_image_search main {
+  overflow-x: clip;
+}
+
+.app-reverse_image_search main h1,
+.app-reverse_image_search main h2,
+.app-reverse_image_search main h3 {
+  font-family: var(--ris-display);
+  color: var(--fg);
+}
+
+.app-reverse_image_search main h2 {
+  font-weight: 400;
+  font-size: clamp(1.85rem, 1.2rem + 2.3vw, 3rem);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 0 0 1.1rem;
+  max-width: 18ch;
+}
+
+.app-reverse_image_search main p {
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+.ris-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.ris-wrap {
+  max-width: var(--app-measure);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.ris-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-underline-offset: 0.22em;
+}
+
+.ris-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.app-reverse_image_search .app-foot {
+  font-size: 0.92rem;
+}
+
+/* store badges sit on dark night in the dark theme: give them an edge */
+.app-reverse_image_search .store-badge {
+  --badge-focus: var(--accent);
+}
+
+/* ---------- Focus brackets (the page's motif) ----------------- */
+
+.focus-frame,
+.ris-lock {
+  --fb-len: 18px;
+  --fb-w: 2px;
+  --fb-c: var(--ris-bracket);
+  position: absolute;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--fb-c), var(--fb-c)) top left / var(--fb-len) var(--fb-w) no-repeat,
+    linear-gradient(var(--fb-c), var(--fb-c)) top left / var(--fb-w) var(--fb-len) no-repeat,
+    linear-gradient(var(--fb-c), var(--fb-c)) top right / var(--fb-len) var(--fb-w) no-repeat,
+    linear-gradient(var(--fb-c), var(--fb-c)) top right / var(--fb-w) var(--fb-len) no-repeat,
+    linear-gradient(var(--fb-c), var(--fb-c)) bottom left / var(--fb-len) var(--fb-w) no-repeat,
+    linear-gradient(var(--fb-c), var(--fb-c)) bottom left / var(--fb-w) var(--fb-len) no-repeat,
+    linear-gradient(var(--fb-c), var(--fb-c)) bottom right / var(--fb-len) var(--fb-w) no-repeat,
+    linear-gradient(var(--fb-c), var(--fb-c)) bottom right / var(--fb-w) var(--fb-len) no-repeat;
+}
+
+/* ---------- Hero ---------------------------------------------- */
+
+.ris-hero {
+  position: relative;
+  max-width: var(--app-measure);
+  margin: 0 auto;
+  padding: clamp(2.25rem, 5vw, 4.5rem) var(--gutter) clamp(3.5rem, 8vw, 6.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: 2.5rem clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.ris-hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.ris-path {
+  margin: 0 0 1.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0;
+}
+
+.ris-path a {
+  color: var(--fg-muted);
+}
+
+.ris-path a:hover {
+  color: var(--fg);
+}
+
+.ris-icon {
+  display: block;
+  width: 76px;
+  height: 76px;
+  border-radius: 19px;
+  margin: 0 0 1.6rem;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 14px 34px -12px var(--ris-glow);
+}
+
+.ris-title {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 1.6rem -0.2em;
+  padding: 0.12em 0.2em 0.18em;
+  font-weight: 300;
+  font-size: clamp(2.6rem, 1.3rem + 4.6vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.ris-title-text {
+  display: inline-block;
+}
+
+.ris-title-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.ris-lock {
+  inset: -0.06em -0.12em -0.02em;
+  --fb-len: clamp(14px, 1.4vw, 22px);
+}
+
+.ris-lede {
+  font-family: var(--ris-display);
+  font-size: clamp(1.2rem, 1rem + 0.75vw, 1.55rem);
+  line-height: 1.34;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+  margin: 0 0 1rem;
+  max-width: 30ch !important;
+  text-wrap: pretty;
+}
+
+.ris-sub {
+  color: var(--fg-muted);
+  margin: 0 0 2rem;
+  max-width: 46ch !important;
+}
+
+.ris-meta {
+  margin: 1rem 0 0;
+  font-size: 0.92rem;
+  color: var(--fg-muted);
+}
+
+.ris-hero-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 560px;
+}
+
+.ris-hero-device {
+  --device-w: 292px;
+  --device-frame: #101016;
+  --device-edge: rgba(255, 255, 255, 0.14);
+  --device-shadow: 0 50px 90px -40px rgba(0, 0, 0, 0.75), 0 0 90px -30px var(--ris-glow);
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Iris (aperture) ----------------------------------- */
+
+.ris-iris {
+  overflow: visible;
+}
+
+.ris-iris .iris-ring {
+  fill: none;
+  stroke: var(--ris-ring);
+  stroke-width: 1;
+}
+
+.ris-iris .iris-ring-soft {
+  stroke-dasharray: 2 6;
+}
+
+.ris-iris .iris-ticks {
+  fill: none;
+  stroke: var(--ris-ring);
+  stroke-width: 10;
+  stroke-dasharray: 1 13.24;
+}
+
+.ris-iris .iris-glow {
+  fill: var(--ris-glow);
+  filter: blur(40px);
+}
+
+.ris-iris .iris-blades path {
+  stroke: var(--ris-iris-line);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.ris-iris .iris-blades path:nth-child(odd) {
+  fill: var(--ris-iris-fill-a);
+}
+
+.ris-iris .iris-blades path:nth-child(even) {
+  fill: var(--ris-iris-fill-b);
+}
+
+.ris-iris-hero {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  width: min(640px, 150vw);
+  height: auto;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+}
+
+/* ---------- The bench (signature) ----------------------------- */
+
+.ris-bench {
+  position: relative;
+  padding-block: clamp(4.5rem, 9vw, 7.5rem);
+  background: var(--ris-band);
+  border-block: 1px solid var(--line);
+}
+
+/* optical breadboard: a regular grid of mounting holes */
+.ris-bench::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--ris-dot) 1.5px, transparent 1.8px);
+  background-size: 26px 26px;
+  background-position: center;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  pointer-events: none;
+}
+
+.ris-bench .ris-wrap {
+  position: relative;
+}
+
+.bench-head p {
+  color: var(--fg-muted);
+  margin: 0;
+}
+
+.bench-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin: 2.25rem 0 1.25rem;
+}
+
+.bench-controls[hidden] {
+  display: none;
+}
+
+.sample-pick {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.sample-pick legend {
+  padding: 0;
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+}
+
+.sample-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.sample-opt {
+  position: relative;
+}
+
+.sample-opt input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+
+.sample-opt label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 56px;
+  padding: 0.35rem 1rem 0.35rem 0.35rem;
+  border-radius: 14px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raised);
+  color: var(--fg);
+  font-weight: 500;
+  font-size: 0.98rem;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.sample-opt label svg {
+  width: 36px;
+  height: 45px;
+  border-radius: 8px;
+  flex: none;
+}
+
+.sample-opt label:hover {
+  border-color: var(--accent);
+}
+
+.sample-opt input:checked + label {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.sample-opt input:focus-visible + label {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.bench-replay {
+  min-height: 48px;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--fg);
+  font: 500 0.98rem/1 var(--ris-sans);
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.bench-replay:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.bench-replay:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.bench-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(170px, 236px) minmax(220px, 1fr) minmax(270px, 340px);
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  padding: clamp(1.75rem, 3vw, 2.75rem) clamp(1.25rem, 3vw, 2.75rem);
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  box-shadow: var(--ris-shadow);
+}
+
+.bench-controls:not([hidden]) + .bench-stage {
+  margin-top: 0;
+}
+
+.beams {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.beams .rail {
+  fill: none;
+  stroke: var(--ris-rail);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+}
+
+.beams .beam-glow {
+  fill: none;
+  stroke-width: 7;
+  stroke-linecap: round;
+  opacity: 0.22;
+}
+
+.beams .beam-core {
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+}
+
+.beams .photon {
+  opacity: 0;
+}
+
+.bench-source,
+.bench-path,
+.bench-engines {
+  position: relative;
+  z-index: 1;
+}
+
+.bench-source {
+  margin: 0;
+  justify-self: start;
+  width: 100%;
+}
+
+.bench-photo {
+  --lock: 1;
+  position: relative;
+  border-radius: 14px;
+  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.7);
+  touch-action: pan-y;
+  cursor: zoom-in;
+}
+
+.bench-photo .smp {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 240 / 300;
+  border-radius: 14px;
+}
+
+.bench-photo .focus-frame {
+  inset: calc(-16px + 9px * var(--lock));
+  opacity: var(--lock);
+  --fb-len: 20px;
+}
+
+.bench-source figcaption {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.8rem);
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+}
+
+.loupe {
+  --loupe: 120px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--loupe);
+  height: var(--loupe);
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.85);
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 0 0 2px var(--ris-cyan), 0 0 0 7px rgba(10, 10, 15, 0.55), 0 18px 40px -10px rgba(0, 0, 0, 0.7);
+  z-index: 3;
+}
+
+.loupe.is-on {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.loupe svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  transform-origin: 0 0;
+}
+
+.bench-path {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+}
+
+.node {
+  position: relative;
+  text-align: center;
+}
+
+.node-dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1px solid var(--line-strong);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  z-index: 2;
+}
+
+.node.is-lit .node-dot {
+  border-color: var(--ris-cyan);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ris-cyan) 14%, transparent), 0 0 36px -6px var(--ris-cyan);
+}
+
+.node-link.is-lit .node-dot {
+  border-color: var(--ris-pink);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ris-pink) 14%, transparent), 0 0 36px -6px var(--ris-pink);
+}
+
+.ris-iris-node {
+  width: 62px;
+  height: 62px;
+}
+
+.ris-iris-node .iris-blades path {
+  stroke-width: 0.8;
+}
+
+.link-glyph {
+  width: 36px;
+  height: 36px;
+  fill: none;
+  stroke: var(--ris-pink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.node-label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.75rem);
+  transform: translateX(-50%);
+  display: grid;
+  gap: 0.1rem;
+  width: max-content;
+  max-width: 11rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 8px;
+  background: var(--bg);
+  line-height: 1.3;
+}
+
+.node-label b {
+  font-family: var(--ris-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--fg);
+}
+
+.node-label small {
+  font-size: 0.84rem;
+  color: var(--fg-muted);
+}
+
+.bench-engines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.engine {
+  --p: 0;
+  position: relative;
+  padding: 0.85rem 1rem 0.9rem 1.15rem;
+  border-radius: 16px;
+  background: var(--ris-card);
+  border: 1px solid var(--line);
+  transition: border-color 0.35s, box-shadow 0.35s;
+}
+
+/* the port where the beam lands */
+.engine::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--ris-card);
+  border: 1.5px solid var(--line-strong);
+  transform: translate(0, -50%);
+  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+}
+
+.engine[data-port="top"]::before {
+  left: 50%;
+  top: -6px;
+  transform: translate(-50%, 0);
+}
+
+.engine[data-port="right"]::before {
+  left: auto;
+  right: -6px;
+}
+
+.engine.is-loading::before,
+.engine.is-ready::before {
+  border-color: var(--beam);
+}
+
+.engine.is-ready::before {
+  background: var(--beam);
+  box-shadow: 0 0 12px var(--beam);
+}
+
+.engine.is-ready {
+  border-color: color-mix(in srgb, var(--beam) 60%, var(--line));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--beam) 30%, transparent), 0 12px 40px -18px var(--beam);
+}
+
+.engine-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.engine h3 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.engine-status {
+  flex: none;
+  font-size: 0.84rem;
+  color: var(--fg-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.engine.is-ready .engine-status {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.engine.is-ready .engine-status::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 0.4em;
+  border-radius: 50%;
+  background: var(--beam);
+  vertical-align: 0.08em;
+}
+
+.engine p {
+  margin: 0.2rem 0 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--fg-muted);
+}
+
+.engine-bar {
+  display: block;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.engine-bar i {
+  display: block;
+  height: 100%;
+  background: var(--beam);
+  transform-origin: left center;
+  transform: scaleX(var(--p));
+}
+
+.bench-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem 3rem;
+  margin-top: 1.75rem;
+  align-items: start;
+}
+
+.bench-readout {
+  margin: 0;
+  min-height: 3.2em;
+  font-family: var(--ris-display);
+  font-size: 1.05rem;
+  line-height: 1.45;
+  color: var(--fg);
+}
+
+.bench-cue {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+  padding-left: 1rem;
+  border-left: 2px solid var(--line-strong);
+  transition: border-color 0.4s, color 0.4s;
+}
+
+.bench-cue a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  white-space: nowrap;
+}
+
+.bench-cue.is-shown {
+  border-left-color: var(--ris-cyan);
+  color: var(--fg);
+}
+
+/* ---------- Results: engine tabs ------------------------------ */
+
+.ris-results,
+.ris-pick {
+  padding-block: clamp(4.5rem, 10vw, 8rem);
+}
+
+.ris-pick {
+  padding-top: 0;
+}
+
+.ris-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3rem clamp(2.5rem, 7vw, 6rem);
+  align-items: center;
+}
+
+.ris-split-flip > .ris-copy {
+  order: 2;
+}
+
+.ris-copy p {
+  color: var(--fg-muted);
+}
+
+.ris-copy .ris-note {
+  color: var(--fg);
+  padding-top: 1rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.results-demo {
+  width: 368px;
+  max-width: 100%;
+  justify-self: center;
+}
+
+.results-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 1.25rem;
+  border-radius: 14px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+}
+
+.results-tabs[hidden] {
+  display: none;
+}
+
+.results-tabs [role="tab"] {
+  min-height: 48px;
+  padding: 0.3rem 0.15rem;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--fg-muted);
+  font: 500 0.8rem/1.2 var(--ris-sans);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.results-tabs [role="tab"]:hover {
+  color: var(--fg);
+  background: var(--bg-hover);
+}
+
+.results-tabs [role="tab"][aria-selected="true"] {
+  color: var(--fg);
+  font-weight: 600;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--beam) 30%, transparent), color-mix(in srgb, var(--beam) 14%, transparent));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--beam) 45%, transparent);
+}
+
+.results-tabs [role="tab"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ris-results-device {
+  --device-w: 300px;
+  --device-frame: #101016;
+  --device-shadow: var(--ris-shadow), 0 0 80px -40px var(--ris-glow);
+  margin: 0 auto;
+}
+
+.ris-results-device .app-device-screen > img {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.ris-results-device .app-device-screen > img.is-active {
+  position: relative;
+  opacity: 1;
+}
+
+.results-caption {
+  margin: 1.1rem auto 0;
+  max-width: 30ch !important;
+  min-height: 3em;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+}
+
+/* ---------- Pick ---------------------------------------------- */
+
+.ris-pick-device {
+  --device-w: 270px;
+  --device-frame: #101016;
+  --device-shadow: var(--ris-shadow);
+  justify-self: center;
+}
+
+/* ---------- Route (privacy) ----------------------------------- */
+
+.ris-route {
+  padding-block: clamp(4.5rem, 9vw, 7rem);
+  background: var(--ris-band);
+  border-block: 1px solid var(--line);
+}
+
+.route-head p {
+  color: var(--fg-muted);
+}
+
+.route {
+  position: relative;
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+/* the light path the photo takes, node to node */
+.route li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: -2rem;
+  top: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--ris-cyan), var(--ris-indigo));
+  opacity: 0.75;
+}
+
+.route li:nth-child(2)::before {
+  background: linear-gradient(90deg, var(--ris-indigo), var(--ris-pink));
+}
+
+.route li {
+  position: relative;
+  padding-top: 3.1rem;
+}
+
+.route h3 {
+  margin: 0 0 0.45rem;
+  font-weight: 600;
+  font-size: 1.08rem;
+  letter-spacing: -0.01em;
+}
+
+.route p {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 0.98rem;
+}
+
+.route-node {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ris-band);
+  border: 2px solid var(--node-c, var(--ris-cyan));
+  color: var(--node-c, var(--ris-cyan));
+}
+
+.route li:nth-child(2) .route-node {
+  --node-c: var(--ris-indigo);
+}
+
+.route li:nth-child(3) .route-node {
+  --node-c: var(--ris-pink);
+}
+
+.route-node svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.route-node svg circle {
+  fill: currentColor;
+  stroke: none;
+}
+
+.route-aside {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem 3rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.route-aside p {
+  margin: 0 0 0.75rem;
+  color: var(--fg-muted);
+  font-size: 0.98rem;
+}
+
+.route-aside p:last-child {
+  grid-column: 1 / -1;
+  margin: 0.5rem 0 0;
+}
+
+/* ---------- Closing call to action ---------------------------- */
+
+.ris-get {
+  position: relative;
+  padding-block: clamp(5rem, 11vw, 9rem);
+  overflow: clip;
+}
+
+.ris-get-inner {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: 420px;
+}
+
+.ris-iris-get {
+  position: absolute;
+  right: max(-180px, -14vw);
+  top: 50%;
+  width: min(620px, 120vw);
+  aspect-ratio: 1;
+  height: auto;
+  transform: translateY(-50%);
+  opacity: 0.75;
+  z-index: 0;
+}
+
+.ris-get-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+}
+
+.ris-icon-sm {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  margin-bottom: 1.4rem;
+}
+
+.ris-get h2 {
+  font-weight: 300 !important;
+  font-size: clamp(2.2rem, 1.3rem + 3.4vw, 3.9rem) !important;
+  letter-spacing: -0.04em !important;
+  max-width: 14ch !important;
+}
+
+.ris-get-copy > p {
+  color: var(--fg-muted);
+  margin: 0 0 1.75rem;
+}
+
+/* ---------- Load moment: the title pulls into focus ----------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js .ris-title-text {
+    animation: ris-focus-pull 1.15s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+  }
+
+  html.js .ris-lock {
+    animation: ris-lock-on 0.75s cubic-bezier(0.3, 1.5, 0.5, 1) 0.65s both;
+  }
+
+  @keyframes ris-focus-pull {
+    from {
+      filter: blur(12px);
+      opacity: 0.25;
+      transform: scale(1.03);
+    }
+    to {
+      filter: blur(0);
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes ris-lock-on {
+    from {
+      opacity: 0;
+      inset: -0.45em -0.5em -0.4em;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* ---------- Responsive ---------------------------------------- */
+
+@media (max-width: 1040px) {
+  .bench-stage {
+    grid-template-columns: minmax(150px, 200px) minmax(170px, 1fr) minmax(250px, 300px);
+    gap: 1.5rem;
+  }
+
+  .node-dot {
+    width: 68px;
+    height: 68px;
+  }
+
+  .ris-iris-node {
+    width: 54px;
+    height: 54px;
+  }
+}
+
+@media (max-width: 900px) {
+  .ris-hero {
+    grid-template-columns: 1fr;
+    padding-top: 2rem;
+  }
+
+  .ris-hero-visual {
+    min-height: 0;
+    padding: 2.5rem 0 1rem;
+  }
+
+  .ris-iris-hero {
+    width: min(600px, 145vw);
+  }
+
+  /* bench turns vertical: the beam runs down a trunk and fans out */
+  .bench-stage {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 2.25rem;
+  }
+
+  .bench-source {
+    justify-self: center;
+    width: min(220px, 52vw);
+  }
+
+  .bench-path {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.25rem;
+  }
+
+  .node-dot {
+    width: 58px;
+    height: 58px;
+  }
+
+  .ris-iris-node {
+    width: 46px;
+    height: 46px;
+  }
+
+  .link-glyph {
+    width: 30px;
+    height: 30px;
+  }
+
+  .node-label {
+    left: calc(100% + 0.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: min(11rem, calc(50vw - 4.9rem));
+    text-align: left;
+    background: none;
+  }
+
+  .node-label b {
+    font-size: 0.88rem;
+  }
+
+  .node-label small {
+    font-size: 0.8rem;
+  }
+
+  .bench-engines {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 36px;
+    row-gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .bench-foot {
+    grid-template-columns: 1fr;
+  }
+
+  .ris-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ris-split-flip > .ris-copy {
+    order: 0;
+  }
+
+  .route {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .route li:not(:last-child)::before {
+    right: auto;
+    bottom: -2.2rem;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(180deg, var(--ris-cyan), var(--ris-indigo));
+  }
+
+  .route li:nth-child(2)::before {
+    background: linear-gradient(180deg, var(--ris-indigo), var(--ris-pink));
+  }
+
+  .route li {
+    padding: 0.2rem 0 0 3.25rem;
+  }
+
+  .route-aside {
+    grid-template-columns: 1fr;
+  }
+
+  .ris-iris-get {
+    right: auto;
+    left: 50%;
+    top: 0;
+    width: min(520px, 130vw);
+    transform: translate(-50%, -30%);
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 560px) {
+  .app-reverse_image_search main {
+    font-size: 1rem;
+  }
+
+  .ris-hero-device {
+    --device-w: 248px;
+    --device-radius: 42px;
+    --device-bezel: 9px;
+  }
+
+  .ris-results-device {
+    --device-w: 260px;
+    --device-radius: 44px;
+    --device-bezel: 10px;
+  }
+
+  .ris-pick-device {
+    --device-w: 240px;
+    --device-radius: 40px;
+    --device-bezel: 9px;
+  }
+
+  .bench-stage {
+    padding: 1.5rem 0.85rem 1.25rem;
+    border-radius: 22px;
+  }
+
+  .bench-engines {
+    column-gap: 30px;
+  }
+
+  .engine {
+    padding: 0.75rem 0.8rem 0.8rem;
+  }
+
+  .engine-top {
+    display: block;
+  }
+
+  .engine h3 {
+    font-size: 0.95rem;
+  }
+
+  .engine-status {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 0.8rem;
+  }
+
+  .engine p {
+    font-size: 0.84rem;
+  }
+
+  .bench-controls {
+    position: relative;
+    display: block;
+  }
+
+  .sample-pick legend {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.4rem;
+  }
+
+  .bench-replay {
+    position: absolute;
+    right: 0;
+    top: 0;
+    min-height: 44px;
+    padding: 0 1rem;
+    font-size: 0.92rem;
+  }
+
+  .sample-opts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .sample-opt label {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.55rem 0.3rem 0.5rem;
+    font-size: 0.86rem;
+    text-align: center;
+  }
+
+  .sample-opt label svg {
+    width: 34px;
+    height: 42px;
+  }
+
+  .results-tabs [role="tab"] {
+    font-size: 0.74rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loupe,
+  .engine,
+  .engine::before,
+  .node-dot,
+  .bench-cue {
+    transition: none;
+  }
+}

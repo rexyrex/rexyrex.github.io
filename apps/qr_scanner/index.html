@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>QR Scanner: Scan &amp; Create — Rexyrex</title>
+    <meta name="description" content="Scan QR codes with your camera or from a photo, keep a searchable history, and create your own QR codes. Free on Android. Try the generator here.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/qr_scanner/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/qr_scanner/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/qr_scanner/img/icon-180.png">
+    <meta name="theme-color" content="#0e0d19" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f4fb" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/qr_scanner/">
+    <meta property="og:title" content="QR Scanner: Scan &amp; Create">
+    <meta property="og:description" content="Scan QR codes, keep a searchable history, and create your own QR codes.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/qr_scanner.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="QR Scanner: Scan &amp; Create">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="QR Scanner: Scan &amp; Create">
+    <meta name="twitter:description" content="Scan QR codes, keep a searchable history, and create your own QR codes.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/qr_scanner.jpg">
+    <script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/apps/qr_scanner/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "QR Scanner: Scan & Create",
+        "operatingSystem": "Android",
+        "applicationCategory": "UtilitiesApplication",
+        "description": "Scan QR codes, keep a searchable history, and create your own QR codes.",
+        "url": "https://rexyrex.github.io/apps/qr_scanner/",
+        "image": "https://rexyrex.github.io/apps/qr_scanner/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id=com.rexyrex.qr_scanner"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-qr_scanner">
+    <div id="nav-placeholder"></div>
+
+    <!-- Icon set: drawn for this page, 24×24, stroked -->
+    <svg class="sprite" aria-hidden="true" focusable="false">
+        <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8.5V6.5a2.5 2.5 0 0 1 2.5-2.5h2M15.5 4h2A2.5 2.5 0 0 1 20 6.5v2M20 15.5v2a2.5 2.5 0 0 1-2.5 2.5h-2M8.5 20h-2A2.5 2.5 0 0 1 4 17.5v-2M4 12h16"/></symbol>
+        <symbol id="i-history" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1M3.5 4.5v4h4M12 7.5V12l3 2"/></symbol>
+        <symbol id="i-generate" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5zM14 20h1M20 14v1"/></symbol>
+        <symbol id="i-text" viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h9"/></symbol>
+        <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.1 1.1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.1-1.1"/></symbol>
+        <symbol id="i-contact" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></symbol>
+        <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.2 4h2.6l1.7 4.3-2.2 1.4a10.5 10.5 0 0 0 6 6l1.4-2.2 4.3 1.7v2.6a2 2 0 0 1-2.1 2A15.5 15.5 0 0 1 4.2 6.1 2 2 0 0 1 6.2 4z"/></symbol>
+        <symbol id="i-sms" viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H9.5L5 19.5V16H4zM8 9.5h8M8 12.5h5"/></symbol>
+        <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20.5 11.5a8 8 0 0 1-11.7 7.1L4 19.8l1.2-4.5a8 8 0 1 1 15.3-3.8z"/></symbol>
+        <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.8-6.5-11a6.5 6.5 0 0 1 13 0c0 5.2-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+        <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.4a9.5 9.5 0 0 1 13 0M8.6 15.7a5 5 0 0 1 6.8 0M12 19.2h.01"/></symbol>
+        <symbol id="i-email" viewBox="0 0 24 24"><path d="M3.5 5.5h17v13h-17zM3.5 6.5l8.5 6.5 8.5-6.5"/></symbol>
+        <symbol id="i-at" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.6"/><path d="M15.6 12v1.4a2.6 2.6 0 0 0 5.2 0V12a8.8 8.8 0 1 0-3.4 7"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.2 12.4l2.6 2.6 5-5.2"/></symbol>
+        <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4.5 19.5h3.8L19 8.8l-3.8-3.8L4.5 15.7z"/></symbol>
+        <symbol id="i-error" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5M12 16.4h.01"/></symbol>
+        <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></symbol>
+        <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7.5a2 2 0 0 0 2 2h2.5"/></symbol>
+        <symbol id="i-reset" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4.5v4h-4"/></symbol>
+    </svg>
+
+    <main id="main">
+        <!-- ============ Hero ============ -->
+        <section class="qr-hero" aria-labelledby="hero-title">
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <p class="crumb"><a href="/apps/">/apps/</a><span>qr_scanner/</span></p>
+                    <h1 id="hero-title" class="hero-title">
+                        <span class="hero-name"><img src="/apps/qr_scanner/img/icon.webp" width="256" height="256" alt="">QR Scanner</span>
+                        <span class="hero-slogan"><span>Scan it<span class="m">.</span></span> <span>Find it again<span class="m">.</span></span> <span>Make your own<span class="m">.</span></span></span>
+                    </h1>
+                    <p class="hero-lede">Read QR codes with your camera or from a photo, keep every scan in a searchable history, and make your own codes for links, Wi-Fi, contacts and more.</p>
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.qr_scanner" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>GET IT ON</small><b>Google Play</b></span>
+                        </a>
+                    </div>
+                    <p class="hero-note">Free on Android.</p>
+                </div>
+
+                <div class="hero-stage">
+                    <figure class="app-device hero-phone">
+                        <span class="app-device-screen"><img src="/apps/qr_scanner/img/link-ready.webp" width="660" height="1434" alt="The Generate tab in QR Scanner: the Link template is selected, a QR code for https://seoul.cafe is ready with 18 characters, and Save, Share and Copy QR content buttons sit below it." fetchpriority="high"></span>
+                    </figure>
+
+                    <figure class="vf" aria-labelledby="vf-cap">
+                        <div class="vf-screen">
+                            <div class="vf-window">
+                                <div class="vf-card"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" role="img" aria-label="QR code that opens QR Scanner on Google Play" shape-rendering="crispEdges"><rect width="45" height="45" fill="#fff"/><path fill="#4433E0" d="M4 4h7v1h-7zM12 4h1v1h-1zM14 4h1v1h-1zM17 4h1v1h-1zM19 4h3v1h-3zM23 4h3v1h-3zM34 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM12 5h1v1h-1zM15 5h2v1h-2zM20 5h4v1h-4zM25 5h1v1h-1zM34 5h1v1h-1zM40 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM16 6h1v1h-1zM20 6h1v1h-1zM23 6h1v1h-1zM25 6h1v1h-1zM29 6h2v1h-2zM34 6h1v1h-1zM36 6h3v1h-3zM40 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM14 7h5v1h-5zM20 7h3v1h-3zM25 7h1v1h-1zM29 7h1v1h-1zM31 7h2v1h-2zM34 7h1v1h-1zM36 7h3v1h-3zM40 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h3v1h-3zM20 8h1v1h-1zM22 8h2v1h-2zM25 8h2v1h-2zM30 8h1v1h-1zM32 8h1v1h-1zM34 8h1v1h-1zM36 8h3v1h-3zM40 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM13 9h2v1h-2zM17 9h1v1h-1zM20 9h1v1h-1zM25 9h3v1h-3zM34 9h1v1h-1zM40 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h1v1h-1zM32 10h1v1h-1zM34 10h7v1h-7zM16 11h1v1h-1zM18 11h2v1h-2zM21 11h4v1h-4zM27 11h1v1h-1zM29 11h1v1h-1zM31 11h2v1h-2zM4 12h1v1h-1zM7 12h7v1h-7zM15 12h3v1h-3zM23 12h1v1h-1zM25 12h4v1h-4zM30 12h1v1h-1zM32 12h2v1h-2zM36 12h1v1h-1zM38 12h3v1h-3zM4 13h2v1h-2zM9 13h1v1h-1zM12 13h1v1h-1zM14 13h2v1h-2zM17 13h2v1h-2zM20 13h3v1h-3zM26 13h2v1h-2zM31 13h2v1h-2zM35 13h5v1h-5zM5 14h2v1h-2zM10 14h1v1h-1zM12 14h3v1h-3zM18 14h3v1h-3zM23 14h7v1h-7zM31 14h1v1h-1zM33 14h2v1h-2zM37 14h1v1h-1zM40 14h1v1h-1zM5 15h5v1h-5zM12 15h1v1h-1zM14 15h4v1h-4zM20 15h2v1h-2zM23 15h2v1h-2zM26 15h1v1h-1zM30 15h1v1h-1zM32 15h3v1h-3zM38 15h3v1h-3zM5 16h1v1h-1zM8 16h3v1h-3zM12 16h2v1h-2zM18 16h2v1h-2zM28 16h1v1h-1zM32 16h1v1h-1zM34 16h1v1h-1zM40 16h1v1h-1zM4 17h6v1h-6zM11 17h1v1h-1zM16 17h5v1h-5zM22 17h1v1h-1zM25 17h1v1h-1zM27 17h6v1h-6zM36 17h2v1h-2zM4 18h1v1h-1zM7 18h1v1h-1zM10 18h1v1h-1zM13 18h1v1h-1zM17 18h4v1h-4zM22 18h2v1h-2zM31 18h1v1h-1zM33 18h2v1h-2zM36 18h5v1h-5zM5 19h1v1h-1zM8 19h1v1h-1zM12 19h3v1h-3zM18 19h1v1h-1zM24 19h3v1h-3zM30 19h2v1h-2zM33 19h3v1h-3zM37 19h4v1h-4zM4 20h1v1h-1zM6 20h1v1h-1zM9 20h5v1h-5zM21 20h2v1h-2zM25 20h2v1h-2zM28 20h1v1h-1zM31 20h2v1h-2zM34 20h2v1h-2zM38 20h2v1h-2zM5 21h1v1h-1zM7 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM18 21h1v1h-1zM21 21h1v1h-1zM25 21h2v1h-2zM29 21h3v1h-3zM35 21h1v1h-1zM37 21h1v1h-1zM4 22h3v1h-3zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h1v1h-1zM20 22h2v1h-2zM23 22h1v1h-1zM27 22h3v1h-3zM31 22h1v1h-1zM35 22h1v1h-1zM38 22h1v1h-1zM40 22h1v1h-1zM5 23h1v1h-1zM7 23h1v1h-1zM11 23h1v1h-1zM14 23h1v1h-1zM16 23h2v1h-2zM19 23h2v1h-2zM22 23h3v1h-3zM26 23h2v1h-2zM29 23h2v1h-2zM32 23h1v1h-1zM34 23h1v1h-1zM37 23h1v1h-1zM40 23h1v1h-1zM4 24h1v1h-1zM7 24h1v1h-1zM9 24h2v1h-2zM12 24h2v1h-2zM15 24h1v1h-1zM18 24h1v1h-1zM20 24h2v1h-2zM23 24h2v1h-2zM27 24h2v1h-2zM30 24h8v1h-8zM4 25h1v1h-1zM6 25h1v1h-1zM8 25h2v1h-2zM11 25h1v1h-1zM13 25h1v1h-1zM15 25h1v1h-1zM18 25h2v1h-2zM21 25h3v1h-3zM27 25h1v1h-1zM29 25h3v1h-3zM36 25h1v1h-1zM38 25h1v1h-1zM4 26h1v1h-1zM6 26h3v1h-3zM10 26h2v1h-2zM14 26h2v1h-2zM17 26h4v1h-4zM25 26h1v1h-1zM27 26h1v1h-1zM29 26h1v1h-1zM31 26h1v1h-1zM33 26h1v1h-1zM35 26h1v1h-1zM37 26h1v1h-1zM40 26h1v1h-1zM4 27h1v1h-1zM7 27h1v1h-1zM9 27h1v1h-1zM12 27h3v1h-3zM17 27h2v1h-2zM20 27h1v1h-1zM22 27h1v1h-1zM30 27h2v1h-2zM33 27h6v1h-6zM4 28h2v1h-2zM10 28h3v1h-3zM17 28h2v1h-2zM21 28h1v1h-1zM23 28h4v1h-4zM28 28h1v1h-1zM32 28h1v1h-1zM34 28h2v1h-2zM4 29h1v1h-1zM7 29h1v1h-1zM9 29h1v1h-1zM11 29h3v1h-3zM15 29h2v1h-2zM18 29h1v1h-1zM22 29h2v1h-2zM26 29h2v1h-2zM29 29h1v1h-1zM31 29h3v1h-3zM35 29h2v1h-2zM4 30h2v1h-2zM10 30h2v1h-2zM13 30h1v1h-1zM15 30h2v1h-2zM19 30h1v1h-1zM26 30h1v1h-1zM29 30h4v1h-4zM34 30h1v1h-1zM39 30h2v1h-2zM4 31h1v1h-1zM7 31h1v1h-1zM9 31h1v1h-1zM11 31h1v1h-1zM15 31h1v1h-1zM18 31h1v1h-1zM20 31h1v1h-1zM23 31h1v1h-1zM26 31h1v1h-1zM28 31h1v1h-1zM31 31h5v1h-5zM37 31h2v1h-2zM40 31h1v1h-1zM4 32h1v1h-1zM6 32h1v1h-1zM8 32h3v1h-3zM12 32h3v1h-3zM16 32h1v1h-1zM19 32h1v1h-1zM23 32h2v1h-2zM26 32h13v1h-13zM40 32h1v1h-1zM12 33h1v1h-1zM15 33h1v1h-1zM17 33h1v1h-1zM19 33h1v1h-1zM21 33h1v1h-1zM23 33h4v1h-4zM32 33h1v1h-1zM36 33h1v1h-1zM38 33h1v1h-1zM4 34h7v1h-7zM12 34h3v1h-3zM16 34h1v1h-1zM19 34h1v1h-1zM21 34h3v1h-3zM27 34h1v1h-1zM30 34h1v1h-1zM32 34h1v1h-1zM34 34h1v1h-1zM36 34h1v1h-1zM39 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM12 35h1v1h-1zM16 35h1v1h-1zM25 35h1v1h-1zM27 35h3v1h-3zM32 35h1v1h-1zM36 35h1v1h-1zM39 35h1v1h-1zM4 36h1v1h-1zM6 36h3v1h-3zM10 36h1v1h-1zM12 36h1v1h-1zM14 36h2v1h-2zM17 36h4v1h-4zM22 36h1v1h-1zM24 36h2v1h-2zM28 36h1v1h-1zM30 36h7v1h-7zM40 36h1v1h-1zM4 37h1v1h-1zM6 37h3v1h-3zM10 37h1v1h-1zM12 37h1v1h-1zM16 37h3v1h-3zM24 37h1v1h-1zM26 37h2v1h-2zM29 37h6v1h-6zM37 37h1v1h-1zM40 37h1v1h-1zM4 38h1v1h-1zM6 38h3v1h-3zM10 38h1v1h-1zM14 38h1v1h-1zM17 38h2v1h-2zM21 38h1v1h-1zM25 38h3v1h-3zM29 38h1v1h-1zM31 38h2v1h-2zM36 38h1v1h-1zM38 38h1v1h-1zM40 38h1v1h-1zM4 39h1v1h-1zM10 39h1v1h-1zM13 39h4v1h-4zM19 39h1v1h-1zM21 39h2v1h-2zM28 39h1v1h-1zM31 39h1v1h-1zM33 39h1v1h-1zM36 39h5v1h-5zM4 40h7v1h-7zM12 40h1v1h-1zM14 40h5v1h-5zM20 40h1v1h-1zM23 40h2v1h-2zM26 40h3v1h-3zM32 40h1v1h-1zM34 40h2v1h-2zM37 40h1v1h-1zM40 40h1v1h-1z"/></svg></div>
+                                <span class="vf-lock" aria-hidden="true"></span>
+                                <span class="vf-line" aria-hidden="true"></span>
+                                <svg class="vf-brackets" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M2 18V12A10 10 0 0 1 12 2h6M82 2h6a10 10 0 0 1 10 10v6M98 82v6a10 10 0 0 1-10 10h-6M18 98h-6A10 10 0 0 1 2 88v-6"/></svg>
+                            </div>
+                            <p class="vf-hint" aria-hidden="true">Point your camera at a QR code</p>
+                            <div class="vf-sheet">
+                                <span class="vf-type" aria-hidden="true"><svg><use href="#i-link"/></svg></span>
+                                <span class="vf-text"><b>Link</b><span>play.google.com/store/apps/details?id=com.rexyrex.qr_scanner</span></span>
+                                <a class="vf-open" href="https://play.google.com/store/apps/details?id=com.rexyrex.qr_scanner" target="_blank" rel="noopener noreferrer" aria-label="Open QR Scanner on Google Play">Open</a>
+                            </div>
+                        </div>
+                        <figcaption id="vf-cap">On a computer? Point your phone’s camera at this code to open QR Scanner on Google Play.</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ The app's three tabs ============ -->
+        <nav class="tabs" aria-label="The app’s three tabs">
+            <div class="tabs-inner">
+                <a href="#scan"><svg aria-hidden="true"><use href="#i-scan"/></svg><span>Scan</span></a>
+                <a href="#history"><svg aria-hidden="true"><use href="#i-history"/></svg><span>History</span></a>
+                <a href="#generate"><svg aria-hidden="true"><use href="#i-generate"/></svg><span>Generate</span></a>
+            </div>
+        </nav>
+
+        <!-- ============ Scan ============ -->
+        <section class="sec" id="scan" aria-labelledby="scan-title">
+            <div class="qr-rule" aria-hidden="true"><i class="finder"></i><i class="timing"></i><i class="finder"></i></div>
+            <header class="sec-head">
+                <p class="crumb"><a href="#scan">/apps/qr_scanner/#scan</a></p>
+                <h2 id="scan-title">Scan with the camera, or from a photo</h2>
+                <p class="sec-lede">The app opens on the Scan tab, camera ready. Point it at a QR code: an outline locks onto the code and follows it as you move, and the result opens straight away.</p>
+            </header>
+
+            <div class="scan-grid">
+                <div class="scan-phones">
+                    <figure class="app-device phone-a">
+                        <span class="app-device-screen"><img src="/apps/qr_scanner/img/result-actions.webp" width="660" height="1434" loading="lazy" decoding="async" alt="A scan opened from History: a Link result for https://seoul.cafe with Open, Copy, Show QR, Share and Delete buttons."></span>
+                    </figure>
+                    <figure class="app-device phone-b">
+                        <span class="app-device-screen"><img src="/apps/qr_scanner/img/show-qr.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Show QR: the same link redrawn as a fresh QR code in a dialog, with a Done button."></span>
+                    </figure>
+                </div>
+
+                <dl class="specs">
+                    <div>
+                        <dt>From a photo</dt>
+                        <dd>Pick a screenshot or a picture, crop it to the code, and it’s read right on your phone.</dd>
+                    </div>
+                    <div>
+                        <dt>Photos, Flash, Flip</dt>
+                        <dd>The three camera controls: scan from your gallery, light up a dim room, or switch cameras.</dd>
+                    </div>
+                    <div>
+                        <dt>Show QR</dt>
+                        <dd>Turn any result back into a clean code to show someone else.</dd>
+                    </div>
+                    <div>
+                        <dt>Saved as you go</dt>
+                        <dd>Every scan lands in History with its date and time.</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="types">
+                <h3 class="types-title">It knows what it just read</h3>
+                <div class="types-scroll">
+                    <table class="types-table">
+                        <thead>
+                            <tr><th scope="col">Type</th><th scope="col">What the code holds</th><th scope="col">First button</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><th scope="row"><span class="type-tag" data-type="url"><svg aria-hidden="true"><use href="#i-link"/></svg>Link</span></th><td>A web address: <code>http(s)://…</code> or <code>www.…</code></td><td>Open</td></tr>
+                            <tr><th scope="row"><span class="type-tag" data-type="email"><svg aria-hidden="true"><use href="#i-at"/></svg>Email</span></th><td>A <code>mailto:</code> link or an email address</td><td>Write email</td></tr>
+                            <tr><th scope="row"><span class="type-tag" data-type="phone"><svg aria-hidden="true"><use href="#i-phone"/></svg>Phone</span></th><td>A <code>tel:</code> number</td><td>Call</td></tr>
+                            <tr><th scope="row"><span class="type-tag" data-type="wifi"><svg aria-hidden="true"><use href="#i-wifi"/></svg>Wi-Fi</span></th><td>A network name and password (<code>WIFI:…</code>)</td><td>Copy</td></tr>
+                            <tr><th scope="row"><span class="type-tag" data-type="contact"><svg aria-hidden="true"><use href="#i-contact"/></svg>Contact</span></th><td>A contact card (MECARD or vCard)</td><td>Copy</td></tr>
+                            <tr><th scope="row"><span class="type-tag" data-type="text"><svg aria-hidden="true"><use href="#i-text"/></svg>Text</span></th><td>Anything else</td><td>Copy</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="types-note">Every result also has Copy, Show QR and Share.</p>
+            </div>
+        </section>
+
+        <!-- ============ History ============ -->
+        <section class="sec" id="history" aria-labelledby="history-title">
+            <div class="qr-rule" aria-hidden="true"><i class="finder"></i><i class="timing"></i><i class="finder"></i></div>
+
+            <div class="hist-grid">
+                <div class="hist-copy">
+                    <header class="sec-head">
+                        <p class="crumb"><a href="#history">/apps/qr_scanner/#history</a></p>
+                        <h2 id="history-title">Every scan saved, and easy to find again</h2>
+                        <p class="sec-lede">Scans are saved on their own, newest first, with the date and time. Search by what a code says, or tap a type to see only links, Wi-Fi networks, contacts, emails, phone numbers or text.</p>
+                    </header>
+                    <div class="hist-demo" role="group" aria-label="Show the History tab">
+                        <div class="seg">
+                            <button type="button" aria-pressed="true" data-src="/apps/qr_scanner/img/history.webp" data-alt="The History tab: six saved scans, a link, a Wi-Fi network, a contact, an email address, a phone number and a note, each with its type and time, under a search field and type filters." data-cap="All scans, newest first.">All scans</button>
+                            <button type="button" aria-pressed="false" data-src="/apps/qr_scanner/img/filtered-wifi.webp" data-alt="The History tab filtered to Wi-Fi: only the StudioGuest network is listed." data-cap="Filtered to Wi-Fi.">Wi-Fi only</button>
+                            <button type="button" aria-pressed="false" data-src="/apps/qr_scanner/img/search-contact.webp" data-alt="The History tab searched for Mina: only Mina Park’s contact card is listed." data-cap="Searched for “Mina”.">Search “Mina”</button>
+                        </div>
+                    </div>
+
+                    <dl class="specs">
+                        <div>
+                            <dt>Reopen anything</dt>
+                            <dd>Tap a scan to open it again, copy it, show it as a QR code, share it or delete it.</dd>
+                        </div>
+                        <div>
+                            <dt>Tidy up</dt>
+                            <dd>Select several scans and delete them together, or clear the whole history.</dd>
+                        </div>
+                        <div>
+                            <dt>Kept on your phone</dt>
+                            <dd>History lives in a database on your device, and stays there.</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <figure class="hist-figure">
+                    <div class="app-device hist-phone">
+                        <span class="app-device-screen"><img id="hist-img" src="/apps/qr_scanner/img/history.webp" width="660" height="1434" loading="lazy" decoding="async" alt="The History tab: six saved scans, a link, a Wi-Fi network, a contact, an email address, a phone number and a note, each with its type and time, under a search field and type filters."></span>
+                    </div>
+                    <figcaption id="hist-cap" aria-live="polite">All scans, newest first.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ============ Generate (live) ============ -->
+        <section class="sec sec-gen" id="generate" aria-labelledby="generate-title">
+            <div class="qr-rule" aria-hidden="true"><i class="finder"></i><i class="timing"></i><i class="finder"></i></div>
+            <header class="sec-head">
+                <p class="crumb"><a href="#generate">/apps/qr_scanner/#generate</a></p>
+                <h2 id="generate-title">Make a QR code for anything</h2>
+                <p class="sec-lede">This is the app’s Generate tab, rebuilt for the page: the same nine templates and eight colors, with error correction, shape and file format. Type, and the code redraws as you go.</p>
+            </header>
+
+            <div class="gen" id="gen">
+                <i class="gen-eye gen-eye-tl" aria-hidden="true"></i>
+                <i class="gen-eye gen-eye-tr" aria-hidden="true"></i>
+                <i class="gen-eye gen-eye-bl" aria-hidden="true"></i>
+                <i class="gen-align" aria-hidden="true"></i>
+
+                <form class="gen-form" autocomplete="off">
+                    <fieldset class="gen-types">
+                        <legend class="app-visually-hidden">What the code is for</legend>
+                        <div class="types-strip">
+                            <label class="type"><input type="radio" name="qr-type" value="text"><span><svg aria-hidden="true"><use href="#i-text"/></svg>Text</span></label>
+                            <label class="type"><input type="radio" name="qr-type" value="url" checked><span><svg aria-hidden="true"><use href="#i-link"/></svg>Link</span></label>
+                            <label class="type"><input type="radio" name="qr-type" value="contact"><span><svg aria-hidden="true"><use href="#i-contact"/></svg>Contact</span></label>
+                            <label class="type"><input type="radio" name="qr-type" value="phone"><span><svg aria-hidden="true"><use href="#i-phone"/></svg>Phone</span></label>
+                            <label class="type"><input type="radio" name="qr-type" value="sms"><span><svg aria-hidden="true"><use href="#i-sms"/></svg>SMS</span></label>
+                            <label class="type"><input type="radio" name="qr-type" value="whatsapp"><span><svg aria-hidden="true"><use href="#i-chat"/></svg>WhatsApp</span></label>
+                            <label class="type"><input type="radio" name="qr-type" value="geo"><span><svg aria-hidden="true"><use href="#i-pin"/></svg>Location</span></label>
+                            <label class="type"><input type="radio" name="qr-type" value="wifi"><span><svg aria-hidden="true"><use href="#i-wifi"/></svg>Wi-Fi</span></label>
+                            <label class="type"><input type="radio" name="qr-type" value="email"><span><svg aria-hidden="true"><use href="#i-email"/></svg>Email</span></label>
+                        </div>
+                    </fieldset>
+
+                    <div class="gen-body">
+                        <div class="gen-preview">
+                            <div class="gen-card">
+                                <div class="gen-qr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" role="img" aria-label="QR code for: https://rexyrex.github.io/apps/qr_scanner/" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#14171F" d="M4 4h7v1h-7zM12 4h2v1h-2zM15 4h4v1h-4zM22 4h1v1h-1zM24 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h1v1h-1zM15 5h1v1h-1zM20 5h3v1h-3zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM17 6h1v1h-1zM20 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM16 7h3v1h-3zM21 7h2v1h-2zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM22 8h1v1h-1zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM16 9h3v1h-3zM20 9h1v1h-1zM24 9h1v1h-1zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM14 11h3v1h-3zM19 11h1v1h-1zM22 11h1v1h-1zM24 11h1v1h-1zM4 12h1v1h-1zM6 12h1v1h-1zM10 12h2v1h-2zM15 12h2v1h-2zM19 12h1v1h-1zM23 12h1v1h-1zM27 12h1v1h-1zM30 12h1v1h-1zM32 12h1v1h-1zM6 13h4v1h-4zM14 13h1v1h-1zM17 13h1v1h-1zM19 13h3v1h-3zM23 13h5v1h-5zM31 13h2v1h-2zM4 14h2v1h-2zM8 14h3v1h-3zM13 14h1v1h-1zM15 14h2v1h-2zM19 14h1v1h-1zM23 14h4v1h-4zM28 14h3v1h-3zM32 14h1v1h-1zM8 15h1v1h-1zM11 15h1v1h-1zM13 15h1v1h-1zM15 15h2v1h-2zM19 15h2v1h-2zM22 15h1v1h-1zM26 15h1v1h-1zM28 15h2v1h-2zM9 16h3v1h-3zM13 16h4v1h-4zM22 16h1v1h-1zM24 16h1v1h-1zM26 16h1v1h-1zM32 16h1v1h-1zM4 17h3v1h-3zM11 17h2v1h-2zM14 17h1v1h-1zM16 17h1v1h-1zM20 17h2v1h-2zM23 17h2v1h-2zM26 17h2v1h-2zM31 17h2v1h-2zM6 18h1v1h-1zM8 18h1v1h-1zM10 18h2v1h-2zM13 18h1v1h-1zM16 18h2v1h-2zM19 18h2v1h-2zM23 18h2v1h-2zM26 18h3v1h-3zM32 18h1v1h-1zM4 19h2v1h-2zM7 19h3v1h-3zM12 19h3v1h-3zM16 19h1v1h-1zM18 19h2v1h-2zM22 19h1v1h-1zM24 19h2v1h-2zM28 19h1v1h-1zM4 20h2v1h-2zM9 20h2v1h-2zM14 20h1v1h-1zM19 20h1v1h-1zM23 20h1v1h-1zM26 20h1v1h-1zM32 20h1v1h-1zM5 21h1v1h-1zM7 21h1v1h-1zM11 21h4v1h-4zM16 21h1v1h-1zM18 21h3v1h-3zM23 21h5v1h-5zM30 21h3v1h-3zM4 22h2v1h-2zM7 22h2v1h-2zM10 22h3v1h-3zM18 22h2v1h-2zM21 22h3v1h-3zM25 22h1v1h-1zM28 22h2v1h-2zM32 22h1v1h-1zM6 23h1v1h-1zM11 23h6v1h-6zM22 23h1v1h-1zM27 23h1v1h-1zM4 24h5v1h-5zM10 24h1v1h-1zM15 24h2v1h-2zM18 24h2v1h-2zM24 24h6v1h-6zM31 24h1v1h-1zM12 25h2v1h-2zM15 25h1v1h-1zM17 25h1v1h-1zM19 25h2v1h-2zM22 25h1v1h-1zM24 25h1v1h-1zM28 25h3v1h-3zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h1v1h-1zM14 26h1v1h-1zM19 26h1v1h-1zM21 26h2v1h-2zM24 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM14 27h2v1h-2zM18 27h3v1h-3zM23 27h2v1h-2zM28 27h1v1h-1zM32 27h1v1h-1zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM13 28h3v1h-3zM17 28h2v1h-2zM20 28h1v1h-1zM23 28h7v1h-7zM31 28h1v1h-1zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h2v1h-2zM16 29h2v1h-2zM19 29h1v1h-1zM22 29h3v1h-3zM28 29h3v1h-3zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM12 30h1v1h-1zM19 30h1v1h-1zM21 30h2v1h-2zM24 30h2v1h-2zM28 30h1v1h-1zM31 30h2v1h-2zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h2v1h-2zM17 31h1v1h-1zM19 31h1v1h-1zM24 31h3v1h-3zM28 31h2v1h-2zM4 32h7v1h-7zM12 32h2v1h-2zM15 32h5v1h-5zM24 32h2v1h-2zM27 32h2v1h-2zM32 32h1v1h-1z"/></svg></div>
+                            </div>
+                            <p class="gen-status" data-tone="ready"><svg aria-hidden="true"><use href="#i-check"/></svg><span>Ready · 42 characters</span></p>
+                            <dl class="gen-meta">
+                                <div><dt>Version</dt><dd data-meta="version">3</dd></div>
+                                <div><dt>Modules</dt><dd data-meta="modules">29 × 29</dd></div>
+                                <div><dt>Contrast on white</dt><dd data-meta="contrast">17.9 : 1</dd></div>
+                            </dl>
+                        </div>
+
+                        <div class="gen-in">
+                            <div class="gen-fields-head">
+                                <h3 class="gen-fields-title">Link details</h3>
+                                <button type="button" class="gen-clear" title="Clear fields"><svg aria-hidden="true"><use href="#i-reset"/></svg><span class="app-visually-hidden">Clear fields</span></button>
+                            </div>
+                            <div class="gen-fields">
+                                <div class="field">
+                                    <label for="qr-f-url-url">URL *</label>
+                                    <input id="qr-f-url-url" name="url" type="text" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="example.com" value="rexyrex.github.io/apps/qr_scanner/" aria-required="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="gen-actions">
+                            <button type="button" class="btn-fill gen-download"><svg aria-hidden="true"><use href="#i-download"/></svg><span>Download PNG</span></button>
+                            <button type="button" class="btn-line gen-copy"><svg aria-hidden="true"><use href="#i-copy"/></svg>Copy QR content</button>
+                            <p class="gen-toast" role="status" aria-live="polite"></p>
+                        </div>
+
+                        <details class="gen-custom" open>
+                            <summary>
+                                <span class="gen-custom-title">Customize</span>
+                                <span class="gen-summary">Ink · Medium · Square · PNG</span>
+                            </summary>
+                            <div class="gen-custom-body">
+                                <fieldset class="opt">
+                                    <legend>Color</legend>
+                                    <div class="swatches">
+                                        <label class="swatch" style="--sw:#14171F"><input type="radio" name="qr-color" value="0" checked><span><span class="app-visually-hidden">Ink</span></span></label>
+                                        <label class="swatch" style="--sw:#4433E0"><input type="radio" name="qr-color" value="1"><span><span class="app-visually-hidden">Indigo</span></span></label>
+                                        <label class="swatch" style="--sw:#0B6E73"><input type="radio" name="qr-color" value="2"><span><span class="app-visually-hidden">Teal</span></span></label>
+                                        <label class="swatch" style="--sw:#1F6E3A"><input type="radio" name="qr-color" value="3"><span><span class="app-visually-hidden">Forest</span></span></label>
+                                        <label class="swatch" style="--sw:#A82348"><input type="radio" name="qr-color" value="4"><span><span class="app-visually-hidden">Crimson</span></span></label>
+                                        <label class="swatch" style="--sw:#6A1B9A"><input type="radio" name="qr-color" value="5"><span><span class="app-visually-hidden">Plum</span></span></label>
+                                        <label class="swatch" style="--sw:#14227A"><input type="radio" name="qr-color" value="6"><span><span class="app-visually-hidden">Navy</span></span></label>
+                                        <label class="swatch" style="--sw:#334155"><input type="radio" name="qr-color" value="7"><span><span class="app-visually-hidden">Slate</span></span></label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="opt">
+                                    <legend>Error correction</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="qr-level" value="0"><span>Low</span></label>
+                                        <label class="chip"><input type="radio" name="qr-level" value="1" checked><span>Medium</span></label>
+                                        <label class="chip"><input type="radio" name="qr-level" value="2"><span>Quartile</span></label>
+                                        <label class="chip"><input type="radio" name="qr-level" value="3"><span>High</span></label>
+                                    </div>
+                                    <p class="gen-blurb">Recommended</p>
+                                </fieldset>
+                                <div class="opt-pair">
+                                    <fieldset class="opt">
+                                        <legend>Shape</legend>
+                                        <div class="segs">
+                                            <label class="segbtn"><input type="radio" name="qr-shape" value="square" checked><span>Square</span></label>
+                                            <label class="segbtn"><input type="radio" name="qr-shape" value="rounded"><span>Rounded</span></label>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="opt">
+                                        <legend>File format</legend>
+                                        <div class="segs">
+                                            <label class="segbtn"><input type="radio" name="qr-format" value="png" checked><span>PNG</span></label>
+                                            <label class="segbtn"><input type="radio" name="qr-format" value="jpg"><span>JPG</span></label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </form>
+                <noscript><p class="gen-noscript">The live generator needs JavaScript. The code above links to this page.</p></noscript>
+            </div>
+
+            <div class="gen-after">
+                <figure class="app-device gen-phone">
+                    <span class="app-device-screen"><img src="/apps/qr_scanner/img/customize.webp" width="660" height="1434" loading="lazy" decoding="async" alt="The app’s Customize panel: eight color swatches with Teal selected, error correction set to High (Survives damage), Rounded shape and PNG format."></span>
+                </figure>
+                <div class="gen-after-copy">
+                    <h3>In the app</h3>
+                    <p>Save puts the code in your photo gallery, Share sends it anywhere, and Copy QR content copies the text inside it. Exports are a 1024-pixel code with its white border, as PNG or JPG. The download above uses the same size and border.</p>
+                    <p>Templates fill in the fiddly formats for you: a Wi-Fi code guests scan to join, a contact card, a pre-filled SMS or WhatsApp message, a map location, an email with subject and body.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Privacy ============ -->
+        <section class="sec sec-privacy" id="privacy" aria-labelledby="privacy-title">
+            <div class="qr-rule" aria-hidden="true"><i class="finder"></i><i class="timing"></i><i class="finder"></i></div>
+            <header class="sec-head">
+                <p class="crumb"><a href="/apps/qr_scanner/privacy-policy/">/apps/qr_scanner/privacy-policy/</a></p>
+                <h2 id="privacy-title">What stays on your phone</h2>
+            </header>
+            <ul class="trust">
+                <li><b>Your scan history.</b> It’s kept in a database on your device and never sent to Rexyrex. Delete scans one at a time or clear them all.</li>
+                <li><b>The camera.</b> Frames are read on the device to find codes. Nothing is recorded or stored.</li>
+                <li><b>No account.</b> There’s nothing to sign up for.</li>
+            </ul>
+            <p class="fine">QR Scanner is free and shows ads from Google AdMob, and it uses Firebase to collect anonymous usage statistics and crash reports. The <a href="/apps/qr_scanner/privacy-policy/">privacy policy</a> has the details. The generator on this page runs in your browser: what you type into it isn’t sent anywhere.</p>
+        </section>
+
+        <!-- ============ Get it ============ -->
+        <section class="get" aria-labelledby="get-title">
+            <i class="get-eye get-eye-tl" aria-hidden="true"></i>
+            <i class="get-eye get-eye-tr" aria-hidden="true"></i>
+            <i class="get-eye get-eye-bl" aria-hidden="true"></i>
+            <div class="get-inner">
+                <img class="get-icon" src="/apps/qr_scanner/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
+                <h2 id="get-title">Get QR Scanner on Google Play</h2>
+                <p>Scan, keep and make QR codes. Free on Android.</p>
+                <div class="store-badges">
+                    <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.qr_scanner" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                        <span><small>GET IT ON</small><b>Google Play</b></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="About this app">
+            <a href="/apps/qr_scanner/privacy-policy/">Privacy policy</a>
+            <a href="/support/">Support</a>
+            <a href="/#apps">More apps by Rexyrex</a>
+        </nav>
+        <p>Made by <a href="/">Rexyrex</a> · <code>/apps/qr_scanner/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/apps/qr_scanner/page.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+/* ============================================================
+   App landing pages — /apps/<app_id>/index.html
+   The shared minimum every app page uses: store buttons, a phone
+   frame for real screen captures, and the page footer. Everything
+   else (palette, type, layout, motion) belongs to the page itself,
+   so each app keeps its own look. Load after index.css + navbar.css,
+   before the page's own stylesheet.
+
+   Pages theme these through custom properties, e.g.
+     .app-device { --device-frame: #1b1b1f; --device-w: 300px; }
+     .store-badge { --badge-bg: #000; --badge-fg: #fff; }
+   ============================================================ */
+
+/* ---------- Store buttons ------------------------------------- */
+
+.store-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.store-badge {
+  --badge-bg: #0b0b0c;
+  --badge-fg: #ffffff;
+  --badge-line: rgba(255, 255, 255, 0.22);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 54px;
+  padding: 0.45rem 1.25rem 0.45rem 0.95rem;
+  border-radius: 13px;
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  border: 1px solid var(--badge-line);
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  line-height: 1.12;
+  white-space: nowrap;
+  transition: transform 0.2s var(--ease, ease), box-shadow 0.2s var(--ease, ease), background-color 0.2s;
+}
+
+.store-badge:hover {
+  color: var(--badge-fg);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px -12px rgba(0, 0, 0, 0.55);
+}
+
+.store-badge:focus-visible {
+  outline: 2px solid var(--badge-focus, currentColor);
+  outline-offset: 3px;
+}
+
+.store-badge svg {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  fill: currentColor;
+}
+
+.store-badge small {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  opacity: 0.86;
+}
+
+.store-badge b {
+  display: block;
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Phone frame ---------------------------------------
+   <figure class="app-device">
+     <span class="app-device-screen"><img src="img/home.webp" alt="…" width="660" height="1434"></span>
+   </figure>
+   Captures are iPhone 6.9" (1320×2868); add .is-android for the
+   Play-only 1080×2400 captures (punch-hole camera instead of the
+   Dynamic Island). */
+
+.app-device {
+  --device-w: 290px;
+  --device-bezel: 11px;
+  --device-radius: 50px;
+  --device-frame: #121214;
+  --device-edge: rgba(255, 255, 255, 0.14);
+  --device-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.55), 0 18px 36px -18px rgba(0, 0, 0, 0.45);
+  position: relative;
+  width: var(--device-w);
+  max-width: 100%;
+  margin: 0;
+  padding: var(--device-bezel);
+  border-radius: var(--device-radius);
+  background: var(--device-frame);
+  box-shadow: inset 0 0 0 1.5px var(--device-edge), var(--device-shadow);
+  flex: none;
+}
+
+.app-device-screen {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: calc(var(--device-radius) - var(--device-bezel));
+  aspect-ratio: 1320 / 2868;
+  background: #000;
+  isolation: isolate;
+}
+
+.app-device.is-android .app-device-screen {
+  aspect-ratio: 1080 / 2400;
+}
+
+.app-device-screen > img,
+.app-device-screen > video,
+.app-device-screen > canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dynamic Island — the simulator captures leave that strip empty */
+.app-device-screen::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 1.25%;
+  left: 50%;
+  width: 29%;
+  height: 3.9%;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #000;
+  pointer-events: none;
+}
+
+.app-device.is-android .app-device-screen::after {
+  top: 1.3%;
+  width: 3.2%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.app-device.no-notch .app-device-screen::after {
+  display: none;
+}
+
+/* ---------- Footer -------------------------------------------- */
+
+.app-foot {
+  --foot-fg: currentColor;
+  --foot-muted: color-mix(in srgb, currentColor 62%, transparent);
+  --foot-line: color-mix(in srgb, currentColor 16%, transparent);
+  max-width: var(--app-measure, 1120px);
+  margin: 0 auto;
+  padding: 2.5rem var(--gutter, 1.5rem) 3rem;
+  border-top: 1px solid var(--foot-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  font-size: 0.92rem;
+}
+
+.app-foot nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.app-foot a {
+  color: var(--foot-fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--foot-line);
+}
+
+.app-foot a:hover {
+  border-bottom-color: currentColor;
+}
+
+.app-foot p {
+  margin: 0;
+  color: var(--foot-muted);
+}
+
+.app-foot code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+}
+
+/* ---------- Helpers ------------------------------------------- */
+
+.app-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .store-badge,
+  .store-badge:hover {
+    transition: none;
+    transform: none;
+  }
+}

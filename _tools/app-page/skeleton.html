@@ -1,0 +1,99 @@
+<!doctype html>
+<!-- Skeleton for an app landing page at /apps/<app_id>/index.html.
+     Replace every {{…}}. Keep the head order: theme script before any
+     stylesheet, index.css → navbar.css → app-page.css → page.css.
+     lang="ko" for Korean-market apps. Delete the App Store pieces
+     (badge, apple-itunes-app meta) for Play-only apps. -->
+<html lang="{{en|ko}}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{{Store title}} — Rexyrex</title>
+    <meta name="description" content="{{One or two sentences, ≤160 chars, in the page language.}}">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/{{app_id}}/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/{{app_id}}/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/{{app_id}}/img/icon-180.png">
+    <meta name="theme-color" content="{{dark bg}}" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="{{light bg}}" media="(prefers-color-scheme: light)">
+    <meta name="apple-itunes-app" content="app-id={{App Store numeric id}}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/{{app_id}}/">
+    <meta property="og:title" content="{{Store title}}">
+    <meta property="og:description" content="{{Short description}}">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/{{app_id}}.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="{{Store title}}">
+    <meta property="og:locale" content="{{en_US|ko_KR}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{Store title}}">
+    <meta name="twitter:description" content="{{Short description}}">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/{{app_id}}.jpg">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- IBM Plex stays: the site chrome (top bar, status bar) is set in it. Add the page's own families to the same request. -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&{{page families}}&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/apps/{{app_id}}/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "{{SoftwareApplication|VideoGame}}",
+        "name": "{{Store title}}",
+        "operatingSystem": "{{Android|Android, iOS}}",
+        "applicationCategory": "{{UtilitiesApplication|EntertainmentApplication|GameApplication|MultimediaApplication}}",
+        "description": "{{Short description}}",
+        "url": "https://rexyrex.github.io/apps/{{app_id}}/",
+        "image": "https://rexyrex.github.io/apps/{{app_id}}/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id={{android id}}", "https://apps.apple.com/app/id{{ios id}}"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-{{app_id}}">
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+        <!-- hero: eyebrow /apps/{{app_id}}/, icon, h1, one-liner, store badges, a real capture in .app-device -->
+
+        <!-- Store buttons — copy as is. Korean pages:
+             Google Play: <small>다운로드하기</small><b>Google Play</b>
+             App Store:   <small>다운로드하기</small><b>App Store</b>  (Apple's Korean badge reads "App Store에서 다운로드하기") -->
+        <div class="store-badges">
+            <a class="store-badge" href="https://play.google.com/store/apps/details?id={{android id}}" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                <span><small>GET IT ON</small><b>Google Play</b></span>
+            </a>
+            <a class="store-badge" href="https://apps.apple.com/app/id{{ios id}}" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                <span><small>Download on the</small><b>App Store</b></span>
+            </a>
+        </div>
+
+        <!-- phone frame for a real capture -->
+        <figure class="app-device">
+            <span class="app-device-screen"><img src="/apps/{{app_id}}/img/{{name}}.webp" width="660" height="1434" alt="{{what the screen shows}}"></span>
+        </figure>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="{{About this app|앱 정보}}">
+            <a href="{{privacy policy URL}}">{{Privacy policy|개인정보처리방침}}</a>
+            <a href="/support/">{{Support|문의하기}}</a>
+            <a href="/#apps">{{More apps by Rexyrex|Rexyrex의 다른 앱}}</a>
+        </nav>
+        <p>{{Made by|만든 사람}} <a href="/">Rexyrex</a> · <code>/apps/{{app_id}}/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/apps/{{app_id}}/page.js" defer></script>
+</body>
+</html>

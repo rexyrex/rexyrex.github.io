@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>카톡 정밀 분석기 — Rexyrex</title>
+    <meta name="description" content="카카오톡에서 내보낸 대화를 대화왕, 칼답러, 웃음왕 같은 순위와 시간대별 차트, 시그니처 단어로 정리해 주는 분석 앱. Android와 iPhone에서 쓸 수 있어요.">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/kakaoparser/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/kakaoparser/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/kakaoparser/img/icon-180.png">
+    <meta name="theme-color" content="#121316" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f2f3f7" media="(prefers-color-scheme: light)">
+    <meta name="apple-itunes-app" content="app-id=6758269062">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/kakaoparser/">
+    <meta property="og:title" content="카톡 정밀 분석기">
+    <meta property="og:description" content="내보낸 카톡 대화를 순위와 차트로 정리해 주는 분석 앱. 누가 가장 많이 말하고, 누가 가장 빨리 답하는지 한눈에.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/kakaoparser.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="카톡 정밀 분석기">
+    <meta property="og:locale" content="ko_KR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="카톡 정밀 분석기">
+    <meta name="twitter:description" content="내보낸 카톡 대화를 순위와 차트로 정리해 주는 분석 앱. 누가 가장 많이 말하고, 누가 가장 빨리 답하는지 한눈에.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/kakaoparser.jpg">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/apps/kakaoparser/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "카톡 정밀 분석기",
+        "alternateName": "카카오톡 정밀 분석기",
+        "operatingSystem": "Android, iOS",
+        "applicationCategory": "UtilitiesApplication",
+        "description": "카카오톡에서 내보낸 대화를 순위와 차트로 정리해 주는 분석 앱.",
+        "url": "https://rexyrex.github.io/apps/kakaoparser/",
+        "image": "https://rexyrex.github.io/apps/kakaoparser/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id=com.rexyrex.kakaoparser", "https://apps.apple.com/app/id6758269062"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-kakaoparser">
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <!-- ============ Cover ============ -->
+        <section class="kp-hero" aria-labelledby="kp-title">
+            <div class="kp-wrap">
+            <div class="kp-cover-head">
+                <p class="kp-path">/apps/kakaoparser/</p>
+                <ul class="kp-platforms" aria-label="지원 기기">
+                    <li>Android</li>
+                    <li>iPhone</li>
+                </ul>
+            </div>
+            <div class="kp-hero-grid">
+                <div class="kp-hero-copy">
+                    <img class="kp-icon" src="/apps/kakaoparser/img/icon.webp" width="256" height="256" alt="카톡 정밀 분석기 앱 아이콘">
+                    <h1 class="kp-title" id="kp-title">
+                        <span class="kp-title-line">카톡</span>
+                        <span class="kp-title-line">정밀 분석기<span class="kp-title-bars" aria-hidden="true"><i></i><i></i><i></i></span></span>
+                    </h1>
+                    <p class="kp-lede">카카오톡에서 내보낸 대화 파일을 넣으면 우리 방 대화가 한&nbsp;권의 리포트로 정리됩니다. 누가 가장 많이 말했는지, 누가 가장 빨리 답하는지, 방이 언제 깨어나는지 순위와 차트로 보여 줘요.</p>
+
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.kakaoparser" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>다운로드하기</small><b>Google Play</b></span>
+                        </a>
+                        <a class="store-badge" href="https://apps.apple.com/app/id6758269062" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                            <span><small>다운로드하기</small><b>App Store</b></span>
+                        </a>
+                    </div>
+                    <p class="kp-store-note">Google Play에서는 ‘카카오톡 정밀 분석기’라는 이름으로 올라가 있어요.</p>
+                </div>
+
+                <div class="kp-hero-art">
+                    <figure class="kp-shot kp-shot-back">
+                        <span class="app-device"><span class="app-device-screen"><img src="/apps/kakaoparser/img/iphone-02-people.webp" width="660" height="1434" alt="iPhone 앱의 사람 탭. 여섯 명의 대화 점유율을 도넛 차트로 나누고, 대화 Top 10 순위에 사람별 메시지 수와 비율을 보여 준다."></span></span>
+                        <figcaption>iPhone</figcaption>
+                    </figure>
+                    <figure class="kp-shot kp-shot-front">
+                        <span class="app-device is-android"><span class="app-device-screen"><img src="/apps/kakaoparser/img/android-03-rankings.webp" width="540" height="1200" fetchpriority="high" alt="Android 앱의 개요 탭. 대화왕 카드에 1위부터 3위까지 메시지 수와 막대가 있고, 그 아래 출첵왕 카드가 이어진다."></span></span>
+                        <figcaption>Android</figcaption>
+                    </figure>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- ============ Sample report (signature interaction) ============ -->
+        <section class="kp-sample" id="sample" aria-labelledby="kp-sample-title">
+            <div class="kp-wrap">
+                <header class="kp-sec-head">
+                    <h2 id="kp-sample-title">가상의 단톡방 하나를 분석해 봤어요</h2>
+                    <p>‘주말 등산 모임’은 지어낸 방이고, 이름과 숫자도 모두 예시예요. 순위 이름을 눌러 다른 순위로 바꿔 보세요.</p>
+                </header>
+
+                <div class="kp-report" data-report>
+                    <dl class="kp-report-meta">
+                        <div><dt>방 이름</dt><dd>주말 등산 모임 <span class="kp-sample-tag">가상 예시</span></dd></div>
+                        <div><dt>참여자</dt><dd>5명</dd></div>
+                        <div><dt>분석 기간</dt><dd>2025.01.05 – 2025.12.28</dd></div>
+                        <div><dt>메시지</dt><dd>12,406개</dd></div>
+                    </dl>
+
+                    <div class="kp-tabs" role="tablist" aria-label="샘플 리포트의 순위">
+                        <button class="kp-tab" role="tab" id="kp-tab-chat" aria-controls="kp-panel-chat" aria-selected="true" style="--m: var(--m-chat)">대화왕</button>
+                        <button class="kp-tab" role="tab" id="kp-tab-reply" aria-controls="kp-panel-reply" aria-selected="false" tabindex="-1" style="--m: var(--m-reply)">칼답러</button>
+                        <button class="kp-tab" role="tab" id="kp-tab-laugh" aria-controls="kp-panel-laugh" aria-selected="false" tabindex="-1" style="--m: var(--m-laugh)">웃음왕</button>
+                        <button class="kp-tab" role="tab" id="kp-tab-suntok" aria-controls="kp-panel-suntok" aria-selected="false" tabindex="-1" style="--m: var(--m-suntok)">선톡 대장</button>
+                        <button class="kp-tab" role="tab" id="kp-tab-effort" aria-controls="kp-panel-effort" aria-selected="false" tabindex="-1" style="--m: var(--m-effort)">정성꾼</button>
+                    </div>
+
+                    <div class="kp-panels">
+                        <!-- 대화왕 -->
+                        <div class="kp-panel" role="tabpanel" id="kp-panel-chat" aria-labelledby="kp-tab-chat" tabindex="0" style="--m: var(--m-chat)">
+                            <div class="kp-lead">
+                                <h3 class="kp-panel-title">대화왕</h3>
+                                <p class="kp-panel-def">메시지를 가장 많이 보낸 사람</p>
+                                <p class="kp-lead-figure"><span class="kp-lead-rank">1위</span> <span class="kp-lead-name">다람쥐</span></p>
+                                <p class="kp-lead-num" data-count="3912" data-format="int"><span class="n">3,912</span><span class="u">개</span></p>
+                                <p class="kp-insight">다람쥐님은 하루 평균 11개의 메시지를 보냈어요.</p>
+                            </div>
+                            <ol class="kp-bars has-share">
+                                <li style="--w: 100%"><span class="kp-bar-name">다람쥐</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="3912" data-format="int" data-unit="개">3,912개</span><span class="kp-bar-share">31.5%</span></li>
+                                <li style="--w: 76.4%"><span class="kp-bar-name">수달</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="2987" data-format="int" data-unit="개">2,987개</span><span class="kp-bar-share">24.1%</span></li>
+                                <li style="--w: 61.5%"><span class="kp-bar-name">고라니</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="2406" data-format="int" data-unit="개">2,406개</span><span class="kp-bar-share">19.4%</span></li>
+                                <li style="--w: 48.4%"><span class="kp-bar-name">펭귄</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="1893" data-format="int" data-unit="개">1,893개</span><span class="kp-bar-share">15.3%</span></li>
+                                <li style="--w: 30.9%"><span class="kp-bar-name">너구리</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="1208" data-format="int" data-unit="개">1,208개</span><span class="kp-bar-share">9.7%</span></li>
+                            </ol>
+                        </div>
+
+                        <!-- 칼답러 -->
+                        <div class="kp-panel" role="tabpanel" id="kp-panel-reply" aria-labelledby="kp-tab-reply" tabindex="0" style="--m: var(--m-reply)">
+                            <div class="kp-lead">
+                                <h3 class="kp-panel-title">칼답러</h3>
+                                <p class="kp-panel-def">3시간 이상 비었던 공백을 빼고 잰 평균 답장 속도. 막대가 길수록 빨라요.</p>
+                                <p class="kp-lead-figure"><span class="kp-lead-rank">1위</span> <span class="kp-lead-name">펭귄</span></p>
+                                <p class="kp-lead-num" data-count="108" data-format="time"><span class="n">1</span><span class="u">분</span> <span class="n">48</span><span class="u">초</span></p>
+                                <p class="kp-insight">펭귄님은 고라니님보다 다섯 배 넘게 빨리 답했어요.</p>
+                            </div>
+                            <ol class="kp-bars">
+                                <li style="--w: 100%"><span class="kp-bar-name">펭귄</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="108" data-format="time">1분 48초</span></li>
+                                <li style="--w: 71.5%"><span class="kp-bar-name">다람쥐</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="151" data-format="time">2분 31초</span></li>
+                                <li style="--w: 44.1%"><span class="kp-bar-name">수달</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="245" data-format="time">4분 5초</span></li>
+                                <li style="--w: 29%"><span class="kp-bar-name">너구리</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="372" data-format="time">6분 12초</span></li>
+                                <li style="--w: 18.6%"><span class="kp-bar-name">고라니</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="580" data-format="time">9분 40초</span></li>
+                            </ol>
+                        </div>
+
+                        <!-- 웃음왕 -->
+                        <div class="kp-panel" role="tabpanel" id="kp-panel-laugh" aria-labelledby="kp-tab-laugh" tabindex="0" style="--m: var(--m-laugh)">
+                            <div class="kp-lead">
+                                <h3 class="kp-panel-title">웃음왕</h3>
+                                <p class="kp-panel-def">ㅋㅋ나 ㅎㅎ처럼 웃음이 담긴 메시지 수</p>
+                                <p class="kp-lead-figure"><span class="kp-lead-rank">1위</span> <span class="kp-lead-name">수달</span></p>
+                                <p class="kp-lead-num" data-count="1284" data-format="int"><span class="n">1,284</span><span class="u">회</span></p>
+                                <p class="kp-insight">수달님이 보낸 메시지 열 개 중 네 개에는 웃음이 들어 있었어요.</p>
+                            </div>
+                            <ol class="kp-bars">
+                                <li style="--w: 100%"><span class="kp-bar-name">수달</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="1284" data-format="int" data-unit="회">1,284회</span></li>
+                                <li style="--w: 85.8%"><span class="kp-bar-name">다람쥐</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="1102" data-format="int" data-unit="회">1,102회</span></li>
+                                <li style="--w: 47.6%"><span class="kp-bar-name">너구리</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="611" data-format="int" data-unit="회">611회</span></li>
+                                <li style="--w: 38.8%"><span class="kp-bar-name">펭귄</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="498" data-format="int" data-unit="회">498회</span></li>
+                                <li style="--w: 18.1%"><span class="kp-bar-name">고라니</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="233" data-format="int" data-unit="회">233회</span></li>
+                            </ol>
+                        </div>
+
+                        <!-- 선톡 대장 -->
+                        <div class="kp-panel" role="tabpanel" id="kp-panel-suntok" aria-labelledby="kp-tab-suntok" tabindex="0" style="--m: var(--m-suntok)">
+                            <div class="kp-lead">
+                                <h3 class="kp-panel-title">선톡 대장</h3>
+                                <p class="kp-panel-def">3시간 이상 조용하던 방에 먼저 말을 건 횟수</p>
+                                <p class="kp-lead-figure"><span class="kp-lead-rank">1위</span> <span class="kp-lead-name">고라니</span></p>
+                                <p class="kp-lead-num" data-count="214" data-format="int"><span class="n">214</span><span class="u">회</span></p>
+                                <p class="kp-insight">고라니님은 메시지 수로는 3위지만, 조용한 방을 가장 자주 깨웠어요.</p>
+                            </div>
+                            <ol class="kp-bars">
+                                <li style="--w: 100%"><span class="kp-bar-name">고라니</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="214" data-format="int" data-unit="회">214회</span></li>
+                                <li style="--w: 87.4%"><span class="kp-bar-name">다람쥐</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="187" data-format="int" data-unit="회">187회</span></li>
+                                <li style="--w: 44.9%"><span class="kp-bar-name">펭귄</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="96" data-format="int" data-unit="회">96회</span></li>
+                                <li style="--w: 33.2%"><span class="kp-bar-name">수달</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="71" data-format="int" data-unit="회">71회</span></li>
+                                <li style="--w: 17.8%"><span class="kp-bar-name">너구리</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="38" data-format="int" data-unit="회">38회</span></li>
+                            </ol>
+                        </div>
+
+                        <!-- 정성꾼 -->
+                        <div class="kp-panel" role="tabpanel" id="kp-panel-effort" aria-labelledby="kp-tab-effort" tabindex="0" style="--m: var(--m-effort)">
+                            <div class="kp-lead">
+                                <h3 class="kp-panel-title">정성꾼</h3>
+                                <p class="kp-panel-def">메시지 한 개에 담긴 평균 글자 수</p>
+                                <p class="kp-lead-figure"><span class="kp-lead-rank">1위</span> <span class="kp-lead-name">너구리</span></p>
+                                <p class="kp-lead-num" data-count="24.6" data-format="dec1"><span class="n">24.6</span><span class="u">자</span></p>
+                                <p class="kp-insight">너구리님은 메시지를 가장 적게 보냈지만, 한 번에 가장 길게 썼어요.</p>
+                            </div>
+                            <ol class="kp-bars">
+                                <li style="--w: 100%"><span class="kp-bar-name">너구리</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="24.6" data-format="dec1" data-unit="자">24.6자</span></li>
+                                <li style="--w: 72.8%"><span class="kp-bar-name">고라니</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="17.9" data-format="dec1" data-unit="자">17.9자</span></li>
+                                <li style="--w: 53.7%"><span class="kp-bar-name">펭귄</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="13.2" data-format="dec1" data-unit="자">13.2자</span></li>
+                                <li style="--w: 38.2%"><span class="kp-bar-name">다람쥐</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="9.4" data-format="dec1" data-unit="자">9.4자</span></li>
+                                <li style="--w: 28.9%"><span class="kp-bar-name">수달</span><span class="kp-bar-track"><span class="kp-bar"></span></span><span class="kp-bar-val" data-count="7.1" data-format="dec1" data-unit="자">7.1자</span></li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="kp-report-lower">
+                        <section class="kp-pattern" aria-labelledby="kp-pattern-title" data-heat>
+                            <h3 id="kp-pattern-title">대화 패턴</h3>
+                            <dl class="kp-pattern-peaks">
+                                <div><dt>가장 활발한 요일</dt><dd>토요일</dd></div>
+                                <div><dt>가장 활발한 시간</dt><dd>오후 9시</dd></div>
+                            </dl>
+
+                            <h4 class="kp-strip-title" id="kp-week-title">요일별 대화량</h4>
+                            <div class="kp-strip kp-strip-week" role="group" aria-labelledby="kp-week-title" data-total="12406">
+                                <button type="button" class="kp-cell" style="--p: 54%" data-label="월요일" data-value="1402"><span>월</span></button>
+                                <button type="button" class="kp-cell" style="--p: 53%" data-label="화요일" data-value="1388"><span>화</span></button>
+                                <button type="button" class="kp-cell" style="--p: 58%" data-label="수요일" data-value="1520"><span>수</span></button>
+                                <button type="button" class="kp-cell" style="--p: 62%" data-label="목요일" data-value="1611"><span>목</span></button>
+                                <button type="button" class="kp-cell" style="--p: 78%" data-label="금요일" data-value="2034"><span>금</span></button>
+                                <button type="button" class="kp-cell is-hot" style="--p: 100%" data-label="토요일" data-value="2617"><span>토</span></button>
+                                <button type="button" class="kp-cell" style="--p: 70%" data-label="일요일" data-value="1834"><span>일</span></button>
+                            </div>
+
+                            <h4 class="kp-strip-title" id="kp-hour-title">시간대별 대화량</h4>
+                            <div class="kp-strip kp-strip-hour" role="group" aria-labelledby="kp-hour-title" data-total="12406">
+                                <span class="kp-row-label" aria-hidden="true">새벽</span>
+                                <button type="button" class="kp-cell" style="--p: 30%" data-label="0시" data-value="339"><span>0</span></button>
+                                <button type="button" class="kp-cell" style="--p: 14%" data-label="1시" data-value="160"><span>1</span></button>
+                                <button type="button" class="kp-cell" style="--p: 6%" data-label="2시" data-value="68"><span>2</span></button>
+                                <button type="button" class="kp-cell" style="--p: 3%" data-label="3시" data-value="31"><span>3</span></button>
+                                <button type="button" class="kp-cell" style="--p: 2%" data-label="4시" data-value="25"><span>4</span></button>
+                                <button type="button" class="kp-cell" style="--p: 9%" data-label="5시" data-value="99"><span>5</span></button>
+                                <span class="kp-row-label" aria-hidden="true">오전</span>
+                                <button type="button" class="kp-cell" style="--p: 46%" data-label="6시" data-value="524"><span>6</span></button>
+                                <button type="button" class="kp-cell" style="--p: 58%" data-label="7시" data-value="665"><span>7</span></button>
+                                <button type="button" class="kp-cell" style="--p: 52%" data-label="8시" data-value="591"><span>8</span></button>
+                                <button type="button" class="kp-cell" style="--p: 42%" data-label="9시" data-value="487"><span>9</span></button>
+                                <button type="button" class="kp-cell" style="--p: 45%" data-label="10시" data-value="511"><span>10</span></button>
+                                <button type="button" class="kp-cell" style="--p: 47%" data-label="11시" data-value="542"><span>11</span></button>
+                                <span class="kp-row-label" aria-hidden="true">오후</span>
+                                <button type="button" class="kp-cell" style="--p: 60%" data-label="12시" data-value="690"><span>12</span></button>
+                                <button type="button" class="kp-cell" style="--p: 48%" data-label="13시" data-value="554"><span>13</span></button>
+                                <button type="button" class="kp-cell" style="--p: 40%" data-label="14시" data-value="456"><span>14</span></button>
+                                <button type="button" class="kp-cell" style="--p: 38%" data-label="15시" data-value="437"><span>15</span></button>
+                                <button type="button" class="kp-cell" style="--p: 41%" data-label="16시" data-value="468"><span>16</span></button>
+                                <button type="button" class="kp-cell" style="--p: 48%" data-label="17시" data-value="554"><span>17</span></button>
+                                <span class="kp-row-label" aria-hidden="true">저녁</span>
+                                <button type="button" class="kp-cell" style="--p: 62%" data-label="18시" data-value="715"><span>18</span></button>
+                                <button type="button" class="kp-cell" style="--p: 69%" data-label="19시" data-value="788"><span>19</span></button>
+                                <button type="button" class="kp-cell is-hot" style="--p: 83%" data-label="20시" data-value="949"><span>20</span></button>
+                                <button type="button" class="kp-cell is-hot" style="--p: 100%" data-label="21시" data-value="1146"><span>21</span></button>
+                                <button type="button" class="kp-cell is-hot" style="--p: 85%" data-label="22시" data-value="979"><span>22</span></button>
+                                <button type="button" class="kp-cell" style="--p: 55%" data-label="23시" data-value="628"><span>23</span></button>
+                            </div>
+
+                            <p class="kp-readout" aria-live="polite" data-readout data-default="칸을 누르거나 가리키면 그 시간의 메시지 수가 보여요.">칸을 누르거나 가리키면 그 시간의 메시지 수가 보여요.</p>
+                        </section>
+
+                        <section class="kp-cloud" aria-labelledby="kp-cloud-title" data-cloud>
+                            <h3 id="kp-cloud-title">인기 단어</h3>
+                            <p class="kp-cloud-note">ㅋㅋ와 ㅎㅎ는 단어가 아니라 웃음으로 따로 세요.</p>
+                            <div class="kp-words" role="group" aria-label="많이 쓴 단어. 단어를 누르면 가장 많이 쓴 사람이 나와요.">
+                                <button type="button" class="kp-word" style="--s: .27" data-count="341" data-top="너구리" data-top-count="117">막걸리</button>
+                                <button type="button" class="kp-word" style="--s: .45" data-count="497" data-top="다람쥐" data-top-count="163">출발</button>
+                                <button type="button" class="kp-word" style="--s: .04" data-count="131" data-top="다람쥐" data-top-count="41">스틱</button>
+                                <button type="button" class="kp-word" style="--s: .18" data-count="251" data-top="고라니" data-top-count="88">코스</button>
+                                <button type="button" class="kp-word is-big" style="--s: 1" data-count="612" data-top="고라니" data-top-count="201">정상</button>
+                                <button type="button" class="kp-word" style="--s: .11" data-count="164" data-top="펭귄" data-top-count="52">일출</button>
+                                <button type="button" class="kp-word" style="--s: .38" data-count="402" data-top="펭귄" data-top-count="129">김밥</button>
+                                <button type="button" class="kp-word" style="--s: .03" data-count="128" data-top="수달" data-top-count="44">고생했어</button>
+                                <button type="button" class="kp-word" style="--s: .25" data-count="336" data-top="다람쥐" data-top-count="104">내일</button>
+                                <button type="button" class="kp-word is-big" style="--s: .94" data-count="588" data-top="수달" data-top-count="174">진짜</button>
+                                <button type="button" class="kp-word" style="--s: .13" data-count="176" data-top="너구리" data-top-count="63">무릎</button>
+                                <button type="button" class="kp-word" style="--s: .02" data-count="117" data-top="다람쥐" data-top-count="39">주차</button>
+                                <button type="button" class="kp-word" style="--s: .33" data-count="377" data-top="다람쥐" data-top-count="118">날씨</button>
+                                <button type="button" class="kp-word" style="--s: .15" data-count="198" data-top="펭귄" data-top-count="66">등산화</button>
+                                <button type="button" class="kp-word" style="--s: .22" data-count="298" data-top="고라니" data-top-count="96">하산</button>
+                                <button type="button" class="kp-word" style="--s: .09" data-count="152" data-top="너구리" data-top-count="55">파전</button>
+                                <button type="button" class="kp-word" style="--s: .16" data-count="233" data-top="수달" data-top-count="71">단풍</button>
+                                <button type="button" class="kp-word" style="--s: 0" data-count="109" data-top="펭귄" data-top-count="37">도시락</button>
+                            </div>
+                            <p class="kp-readout" aria-live="polite" data-readout data-default="단어를 누르면 누가 가장 많이 썼는지 알려 줘요.">단어를 누르면 누가 가장 많이 썼는지 알려 줘요.</p>
+                        </section>
+                    </div>
+                </div>
+
+                <p class="kp-sample-foot">앱의 순위 카드에는 전체 순위 보기와 공유 버튼이 있고, 웃음왕처럼 실제 대화 예시를 함께 보여 주는 카드도 있어요.</p>
+            </div>
+        </section>
+
+        <!-- ============ What the report covers ============ -->
+        <section class="kp-chapters" aria-labelledby="kp-chapters-title">
+            <div class="kp-wrap">
+                <header class="kp-sec-head">
+                    <h2 id="kp-chapters-title">리포트는 다섯 가지 질문에 답합니다</h2>
+                    <nav class="kp-toc" aria-label="리포트 목차">
+                        <a href="#ch-who">누가</a>
+                        <a href="#ch-when">언제</a>
+                        <a href="#ch-how">어떻게</a>
+                        <a href="#ch-what">무엇을</a>
+                        <a href="#ch-day">그날을</a>
+                    </nav>
+                </header>
+
+                <!-- 누가 -->
+                <article class="kp-chapter" id="ch-who" aria-labelledby="ch-who-title" style="--m: var(--m-chat)">
+                    <h3 class="kp-chapter-title" id="ch-who-title"><span class="kp-q">누가</span> <span class="kp-q-rest">가장 많이 말했나</span></h3>
+                    <div class="kp-chapter-body">
+                        <div class="kp-chapter-text">
+                            <p>개요 탭에 순위 카드가 차례로 쌓입니다. 메시지 수, 대화에 참여한 날, 먼저 말을 건 횟수까지 사람마다 순위를 매기고, 사람 탭에서는 한 사람의 기록만 따로 모아 봅니다.</p>
+                            <dl class="kp-cards">
+                                <div><dt>대화왕</dt><dd>메시지를 가장 많이 보낸 사람</dd></div>
+                                <div><dt>출첵왕</dt><dd>가장 많은 날 대화에 참여한 사람</dd></div>
+                                <div><dt>선톡 대장</dt><dd>3시간 이상 조용하던 방에 먼저 말을 건 사람</dd></div>
+                                <div><dt>잠수왕</dt><dd>할 말을 끝내고 조용히 잠수 타는 사람</dd></div>
+                                <div><dt>도배왕</dt><dd>답장이 없어도 혼자 연속으로 보낸 기록</dd></div>
+                                <div><dt>미디어 폭격기</dt><dd>사진과 동영상을 가장 많이 공유한 사람</dd></div>
+                                <div><dt>질문왕</dt><dd>물음표를 가장 많이 던진 사람</dd></div>
+                            </dl>
+                        </div>
+                        <div class="kp-chapter-shots">
+                            <figure class="kp-shot">
+                                <span class="app-device is-android"><span class="app-device-screen"><img src="/apps/kakaoparser/img/android-01-people.webp" width="540" height="1200" loading="lazy" decoding="async" alt="Android 앱의 사람 탭. 대화 점유율 도넛 차트 아래로 1위부터 6위까지 메시지 수와 비율이 나온다."></span></span>
+                                <figcaption>Android</figcaption>
+                            </figure>
+                            <figure class="kp-shot">
+                                <span class="app-device"><span class="app-device-screen"><img src="/apps/kakaoparser/img/iphone-03-person.webp" width="660" height="1434" loading="lazy" decoding="async" alt="iPhone 앱의 사람 상세 화면. 한 사람의 대화량 순위와 일 평균 대화, 평균 응답 시간 같은 활동 인사이트가 정리되어 있다."></span></span>
+                                <figcaption>iPhone</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 언제 -->
+                <article class="kp-chapter" id="ch-when" aria-labelledby="ch-when-title" style="--m: var(--m-reply)">
+                    <h3 class="kp-chapter-title" id="ch-when-title"><span class="kp-q">언제</span> <span class="kp-q-rest">이야기했나</span></h3>
+                    <div class="kp-chapter-body">
+                        <div class="kp-chapter-text">
+                            <p>시간 탭은 대화량을 시간대, 요일, 날짜, 월, 연도별로 나눠 보여 줍니다. 대화가 뜸해진 달도, 유난히 시끄러웠던 날도 숫자로 드러나요.</p>
+                            <dl class="kp-cards">
+                                <div><dt>대화 패턴</dt><dd>가장 활발한 요일과 시간</dd></div>
+                                <div><dt>올빼미 vs 종달새</dt><dd>새벽 0–5시와 아침 6–11시에 보낸 메시지 비율</dd></div>
+                                <div><dt>관계 온도계</dt><dd>달마다 웃음 밀도로 잰 방의 온도</dd></div>
+                                <div><dt>권력 이동</dt><dd>달마다 메시지 1위가 바뀌어 온 역사</dd></div>
+                                <div><dt>수다 마라톤</dt><dd>한 번 불붙으면 멈추지 않았던 대화 기록</dd></div>
+                            </dl>
+                        </div>
+                        <div class="kp-chapter-shots">
+                            <figure class="kp-shot">
+                                <span class="app-device is-android"><span class="app-device-screen"><img src="/apps/kakaoparser/img/android-02-time.webp" width="540" height="1200" loading="lazy" decoding="async" alt="Android 앱의 시간 탭. 0시부터 23시까지 대화량을 레이더 차트로 그리고, 아래에 시간별 메시지 수를 나열한다."></span></span>
+                                <figcaption>Android</figcaption>
+                            </figure>
+                            <figure class="kp-shot">
+                                <span class="app-device is-android"><span class="app-device-screen"><img src="/apps/kakaoparser/img/android-05-month.webp" width="540" height="1200" loading="lazy" decoding="async" alt="Android 앱의 월 분석. 2025년 1월부터 2026년 9월까지 달마다 메시지 수를 막대그래프로 보여 준다."></span></span>
+                                <figcaption>Android</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 어떻게 -->
+                <article class="kp-chapter" id="ch-how" aria-labelledby="ch-how-title" style="--m: var(--m-effort)">
+                    <h3 class="kp-chapter-title" id="ch-how-title"><span class="kp-q">어떻게</span> <span class="kp-q-rest">주고받았나</span></h3>
+                    <div class="kp-chapter-body">
+                        <div class="kp-chapter-text">
+                            <p>답장 속도는 평균으로 계산하고, 3시간 이상 비었던 공백은 빼고 볼 수도 있어요. 두 사람씩 짝지어 누가 누구와 가장 활발히 주고받았는지도 보여 줍니다.</p>
+                            <dl class="kp-cards">
+                                <div><dt>칼답러</dt><dd>평균 답장 속도가 가장 빠른 사람</dd></div>
+                                <div><dt>케미왕</dt><dd>1시간 안에 서로 주고받은 답장이 가장 많은 두 사람</dd></div>
+                                <div><dt>짝사랑 지수</dt><dd>답장 속도로 드러나는 두 사람의 온도 차</dd></div>
+                                <div><dt>채팅 유형 테스트</dt><dd>선톡, 답장 속도, 메시지 길이로 본 채팅 성격</dd></div>
+                                <div><dt>통화 리포트</dt><dd>보이스톡과 페이스톡 기록</dd></div>
+                            </dl>
+                        </div>
+                        <div class="kp-chapter-shots">
+                            <figure class="kp-shot">
+                                <span class="app-device is-android"><span class="app-device-screen"><img src="/apps/kakaoparser/img/android-03-reply.webp" width="540" height="1200" loading="lazy" decoding="async" alt="Android 앱의 칼답러 카드. 3시간 이상 공백을 제외한 평균 답장 속도 순위가 있고, 아래에 케미왕과 짝사랑 지수 카드가 이어진다."></span></span>
+                                <figcaption>Android</figcaption>
+                            </figure>
+                            <figure class="kp-shot">
+                                <span class="app-device"><span class="app-device-screen"><img src="/apps/kakaoparser/img/iphone-07-chemistry.webp" width="660" height="1434" loading="lazy" decoding="async" alt="iPhone 앱의 케미왕 화면. 두 사람씩 짝지은 순위에 주고받은 답장 수와 평균 답장 시간이 적혀 있다."></span></span>
+                                <figcaption>iPhone</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 무슨 말 -->
+                <article class="kp-chapter" id="ch-what" aria-labelledby="ch-what-title" style="--m: var(--m-suntok)">
+                    <h3 class="kp-chapter-title" id="ch-what-title"><span class="kp-q">무엇을</span> <span class="kp-q-rest">말했나</span></h3>
+                    <div class="kp-chapter-body">
+                        <div class="kp-chapter-text">
+                            <p>가장 많이 쓴 단어 30개를 워드클라우드로 모으고, 단어를 누르면 누가 언제 그 말을 썼는지 볼 수 있어요. 대화 탭에서는 키워드와 사람으로 대화를 찾아 앞뒤 맥락까지 읽을 수 있습니다.</p>
+                            <dl class="kp-cards">
+                                <div><dt>시그니처 단어</dt><dd>유독 그 사람만 자주 쓰는 단어</dd></div>
+                                <div><dt>말투 닮은꼴</dt><dd>즐겨 쓰는 어휘가 닮은 두 사람</dd></div>
+                                <div><dt>단어 연대기</dt><dd>시기마다 방을 사로잡은 단어</dd></div>
+                                <div><dt>이 방의 유행어</dt><dd>가장 많이 복붙된 바로 그 말</dd></div>
+                                <div><dt>웃음왕</dt><dd>웃음이 담긴 메시지를 가장 많이 보낸 사람</dd></div>
+                                <div><dt>ㅋㅋㅋ 정밀 분석</dt><dd>진짜 웃음과 영혼 없는 ㅋ를 나눠서 센 기록</dd></div>
+                            </dl>
+                        </div>
+                        <div class="kp-chapter-shots">
+                            <figure class="kp-shot">
+                                <span class="app-device"><span class="app-device-screen"><img src="/apps/kakaoparser/img/iphone-04-signature.webp" width="660" height="1434" loading="lazy" decoding="async" alt="iPhone 앱의 시그니처 단어 화면. 사람마다 유독 자주 쓰는 단어와 사용 횟수가 태그로 묶여 있다."></span></span>
+                                <figcaption>iPhone</figcaption>
+                            </figure>
+                            <figure class="kp-shot">
+                                <span class="app-device is-android"><span class="app-device-screen"><img src="/apps/kakaoparser/img/android-06-laughter.webp" width="540" height="1200" loading="lazy" decoding="async" alt="Android 앱의 웃음왕 카드. 웃음 메시지 수 순위 아래에 웃음이 담긴 실제 대화 예시가 말풍선으로 나온다."></span></span>
+                                <figcaption>Android</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 그날 -->
+                <article class="kp-chapter" id="ch-day" aria-labelledby="ch-day-title" style="--m: var(--m-laugh)">
+                    <h3 class="kp-chapter-title" id="ch-day-title"><span class="kp-q">그날을</span> <span class="kp-q-rest">기억하나</span></h3>
+                    <div class="kp-chapter-body">
+                        <div class="kp-chapter-text">
+                            <p>지난 대화를 다시 꺼내 주는 카드도 있어요. 다 읽고 나면 퀴즈 탭에서 우리 방 대화로 만든 문제를 풀어 볼 수 있습니다.</p>
+                            <dl class="kp-cards">
+                                <div><dt>역대 최고의 날</dt><dd>가장 바빴던 날, 가장 많이 웃은 날, 가장 길었던 침묵</dd></div>
+                                <div><dt>N년 전 오늘</dt><dd>같은 날짜의 지난 대화로 떠나는 시간여행</dd></div>
+                                <div><dt>우리 채팅방 TMI</dt><dd>분석 결과를 한 장씩 넘겨 보는 요약</dd></div>
+                                <div><dt>퀴즈</dt><dd>“아래 단어를 가장 많이 사용한 사람은?” 같은 문제</dd></div>
+                            </dl>
+                        </div>
+                        <div class="kp-chapter-shots">
+                            <figure class="kp-shot">
+                                <span class="app-device is-android"><span class="app-device-screen"><img src="/apps/kakaoparser/img/android-07-records.webp" width="540" height="1200" loading="lazy" decoding="async" alt="Android 앱의 역대 최고의 날 카드. 가장 바쁜 날, 가장 많이 웃은 날, 역대 최장 침묵이 적혀 있고 아래에 N년 전 오늘 카드가 있다."></span></span>
+                                <figcaption>Android</figcaption>
+                            </figure>
+                            <figure class="kp-shot">
+                                <span class="app-device"><span class="app-device-screen"><img src="/apps/kakaoparser/img/iphone-09-quiz.webp" width="660" height="1434" loading="lazy" decoding="async" alt="iPhone 앱의 퀴즈 화면. 한 사람이 단어 목록 중 가장 많이 사용한 단어를 고르는 다섯 개의 보기가 있다."></span></span>
+                                <figcaption>iPhone</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ============ How it works ============ -->
+        <section class="kp-how" id="how" aria-labelledby="kp-how-title">
+            <div class="kp-wrap">
+                <header class="kp-sec-head">
+                    <h2 id="kp-how-title">쓰는 법은 세 단계예요</h2>
+                    <p>카카오톡의 대화 내보내기 기능으로 파일을 만들고, 그 파일을 앱으로 열면 됩니다. 기기마다 내보내는 방법이 조금 달라요.</p>
+                </header>
+
+                <ol class="kp-steps">
+                    <li class="kp-step">
+                        <h3 class="kp-step-title"><span class="kp-step-num" aria-hidden="true">1</span>카카오톡에서 대화 내보내기</h3>
+                        <div class="kp-step-ways">
+                            <div class="kp-way">
+                                <p class="kp-way-os">Android</p>
+                                <ol class="kp-route">
+                                    <li>채팅방 오른쪽 위 삼선(≡) 버튼</li>
+                                    <li>메뉴 오른쪽 위 톱니바퀴</li>
+                                    <li>[대화 내용 내보내기]</li>
+                                    <li>[텍스트 메시지만 저장]</li>
+                                </ol>
+                            </div>
+                            <div class="kp-way">
+                                <p class="kp-way-os">iPhone</p>
+                                <ol class="kp-route">
+                                    <li>채팅방 오른쪽 위 삼선(≡) 버튼</li>
+                                    <li>메뉴 오른쪽 위 톱니바퀴</li>
+                                    <li>[대화 내용 내보내기]</li>
+                                    <li>[모든 메시지 도큐멘트로 저장하기]</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="kp-step">
+                        <h3 class="kp-step-title"><span class="kp-step-num" aria-hidden="true">2</span>앱으로 열기</h3>
+                        <div class="kp-step-ways">
+                            <div class="kp-way">
+                                <p class="kp-way-os">Android</p>
+                                <ol class="kp-route">
+                                    <li>공유 목록에서 ‘카톡 정밀 분석기’ 선택</li>
+                                </ol>
+                            </div>
+                            <div class="kp-way">
+                                <p class="kp-way-os">iPhone</p>
+                                <ol class="kp-route">
+                                    <li>앱의 [파일 가져오기]</li>
+                                    <li>[둘러보기]</li>
+                                    <li>[카카오톡] 폴더</li>
+                                    <li>가장 최근에 내보낸 대화 파일</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="kp-step">
+                        <h3 class="kp-step-title"><span class="kp-step-num" aria-hidden="true">3</span>리포트 읽기</h3>
+                        <div class="kp-step-ways kp-step-ways-one">
+                            <p>분석할 기간을 고르면 결과가 개요, 사람, 대화, 단어, 시간, 퀴즈 탭으로 나뉘어 나옵니다. 마음에 드는 카드는 이미지로 공유할 수 있어요.</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ============ Good to know ============ -->
+        <section class="kp-notes" aria-labelledby="kp-notes-title">
+            <div class="kp-wrap kp-notes-grid">
+                <h2 id="kp-notes-title">알아 두세요</h2>
+                <ul class="kp-note-list">
+                    <li>로그인이나 카카오톡 계정 연결 없이 씁니다. 앱은 내가 직접 내보내 전달한 대화 파일만 읽어요.</li>
+                    <li>다른 사람과 나눈 대화예요. 함께 대화한 사람들이 불편해하지 않을 범위에서 분석하고 공유해 주세요.</li>
+                    <li>카카오가 만든 공식 서비스가 아닙니다. 카카오톡이 만들어 주는 내보내기 파일을 읽어 분석하는 별도의 앱이에요.</li>
+                    <li>앱이 어떤 정보를 수집하고 어디로 보내는지는 <a href="/apps/kakaoparser/privacy-policy/">개인정보처리방침</a>에 정리되어 있습니다.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============ Closing call to action ============ -->
+        <section class="kp-cta" aria-labelledby="kp-cta-title">
+            <div class="kp-wrap kp-cta-grid">
+                <div class="kp-cta-main">
+                    <h2 id="kp-cta-title">우리 방 리포트, 직접 만들어 보세요</h2>
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.kakaoparser" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>다운로드하기</small><b>Google Play</b></span>
+                        </a>
+                        <a class="store-badge" href="https://apps.apple.com/app/id6758269062" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                            <span><small>다운로드하기</small><b>App Store</b></span>
+                        </a>
+                    </div>
+                </div>
+                <nav class="kp-help" aria-labelledby="kp-help-title">
+                    <h3 id="kp-help-title">도움말</h3>
+                    <ul>
+                        <li><a href="/parser/kakaoParserErrorHelp1.html">내보낸 대화가 앱에 안 뜰 때</a> <span>Android</span></li>
+                        <li><a href="/parser/kakaoParserErrorHelp2.html">듀얼 메신저 분석 방법</a> <span>Android</span></li>
+                        <li><a href="/parser/kakaoParserAgree.html">이용약관</a></li>
+                        <li><a href="/support/">문의하기</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="앱 정보">
+            <a href="/apps/kakaoparser/privacy-policy/">개인정보처리방침</a>
+            <a href="/support/">문의하기</a>
+            <a href="/#apps">Rexyrex의 다른 앱</a>
+        </nav>
+        <p>만든 사람 <a href="/">Rexyrex</a> · <code>/apps/kakaoparser/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/apps/kakaoparser/page.js" defer></script>
+</body>
+</html>

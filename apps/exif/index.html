@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Photo Exif Metadata Editor — Rexyrex</title>
+    <meta name="description" content="View, edit and wipe the EXIF and GPS data in your photos on Android: camera, lens, date, location, copyright and keywords. Free on Google Play.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/exif/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/exif/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/exif/img/icon-180.png">
+    <meta name="theme-color" content="#13151c" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f4f6f9" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/exif/">
+    <meta property="og:title" content="Photo Exif Metadata Editor">
+    <meta property="og:description" content="View, edit and wipe photo EXIF and GPS metadata. Your photos are processed on your phone, and it works offline.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/exif.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="Photo Exif Metadata Editor">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Photo Exif Metadata Editor">
+    <meta name="twitter:description" content="View, edit and wipe photo EXIF and GPS metadata. Your photos are processed on your phone, and it works offline.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/exif.jpg">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script>document.documentElement.classList.add('js');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- IBM Plex stays: the site chrome (top bar, status bar) is set in it. -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/apps/exif/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Photo Exif Metadata Editor",
+        "operatingSystem": "Android",
+        "applicationCategory": "UtilitiesApplication",
+        "description": "View, edit and wipe photo EXIF and GPS metadata. Your photos are processed on your phone, and it works offline.",
+        "url": "https://rexyrex.github.io/apps/exif/",
+        "image": "https://rexyrex.github.io/apps/exif/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id=com.rexyrex.exif"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-exif">
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <!-- ============ Hero: lightbox with a contact strip ============ -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <p class="x-path"><a href="/apps/exif/">/apps/exif/</a></p>
+                    <div class="hero-id">
+                        <img class="hero-icon" src="/apps/exif/img/icon.webp" width="256" height="256" alt="">
+                        <h1 id="hero-title">Photo Exif Metadata Editor</h1>
+                    </div>
+                    <p class="lede">See the camera, date and location hidden in your photos. Correct what’s wrong, sign what’s yours, and clear the rest before you share.</p>
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.exif" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>GET IT ON</small><b>Google Play</b></span>
+                        </a>
+                    </div>
+                    <p class="hero-note">Free for Android, with ads. Works offline.</p>
+                </div>
+
+                <figure class="app-device hero-phone">
+                    <span class="app-device-screen"><img src="/apps/exif/img/editor.webp" width="660" height="1434" fetchpriority="high" alt="The app's editor showing a photo with its aperture, shutter speed, ISO, focal length and shot details"></span>
+                </figure>
+            </div>
+
+            <div class="strip strip-hero">
+                <div class="strip-run">
+                    <span class="cs-frame" aria-hidden="true" style="--crop: 4% 62%; --zoom: 1.7; --exp: .72"><span class="cs-pic"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" alt=""></span><i data-a="10A">10</i></span>
+                    <span class="cs-frame" aria-hidden="true" style="--crop: 22% 52%; --zoom: 1.25; --exp: .86"><span class="cs-pic"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" alt=""></span><i data-a="11A">11</i></span>
+                    <span class="cs-frame" aria-hidden="true" style="--crop: 50% 50%; --zoom: 1; --exp: .55"><span class="cs-pic"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" alt=""></span><i data-a="12A">12</i></span>
+                    <span class="cs-frame" aria-hidden="true" style="--crop: 50% 50%; --zoom: 1; --exp: 1.4"><span class="cs-pic"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" alt=""></span><i data-a="13A">13</i></span>
+                    <a class="cs-frame is-select" href="#inspect" style="--crop: 50% 50%; --zoom: 1; --exp: 1">
+                        <span class="cs-pic"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" alt="Frame 14: a suspension bridge over the sea after sunset. Inspect its metadata below."></span>
+                        <svg class="grease" viewBox="0 0 240 160" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M14 18 C70 9 160 11 228 14 C232 52 231 104 226 146 C160 151 80 150 12 147 C9 104 10 60 16 12 C30 9 44 11 58 12"/></svg>
+                        <i data-a="14A">14</i>
+                    </a>
+                    <span class="cs-frame" aria-hidden="true" style="--crop: 72% 58%; --zoom: 1.4; --exp: 1"><span class="cs-pic"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" alt=""></span><i data-a="15A">15</i></span>
+                    <span class="cs-frame" aria-hidden="true" style="--crop: 92% 50%; --zoom: 1.9; --exp: .9"><span class="cs-pic"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" alt=""></span><i data-a="16A">16</i></span>
+                    <span class="cs-frame" aria-hidden="true" style="--crop: 38% 76%; --zoom: 1.35; --exp: .78"><span class="cs-pic"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" alt=""></span><i data-a="17A">17</i></span>
+                    <span class="cs-frame" aria-hidden="true" style="--crop: 64% 44%; --zoom: 2.3; --exp: 1.1"><span class="cs-pic"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" alt=""></span><i data-a="18A">18</i></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ The inspector (signature) ============ -->
+        <section id="inspect" class="inspect" aria-labelledby="inspect-title">
+            <div class="x-wrap">
+                <header class="sec-head">
+                    <h2 id="inspect-title">What one photo gives away</h2>
+                    <p>Frame 14 from the strip above, carrying the kind of data a phone writes into every shot. Change a field, or clear the lot.</p>
+                    <p class="sim-note">A simulation in your browser, with a sample photo. Nothing is uploaded or saved.</p>
+                </header>
+
+                <div class="ix" id="ix">
+                    <div class="ix-left">
+                        <figure class="ix-photo">
+                            <span class="film-frame">
+                                <img src="/apps/exif/img/frame-14.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Sample photo: a lit suspension bridge across a bay after sunset, seen from a beach">
+                            </span>
+                            <figcaption class="edge" aria-hidden="true"><span>PXL_20260621_104207123.jpg</span><span>14</span><span>▸14A</span></figcaption>
+                        </figure>
+
+                        <div class="ix-map" id="ix-map">
+                            <svg viewBox="0 0 320 180" role="img" aria-labelledby="ix-map-label">
+                                <rect class="m-sea" width="320" height="180"/>
+                                <g class="m-grid"><path d="M0 45H320M0 90H320M0 135H320M64 0V180M128 0V180M192 0V180M256 0V180"/></g>
+                                <path class="m-land" d="M0 0H320V36C292 40 262 34 236 46C214 56 206 78 186 86C160 96 132 92 112 104C92 116 84 140 60 150C40 158 18 156 0 162Z"/>
+                                <path class="m-beach" d="M236 46C214 56 206 78 186 86C160 96 132 92 112 104C92 116 84 140 60 150"/>
+                                <path class="m-land" d="M320 120C300 126 290 146 270 154C252 161 240 172 232 180H320Z"/>
+                                <path class="m-bridge" d="M70 168C120 150 190 136 300 124"/>
+                                <g class="m-pin" transform="translate(150 94)">
+                                    <circle class="m-pulse" r="9"/>
+                                    <path d="M0 0C-1 -6 -9 -10 -9 -18A9 9 0 0 1 9 -18C9 -10 1 -6 0 0Z"/>
+                                    <circle cx="0" cy="-18" r="3.2" class="m-dot"/>
+                                </g>
+                            </svg>
+                            <p id="ix-map-label" class="ix-map-label"><span class="ix-map-coord" data-gone="No location in this file">35.1532°&nbsp;N, 129.1187°&nbsp;E</span><small>Where the GPS tags say it was taken. Illustrative map.</small></p>
+                        </div>
+                    </div>
+
+                    <div class="ix-panel" role="group" aria-labelledby="ix-file">
+                        <div class="ix-head">
+                            <p class="ix-file" id="ix-file">PXL_20260621_104207123.jpg</p>
+                            <p class="ix-count"><b id="ix-count">25</b> <span id="ix-count-word">tags</span></p>
+                            <p class="ix-spec">4080 × 3072 <span>12.5 MP</span> <span>3.4 MB</span> <span>JPEG</span></p>
+                        </div>
+
+                        <div class="ix-actions" id="ix-actions">
+                            <button type="button" class="xb xb-primary" id="ix-save" disabled>Save<span class="xb-count" id="ix-save-count" hidden></span></button>
+                            <button type="button" class="xb xb-danger" id="ix-clear">Clear all metadata</button>
+                            <button type="button" class="xb xb-ghost" id="ix-reset">Reset sample</button>
+                        </div>
+
+                        <div class="ix-dialog" id="ix-dialog" role="alertdialog" aria-modal="false" aria-labelledby="ix-dialog-title" aria-describedby="ix-dialog-body" hidden>
+                            <p class="ix-dialog-title" id="ix-dialog-title"></p>
+                            <div class="ix-dialog-body" id="ix-dialog-body"></div>
+                            <div class="ix-dialog-actions">
+                                <button type="button" class="xb xb-ghost" id="ix-cancel">Cancel</button>
+                                <button type="button" class="xb" id="ix-confirm"></button>
+                            </div>
+                        </div>
+
+                        <div class="ix-receipt" id="ix-receipt" tabindex="-1" hidden></div>
+
+                        <p class="ix-status" id="ix-status" role="status" aria-live="polite"></p>
+
+                        <div class="ix-groups" id="ix-groups">
+                            <section class="ix-group" aria-labelledby="g-camera">
+                                <h3 class="ix-g" id="g-camera">Camera</h3>
+                                <div class="ix-row" data-tags="Make Model"><span class="ix-label">Camera body</span><code class="ix-tag">Make, Model</code><span class="ix-val">Google Pixel 8</span></div>
+                                <div class="ix-row" data-tags="LensModel"><span class="ix-label">Lens model</span><code class="ix-tag">LensModel</code><span class="ix-val">Pixel 8 back camera</span></div>
+                                <div class="ix-row" data-tags="Software"><span class="ix-label">Software</span><code class="ix-tag">Software</code><span class="ix-val">HDR+ 1.0</span></div>
+                            </section>
+
+                            <section class="ix-group" aria-labelledby="g-exposure">
+                                <h3 class="ix-g" id="g-exposure">Exposure</h3>
+                                <div class="ix-cells">
+                                    <div class="ix-cell ix-row" data-tags="FNumber"><span class="ix-label">Aperture</span><code class="ix-tag">FNumber</code><span class="ix-val">f/1.7</span></div>
+                                    <div class="ix-cell ix-row" data-tags="ExposureTime"><span class="ix-label">Shutter</span><code class="ix-tag">ExposureTime</code><span class="ix-val">1/50s</span></div>
+                                    <div class="ix-cell ix-row" data-tags="ISOSpeedRatings"><span class="ix-label">ISO</span><code class="ix-tag">ISOSpeedRatings</code><span class="ix-val">320</span></div>
+                                    <div class="ix-cell ix-row" data-tags="FocalLength FocalLengthIn35mmFilm"><span class="ix-label">Focal</span><code class="ix-tag">FocalLength</code><span class="ix-val">7mm <small>25mm equiv</small></span></div>
+                                </div>
+                                <div class="ix-cells ix-cells-sm">
+                                    <div class="ix-cell ix-row" data-tags="Flash"><span class="ix-label">Flash</span><code class="ix-tag">Flash</code><span class="ix-val">Off, did not fire</span></div>
+                                    <div class="ix-cell ix-row" data-tags="ExposureBiasValue"><span class="ix-label">EV</span><code class="ix-tag">ExposureBiasValue</code><span class="ix-val">0 EV</span></div>
+                                    <div class="ix-cell ix-row" data-tags="MeteringMode"><span class="ix-label">Meter</span><code class="ix-tag">MeteringMode</code><span class="ix-val">Center-weighted</span></div>
+                                    <div class="ix-cell ix-row" data-tags="WhiteBalance"><span class="ix-label">WB</span><code class="ix-tag">WhiteBalance</code><span class="ix-val">Auto</span></div>
+                                </div>
+                            </section>
+
+                            <section class="ix-group" aria-labelledby="g-taken">
+                                <h3 class="ix-g" id="g-taken">Taken</h3>
+                                <div class="ix-row is-edit" data-tags="DateTimeOriginal" data-field="date">
+                                    <label class="ix-label" for="f-date">Capture date</label><code class="ix-tag">DateTimeOriginal</code>
+                                    <span class="ix-val ix-val-pair"><input class="ix-in" id="f-date" type="date" value="2026-06-21"><label class="app-visually-hidden" for="f-time">Capture time</label><input class="ix-in ix-in-time" id="f-time" type="time" value="19:42"></span>
+                                </div>
+                            </section>
+
+                            <section class="ix-group ix-gps" aria-labelledby="g-where">
+                                <h3 class="ix-g" id="g-where">Location</h3>
+                                <div class="ix-row" data-tags="GPSLatitude GPSLongitude"><span class="ix-label">Coordinates</span><code class="ix-tag">GPSLatitude, GPSLongitude</code><span class="ix-val">35.1532°&nbsp;N, 129.1187°&nbsp;E</span></div>
+                                <div class="ix-row" data-tags="GPSAltitude"><span class="ix-label">Altitude</span><code class="ix-tag">GPSAltitude</code><span class="ix-val">3.8 m</span></div>
+                                <div class="ix-row" data-tags="GPSImgDirection"><span class="ix-label">Heading</span><code class="ix-tag">GPSImgDirection</code><span class="ix-val">142° SE</span></div>
+                                <div class="ix-row" data-tags="GPSDateStamp GPSTimeStamp"><span class="ix-label">GPS time</span><code class="ix-tag">GPSDateStamp, GPSTimeStamp</code><span class="ix-val">Jun 21, 2026 10:42:07 UTC</span></div>
+                            </section>
+
+                            <section class="ix-group" aria-labelledby="g-rights">
+                                <h3 class="ix-g" id="g-rights">Rights</h3>
+                                <div class="ix-row is-edit" data-tags="Artist" data-field="artist"><label class="ix-label" for="f-artist">Creator / artist</label><code class="ix-tag">Artist</code><span class="ix-val"><input class="ix-in" id="f-artist" type="text" value="Mina Park" placeholder="Photographer name" autocomplete="off" spellcheck="false"></span></div>
+                                <div class="ix-row is-edit" data-tags="Copyright" data-field="copyright"><label class="ix-label" for="f-copyright">Copyright holder</label><code class="ix-tag">Copyright</code><span class="ix-val"><input class="ix-in" id="f-copyright" type="text" value="© 2026 Mina Park" placeholder="Copyright holder" autocomplete="off" spellcheck="false"></span></div>
+                            </section>
+
+                            <section class="ix-group" aria-labelledby="g-words">
+                                <h3 class="ix-g" id="g-words">Words</h3>
+                                <div class="ix-row is-edit" data-tags="XPTitle" data-field="title"><label class="ix-label" for="f-title">Title</label><code class="ix-tag">XPTitle</code><span class="ix-val"><input class="ix-in" id="f-title" type="text" value="Gwangalli after sunset" placeholder="Short title" autocomplete="off"></span></div>
+                                <div class="ix-row is-edit" data-tags="ImageDescription" data-field="description"><label class="ix-label" for="f-description">Description</label><code class="ix-tag">ImageDescription</code><span class="ix-val"><input class="ix-in" id="f-description" type="text" value="Bridge lights coming on, from the beach." placeholder="What’s in the shot" autocomplete="off"></span></div>
+                                <div class="ix-row is-edit" data-tags="XPSubject" data-field="subject"><label class="ix-label" for="f-subject">Subject</label><code class="ix-tag">XPSubject</code><span class="ix-val"><input class="ix-in" id="f-subject" type="text" value="" placeholder="Not set" autocomplete="off"></span></div>
+                                <div class="ix-row is-edit" data-tags="XPComment" data-field="comment"><label class="ix-label" for="f-comment">Comment</label><code class="ix-tag">XPComment</code><span class="ix-val"><input class="ix-in" id="f-comment" type="text" value="" placeholder="Not set" autocomplete="off"></span></div>
+                                <div class="ix-row is-edit ix-kw" data-tags="XPKeywords" data-field="keywords">
+                                    <label class="ix-label" for="f-kw">Keywords</label><code class="ix-tag">XPKeywords</code>
+                                    <span class="ix-val">
+                                        <span class="chips" id="ix-chips"><span class="chip">Busan</span><span class="chip">bridge</span><span class="chip">blue hour</span></span>
+                                        <span class="kw-add"><input class="ix-in" id="f-kw" type="text" placeholder="Add keyword and press enter" autocomplete="off" enterkeyhint="done"><button type="button" class="kw-btn" id="ix-kw-add" aria-label="Add keyword">+</button></span>
+                                    </span>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Proof sheet of real screens ============ -->
+        <section class="sheet" aria-labelledby="sheet-title">
+            <div class="x-wrap">
+                <header class="sec-head">
+                    <h2 id="sheet-title">From picking a photo to a clean copy</h2>
+                    <p>Real screens from the app, in the order you meet them.</p>
+                </header>
+            </div>
+
+            <div class="strip strip-sheet">
+                <div class="sheet-scroll" role="region" aria-label="App screens 1 to 3" tabindex="0">
+                <ol class="sheet-run">
+                    <li class="sheet-frame">
+                        <figure class="app-device"><span class="app-device-screen"><img src="/apps/exif/img/home.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Home screen with two choices: Single Photo and Batch Edit"></span></figure>
+                        <p><i>1</i>Open one photo, or pick several for a batch edit.</p>
+                    </li>
+                    <li class="sheet-frame">
+                        <figure class="app-device"><span class="app-device-screen"><img src="/apps/exif/img/location.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Editor listing camera body, lens model and software, then the location with altitude, heading, speed and GPS time"></span></figure>
+                        <p><i>2</i>Scroll the readout: camera, lens and software, then where it was taken, down to altitude and heading.</p>
+                    </li>
+                    <li class="sheet-frame">
+                        <figure class="app-device"><span class="app-device-screen"><img src="/apps/exif/img/title-tags.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Edit fields for creator, title, subject and comment, keyword chips, and the capture date and time"></span></figure>
+                        <p><i>3</i>Write what should travel with the photo: creator, title, subject, comment, keywords, date.</p>
+                    </li>
+                </ol>
+                </div>
+            </div>
+            <div class="strip strip-sheet">
+                <div class="sheet-scroll" role="region" aria-label="App screens 4 to 6" tabindex="0">
+                <ol class="sheet-run" start="4">
+                    <li class="sheet-frame">
+                        <figure class="app-device"><span class="app-device-screen"><img src="/apps/exif/img/save-confirm.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Save Changes dialog listing the title field that will be updated"></span></figure>
+                        <p><i>4</i>Before anything is written, it lists exactly which fields will change.</p>
+                    </li>
+                    <li class="sheet-frame">
+                        <figure class="app-device"><span class="app-device-screen"><img src="/apps/exif/img/clear-all.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Clear All Metadata dialog warning that EXIF, GPS and camera data will be removed"></span></figure>
+                        <p><i>5</i>Or clear all EXIF, GPS and camera data at once, after one confirmation.</p>
+                    </li>
+                    <li class="sheet-frame">
+                        <figure class="app-device"><span class="app-device-screen"><img src="/apps/exif/img/done.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Update successful screen showing the edited photo and a Download copy button"></span></figure>
+                        <p><i>6</i>Save the result to your gallery, or send it through the share sheet.</p>
+                    </li>
+                </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Datasheet ============ -->
+        <section class="data" aria-labelledby="data-title">
+            <div class="x-wrap">
+                <header class="sec-head">
+                    <h2 id="data-title">What it reads, writes and clears</h2>
+                </header>
+                <dl class="datasheet">
+                    <div>
+                        <dt>Reads</dt>
+                        <dd>Aperture, shutter speed, ISO and focal length. Flash, exposure bias, metering mode, white balance and exposure program. Camera body, lens make and model, 35mm equivalent focal length and software. Resolution, file size, and when the photo was taken.</dd>
+                    </div>
+                    <div>
+                        <dt>Location</dt>
+                        <dd>Latitude and longitude, altitude, heading, speed, and the GPS timestamp in UTC.</dd>
+                    </div>
+                    <div>
+                        <dt>Writes</dt>
+                        <dd>Description, copyright holder, creator, title, subject, comment and keywords, plus the capture date and time. You see the list of changes before anything is saved.</dd>
+                    </div>
+                    <div>
+                        <dt>Clears</dt>
+                        <dd>Every metadata field in one step: location, camera and lens details, dates and text. On JPEG and PNG the orientation and colour profile are kept, so the photo still displays the right way up and in the right colours.</dd>
+                    </div>
+                    <div>
+                        <dt>Batch</dt>
+                        <dd>Pick many photos and give them all the same copyright, creator and keywords, or clear them all at once. A counter shows how far along it is, and you can cancel partway.</dd>
+                    </div>
+                    <div>
+                        <dt>Saving</dt>
+                        <dd>Supported photos in your gallery can be updated in place once you allow it. Otherwise you get a copy, saved to your gallery as <code>name_edited</code> or <code>name_clean</code>, or shared from the share sheet.</dd>
+                    </div>
+                    <div>
+                        <dt>Formats</dt>
+                        <dd>JPEG and PNG are edited and cleared without re-encoding the picture. Other common formats, such as WebP, are re-encoded when cleared. HEIC isn’t supported.</dd>
+                    </div>
+                    <div>
+                        <dt>Price</dt>
+                        <dd>Free, with ads.</dd>
+                    </div>
+                </dl>
+            </div>
+        </section>
+
+        <!-- ============ Privacy note ============ -->
+        <section class="trust" aria-labelledby="trust-title">
+            <div class="x-wrap trust-inner">
+                <h2 id="trust-title">Your photos stay on your phone</h2>
+                <div class="trust-copy">
+                    <p>Reading, editing and clearing all happen on the device, and none of it needs a connection. Your photos aren’t uploaded anywhere; they leave the phone only when you share them yourself.</p>
+                    <p>The app connects to the internet for its ads, served by Google AdMob, and the consent form that comes with them. Your photos are never part of that.</p>
+                    <p><a class="x-link" href="https://psychedelic-cattle-134.notion.site/Exif-Editor-Privacy-Policy-345369f50e3d803f99d2f9dffc20981e" target="_blank" rel="noopener noreferrer">Read the privacy policy</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Closing call to action ============ -->
+        <section class="cta" aria-labelledby="cta-title">
+            <div class="x-wrap cta-inner">
+                <div class="cta-copy">
+                    <img class="cta-icon" src="/apps/exif/img/icon.webp" width="256" height="256" loading="lazy" decoding="async" alt="">
+                    <h2 id="cta-title">Check a photo before you post it.</h2>
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.exif" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>GET IT ON</small><b>Google Play</b></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="cta-side">
+                    <figure class="ix-photo cta-frame">
+                        <span class="film-frame"><img src="/apps/exif/img/frame-14.svg" width="1200" height="800" loading="lazy" decoding="async" alt="The sample photo again after clearing: the picture itself is unchanged"></span>
+                        <figcaption class="edge" aria-hidden="true"><span>PXL_20260621_104207123_clean.jpg</span><span>0 tags</span></figcaption>
+                    </figure>
+                    <p class="cta-cap">Frame 14 after Clear all: the same picture, nothing attached.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="About this app">
+            <a href="https://psychedelic-cattle-134.notion.site/Exif-Editor-Privacy-Policy-345369f50e3d803f99d2f9dffc20981e" target="_blank" rel="noopener noreferrer">Privacy policy</a>
+            <a href="/support/">Support</a>
+            <a href="/#apps">More apps by Rexyrex</a>
+        </nav>
+        <p>Made by <a href="/">Rexyrex</a> · <code>/apps/exif/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/apps/exif/page.js" defer></script>
+</body>
+</html>

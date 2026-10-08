@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>How Old Are You? Age Test — Rexyrex</title>
+    <meta name="description" content="Five quick tests for your hearing, reflexes, memory, vision and focus, each with a playful age guess. Try the reaction test right on this page.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/age_calculator/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/age_calculator/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/age_calculator/img/icon-180.png">
+    <meta name="theme-color" content="#16122b" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#fff8f0" media="(prefers-color-scheme: light)">
+    <meta name="apple-itunes-app" content="app-id=6809824726">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/age_calculator/">
+    <meta property="og:title" content="How Old Are You? Age Test">
+    <meta property="og:description" content="Find your age — hearing, reaction, memory, vision &amp; tap-trail mini-tests!">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/age_calculator.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="How Old Are You? Age Test">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How Old Are You? Age Test">
+    <meta name="twitter:description" content="Find your age — hearing, reaction, memory, vision &amp; tap-trail mini-tests!">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/age_calculator.jpg">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script>document.documentElement.classList.add('js');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- IBM Plex stays: the site chrome (top bar, status bar) is set in it. -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:wght@400..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/apps/age_calculator/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "How Old Are You? Age Test",
+        "operatingSystem": "Android, iOS",
+        "applicationCategory": "EntertainmentApplication",
+        "description": "Find your age — hearing, reaction, memory, vision & tap-trail mini-tests!",
+        "url": "https://rexyrex.github.io/apps/age_calculator/",
+        "image": "https://rexyrex.github.io/apps/age_calculator/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id=com.rexyrex.agecalculator", "https://apps.apple.com/app/id6809824726"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-age_calculator">
+    <div id="nav-placeholder"></div>
+
+    <!-- Icons, drawn once and reused -->
+    <svg class="sprite" aria-hidden="true" focusable="false">
+        <symbol id="i-hear" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><rect x="2.5" y="13" width="5.5" height="8" rx="2.2"/><rect x="16" y="13" width="5.5" height="8" rx="2.2"/></symbol>
+        <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.5 2 4.5 13.6h6.3L9.6 22l9.9-12.3h-6.4L13.5 2Z"/></symbol>
+        <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2.4"/><rect x="13" y="3" width="8" height="8" rx="2.4"/><rect x="3" y="13" width="8" height="8" rx="2.4"/><rect x="13" y="13" width="8" height="8" rx="2.4"/></symbol>
+        <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1.8 12S5.4 5 12 5s10.2 7 10.2 7-3.6 7-10.2 7S1.8 12 1.8 12Z" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.6"/></symbol>
+        <symbol id="i-trail" viewBox="0 0 24 24"><path d="m3.5 17 5.5-6 4 4 7.5-8.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="3.5" cy="17" r="2.4"/><circle cx="9" cy="11" r="2.4"/><circle cx="13" cy="15" r="2.4"/><circle cx="20.5" cy="6.5" r="2.4"/></symbol>
+        <symbol id="i-glass" viewBox="0 0 24 24"><path d="M6 2.5h12M6 21.5h12M7.5 2.5c0 5 4.5 6.2 4.5 9.5S7.5 16.5 7.5 21.5M16.5 2.5c0 5-4.5 6.2-4.5 9.5s4.5 4.5 4.5 9.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M9 20.2c.6-2.2 2-3.2 3-3.2s2.4 1 3 3.2Z"/></symbol>
+        <symbol id="i-warn" viewBox="0 0 24 24"><path d="M10.3 3.6a2 2 0 0 1 3.4 0l8 13.9A2 2 0 0 1 20 20.5H4a2 2 0 0 1-1.7-3L10.3 3.6Z"/><path d="M12 9v4.5M12 16.8v.1" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></symbol>
+        <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1.4"/><rect x="14" y="4.5" width="4" height="15" rx="1.4"/></symbol>
+        <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.6v14.8a1 1 0 0 0 1.5.9l11.8-7.4a1 1 0 0 0 0-1.8L8.5 3.7A1 1 0 0 0 7 4.6Z"/></symbol>
+    </svg>
+
+    <main id="main">
+
+        <!-- ============ Hero ============ -->
+        <header class="hero">
+            <svg class="festoon" viewBox="0 0 1440 140" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+                <path class="festoon-wire" d="M0 8Q360 104 720 14Q1080 104 1440 8"/>
+                <g class="b b-coral" style="--i:0" transform="translate(60 23)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-amber" style="--i:1" transform="translate(120 35)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-teal" style="--i:2" transform="translate(180 44)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-indigo" style="--i:3" transform="translate(240 51)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-lavender" style="--i:4" transform="translate(300 56)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-pink" style="--i:5" transform="translate(360 58)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-green" style="--i:6" transform="translate(420 57)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-coral" style="--i:7" transform="translate(480 53)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-amber" style="--i:8" transform="translate(540 47)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-teal" style="--i:9" transform="translate(600 39)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-indigo" style="--i:10" transform="translate(660 28)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-lavender" style="--i:11" transform="translate(780 28)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-pink" style="--i:12" transform="translate(840 39)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-green" style="--i:13" transform="translate(900 47)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-coral" style="--i:14" transform="translate(960 53)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-amber" style="--i:15" transform="translate(1020 57)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-teal" style="--i:16" transform="translate(1080 58)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-indigo" style="--i:17" transform="translate(1140 56)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-lavender" style="--i:18" transform="translate(1200 51)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-pink" style="--i:19" transform="translate(1260 44)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-green" style="--i:20" transform="translate(1320 35)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g><g class="b b-coral" style="--i:21" transform="translate(1380 23)"><rect x="-3.5" y="0" width="7" height="7" rx="1.5"/><circle cy="15" r="8"/></g>
+            </svg>
+
+            <div class="wrap hero-grid">
+                <div class="hero-copy">
+                    <p class="crumb"><a href="/apps/">/apps/</a><span>age_calculator/</span></p>
+                    <img class="hero-icon" src="/apps/age_calculator/img/icon.webp" width="256" height="256" alt="App icon: a white hourglass on a coral-to-violet gradient">
+                    <h1 class="hero-title"><span class="ht-q">How Old<br> Are You?</span> <span class="ht-tag">Age Test</span></h1>
+                    <p class="hero-lede">Five quick games for your ears, reflexes, memory, eyes and focus. Each one guesses an age from how you play.</p>
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.agecalculator" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>GET IT ON</small><b>Google Play</b></span>
+                        </a>
+                        <a class="store-badge" href="https://apps.apple.com/app/id6809824726" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                            <span><small>Download on the</small><b>App Store</b></span>
+                        </a>
+                    </div>
+                    <p class="hero-aside">Free, no account needed. <a href="#booth">Or test your reflexes on this page first.</a></p>
+                </div>
+
+                <div class="hero-stage">
+                    <figure class="app-device hero-phone">
+                        <span class="app-device-screen"><img src="/apps/age_calculator/img/home.webp" width="660" height="1434" fetchpriority="high" alt="The app's home screen, titled How Old Are You?, with colored tiles for Hearing Test, Reaction Time, Memory Test, Vision Test, Tap Trail and Coming Soon."></span>
+                    </figure>
+                    <span class="token tk-hear" style="--n:0" aria-hidden="true"><svg><use href="#i-hear"/></svg></span>
+                    <span class="token tk-react" style="--n:1" aria-hidden="true"><svg><use href="#i-bolt"/></svg></span>
+                    <span class="token tk-pair" style="--n:2" aria-hidden="true"><svg><use href="#i-grid"/></svg></span>
+                    <span class="token tk-vision" style="--n:3" aria-hidden="true"><svg><use href="#i-eye"/></svg></span>
+                    <span class="token tk-trail" style="--n:4" aria-hidden="true"><svg><use href="#i-trail"/></svg></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============ Reaction booth ============ -->
+        <section class="booth-sec" id="booth" aria-labelledby="booth-title">
+            <div class="wrap">
+                <div class="sec-head">
+                    <h2 id="booth-title">Test your reflexes right here</h2>
+                    <p>When the light turns green, hit it: click, tap or press Space. Five rounds, then the booth makes its guess.</p>
+                </div>
+
+                <div class="booth-grid">
+                    <div class="booth" data-state="idle">
+                        <svg class="bulbs" aria-hidden="true" focusable="false"><rect class="bulbs-dim"/><rect class="bulbs-lit"/></svg>
+                        <div class="booth-inner">
+                            <button class="pad" type="button" aria-describedby="booth-howto">
+                                <span class="pad-rings" aria-hidden="true"><i></i><i></i><i></i></span>
+                                <span class="pad-icon" aria-hidden="true"><svg><use href="#i-bolt"/></svg></span>
+                                <span class="pad-title">Start</span>
+                                <span class="pad-sub">Click, tap or press Space</span>
+                            </button>
+                            <p class="booth-nojs">The booth needs JavaScript to run. The full Reaction Time test is in the app.</p>
+
+                            <div class="rcard" tabindex="-1" hidden>
+                                <span class="rcard-confetti" aria-hidden="true"></span>
+                                <p class="rcard-tag">Web teaser, just for fun</p>
+                                <p class="rcard-test">Reaction Time</p>
+                                <p class="rcard-your">Your age is...</p>
+                                <p class="rcard-age"><span class="rcard-num">0</span><span class="app-visually-hidden"> years, says the booth</span></p>
+                                <p class="rcard-emoji" aria-hidden="true"></p>
+                                <p class="rcard-msg"></p>
+                                <p class="rcard-meta"></p>
+                                <p class="rcard-brand"><svg aria-hidden="true"><use href="#i-glass"/></svg>How Old Are You?</p>
+                                <div class="rcard-actions">
+                                    <button class="btn-again" type="button">Play again</button>
+                                    <a class="btn-get" href="#get">Get the full test</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="booth-log" aria-labelledby="log-title">
+                        <h3 id="log-title">Your rounds</h3>
+                        <ol class="rounds">
+                            <li><span class="r-dot" aria-hidden="true">1</span><span class="r-name">Round 1</span><b class="r-ms">–</b></li>
+                            <li><span class="r-dot" aria-hidden="true">2</span><span class="r-name">Round 2</span><b class="r-ms">–</b></li>
+                            <li><span class="r-dot" aria-hidden="true">3</span><span class="r-name">Round 3</span><b class="r-ms">–</b></li>
+                            <li><span class="r-dot" aria-hidden="true">4</span><span class="r-name">Round 4</span><b class="r-ms">–</b></li>
+                            <li><span class="r-dot" aria-hidden="true">5</span><span class="r-name">Round 5</span><b class="r-ms">–</b></li>
+                        </ol>
+                        <p class="booth-note" id="booth-howto">A five-round web teaser of the app's Reaction Time test. Like the app, it drops your fastest and slowest round, takes the middle of the rest and reads your age off the same table. The app runs eight rounds on your phone's touchscreen, so your result there can differ. Your times stay in this browser tab.</p>
+                    </aside>
+                </div>
+                <p class="app-visually-hidden" aria-live="polite" data-booth-live></p>
+            </div>
+        </section>
+
+        <!-- ============ The five tests ============ -->
+        <section class="tests-sec" id="tests" aria-labelledby="tests-title">
+            <div class="wrap">
+                <div class="sec-head">
+                    <h2 id="tests-title">Five little tests, one big question</h2>
+                    <p>Pick any tile on the home screen. Every test ends the same way: with a number.</p>
+                </div>
+
+                <div class="tiles">
+                    <article class="tile tile-hear" id="hearing" aria-labelledby="t-hear">
+                        <div class="tile-copy">
+                            <span class="chip" aria-hidden="true"><svg><use href="#i-hear"/></svg></span>
+                            <h3 id="t-hear">Hearing Test</h3>
+                            <p>A pure tone climbs from 200&nbsp;Hz to 18&nbsp;kHz over 30 seconds. Tap “I can't hear it!” the moment it fades out: the highest pitch you caught sets your age. Headphones or speakers both work.</p>
+
+                            <div class="sweep">
+                                <div class="sweep-top">
+                                    <p class="sweep-read"><b data-sweep-hz>6.1 kHz</b><span data-sweep-age>Stop here and the app guesses 70.</span></p>
+                                    <button class="sweep-toggle" type="button" aria-pressed="false" hidden><svg aria-hidden="true"><use href="#i-play"/></svg><span>Play sweep</span></button>
+                                </div>
+                                <div class="sweep-track">
+                                    <svg class="sweep-wave" viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                                        <defs>
+                                            <linearGradient id="ramp" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0">
+                                                <stop offset="0" stop-color="#ff6b6b"/><stop offset=".25" stop-color="#ff85a2"/><stop offset=".5" stop-color="#d66be7"/><stop offset=".75" stop-color="#a78bfa"/><stop offset="1" stop-color="#7c83fd"/>
+                                            </linearGradient>
+                                            <clipPath id="played"><rect class="sweep-clip" x="0" y="0" width="455.7" height="120"/></clipPath>
+                                        </defs>
+                                        <path class="wave-ghost" d="M0 60L1.2 58.9L2.3 57.9L3.5 56.8L4.6 55.7L5.8 54.6L6.9 53.5L8.1 52.5L9.2 51.4L10.4 50.3L11.5 49.2L12.7 48.1L13.8 47.1L15 46L16.2 44.9L17.3 43.9L18.5 42.8L19.6 41.8L20.8 40.8L21.9 39.7L23.1 38.7L24.2 37.7L25.4 36.8L26.5 35.8L27.7 34.8L28.8 33.9L30 33L31.2 32.1L32.3 31.3L33.5 30.4L34.6 29.6L35.8 28.8L36.9 28L38.1 27.3L39.2 26.6L40.4 25.9L41.5 25.2L42.7 24.6L43.8 24L45 23.5L46.2 23L47.3 22.5L48.5 22L49.6 21.6L50.8 21.3L51.9 21L53.1 20.7L54.2 20.5L55.4 20.3L56.5 20.1L57.7 20.1L58.8 20L60 20L61.2 20.1L62.3 20.2L63.5 20.3L64.6 20.5L65.8 20.8L66.9 21.1L68.1 21.4L69.2 21.8L70.4 22.3L71.5 22.8L72.7 23.4L73.8 24L75 24.7L76.2 25.4L77.3 26.2L78.5 27L79.6 27.9L80.8 28.9L81.9 29.9L83.1 30.9L84.2 32L85.4 33.1L86.5 34.3L87.7 35.6L88.8 36.8L90 38.2L91.2 39.5L92.3 40.9L93.5 42.4L94.6 43.9L95.8 45.4L96.9 46.9L98.1 48.5L99.2 50.1L100.4 51.7L101.5 53.4L102.7 55.1L103.8 56.8L105 58.5L106.2 60.2L107.3 61.9L108.5 63.7L109.6 65.4L110.8 67.1L111.9 68.9L113.1 70.6L114.2 72.3L115.4 74L116.5 75.7L117.7 77.3L118.8 78.9L120 80.5L121.2 82.1L122.3 83.6L123.5 85.1L124.6 86.5L125.8 87.9L126.9 89.2L128.1 90.5L129.2 91.7L130.4 92.8L131.5 93.9L132.7 94.9L133.8 95.8L135 96.6L136.2 97.4L137.3 98L138.5 98.6L139.6 99.1L140.8 99.5L141.9 99.7L143.1 99.9L144.2 100L145.4 100L146.5 99.8L147.7 99.6L148.8 99.2L150 98.8L151.2 98.2L152.3 97.5L153.5 96.7L154.6 95.8L155.8 94.8L156.9 93.7L158.1 92.4L159.2 91.1L160.4 89.7L161.5 88.1L162.7 86.5L163.8 84.8L165 83L166.2 81.1L167.3 79.1L168.5 77.1L169.6 75L170.8 72.8L171.9 70.6L173.1 68.3L174.2 66L175.4 63.7L176.5 61.3L177.7 58.9L178.8 56.5L180 54.1L181.2 51.8L182.3 49.4L183.5 47L184.6 44.7L185.8 42.5L186.9 40.3L188.1 38.1L189.2 36.1L190.4 34.1L191.5 32.2L192.7 30.4L193.8 28.8L195 27.2L196.2 25.8L197.3 24.5L198.5 23.4L199.6 22.4L200.8 21.6L201.9 20.9L203.1 20.4L204.2 20.1L205.4 20L206.5 20.1L207.7 20.3L208.8 20.7L210 21.3L211.2 22.2L212.3 23.2L213.5 24.3L214.6 25.7L215.8 27.2L216.9 29L218.1 30.9L219.2 32.9L220.4 35.1L221.5 37.4L222.7 39.9L223.8 42.5L225 45.2L226.2 48L227.3 50.9L228.5 53.9L229.6 56.9L230.8 59.9L231.9 63L233.1 66L234.2 69.1L235.4 72L236.5 75L237.7 77.8L238.8 80.6L240 83.3L241.2 85.8L242.3 88.1L243.5 90.3L244.6 92.3L245.8 94.2L246.9 95.7L248.1 97.1L249.2 98.2L250.4 99.1L251.5 99.6L252.7 99.9L253.8 100L255 99.7L256.2 99.2L257.3 98.3L258.5 97.2L259.6 95.8L260.8 94.1L261.9 92.1L263.1 89.9L264.2 87.5L265.4 84.8L266.5 81.8L267.7 78.8L268.8 75.5L270 72.1L271.2 68.5L272.3 64.9L273.5 61.2L274.6 57.5L275.8 53.8L276.9 50.1L278.1 46.5L279.2 43L280.4 39.7L281.5 36.5L282.7 33.5L283.8 30.7L285 28.2L286.2 26L287.3 24.1L288.5 22.5L289.6 21.3L290.8 20.5L291.9 20.1L293.1 20L294.2 20.4L295.4 21.2L296.5 22.4L297.7 24.1L298.8 26.1L300 28.4L301.2 31.2L302.3 34.3L303.5 37.6L304.6 41.3L305.8 45.2L306.9 49.3L308.1 53.5L309.2 57.8L310.4 62.2L311.5 66.5L312.7 70.8L313.8 75L315 79.1L316.2 82.9L317.3 86.4L318.5 89.7L319.6 92.5L320.8 95L321.9 97L323.1 98.5L324.2 99.5L325.4 100L326.5 99.9L327.7 99.3L328.8 98.1L330 96.3L331.2 94.1L332.3 91.3L333.5 88L334.6 84.3L335.8 80.3L336.9 75.9L338.1 71.2L339.2 66.4L340.4 61.4L341.5 56.3L342.7 51.3L343.8 46.4L345 41.8L346.2 37.3L347.3 33.3L348.5 29.6L349.6 26.5L350.8 23.9L351.9 22L353.1 20.7L354.2 20L355.4 20.1L356.5 21L357.7 22.5L358.8 24.8L360 27.7L361.2 31.2L362.3 35.3L363.5 39.9L364.6 44.9L365.8 50.3L366.9 55.9L368.1 61.5L369.2 67.2L370.4 72.8L371.5 78.1L372.7 83.1L373.8 87.6L375 91.5L376.2 94.8L377.3 97.3L378.5 99.1L379.6 99.9L380.8 99.9L381.9 98.9L383.1 97.1L384.2 94.3L385.4 90.8L386.5 86.5L387.7 81.5L388.8 76L390 70L391.2 63.8L392.3 57.5L393.5 51.2L394.6 45.1L395.8 39.3L396.9 34L398.1 29.4L399.2 25.6L400.4 22.7L401.5 20.9L402.7 20L403.8 20.3L405 21.7L406.2 24.2L407.3 27.8L408.5 32.3L409.6 37.6L410.8 43.7L411.9 50.2L413.1 57.1L414.2 64.1L415.4 71L416.5 77.7L417.7 83.7L418.8 89.1L420 93.6L421.2 96.9L422.3 99.1L423.5 100L424.6 99.5L425.8 97.7L426.9 94.6L428.1 90.3L429.2 84.8L430.4 78.5L431.5 71.5L432.7 64L433.8 56.3L435 48.8L436.2 41.6L437.3 35L438.5 29.4L439.6 25L440.8 21.9L441.9 20.2L443.1 20.2L444.2 21.7L445.4 24.8L446.5 29.4L447.7 35.3L448.8 42.2L450 50L451.2 58.2L452.3 66.5L453.5 74.6L454.6 82.1L455.8 88.6L456.9 93.9L458.1 97.6L459.2 99.7L460.4 99.9L461.5 98.2L462.7 94.7L463.8 89.5L465 82.8L466.2 75L467.3 66.4L468.5 57.4L469.6 48.6L470.8 40.2L471.9 32.9L473.1 26.9L474.2 22.6L475.4 20.4L476.5 20.2L477.7 22.2L478.8 26.3L480 32.4L481.2 40L482.3 48.7L483.5 58.2L484.6 67.8L485.8 77.1L486.9 85.3L488.1 92.1L489.2 97L490.4 99.6L491.5 99.8L492.7 97.5L493.8 92.8L495 86L496.2 77.5L497.3 67.8L498.5 57.5L499.6 47.4L500.8 38L501.9 30.1L503.1 24.2L504.2 20.8L505.4 20.1L506.5 22.2L507.7 27L508.8 34.3L510 43.5L511.2 53.9L512.3 64.9L513.5 75.5L514.6 85L515.8 92.6L516.9 97.8L518.1 99.9L519.2 99L520.4 94.8L521.5 87.8L522.7 78.5L523.8 67.7L525 56.1L526.2 44.8L527.3 34.7L528.5 26.8L529.6 21.7L530.8 20L531.9 21.9L533.1 27.2L534.2 35.5L535.4 46.1L536.5 58.1L537.7 70.3L538.8 81.6L540 90.9L541.2 97.2L542.3 99.9L543.5 98.7L544.6 93.6L545.8 85L546.9 73.9L548.1 61.3L549.2 48.4L550.4 36.7L551.5 27.5L552.7 21.7L553.8 20L555 22.8L556.2 29.6L557.3 40L558.5 52.6L559.6 66.2L560.8 79.1L561.9 89.9L563.1 97.1L564.2 100L565.4 98L566.5 91.4L567.7 80.9L568.8 67.7L570 53.5L571.2 40L572.3 29.1L573.5 22.1L574.6 20L575.8 23.3L576.9 31.5L578.1 43.5L579.2 58L580.4 72.7L581.5 85.8L582.7 95.3L583.8 99.8L585 98.5L586.2 91.7L587.3 80.2L588.5 65.6L589.6 50.1L590.8 36L591.9 25.5L593.1 20.4L594.2 21.4L595.4 28.5L596.5 40.8L597.7 56.1L598.8 72.2L600 86.4"/>
+                                        <path class="wave-live" clip-path="url(#played)" d="M0 60L1.2 58.9L2.3 57.9L3.5 56.8L4.6 55.7L5.8 54.6L6.9 53.5L8.1 52.5L9.2 51.4L10.4 50.3L11.5 49.2L12.7 48.1L13.8 47.1L15 46L16.2 44.9L17.3 43.9L18.5 42.8L19.6 41.8L20.8 40.8L21.9 39.7L23.1 38.7L24.2 37.7L25.4 36.8L26.5 35.8L27.7 34.8L28.8 33.9L30 33L31.2 32.1L32.3 31.3L33.5 30.4L34.6 29.6L35.8 28.8L36.9 28L38.1 27.3L39.2 26.6L40.4 25.9L41.5 25.2L42.7 24.6L43.8 24L45 23.5L46.2 23L47.3 22.5L48.5 22L49.6 21.6L50.8 21.3L51.9 21L53.1 20.7L54.2 20.5L55.4 20.3L56.5 20.1L57.7 20.1L58.8 20L60 20L61.2 20.1L62.3 20.2L63.5 20.3L64.6 20.5L65.8 20.8L66.9 21.1L68.1 21.4L69.2 21.8L70.4 22.3L71.5 22.8L72.7 23.4L73.8 24L75 24.7L76.2 25.4L77.3 26.2L78.5 27L79.6 27.9L80.8 28.9L81.9 29.9L83.1 30.9L84.2 32L85.4 33.1L86.5 34.3L87.7 35.6L88.8 36.8L90 38.2L91.2 39.5L92.3 40.9L93.5 42.4L94.6 43.9L95.8 45.4L96.9 46.9L98.1 48.5L99.2 50.1L100.4 51.7L101.5 53.4L102.7 55.1L103.8 56.8L105 58.5L106.2 60.2L107.3 61.9L108.5 63.7L109.6 65.4L110.8 67.1L111.9 68.9L113.1 70.6L114.2 72.3L115.4 74L116.5 75.7L117.7 77.3L118.8 78.9L120 80.5L121.2 82.1L122.3 83.6L123.5 85.1L124.6 86.5L125.8 87.9L126.9 89.2L128.1 90.5L129.2 91.7L130.4 92.8L131.5 93.9L132.7 94.9L133.8 95.8L135 96.6L136.2 97.4L137.3 98L138.5 98.6L139.6 99.1L140.8 99.5L141.9 99.7L143.1 99.9L144.2 100L145.4 100L146.5 99.8L147.7 99.6L148.8 99.2L150 98.8L151.2 98.2L152.3 97.5L153.5 96.7L154.6 95.8L155.8 94.8L156.9 93.7L158.1 92.4L159.2 91.1L160.4 89.7L161.5 88.1L162.7 86.5L163.8 84.8L165 83L166.2 81.1L167.3 79.1L168.5 77.1L169.6 75L170.8 72.8L171.9 70.6L173.1 68.3L174.2 66L175.4 63.7L176.5 61.3L177.7 58.9L178.8 56.5L180 54.1L181.2 51.8L182.3 49.4L183.5 47L184.6 44.7L185.8 42.5L186.9 40.3L188.1 38.1L189.2 36.1L190.4 34.1L191.5 32.2L192.7 30.4L193.8 28.8L195 27.2L196.2 25.8L197.3 24.5L198.5 23.4L199.6 22.4L200.8 21.6L201.9 20.9L203.1 20.4L204.2 20.1L205.4 20L206.5 20.1L207.7 20.3L208.8 20.7L210 21.3L211.2 22.2L212.3 23.2L213.5 24.3L214.6 25.7L215.8 27.2L216.9 29L218.1 30.9L219.2 32.9L220.4 35.1L221.5 37.4L222.7 39.9L223.8 42.5L225 45.2L226.2 48L227.3 50.9L228.5 53.9L229.6 56.9L230.8 59.9L231.9 63L233.1 66L234.2 69.1L235.4 72L236.5 75L237.7 77.8L238.8 80.6L240 83.3L241.2 85.8L242.3 88.1L243.5 90.3L244.6 92.3L245.8 94.2L246.9 95.7L248.1 97.1L249.2 98.2L250.4 99.1L251.5 99.6L252.7 99.9L253.8 100L255 99.7L256.2 99.2L257.3 98.3L258.5 97.2L259.6 95.8L260.8 94.1L261.9 92.1L263.1 89.9L264.2 87.5L265.4 84.8L266.5 81.8L267.7 78.8L268.8 75.5L270 72.1L271.2 68.5L272.3 64.9L273.5 61.2L274.6 57.5L275.8 53.8L276.9 50.1L278.1 46.5L279.2 43L280.4 39.7L281.5 36.5L282.7 33.5L283.8 30.7L285 28.2L286.2 26L287.3 24.1L288.5 22.5L289.6 21.3L290.8 20.5L291.9 20.1L293.1 20L294.2 20.4L295.4 21.2L296.5 22.4L297.7 24.1L298.8 26.1L300 28.4L301.2 31.2L302.3 34.3L303.5 37.6L304.6 41.3L305.8 45.2L306.9 49.3L308.1 53.5L309.2 57.8L310.4 62.2L311.5 66.5L312.7 70.8L313.8 75L315 79.1L316.2 82.9L317.3 86.4L318.5 89.7L319.6 92.5L320.8 95L321.9 97L323.1 98.5L324.2 99.5L325.4 100L326.5 99.9L327.7 99.3L328.8 98.1L330 96.3L331.2 94.1L332.3 91.3L333.5 88L334.6 84.3L335.8 80.3L336.9 75.9L338.1 71.2L339.2 66.4L340.4 61.4L341.5 56.3L342.7 51.3L343.8 46.4L345 41.8L346.2 37.3L347.3 33.3L348.5 29.6L349.6 26.5L350.8 23.9L351.9 22L353.1 20.7L354.2 20L355.4 20.1L356.5 21L357.7 22.5L358.8 24.8L360 27.7L361.2 31.2L362.3 35.3L363.5 39.9L364.6 44.9L365.8 50.3L366.9 55.9L368.1 61.5L369.2 67.2L370.4 72.8L371.5 78.1L372.7 83.1L373.8 87.6L375 91.5L376.2 94.8L377.3 97.3L378.5 99.1L379.6 99.9L380.8 99.9L381.9 98.9L383.1 97.1L384.2 94.3L385.4 90.8L386.5 86.5L387.7 81.5L388.8 76L390 70L391.2 63.8L392.3 57.5L393.5 51.2L394.6 45.1L395.8 39.3L396.9 34L398.1 29.4L399.2 25.6L400.4 22.7L401.5 20.9L402.7 20L403.8 20.3L405 21.7L406.2 24.2L407.3 27.8L408.5 32.3L409.6 37.6L410.8 43.7L411.9 50.2L413.1 57.1L414.2 64.1L415.4 71L416.5 77.7L417.7 83.7L418.8 89.1L420 93.6L421.2 96.9L422.3 99.1L423.5 100L424.6 99.5L425.8 97.7L426.9 94.6L428.1 90.3L429.2 84.8L430.4 78.5L431.5 71.5L432.7 64L433.8 56.3L435 48.8L436.2 41.6L437.3 35L438.5 29.4L439.6 25L440.8 21.9L441.9 20.2L443.1 20.2L444.2 21.7L445.4 24.8L446.5 29.4L447.7 35.3L448.8 42.2L450 50L451.2 58.2L452.3 66.5L453.5 74.6L454.6 82.1L455.8 88.6L456.9 93.9L458.1 97.6L459.2 99.7L460.4 99.9L461.5 98.2L462.7 94.7L463.8 89.5L465 82.8L466.2 75L467.3 66.4L468.5 57.4L469.6 48.6L470.8 40.2L471.9 32.9L473.1 26.9L474.2 22.6L475.4 20.4L476.5 20.2L477.7 22.2L478.8 26.3L480 32.4L481.2 40L482.3 48.7L483.5 58.2L484.6 67.8L485.8 77.1L486.9 85.3L488.1 92.1L489.2 97L490.4 99.6L491.5 99.8L492.7 97.5L493.8 92.8L495 86L496.2 77.5L497.3 67.8L498.5 57.5L499.6 47.4L500.8 38L501.9 30.1L503.1 24.2L504.2 20.8L505.4 20.1L506.5 22.2L507.7 27L508.8 34.3L510 43.5L511.2 53.9L512.3 64.9L513.5 75.5L514.6 85L515.8 92.6L516.9 97.8L518.1 99.9L519.2 99L520.4 94.8L521.5 87.8L522.7 78.5L523.8 67.7L525 56.1L526.2 44.8L527.3 34.7L528.5 26.8L529.6 21.7L530.8 20L531.9 21.9L533.1 27.2L534.2 35.5L535.4 46.1L536.5 58.1L537.7 70.3L538.8 81.6L540 90.9L541.2 97.2L542.3 99.9L543.5 98.7L544.6 93.6L545.8 85L546.9 73.9L548.1 61.3L549.2 48.4L550.4 36.7L551.5 27.5L552.7 21.7L553.8 20L555 22.8L556.2 29.6L557.3 40L558.5 52.6L559.6 66.2L560.8 79.1L561.9 89.9L563.1 97.1L564.2 100L565.4 98L566.5 91.4L567.7 80.9L568.8 67.7L570 53.5L571.2 40L572.3 29.1L573.5 22.1L574.6 20L575.8 23.3L576.9 31.5L578.1 43.5L579.2 58L580.4 72.7L581.5 85.8L582.7 95.3L583.8 99.8L585 98.5L586.2 91.7L587.3 80.2L588.5 65.6L589.6 50.1L590.8 36L591.9 25.5L593.1 20.4L594.2 21.4L595.4 28.5L596.5 40.8L597.7 56.1L598.8 72.2L600 86.4"/>
+                                        <line class="wave-head" x1="455.7" x2="455.7" y1="0" y2="120"/>
+                                    </svg>
+                                    <input class="sweep-range" type="range" min="0" max="1000" step="1" value="760" aria-label="Tone in the sweep" aria-valuetext="6.1 kHz">
+                                    <ol class="sweep-ticks" aria-hidden="true">
+                                        <li style="--p:0">200</li><li style="--p:.2036">500</li><li style="--p:.3577">1k</li><li style="--p:.5117">2k</li><li style="--p:.7153">5k</li><li style="--p:.8694">10k</li><li style="--p:1">18k</li>
+                                    </ol>
+                                </div>
+                                <p class="sweep-note">Silent on this page: drag along the sweep to see where a tone sits and what age the app gives it.</p>
+                            </div>
+                        </div>
+                        <figure class="app-device tile-phone">
+                            <span class="app-device-screen"><img src="/apps/age_calculator/img/hearing.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Hearing Test in progress: “Can you hear this?” above a 6.1 kHz readout, a violet sine wave and an “I can't hear it!” button."></span>
+                        </figure>
+                    </article>
+
+                    <article class="tile tile-react" id="reaction" aria-labelledby="t-react">
+                        <div class="tile-copy">
+                            <span class="chip" aria-hidden="true"><svg><use href="#i-bolt"/></svg></span>
+                            <h3 id="t-react">Reaction Time</h3>
+                            <p>Eight rounds. After a random wait of one to four seconds the screen flashes green and you tap anywhere. Jump the gun and that round starts over.</p>
+                            <p class="tile-link"><a href="#booth">Try five rounds in the booth</a></p>
+                        </div>
+                        <figure class="app-device tile-phone">
+                            <span class="app-device-screen"><img src="/apps/age_calculator/img/reaction.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Reaction Time, round 1 of 8: the whole screen has turned green with a big white “TAP!”."></span>
+                        </figure>
+                    </article>
+
+                    <article class="tile tile-pair" id="pair-match" aria-labelledby="t-pair">
+                        <div class="tile-copy">
+                            <span class="chip" aria-hidden="true"><svg><use href="#i-grid"/></svg></span>
+                            <h3 id="t-pair">Pair Match</h3>
+                            <p>Sixteen cards show their faces for five seconds, then flip. Find all eight pairs. Speed and mistakes both count.</p>
+                        </div>
+                        <figure class="app-device tile-phone">
+                            <span class="app-device-screen"><img src="/apps/age_calculator/img/pair-match.webp" width="660" height="1434" loading="lazy" decoding="async" alt="The memory test: a four-by-four grid of face-down teal cards, with pairs found and mistakes counted above."></span>
+                        </figure>
+                    </article>
+
+                    <article class="tile tile-vision" id="vision" aria-labelledby="t-vision">
+                        <div class="tile-copy">
+                            <span class="chip" aria-hidden="true"><svg><use href="#i-eye"/></svg></span>
+                            <h3 id="t-vision">Vision Test</h3>
+                            <p>Hold your phone at arm's length while a word shrinks through 13 sizes, from 28&nbsp;pt down to 2&nbsp;pt. Say when it's too small to read.</p>
+                        </div>
+                        <figure class="app-device tile-phone">
+                            <span class="app-device-screen"><img src="/apps/age_calculator/img/vision.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Vision Test, level 6 of 13 at 8 pt: a tiny word on an indigo card, with “I can read it!” and “Too small!” buttons."></span>
+                        </figure>
+                    </article>
+
+                    <article class="tile tile-trail" id="tap-trail" aria-labelledby="t-trail">
+                        <div class="tile-copy">
+                            <span class="chip" aria-hidden="true"><svg><use href="#i-trail"/></svg></span>
+                            <h3 id="t-trail">Tap Trail</h3>
+                            <p>The numbers 1 to 25 are scattered across the screen. Tap them in order. The faster you finish, the younger the result.</p>
+                        </div>
+                        <figure class="app-device tile-phone">
+                            <span class="app-device-screen"><img src="/apps/age_calculator/img/tap-trail.webp" width="660" height="1434" loading="lazy" decoding="async" alt="Tap Trail: numbered circles from 1 to 25 scattered across the screen, a timer at 13.5 seconds and a hint to find 1."></span>
+                        </figure>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ The result ============ -->
+        <section class="result-sec" id="result" aria-labelledby="result-title">
+            <div class="wrap result-grid">
+                <div class="result-copy">
+                    <h2 id="result-title">Your age is...</h2>
+                    <p>Every test ends on the same reveal. The number counts up, a cheeky one-liner lands, and a “Why is my age…?” panel explains the result with the research behind it.</p>
+                    <ul class="perks">
+                        <li><span class="perk-dot" aria-hidden="true"></span>Share a colorful result card and dare a friend to beat it.</li>
+                        <li><span class="perk-dot" aria-hidden="true"></span>No account and no sign-in. All five tests are free to play.</li>
+                        <li><span class="perk-dot" aria-hidden="true"></span>Switch between 11 languages from the home screen.</li>
+                    </ul>
+                    <ul class="langs" aria-label="Languages in the app">
+                        <li lang="en">English</li><li lang="es">Español</li><li lang="fr">Français</li><li lang="de">Deutsch</li><li lang="pt">Português</li><li lang="ru">Русский</li><li lang="zh">中文</li><li lang="ja">日本語</li><li lang="ko">한국어</li><li lang="ar" dir="rtl">العربية</li><li lang="hi">हिन्दी</li>
+                    </ul>
+                </div>
+                <div class="result-phones">
+                    <figure class="app-device rp-a">
+                        <span class="app-device-screen"><img src="/apps/age_calculator/img/result.webp" width="660" height="1434" loading="lazy" decoding="async" alt="A Hearing Test result: “Your age is...” 45 in big coral numbers, a trophy and a joke about ears that have been to enough concerts."></span>
+                    </figure>
+                    <figure class="app-device rp-b">
+                        <span class="app-device-screen"><img src="/apps/age_calculator/img/result-why.webp" width="660" height="1434" loading="lazy" decoding="async" alt="The same result with “Why is my Hearing Test age 45?” opened, explaining that the upper limit of hearing drops with age."></span>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Fine print ============ -->
+        <section class="fine-sec" aria-labelledby="fine-title">
+            <div class="wrap">
+                <h2 id="fine-title">The fine print, in big print</h2>
+                <div class="fine-grid">
+                    <div class="fine">
+                        <h3>For fun, not a check-up</h3>
+                        <p>Results are playful estimates from how you play. They don't tell your real or biological age, and the hearing and vision tests are no substitute for a professional check. Volume, lighting, your device and practice all move the numbers.</p>
+                    </div>
+                    <div class="fine">
+                        <h3>What the app collects</h3>
+                        <p>Tests are scored on your phone, with no account to make. The app shows ads through Google AdMob and uses Firebase Analytics and Crashlytics for usage statistics and crash reports. <a href="/apps/age_calculator/privacy-policy/">Read the privacy policy</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Closing CTA ============ -->
+        <section class="cta-sec" id="get" aria-labelledby="cta-title">
+            <div class="wrap cta">
+                <img class="cta-icon" src="/apps/age_calculator/img/icon.webp" width="256" height="256" loading="lazy" decoding="async" alt="">
+                <h2 id="cta-title">So, how old are you?</h2>
+                <p class="cta-line" data-cta-line>Five tests, five answers. Free on Google Play and the App&nbsp;Store.</p>
+                <div class="store-badges">
+                    <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.agecalculator" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                        <span><small>GET IT ON</small><b>Google Play</b></span>
+                    </a>
+                    <a class="store-badge" href="https://apps.apple.com/app/id6809824726" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                        <span><small>Download on the</small><b>App Store</b></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="About this app">
+            <a href="/apps/age_calculator/privacy-policy/">Privacy policy</a>
+            <a href="/support/">Support</a>
+            <a href="/#apps">More apps by Rexyrex</a>
+        </nav>
+        <p>Made by <a href="/">Rexyrex</a> · <code>/apps/age_calculator/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/apps/age_calculator/page.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Deadly Balloons: Bullet Hell — Rexyrex</title>
+    <meta name="description" content="A one-thumb bullet-hell shooter for Android and iPhone: dodge balloon fire, stack wild abilities, topple huge bosses. Try the dodge teaser here.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/deadly_balloons/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/deadly_balloons/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/deadly_balloons/img/icon-180.png">
+    <meta name="theme-color" content="#0c0720" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#e9f3f9" media="(prefers-color-scheme: light)">
+    <meta name="apple-itunes-app" content="app-id=6795559645">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/deadly_balloons/">
+    <meta property="og:title" content="Deadly Balloons: Bullet Hell">
+    <meta property="og:description" content="Survive bullet-hell balloon waves, stack wild abilities, and topple huge bosses">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/deadly_balloons.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="Deadly Balloons: Bullet Hell">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Deadly Balloons: Bullet Hell">
+    <meta name="twitter:description" content="Survive bullet-hell balloon waves, stack wild abilities, and topple huge bosses">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/deadly_balloons.jpg">
+    <script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Bungee&family=Press+Start+2P&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/apps/deadly_balloons/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": ["VideoGame", "SoftwareApplication"],
+        "name": "Deadly Balloons: Bullet Hell",
+        "operatingSystem": "Android, iOS",
+        "applicationCategory": "GameApplication",
+        "genre": "Shoot 'em up",
+        "description": "Survive bullet-hell balloon waves, stack wild abilities, and topple huge bosses",
+        "url": "https://rexyrex.github.io/apps/deadly_balloons/",
+        "image": "https://rexyrex.github.io/apps/deadly_balloons/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id=com.rexyrex.deadly_balloons", "https://apps.apple.com/app/id6795559645"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-deadly_balloons">
+    <div id="nav-placeholder"></div>
+
+    <svg class="db-defs" width="0" height="0" aria-hidden="true" focusable="false">
+        <defs>
+            <radialGradient id="db-shard-glow">
+                <stop offset="0" stop-color="#ff2a36" stop-opacity="0.55"/>
+                <stop offset="1" stop-color="#ff2a36" stop-opacity="0"/>
+            </radialGradient>
+            <g id="db-shard">
+                <circle r="11" fill="url(#db-shard-glow)"/>
+                <path d="M-8 0 0-3.6 8 0 0 3.6Z" fill="#ff2a36" stroke="#ffc6cc" stroke-width="0.8"/>
+                <path d="M-4 0 0-1.4 4 0 0 1.4Z" fill="#fff"/>
+            </g>
+        </defs>
+    </svg>
+
+    <main id="main">
+
+        <!-- ============ Hero ============ -->
+        <header class="db-hero">
+            <div class="db-wrap db-hero-grid">
+                <div class="db-hero-copy">
+                    <p class="db-path"><a href="/apps/">/apps/</a>deadly_balloons/</p>
+                    <img class="db-icon" src="/apps/deadly_balloons/img/icon.webp" width="256" height="256" alt="Deadly Balloons app icon: a grinning pink balloon above a small fighter ship">
+                    <h1 class="db-title"><span class="db-title-main">Deadly Balloons</span> <span class="db-title-sub">Bullet Hell</span></h1>
+                    <p class="db-lede">Weave through balloon fire with one thumb, stack wild abilities, and topple huge bosses.</p>
+
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.deadly_balloons" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>GET IT ON</small><b>Google Play</b></span>
+                        </a>
+                        <a class="store-badge" href="https://apps.apple.com/app/id6795559645" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                            <span><small>Download on the</small><b>App Store</b></span>
+                        </a>
+                    </div>
+
+                    <p class="db-hero-note">Free, no sign-up, and the core game plays offline. <a href="#play">Try the dodge teaser on this page</a>.</p>
+                </div>
+
+                <div class="db-hero-visual">
+                    <div class="db-rings" aria-hidden="true">
+                        <svg class="ring ring-1" viewBox="-300 -300 600 600" aria-hidden="true" focusable="false"><use href="#db-shard" transform="rotate(0) translate(150 0)"/><use href="#db-shard" transform="rotate(25.71) translate(150 0)"/><use href="#db-shard" transform="rotate(51.43) translate(150 0)"/><use href="#db-shard" transform="rotate(77.14) translate(150 0)"/><use href="#db-shard" transform="rotate(102.86) translate(150 0)"/><use href="#db-shard" transform="rotate(128.57) translate(150 0)"/><use href="#db-shard" transform="rotate(154.29) translate(150 0)"/><use href="#db-shard" transform="rotate(180) translate(150 0)"/><use href="#db-shard" transform="rotate(205.71) translate(150 0)"/><use href="#db-shard" transform="rotate(231.43) translate(150 0)"/><use href="#db-shard" transform="rotate(257.14) translate(150 0)"/><use href="#db-shard" transform="rotate(282.86) translate(150 0)"/><use href="#db-shard" transform="rotate(308.57) translate(150 0)"/><use href="#db-shard" transform="rotate(334.29) translate(150 0)"/></svg>
+                        <svg class="ring ring-2" viewBox="-300 -300 600 600" aria-hidden="true" focusable="false"><use href="#db-shard" transform="rotate(9) translate(212 0)"/><use href="#db-shard" transform="rotate(27) translate(212 0)"/><use href="#db-shard" transform="rotate(45) translate(212 0)"/><use href="#db-shard" transform="rotate(63) translate(212 0)"/><use href="#db-shard" transform="rotate(81) translate(212 0)"/><use href="#db-shard" transform="rotate(99) translate(212 0)"/><use href="#db-shard" transform="rotate(117) translate(212 0)"/><use href="#db-shard" transform="rotate(135) translate(212 0)"/><use href="#db-shard" transform="rotate(153) translate(212 0)"/><use href="#db-shard" transform="rotate(171) translate(212 0)"/><use href="#db-shard" transform="rotate(189) translate(212 0)"/><use href="#db-shard" transform="rotate(207) translate(212 0)"/><use href="#db-shard" transform="rotate(225) translate(212 0)"/><use href="#db-shard" transform="rotate(243) translate(212 0)"/><use href="#db-shard" transform="rotate(261) translate(212 0)"/><use href="#db-shard" transform="rotate(279) translate(212 0)"/><use href="#db-shard" transform="rotate(297) translate(212 0)"/><use href="#db-shard" transform="rotate(315) translate(212 0)"/><use href="#db-shard" transform="rotate(333) translate(212 0)"/><use href="#db-shard" transform="rotate(351) translate(212 0)"/></svg>
+                        <svg class="ring ring-3" viewBox="-300 -300 600 600" aria-hidden="true" focusable="false"><use href="#db-shard" transform="rotate(0) translate(276 0)"/><use href="#db-shard" transform="rotate(13.85) translate(276 0)"/><use href="#db-shard" transform="rotate(27.69) translate(276 0)"/><use href="#db-shard" transform="rotate(41.54) translate(276 0)"/><use href="#db-shard" transform="rotate(55.38) translate(276 0)"/><use href="#db-shard" transform="rotate(69.23) translate(276 0)"/><use href="#db-shard" transform="rotate(83.08) translate(276 0)"/><use href="#db-shard" transform="rotate(96.92) translate(276 0)"/><use href="#db-shard" transform="rotate(110.77) translate(276 0)"/><use href="#db-shard" transform="rotate(124.62) translate(276 0)"/><use href="#db-shard" transform="rotate(138.46) translate(276 0)"/><use href="#db-shard" transform="rotate(152.31) translate(276 0)"/><use href="#db-shard" transform="rotate(166.15) translate(276 0)"/><use href="#db-shard" transform="rotate(180) translate(276 0)"/><use href="#db-shard" transform="rotate(193.85) translate(276 0)"/><use href="#db-shard" transform="rotate(207.69) translate(276 0)"/><use href="#db-shard" transform="rotate(221.54) translate(276 0)"/><use href="#db-shard" transform="rotate(235.38) translate(276 0)"/><use href="#db-shard" transform="rotate(249.23) translate(276 0)"/><use href="#db-shard" transform="rotate(263.08) translate(276 0)"/><use href="#db-shard" transform="rotate(276.92) translate(276 0)"/><use href="#db-shard" transform="rotate(290.77) translate(276 0)"/><use href="#db-shard" transform="rotate(304.62) translate(276 0)"/><use href="#db-shard" transform="rotate(318.46) translate(276 0)"/><use href="#db-shard" transform="rotate(332.31) translate(276 0)"/><use href="#db-shard" transform="rotate(346.15) translate(276 0)"/></svg>
+                    </div>
+                    <figure class="app-device db-device db-device-hero">
+                        <span class="app-device-screen"><img src="/apps/deadly_balloons/img/boss-battle.webp" width="660" height="1434" alt="A boss fight in Deadly Balloons: the crowned boss Donald hovers at the top with its health bar while the player's ship dodges red aim lines near the bottom, with a Flame Turret and the Dash and Bomb buttons on screen" fetchpriority="high"></span>
+                    </figure>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============ Arcade teaser ============ -->
+        <section class="db-section db-play" id="play" aria-labelledby="play-title">
+            <div class="db-wrap db-play-grid">
+                <div class="db-play-head">
+                    <h2 id="play-title">How long can you last?</h2>
+                    <p class="db-sub">A small teaser made for this page. You can't shoot back here, so it is pure dodging against balloons from the game's roster.</p>
+                    <p>As in the game, every shooter shows its aim line before it fires. One hit ends the run.</p>
+                </div>
+
+                <div class="db-cab" id="arcade">
+                    <div class="db-cab-hud" aria-label="Scoreboard">
+                        <p><span class="db-hud-k">Time</span> <span class="db-hud-v" id="db-time">00.00</span></p>
+                        <p><span class="db-hud-k">Best</span> <span class="db-hud-v db-hud-best" id="db-best">--.--</span></p>
+                        <p><span class="db-hud-k">Wave</span> <span class="db-hud-v" id="db-wave">1</span></p>
+                    </div>
+                    <div class="db-cab-screen" id="db-screen" tabindex="-1" aria-label="Teaser screen. Move with the arrow keys or WASD, the mouse, or by dragging.">
+                        <canvas id="db-canvas" width="400" height="560" aria-hidden="true"></canvas>
+
+                        <div class="db-over db-over-idle" data-panel="idle">
+                            <p class="db-over-title">Dodge everything</p>
+                            <p class="db-over-text">Stay alive as long as you can.</p>
+                            <button class="db-btn db-btn-primary" type="button" data-act="start">Start</button>
+                            <noscript><p class="db-over-text">Turn on JavaScript to play the teaser.</p></noscript>
+                        </div>
+                        <div class="db-over db-over-paused" data-panel="paused" hidden>
+                            <p class="db-over-title">Paused</p>
+                            <button class="db-btn db-btn-primary" type="button" data-act="resume">Resume</button>
+                        </div>
+                        <div class="db-over db-over-end" data-panel="over" hidden>
+                            <p class="db-over-title" id="db-cause">Shot down</p>
+                            <p class="db-over-text"><span id="db-result">You lasted 0.00 s.</span> <strong class="db-newbest" id="db-newbest" hidden>New best</strong></p>
+                            <button class="db-btn db-btn-primary" type="button" data-act="start">Play again</button>
+                        </div>
+                    </div>
+                    <div class="db-cab-foot">
+                        <button class="db-btn db-btn-ghost" type="button" data-act="pause" disabled>Pause</button>
+                        <button class="db-btn db-btn-ghost" type="button" data-act="restart" disabled>Restart</button>
+                    </div>
+                    <p class="app-visually-hidden" id="db-live" aria-live="polite"></p>
+                </div>
+
+                <div class="db-play-details">
+                    <dl class="db-controls">
+                        <div><dt>Mouse</dt><dd>Point where you want to fly.</dd></div>
+                        <div><dt>Touch</dt><dd>Drag anywhere. The ship moves with your finger, never under it.</dd></div>
+                        <div><dt>Keys</dt><dd><kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to move, <kbd>P</kbd> to pause.</dd></div>
+                    </dl>
+
+                    <h3 class="db-roster-title">What's coming at you</h3>
+                    <ul class="db-roster">
+                        <li style="--c:#8d9cad"><b>Shooter</b> locks on, draws its aim line, then fires once.</li>
+                        <li style="--c:#ff5522"><b>Stinger</b> fires twice as often as the Shooter.</li>
+                        <li style="--c:#6b7f94"><b>Shotgun</b> braces, then looses a three-shot spread.</li>
+                        <li style="--c:#9b9bff"><b>Charger</b> takes aim, then dashes across the field.</li>
+                        <li style="--c:#aeea00"><b>Gnat</b> is tiny and quick, and never comes alone.</li>
+                        <li style="--c:#aa66ff"><b>Rexyrex</b>, the mid-boss, marks where it will land, blinks there and slams a ring.</li>
+                    </ul>
+                    <p class="db-fine">Your best time is kept in this browser only.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============ The loop ============ -->
+        <section class="db-section db-loop" id="loop" aria-labelledby="loop-title">
+            <div class="db-wrap db-loop-grid">
+                <figure class="app-device db-device db-device-loop">
+                    <span class="app-device-screen"><img src="/apps/deadly_balloons/img/flight-training.webp" width="660" height="1434" alt="Flight training in Deadly Balloons: under a blue-to-peach sky, the ship fires a column of shots upward while a hint reads Drag anywhere to move, with the Dash and Bomb buttons at the lower right" loading="lazy" decoding="async"></span>
+                </figure>
+                <div class="db-loop-copy">
+                    <h2 id="loop-title">Dodge, grab, clear, draft</h2>
+                    <p class="db-sub">Your fighter fires on its own. You steer, and every run turns on the same four moves.</p>
+                    <ol class="db-steps">
+                        <li>
+                            <h3>Dodge</h3>
+                            <p>Slide your thumb anywhere to fly. Chasers hunt you down, and splitters multiply when popped.</p>
+                        </li>
+                        <li>
+                            <h3>Grab</h3>
+                            <p>Power-ups drop onto the field. Fly through one and its ability goes off on the spot.</p>
+                        </li>
+                        <li>
+                            <h3>Clear</h3>
+                            <p>Pop the wave. Dash and Bomb are your only buttons, for the moments when dodging isn't enough.</p>
+                        </li>
+                        <li>
+                            <h3>Draft</h3>
+                            <p>Every third wave the shop deals four upgrade cards. Keep one, and the next wave comes in.</p>
+                        </li>
+                    </ol>
+                    <p class="db-aside">When a run ends, a freeze-frame death cam shows exactly what got you.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Arsenal ============ -->
+        <section class="db-section db-arsenal" id="arsenal" aria-labelledby="arsenal-title">
+            <div class="db-wrap">
+                <div class="db-arsenal-head">
+                    <div class="db-arsenal-intro">
+                        <h2 id="arsenal-title">Stack wild abilities</h2>
+                        <p class="db-sub">Fifty-six abilities in eleven families, and most of your firepower comes from them. Shop cards raise a whole family a tier, up to three, and every pickup from that family hits harder for the rest of the run.</p>
+                        <p>Don't like the hand the shop dealt? You get one reroll per visit, unlocked by an optional ad.</p>
+
+                        <div class="db-readout" id="db-readout" aria-live="polite">
+                            <p class="db-readout-fam" id="db-readout-fam">Arcane</p>
+                            <p class="db-readout-name" id="db-readout-name">Black Hole</p>
+                            <p class="db-readout-line" id="db-readout-line">Pulls every enemy toward it, then explodes.</p>
+                        </div>
+                        <p class="db-fine db-readout-hint">Pick any ability below to read its line from the in-game Wiki.</p>
+                    </div>
+                    <figure class="app-device db-device db-device-arsenal">
+                        <span class="app-device-screen"><img src="/apps/deadly_balloons/img/ability-wiki.webp" width="660" height="1434" alt="The in-game Wiki's Abilities tab: Frost abilities such as Frost Nova, Freeze, Crystal Spikes, Ice Turret and Frost Ribbon, then Fire abilities such as Meteor Shower, Inferno and Phoenix Strike" loading="lazy" decoding="async"></span>
+                    </figure>
+                </div>
+
+                <div class="db-fams">
+                    <section class="db-fam" style="--fam:#7fe0ff;--fam-l:#0f7fa6" aria-label="Frost abilities">
+                        <h3>Frost</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="A ring of cold that freezes everything it touches.">Frost Nova</button></li>
+                            <li><button class="db-ab" type="button" data-line="Everything on screen stops cold.">Freeze</button></li>
+                            <li><button class="db-ab" type="button" data-line="Sprays a freezing mist that drags enemies to a crawl.">Ice Turret</button></li>
+                            <li><button class="db-ab" type="button" data-line="An expanding ring that stuns, then shatters for bonus damage.">Crystal Spikes</button></li>
+                            <li><button class="db-ab" type="button" data-line="Lay a freezing trail, and close a loop for a burst freeze.">Frost Ribbon</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#ff6a33;--fam-l:#c94410" aria-label="Fire abilities">
+                        <h3>Fire</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="A roaring flamethrower cone that leaves enemies burning.">Inferno</button></li>
+                            <li><button class="db-ab" type="button" data-line="Rocks rain from above. Nowhere is safe.">Meteor Shower</button></li>
+                            <li><button class="db-ab" type="button" data-line="A flaming bird traces a figure-8 orbit around you.">Phoenix Strike</button></li>
+                            <li><button class="db-ab" type="button" data-line="A short-range jet of fire that pours through the crowd.">Flame Turret</button></li>
+                            <li><button class="db-ab" type="button" data-line="Slow-firing homing rockets with splash damage.">Rocket Turret</button></li>
+                            <li><button class="db-ab" type="button" data-line="Draw a loop to ignite everything caught inside.">Flame Lasso</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#ffe14d;--fam-l:#9a7a00" aria-label="Electric abilities">
+                        <h3>Electric</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="A chain of electricity that leaps from enemy to enemy.">Lightning</button></li>
+                            <li><button class="db-ab" type="button" data-line="A stationary node that fires chaining lightning bolts.">Ion Turret</button></li>
+                            <li><button class="db-ab" type="button" data-line="Heavy electric arcs that chain to two extra targets on each shot.">Tesla Turret</button></li>
+                            <li><button class="db-ab" type="button" data-line="A shockwave that clears bullets and stuns everything it touches.">EMP Burst</button></li>
+                            <li><button class="db-ab" type="button" data-line="A crackling aura that shreds small enemies and stuns large ones.">Static Halo</button></li>
+                            <li><button class="db-ab" type="button" data-line="Your movement leaves electrified mines that chain to neighbours.">Static Footprints</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#b266ff;--fam-l:#7b35d6" aria-label="Arcane abilities">
+                        <h3>Arcane</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="Pulls every enemy toward it, then explodes." aria-pressed="true">Black Hole</button></li>
+                            <li><button class="db-ab" type="button" data-line="Drop a time-dilation dome and watch everything crawl.">Slow Field</button></li>
+                            <li><button class="db-ab" type="button" data-line="Weave through the swarm to mark priority targets for punishment.">Hunter's Mark</button></li>
+                            <li><button class="db-ab" type="button" data-line="Wire the field into a constellation, then close it.">Star-Stitch</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#9be04a;--fam-l:#3f8410" aria-label="Toxic abilities">
+                        <h3>Toxic</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="Living corrosive smog that rolls toward the swarm.">Toxic Cloud</button></li>
+                            <li><button class="db-ab" type="button" data-line="Lobs globs that leave puddles of lingering acid.">Poison Turret</button></li>
+                            <li><button class="db-ab" type="button" data-line="Your path becomes a river of acid. Drag chasers through it.">Venom Trail</button></li>
+                            <li><button class="db-ab" type="button" data-line="A carnivorous bramble that bites whatever wanders in.">Thornbloom</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#8ab4ff;--fam-l:#2f62cf" aria-label="Missile abilities">
+                        <h3>Missiles</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="Lock on and let it fly. It will find its target.">Homing Missile</button></li>
+                            <li><button class="db-ab" type="button" data-line="A heavy projectile that hunts a point on the field and detonates.">Torpedo</button></li>
+                            <li><button class="db-ab" type="button" data-line="A precision rocket salvo. Every rocket hunts its own balloon.">Side Missiles</button></li>
+                            <li><button class="db-ab" type="button" data-line="A dense slug that drills through a column of enemies.">Bunker-Buster</button></li>
+                            <li><button class="db-ab" type="button" data-line="Carrier homes to the nearest enemy, then splits into bomblets.">Cluster Warhead</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#6fe0d0;--fam-l:#0e8c7c" aria-label="Blast abilities">
+                        <h3>Blast</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="Scatter a ring of proximity mines. Step in, go boom.">Cluster Mines</button></li>
+                            <li><button class="db-ab" type="button" data-line="An upward kinetic cone that punches through everything in its path.">Shockwave Cone</button></li>
+                            <li><button class="db-ab" type="button" data-line="A fast radial shockwave that clears space and sends enemies flying.">Pulse</button></li>
+                            <li><button class="db-ab" type="button" data-line="Shards burst out, then implode back onto you. Boom.">Scatter</button></li>
+                            <li><button class="db-ab" type="button" data-line="Rapid airbursts pepper a wide zone around the player.">Flak Barrage</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#c8e6ff;--fam-l:#3d6f99" aria-label="Beam abilities">
+                        <h3>Beam</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="Charges and fires a beam at the densest cluster on screen.">Railgun</button></li>
+                            <li><button class="db-ab" type="button" data-line="A sweeping energy arc that scorches everything in its path.">Plasma Beam</button></li>
+                            <li><button class="db-ab" type="button" data-line="Slow-charging, high-calibre shots that pierce a line of targets.">Sniper Turret</button></li>
+                            <li><button class="db-ab" type="button" data-line="Lock on and pour charged laser shots into your target.">Rally Beacon</button></li>
+                            <li><button class="db-ab" type="button" data-line="A sustained beam you steer with movement. Aim the burning tip.">Solar Lance</button></li>
+                            <li><button class="db-ab" type="button" data-line="Chain a target and bleed it dry. The longer you hold, the faster.">Life Drain</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#ffc24d;--fam-l:#a86a00" aria-label="Ally abilities">
+                        <h3>Allies</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="A firing line deploys at the bottom, then cuts upward with lasers.">Army</button></li>
+                            <li><button class="db-ab" type="button" data-line="Autonomous bombers that hop between enemies, detonating each time.">Drone Swarm</button></li>
+                            <li><button class="db-ab" type="button" data-line="Your movement is copied by ghost duplicates that also shoot.">Mirror Clone</button></li>
+                            <li><button class="db-ab" type="button" data-line="Ghost copies replay your recent path and fire as they go.">Echo Runner</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#e0a24d;--fam-l:#a2600f" aria-label="Construct abilities">
+                        <h3>Constructs</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="A spinning buzzsaw ring. Weave into crowds to ramp the speed.">Orbital Blades</button></li>
+                            <li><button class="db-ab" type="button" data-line="Clip on a companion that orbits and fires plasma-missile bursts.">Orbital Turret</button></li>
+                            <li><button class="db-ab" type="button" data-line="A bulletproof dome. Step inside and enemies can't reach you.">Shelter</button></li>
+                            <li><button class="db-ab" type="button" data-line="A stationary sentry that targets and fires at nearby enemies.">Auto Turret</button></li>
+                            <li><button class="db-ab" type="button" data-line="Inscribe a magic circle that burns and sweeps.">Rune Sigil</button></li>
+                        </ul>
+                    </section>
+                    <section class="db-fam" style="--fam:#ff6699;--fam-l:#c8285f" aria-label="Empower abilities">
+                        <h3>Empower</h3>
+                        <ul>
+                            <li><button class="db-ab" type="button" data-line="Charge for 2 seconds, then unleash 6 seconds of supercharged fire.">Overdrive</button></li>
+                            <li><button class="db-ab" type="button" data-line="A spinning laser cross that shreds everything it sweeps.">Spaz</button></li>
+                            <li><button class="db-ab" type="button" data-line="For a few seconds, everything you fire hits harder.">Rage</button></li>
+                            <li><button class="db-ab" type="button" data-line="Brief godmode. Nothing can hurt you.">Invincibility</button></li>
+                            <li><button class="db-ab" type="button" data-line="Stand still and the crosshair locks. Hold it for a crit.">Marksman's Focus</button></li>
+                            <li><button class="db-ab" type="button" data-line="For a few seconds your shots punch clean through everything.">Piercing Shots</button></li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Campaigns + bosses ============ -->
+        <section class="db-section db-campaigns" id="campaigns" aria-labelledby="campaigns-title">
+            <div class="db-wrap">
+                <div class="db-campaigns-head">
+                    <div>
+                        <h2 id="campaigns-title">Four campaigns, real endings</h2>
+                        <p class="db-sub">Each campaign has its own world, enemy roster and bosses, and clearing one unlocks the next. Every run builds to a boss and a victory screen.</p>
+                        <p>Every boss has a signature move, and every boss fights in a rhythm. Between bursts it powers down and glows green. That lull is your window.</p>
+                    </div>
+                </div>
+
+                <div class="db-campaigns-body">
+                    <ol class="db-ladder">
+                        <li class="db-camp db-camp-candy">
+                            <div class="db-camp-window" aria-hidden="true"><span class="db-camp-num">1</span></div>
+                            <div class="db-camp-body">
+                                <h3>Candy Clouds</h3>
+                                <p class="db-camp-meta">10 stages, 1 boss. Opens once you finish How to Play.</p>
+                                <p class="db-camp-world">A pastel sky of cotton-candy clouds and gentle sweets that never shoot.</p>
+                                <ul class="db-bosses">
+                                    <li class="db-boss" style="--boss:#e85fae;--hp:0.1406">
+                                        <p class="db-boss-name">Gumdrop King <span>Final boss</span></p>
+                                        <p class="db-boss-bar"><span class="db-boss-fill"></span><span class="db-boss-hp">360 HP</span></p>
+                                        <p class="db-boss-move"><b>Gumdrop Bounce.</b> Hops, lands, and pops a slow ring of big candy bullets.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="db-camp db-camp-uprising">
+                            <div class="db-camp-window" aria-hidden="true"><span class="db-camp-num">2</span></div>
+                            <div class="db-camp-body">
+                                <h3>Balloon Uprising</h3>
+                                <p class="db-camp-meta">13 stages, 2 bosses. Opens once you clear Candy Clouds.</p>
+                                <p class="db-camp-world">A clear sky that darkens into a twilight carnival as the waves climb.</p>
+                                <ul class="db-bosses">
+                                    <li class="db-boss" style="--boss:#aa66ff;--hp:0.1953">
+                                        <p class="db-boss-name">Rexyrex <span>Mid-boss</span></p>
+                                        <p class="db-boss-bar"><span class="db-boss-fill"></span><span class="db-boss-hp">500 HP</span></p>
+                                        <p class="db-boss-move"><b>Blink.</b> Marks where it will reappear, vanishes, lands there and slams a shock ring.</p>
+                                    </li>
+                                    <li class="db-boss" style="--boss:#ff5566;--hp:0.625">
+                                        <p class="db-boss-name">Donald <span>Final boss</span></p>
+                                        <p class="db-boss-bar"><span class="db-boss-fill"></span><span class="db-boss-hp">1,600 HP</span></p>
+                                        <p class="db-boss-move"><b>Decree.</b> Two guard orbs shield it first. Break them, and it marks strike circles that detonate into bullet bursts.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="db-camp db-camp-swarm">
+                            <div class="db-camp-window" aria-hidden="true"><span class="db-camp-num">3</span></div>
+                            <div class="db-camp-body">
+                                <h3>The Swarm</h3>
+                                <p class="db-camp-meta">16 stages, 2 bosses. Opens once you clear Balloon Uprising.</p>
+                                <p class="db-camp-world">A murky hive drifting with acid-green spores, where Hives keep birthing Gnats.</p>
+                                <ul class="db-bosses">
+                                    <li class="db-boss" style="--boss:#a4d63a;--hp:0.2734">
+                                        <p class="db-boss-name">Brood Mother <span>Mid-boss</span></p>
+                                        <p class="db-boss-bar"><span class="db-boss-fill"></span><span class="db-boss-hp">700 HP</span></p>
+                                        <p class="db-boss-move"><b>Spore Burst.</b> A wide, slow cloud of spores that denies a whole arc of the arena.</p>
+                                    </li>
+                                    <li class="db-boss" style="--boss:#ff4060;--hp:0.8203">
+                                        <p class="db-boss-name">Swarm Overlord <span>Final boss</span></p>
+                                        <p class="db-boss-bar"><span class="db-boss-fill"></span><span class="db-boss-hp">2,100 HP</span></p>
+                                        <p class="db-boss-move"><b>Bullet Storm.</b> A curtain across the whole arena with one safe lane. Watch the telegraph for the gap.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="db-camp db-camp-galactic">
+                            <div class="db-camp-window" aria-hidden="true"><span class="db-camp-num">4</span></div>
+                            <div class="db-camp-body">
+                                <h3>Galactic Gauntlet</h3>
+                                <p class="db-camp-meta">20 stages, 3 bosses. Opens once you clear The Swarm.</p>
+                                <p class="db-camp-world">Black, starry space and a mechanical fleet of Interceptors, Strafers, Cruisers and Sentinels.</p>
+                                <ul class="db-bosses">
+                                    <li class="db-boss" style="--boss:#7fa8ff;--hp:0.2734">
+                                        <p class="db-boss-name">Carrier <span>Mid-boss</span></p>
+                                        <p class="db-boss-bar"><span class="db-boss-fill"></span><span class="db-boss-hp">700 HP</span></p>
+                                        <p class="db-boss-move"><b>Drone Bay.</b> Keeps launching Interceptors into the fight while you chip at its hull.</p>
+                                    </li>
+                                    <li class="db-boss" style="--boss:#a98aff;--hp:0.332">
+                                        <p class="db-boss-name">Interdictor <span>Mid-boss</span></p>
+                                        <p class="db-boss-bar"><span class="db-boss-fill"></span><span class="db-boss-hp">850 HP</span></p>
+                                        <p class="db-boss-move"><b>Gravity Well.</b> A circle of bolts collapses toward where you stood, always with one open wedge.</p>
+                                    </li>
+                                    <li class="db-boss" style="--boss:#ff6040;--hp:1">
+                                        <p class="db-boss-name">Dreadnought <span>Final boss</span></p>
+                                        <p class="db-boss-bar"><span class="db-boss-fill"></span><span class="db-boss-hp">2,560 HP</span></p>
+                                        <p class="db-boss-move"><b>Arc Barrage.</b> A sweeping arm of plasma bolts with gaps, on top of the fastest volleys in the game.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ol>
+                    <div class="db-campaigns-aside">
+                        <figure class="app-device db-device db-device-enemies">
+                            <span class="app-device-screen"><img src="/apps/deadly_balloons/img/enemy-wiki.webp" width="660" height="1434" alt="The in-game Wiki's Enemies tab, listing the core balloons: Blue, Red, Green, Black, Yellow, Charger, Grower, Gold, Pulse, Shooter, Shotgun and Splitter" loading="lazy" decoding="async"></span>
+                        </figure>
+                        <p class="db-fine">The Wiki has a page for every enemy and boss, with numbers, quirks and a live in-engine preview.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Achievements ============ -->
+        <section class="db-section db-badges" id="badges" aria-labelledby="badges-title">
+            <div class="db-wrap db-badges-grid">
+                <figure class="app-device db-device db-device-badges">
+                    <span class="app-device-screen"><img src="/apps/deadly_balloons/img/achievements.webp" width="660" height="1434" alt="The Achievements screen: career stats for fastest clear, total kills, bosses slain, deepest wave, total runs and deaths, then locked trophies for each campaign, Galaxy Conqueror and Speed Demon" loading="lazy" decoding="async"></span>
+                </figure>
+                <div class="db-badges-copy">
+                    <h2 id="badges-title">Badges and best times</h2>
+                    <p class="db-sub">Twenty-two badges track your clears, the enemies you've spotted, the abilities you've wielded and your kills. High Scores keeps your fastest clear of every campaign, and the online leaderboards put it next to everyone else's.</p>
+
+                    <div class="db-badge-groups">
+                        <section class="db-badge-group" style="--bc:#ffc24d;--bc-l:#9a6200" aria-labelledby="bg-camp">
+                            <h3 id="bg-camp">Campaigns</h3>
+                            <ul>
+                                <li>Clear each campaign</li>
+                                <li>Galaxy Conqueror <span>clear all four</span></li>
+                                <li>Speed Demon <span>a clear under 4:00</span></li>
+                                <li>Blur <span>a clear under 2:30</span></li>
+                            </ul>
+                        </section>
+                        <section class="db-badge-group" style="--bc:#7fe0ff;--bc-l:#0f7fa6" aria-labelledby="bg-coll">
+                            <h3 id="bg-coll">Collection</h3>
+                            <ul>
+                                <li>Spot 10 foes, then 20</li>
+                                <li>Complete the Bestiary</li>
+                                <li>Wield 15 abilities, then 30</li>
+                                <li>Complete the Arsenal</li>
+                            </ul>
+                        </section>
+                        <section class="db-badge-group" style="--bc:#ff6fb4;--bc-l:#c22a74" aria-labelledby="bg-mast">
+                            <h3 id="bg-mast">Mastery</h3>
+                            <ul>
+                                <li>1,000, 10,000 and 50,000 kills</li>
+                                <li>Slay a boss, then 10, then 25</li>
+                                <li>Untouchable <span>a flawless clear</span></li>
+                                <li>Flawless x3</li>
+                                <li>Centurion <span>100 runs</span></li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Privacy ============ -->
+        <section class="db-section db-trust" id="privacy" aria-labelledby="privacy-title">
+            <div class="db-wrap">
+                <div class="db-trust-panel">
+                    <h2 id="privacy-title">Privacy, plainly</h2>
+                    <ul>
+                        <li>No account and no sign-up. Progress and settings are saved on your device.</li>
+                        <li>Online leaderboards use an anonymous ID and a nickname you choose. Nicknames and best times are public, and a profanity filter checks names.</li>
+                        <li>The game uses Firebase Analytics and Crashlytics. The only ad is the optional one behind the shop reroll, and it never interrupts a run.</li>
+                    </ul>
+                    <p><a href="/apps/deadly_balloons/privacy-policy/">Read the full privacy policy</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Closing CTA ============ -->
+        <section class="db-section db-cta" id="get" aria-labelledby="get-title">
+            <div class="db-wrap db-cta-inner">
+                <img class="db-icon db-icon-sm" src="/apps/deadly_balloons/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
+                <h2 id="get-title">Pop in, dodge hard</h2>
+                <p class="db-sub">Deadly Balloons is free on Android and iPhone.</p>
+                <div class="store-badges">
+                    <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.deadly_balloons" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                        <span><small>GET IT ON</small><b>Google Play</b></span>
+                    </a>
+                    <a class="store-badge" href="https://apps.apple.com/app/id6795559645" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                        <span><small>Download on the</small><b>App Store</b></span>
+                    </a>
+                </div>
+                <p class="db-original"><span>The desktop original</span> <a href="/deadlyBalloons/">Deadly Balloons 2</a>, a game for the hardcore balloon poppers, built for the desktop.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="About this app">
+            <a href="/apps/deadly_balloons/privacy-policy/">Privacy policy</a>
+            <a href="/support/">Support</a>
+            <a href="/#apps">More apps by Rexyrex</a>
+        </nav>
+        <p>Made by <a href="/">Rexyrex</a> · <code>/apps/deadly_balloons/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/apps/deadly_balloons/page.js" defer></script>
+</body>
+</html>

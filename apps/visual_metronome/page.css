@@ -1,0 +1,1418 @@
+/* ============================================================
+   Visual Metronome — /apps/visual_metronome/
+   A dark stage that pulses on the beat, sequencer grid lines and big
+   tempo numerals; the light theme is a bright rehearsal room with the
+   same rhythm. Palette from the app's own theme (lib/core/theme.dart
+   and ui/rhythm/scene_palette.dart): graphite stage, chalk lettering,
+   brass for the accented beat, ice for every other beat.
+   Type: Unbounded (display + numerals), Outfit (reading).
+   ============================================================ */
+
+/* ---------- Tokens --------------------------------------------- */
+
+:root {
+  color-scheme: dark;
+
+  --vm-stage: #0c0c0e;
+  --vm-panel: #151518;
+  --vm-surface: #17171b;
+  --vm-raised: #232328;
+  --vm-ink: #efeae0;
+  --vm-dim: #8e8a82;
+  --vm-faint: #5d5a55;
+  --vm-brass: #e4b96a;
+  --vm-on-brass: #0c0c0e;
+  --vm-brass-text: #e4b96a;
+  --vm-ice: #9fe8ff;
+  --vm-shade: #0c0c0e;
+  --vm-grid: rgba(239, 234, 224, 0.045);
+  --vm-grid-beat: rgba(239, 234, 224, 0.085);
+  --vm-hair: rgba(239, 234, 224, 0.08);
+  --vm-hair-strong: rgba(239, 234, 224, 0.15);
+  --vm-fill: rgba(239, 234, 224, 0.045);
+  --vm-fill-strong: rgba(239, 234, 224, 0.09);
+  --vm-lamp-brass: rgba(228, 185, 106, 0.16);
+  --vm-lamp-ice: rgba(159, 232, 255, 0.11);
+  --vm-device-frame: #1a1a1e;
+  --vm-device-edge: rgba(239, 234, 224, 0.16);
+  --vm-drop: rgba(0, 0, 0, 0.6);
+
+  /* site chrome (top bar + status bar) */
+  --bg: #0c0c0e;
+  --bg-raised: #151518;
+  --bg-inset: #08080a;
+  --bg-hover: #1d1d22;
+  --line: #222226;
+  --line-strong: #34343a;
+  --fg: #efeae0;
+  --fg-muted: #8e8a82;
+  --fg-faint: #5d5a55;
+  --accent: #e4b96a;
+  --accent-strong: #f0cd8c;
+  --accent-ink: #0c0c0e;
+  --accent-soft: rgba(228, 185, 106, 0.12);
+
+  --vm-display: "Unbounded", "Outfit", system-ui, sans-serif;
+  --vm-text: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --vm-measure: 1200px;
+  --vm-gutter: clamp(16px, 4vw, 40px);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --vm-stage: #eceef0;
+    --vm-panel: #f7f8f9;
+    --vm-surface: #ffffff;
+    --vm-raised: #e1e4e7;
+    --vm-ink: #16171b;
+    --vm-dim: #53565d;
+    --vm-faint: #9a9da3;
+    --vm-brass: #b07a1f;
+    --vm-on-brass: #16171b;
+    --vm-brass-text: #7a5512;
+    --vm-ice: #2b9bb9;
+    --vm-shade: #23262c;
+    --vm-grid: rgba(22, 23, 27, 0.05);
+    --vm-grid-beat: rgba(22, 23, 27, 0.095);
+    --vm-hair: rgba(22, 23, 27, 0.1);
+    --vm-hair-strong: rgba(22, 23, 27, 0.18);
+    --vm-fill: rgba(22, 23, 27, 0.04);
+    --vm-fill-strong: rgba(22, 23, 27, 0.08);
+    --vm-lamp-brass: rgba(197, 142, 44, 0.2);
+    --vm-lamp-ice: rgba(43, 155, 185, 0.14);
+    --vm-device-frame: #1d1e22;
+    --vm-device-edge: rgba(255, 255, 255, 0.12);
+    --vm-drop: rgba(30, 36, 44, 0.3);
+    --bg: #eceef0;
+    --bg-raised: #f7f8f9;
+    --bg-inset: #e2e5e8;
+    --bg-hover: #e4e7ea;
+    --line: #d6dade;
+    --line-strong: #bfc4ca;
+    --fg: #16171b;
+    --fg-muted: #53565d;
+    --fg-faint: #8f939a;
+    --accent: #7a5512;
+    --accent-strong: #5e400b;
+    --accent-ink: #ffffff;
+    --accent-soft: rgba(122, 85, 18, 0.1);
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --vm-stage: #eceef0;
+  --vm-panel: #f7f8f9;
+  --vm-surface: #ffffff;
+  --vm-raised: #e1e4e7;
+  --vm-ink: #16171b;
+  --vm-dim: #53565d;
+  --vm-faint: #9a9da3;
+  --vm-brass: #b07a1f;
+  --vm-on-brass: #16171b;
+  --vm-brass-text: #7a5512;
+  --vm-ice: #2b9bb9;
+  --vm-shade: #23262c;
+  --vm-grid: rgba(22, 23, 27, 0.05);
+  --vm-grid-beat: rgba(22, 23, 27, 0.095);
+  --vm-hair: rgba(22, 23, 27, 0.1);
+  --vm-hair-strong: rgba(22, 23, 27, 0.18);
+  --vm-fill: rgba(22, 23, 27, 0.04);
+  --vm-fill-strong: rgba(22, 23, 27, 0.08);
+  --vm-lamp-brass: rgba(197, 142, 44, 0.2);
+  --vm-lamp-ice: rgba(43, 155, 185, 0.14);
+  --vm-device-frame: #1d1e22;
+  --vm-device-edge: rgba(255, 255, 255, 0.12);
+  --vm-drop: rgba(30, 36, 44, 0.3);
+  --bg: #eceef0;
+  --bg-raised: #f7f8f9;
+  --bg-inset: #e2e5e8;
+  --bg-hover: #e4e7ea;
+  --line: #d6dade;
+  --line-strong: #bfc4ca;
+  --fg: #16171b;
+  --fg-muted: #53565d;
+  --fg-faint: #8f939a;
+  --accent: #7a5512;
+  --accent-strong: #5e400b;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(122, 85, 18, 0.1);
+}
+
+/* ---------- Base ----------------------------------------------- */
+
+body.app-visual_metronome {
+  background: var(--vm-stage);
+  color: var(--vm-ink);
+  font-family: var(--vm-text);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+.app-visual_metronome main {
+  display: block;
+}
+
+.app-visual_metronome h1,
+.app-visual_metronome h2 {
+  font-family: var(--vm-display);
+  color: var(--vm-ink);
+  text-wrap: balance;
+}
+
+.app-visual_metronome h2 {
+  font-size: clamp(1.6rem, 1.15rem + 1.9vw, 2.6rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 0 0 0.7em;
+}
+
+.app-visual_metronome p {
+  margin: 0 0 1em;
+}
+
+.app-visual_metronome main a:not(.store-badge) {
+  color: var(--vm-brass-text);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+.app-visual_metronome main a:not(.store-badge):hover {
+  text-decoration-color: currentColor;
+}
+
+.app-visual_metronome main :focus-visible,
+.app-visual_metronome .app-foot :focus-visible {
+  outline: 2px solid var(--vm-brass-text);
+  outline-offset: 3px;
+}
+
+.vm-wrap {
+  max-width: var(--vm-measure);
+  margin: 0 auto;
+  padding-left: var(--vm-gutter);
+  padding-right: var(--vm-gutter);
+}
+
+.vm-head {
+  max-width: 40rem;
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.vm-head p {
+  color: var(--vm-dim);
+  margin: 0;
+}
+
+/* Section divider: a tempo ruler, minor ticks and a taller one every
+   fourth, like the app's scrubbable TempoRuler. */
+.vm-ruled::before {
+  content: "";
+  display: block;
+  width: calc(100% - 2 * var(--vm-gutter));
+  max-width: calc(var(--vm-measure) - 2 * var(--vm-gutter));
+  height: 11px;
+  margin: 0 auto clamp(3rem, 7vw, 5.5rem);
+  background:
+    linear-gradient(var(--vm-hair-strong), var(--vm-hair-strong)) bottom / 100% 1px no-repeat,
+    repeating-linear-gradient(to right, var(--vm-hair-strong) 0 1px, transparent 1px 64px) bottom / 100% 11px no-repeat,
+    repeating-linear-gradient(to right, var(--vm-hair) 0 1px, transparent 1px 16px) bottom / 100% 5px no-repeat;
+}
+
+/* ---------- Device frame + badges ------------------------------ */
+
+.app-visual_metronome .app-device {
+  --device-w: 300px;
+  --device-frame: var(--vm-device-frame);
+  --device-edge: var(--vm-device-edge);
+  --device-shadow: 0 40px 80px -34px var(--vm-drop), 0 18px 36px -20px var(--vm-drop);
+}
+
+.app-visual_metronome .store-badge {
+  --badge-bg: #000000;
+  --badge-fg: #ffffff;
+  --badge-line: rgba(239, 234, 224, 0.24);
+  --badge-focus: var(--vm-brass-text);
+}
+
+.app-visual_metronome .store-badge:hover {
+  color: var(--badge-fg);
+  text-decoration: none;
+}
+
+.app-visual_metronome .store-badge {
+  text-decoration: none;
+}
+
+/* ---------- Sequencer grid backdrop ---------------------------- */
+
+.vm-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, var(--vm-grid-beat) 1px, transparent 1px) 0 0 / 25% 100%,
+    linear-gradient(to right, var(--vm-grid) 1px, transparent 1px) 0 0 / 6.25% 100%,
+    linear-gradient(to bottom, var(--vm-grid) 1px, transparent 1px) 0 0 / 100% 72px;
+  -webkit-mask-image: radial-gradient(120% 90% at 62% 40%, #000 35%, transparent 82%);
+  mask-image: radial-gradient(120% 90% at 62% 40%, #000 35%, transparent 82%);
+}
+
+/* Count-in: one bar at 120 BPM, the app's default tempo, lit column by
+   column when the page opens. Brass on the downbeat, ice after. */
+.vm-count i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 25%;
+  opacity: 0;
+  background: linear-gradient(to bottom, transparent, var(--vm-lamp-ice) 45%, transparent);
+}
+
+.vm-count i:nth-child(1) { left: 0; background: linear-gradient(to bottom, transparent, var(--vm-lamp-brass) 45%, transparent); }
+.vm-count i:nth-child(2) { left: 25%; }
+.vm-count i:nth-child(3) { left: 50%; }
+.vm-count i:nth-child(4) { left: 75%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .vm-count i {
+    animation: vm-count 0.62s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .vm-count i:nth-child(1) { animation-delay: 0.5s; }
+  .vm-count i:nth-child(2) { animation-delay: 1s; }
+  .vm-count i:nth-child(3) { animation-delay: 1.5s; }
+  .vm-count i:nth-child(4) { animation-delay: 2s; }
+}
+
+@keyframes vm-count {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ---------- Hero ----------------------------------------------- */
+
+.vm-hero {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(3.5rem, 7vw, 6rem);
+}
+
+.vm-hero .vm-grid {
+  z-index: -1;
+}
+
+.vm-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.vm-crumb {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--vm-dim);
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.vm-crumb a {
+  color: var(--vm-brass-text);
+  text-decoration: none;
+}
+
+.vm-crumb a:hover {
+  text-decoration: underline;
+}
+
+.vm-id {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.vm-icon {
+  width: clamp(64px, 7vw, 92px);
+  height: auto;
+  aspect-ratio: 1;
+  flex: none;
+  border-radius: 23%;
+  box-shadow: 0 0 0 1px var(--vm-hair-strong), 0 18px 40px -18px var(--vm-drop);
+}
+
+.app-visual_metronome h1 {
+  font-size: clamp(2.3rem, 1.1rem + 4.4vw, 4.6rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  margin: 0;
+}
+
+.vm-lede {
+  font-family: var(--vm-display);
+  font-weight: 300;
+  font-size: clamp(1.2rem, 0.95rem + 1.1vw, 1.75rem);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--vm-ink);
+}
+
+.app-visual_metronome .vm-lede {
+  margin: 0 0 1.1rem;
+}
+
+.app-visual_metronome .vm-intro {
+  max-width: 34rem;
+  color: var(--vm-dim);
+  margin: 0 0 2rem;
+}
+
+.vm-free {
+  margin: 1.25rem 0 0;
+  font-size: 0.95rem;
+  color: var(--vm-dim);
+}
+
+.app-visual_metronome .vm-free {
+  margin: 1.25rem 0 0;
+}
+
+.vm-hero-device {
+  --device-shadow: 0 50px 90px -40px var(--vm-drop), 0 0 160px 0 var(--vm-lamp-ice), 0 0 70px -10px var(--vm-lamp-brass);
+}
+
+.app-visual_metronome .vm-hero-device {
+  --device-w: clamp(250px, 24vw, 310px);
+}
+
+/* ---------- Try the beat: the rig ------------------------------ */
+
+.vm-try {
+  padding: clamp(2rem, 5vw, 4rem) 0 clamp(4rem, 9vw, 7rem);
+}
+
+.vm-rig {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(330px, 1fr);
+  border-radius: 30px;
+  overflow: hidden;
+  background: var(--vm-panel);
+  border: 1px solid var(--vm-hair-strong);
+  box-shadow: 0 50px 100px -60px var(--vm-drop);
+}
+
+.vm-stage {
+  position: relative;
+  min-height: 600px;
+  background-color: var(--vm-stage);
+  background-image:
+    linear-gradient(to right, var(--vm-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--vm-grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+  outline-offset: -3px;
+}
+
+.vm-stage:focus-visible {
+  outline-offset: -4px;
+}
+
+.vm-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Without JavaScript the stage shows a resting orb. */
+.vm-stage-fallback {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 34%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, color-mix(in srgb, var(--vm-ice) 45%, #fff), var(--vm-ice) 45%, color-mix(in srgb, var(--vm-ice) 45%, var(--vm-shade)));
+  box-shadow: 0 0 120px 10px var(--vm-lamp-ice);
+}
+
+.vm-js .vm-stage-fallback {
+  display: none;
+}
+
+.vm-nojs {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--vm-dim);
+  text-align: center;
+}
+
+.vm-stage-top {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.app-visual_metronome .vm-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.4rem 0.85rem 0.4rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--vm-hair);
+  background: color-mix(in srgb, var(--vm-stage) 70%, transparent);
+  font-family: var(--vm-display);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--vm-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.vm-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vm-faint);
+  flex: none;
+}
+
+.vm-rig[data-state="running"] .vm-led {
+  background: var(--vm-ice);
+}
+
+.vm-rig[data-state="running"] .vm-led.is-accent {
+  background: var(--vm-brass);
+}
+
+/* Segmented choices (visualizer, meter, subdivision) */
+
+.vm-seg {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.vm-seg legend {
+  float: left;
+  width: 100%;
+  margin: 0 0 0.45rem;
+  padding: 0;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--vm-dim);
+}
+
+.vm-seg label {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.vm-seg input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.vm-seg span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.3rem 0.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--vm-hair);
+  background: var(--vm-fill);
+  color: var(--vm-dim);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.15;
+  text-align: center;
+  white-space: nowrap;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.vm-seg label:hover span {
+  color: var(--vm-ink);
+  border-color: var(--vm-hair-strong);
+}
+
+.vm-seg input:checked + span {
+  color: var(--vm-ink);
+  border-color: var(--vm-brass);
+  background: color-mix(in srgb, var(--vm-brass) 16%, transparent);
+}
+
+.vm-seg input:focus-visible + span {
+  outline: 2px solid var(--vm-brass-text);
+  outline-offset: 2px;
+}
+
+.vm-seg input:disabled,
+.vm-seg input:disabled + span {
+  cursor: default;
+}
+
+.vm-seg input:disabled + span {
+  opacity: 0.55;
+}
+
+.vm-seg-vis {
+  flex-wrap: nowrap;
+  gap: 0;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--vm-hair);
+  background: color-mix(in srgb, var(--vm-stage) 70%, transparent);
+}
+
+.vm-seg-vis label {
+  flex: none;
+}
+
+.vm-seg-vis span {
+  min-height: 44px;
+  padding: 0.25rem 0.9rem;
+  border-radius: 999px;
+  border-color: transparent;
+  background: transparent;
+  font-size: 0.85rem;
+}
+
+.vm-seg-vis input:checked + span {
+  border-color: transparent;
+  background: var(--vm-fill-strong);
+  color: var(--vm-ink);
+}
+
+/* The deck */
+
+.vm-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 1.05rem;
+  padding: 1.25rem clamp(1.25rem, 2.6vw, 2rem) 1.4rem;
+  border-left: 1px solid var(--vm-hair);
+  background: var(--vm-panel);
+}
+
+.vm-pips {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  min-height: 44px;
+}
+
+.vm-pip {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--vm-ink);
+  cursor: pointer;
+}
+
+.vm-pip:disabled {
+  cursor: default;
+}
+
+.vm-pip i {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+  transition: transform 0.12s ease-out, opacity 0.12s;
+}
+
+.vm-pip[data-level="2"] {
+  color: var(--vm-brass);
+}
+
+.vm-pip[data-level="2"] i {
+  width: 14px;
+  height: 14px;
+  opacity: 0.75;
+}
+
+.vm-pip[data-level="0"] i {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  opacity: 0.55;
+}
+
+.vm-pip.is-now i {
+  opacity: 1;
+  transform: scale(1.35);
+}
+
+.vm-pip:hover:not(:disabled) {
+  background: var(--vm-fill);
+}
+
+.vm-tempo {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vm-nudge {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--vm-hair-strong);
+  background: var(--vm-fill);
+  color: var(--vm-ink);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.vm-nudge:hover:not(:disabled) {
+  background: var(--vm-fill-strong);
+}
+
+.vm-nudge:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.vm-nudge svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.app-visual_metronome .vm-bpm {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin: 0;
+  font-family: var(--vm-display);
+  color: var(--vm-ink);
+}
+
+.vm-bpm-n {
+  font-size: clamp(4rem, 2.8rem + 4.2vw, 6.25rem);
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  line-height: 0.92;
+  font-variant-numeric: tabular-nums;
+}
+
+.vm-bpm-u {
+  margin-top: 0.55em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--vm-dim);
+}
+
+.app-visual_metronome .vm-term {
+  margin: -0.55rem 0 0;
+  text-align: center;
+  font-family: var(--vm-display);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--vm-brass-text);
+}
+
+/* Tempo ruler: a native range, dressed as the app's ruler */
+
+.vm-ruler {
+  position: relative;
+}
+
+.vm-ruler input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+.vm-ruler input:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.vm-ruler input::-webkit-slider-runnable-track {
+  height: 22px;
+  border-radius: 0;
+  background:
+    linear-gradient(var(--vm-hair-strong), var(--vm-hair-strong)) center bottom / 100% 1px no-repeat,
+    repeating-linear-gradient(to right, var(--vm-dim) 0 1px, transparent 1px calc((100% - 1px) / 9)) left bottom / 100% 14px no-repeat,
+    repeating-linear-gradient(to right, var(--vm-hair-strong) 0 1px, transparent 1px calc((100% - 1px) / 27)) left bottom / 100% 8px no-repeat;
+}
+
+.vm-ruler input::-moz-range-track {
+  height: 22px;
+  background:
+    linear-gradient(var(--vm-hair-strong), var(--vm-hair-strong)) center bottom / 100% 1px no-repeat,
+    repeating-linear-gradient(to right, var(--vm-dim) 0 1px, transparent 1px calc((100% - 1px) / 9)) left bottom / 100% 14px no-repeat,
+    repeating-linear-gradient(to right, var(--vm-hair-strong) 0 1px, transparent 1px calc((100% - 1px) / 27)) left bottom / 100% 8px no-repeat;
+}
+
+.vm-ruler input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8px;
+  height: 32px;
+  margin-top: -6px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--vm-brass);
+  box-shadow: 0 0 0 3px var(--vm-panel), 0 0 18px var(--vm-lamp-brass);
+}
+
+.vm-ruler input::-moz-range-thumb {
+  width: 8px;
+  height: 32px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--vm-brass);
+  box-shadow: 0 0 0 3px var(--vm-panel), 0 0 18px var(--vm-lamp-brass);
+}
+
+.vm-ruler input:focus-visible {
+  outline: 2px solid var(--vm-brass-text);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.vm-ruler-ends {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+  font-family: var(--vm-display);
+  font-size: 0.66rem;
+  color: var(--vm-dim);
+}
+
+/* Transport */
+
+.vm-transport {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+}
+
+.vm-tap,
+.vm-play,
+.vm-sound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--vm-ink);
+  font: 500 0.85rem/1.2 var(--vm-text);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.vm-tap { justify-self: start; }
+.vm-sound { justify-self: end; }
+
+.vm-tap svg,
+.vm-sound svg {
+  box-sizing: content-box;
+  width: 22px;
+  height: 22px;
+  padding: 15px;
+  border-radius: 50%;
+  border: 1px solid var(--vm-hair-strong);
+  background: var(--vm-fill);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: background-color 0.12s, border-color 0.12s, transform 0.12s;
+}
+
+.vm-tap:hover:not(:disabled) svg,
+.vm-sound:hover:not(:disabled) svg {
+  background: var(--vm-fill-strong);
+}
+
+.vm-tap.is-hit svg {
+  border-color: var(--vm-brass);
+  background: color-mix(in srgb, var(--vm-brass) 22%, transparent);
+  transform: scale(0.94);
+}
+
+.vm-tap kbd {
+  margin-left: 0.25rem;
+  padding: 0 0.3rem;
+  border-radius: 4px;
+  border: 1px solid var(--vm-hair-strong);
+  font: 500 0.72rem/1.4 var(--font-mono);
+  color: var(--vm-dim);
+}
+
+.vm-sound .vm-i-waves { display: none; }
+.vm-sound[aria-checked="true"] .vm-i-waves { display: inline; }
+.vm-sound[aria-checked="true"] .vm-i-mute { display: none; }
+
+.vm-sound[aria-checked="true"] svg {
+  border-color: var(--vm-brass);
+  color: var(--vm-brass-text);
+  background: color-mix(in srgb, var(--vm-brass) 14%, transparent);
+}
+
+.vm-play svg {
+  box-sizing: content-box;
+  width: 30px;
+  height: 30px;
+  padding: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--vm-brass);
+  background: var(--vm-raised);
+  fill: var(--vm-brass-text);
+  box-shadow: 0 10px 30px -14px var(--vm-drop);
+  transition: background-color 0.15s, transform 0.12s;
+}
+
+.vm-play .vm-i-stop { display: none; }
+
+.vm-rig[data-state="running"] .vm-play .vm-i-stop { display: block; }
+.vm-rig[data-state="running"] .vm-play .vm-i-play { display: none; }
+
+.vm-rig[data-state="running"] .vm-play svg {
+  background: var(--vm-brass);
+  fill: var(--vm-on-brass);
+}
+
+.vm-play:hover:not(:disabled) svg {
+  transform: scale(1.04);
+}
+
+.vm-play:active:not(:disabled) svg,
+.vm-tap:active:not(:disabled) svg,
+.vm-sound:active:not(:disabled) svg {
+  transform: scale(0.95);
+}
+
+.vm-tap:disabled,
+.vm-play:disabled,
+.vm-sound:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.vm-tap:focus-visible,
+.vm-play:focus-visible,
+.vm-sound:focus-visible {
+  outline: none;
+}
+
+.vm-tap:focus-visible svg,
+.vm-play:focus-visible svg,
+.vm-sound:focus-visible svg {
+  outline: 2px solid var(--vm-brass-text);
+  outline-offset: 3px;
+}
+
+.app-visual_metronome .vm-hint {
+  margin: 0.2rem 0 0;
+  text-align: center;
+  text-wrap: balance;
+  font-size: 0.85rem;
+  color: var(--vm-dim);
+}
+
+/* ---------- Tour: features around real screens ----------------- */
+
+.vm-tour {
+  padding: 0 0 clamp(3rem, 7vw, 6rem);
+}
+
+.vm-tour-device {
+  display: none;
+}
+
+.vm-feats {
+  display: grid;
+  gap: clamp(4rem, 10vw, 7rem);
+}
+
+.vm-feat {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  justify-items: start;
+}
+
+.app-visual_metronome .vm-feat-shot {
+  --device-w: min(270px, 70vw);
+  justify-self: center;
+}
+
+.vm-feat-text {
+  max-width: 38rem;
+}
+
+.vm-feat-text p {
+  color: var(--vm-dim);
+}
+
+.vm-feat-text > :last-child {
+  margin-bottom: 0;
+}
+
+.vm-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.vm-points li {
+  position: relative;
+  padding-left: 1.6rem;
+  color: var(--vm-ink);
+}
+
+/* a beat pip as the bullet */
+.vm-points li::before {
+  content: "";
+  position: absolute;
+  left: 0.2rem;
+  top: 0.6em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vm-ice);
+}
+
+.vm-vis-list {
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+  border-top: 1px solid var(--vm-hair);
+}
+
+.vm-vis-list li {
+  padding: 0.8rem 1rem 0.85rem 0;
+  border-bottom: 1px solid var(--vm-hair);
+  font-size: 0.93rem;
+  line-height: 1.45;
+  color: var(--vm-dim);
+}
+
+.vm-vis-list span {
+  display: block;
+}
+
+.vm-vis-list b {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-family: var(--vm-display);
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--vm-ink);
+}
+
+.vm-vis-list li:first-child b {
+  color: var(--vm-brass-text);
+}
+
+/* ---------- Sound, touch, timing ------------------------------- */
+
+.vm-sound-sec {
+  padding: 0 0 clamp(4rem, 9vw, 7rem);
+}
+
+.vm-sound-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+/* Sound families laid out like the pattern editor's tracks */
+.vm-tracks {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.vm-tracks > div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.6rem 0.6rem 1rem;
+  border-radius: 14px;
+  background: var(--vm-fill);
+  border: 1px solid var(--vm-hair);
+}
+
+.vm-tracks dt {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--vm-ink);
+}
+
+.vm-tracks dd {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.vm-tracks dd span {
+  padding: 0.38rem 0.75rem;
+  border-radius: 9px;
+  background: var(--vm-fill-strong);
+  border: 1px solid var(--vm-hair);
+  font-size: 0.9rem;
+  color: var(--vm-ink);
+}
+
+.vm-sound-points li {
+  color: var(--vm-dim);
+}
+
+/* ---------- Privacy -------------------------------------------- */
+
+.vm-trust {
+  padding: 0 0 clamp(4rem, 9vw, 7rem);
+}
+
+.vm-trust-inner h2 {
+  max-width: 40rem;
+}
+
+.app-visual_metronome .vm-trust-inner p {
+  max-width: 40rem;
+  margin: 0;
+  color: var(--vm-dim);
+}
+
+/* ---------- Closing call to action ----------------------------- */
+
+.vm-cta {
+  position: relative;
+  isolation: isolate;
+  padding: 0 0 clamp(4.5rem, 10vw, 8rem);
+}
+
+.vm-cta-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.vm-cta .vm-grid {
+  z-index: -1;
+  top: 11px;
+  -webkit-mask-image: radial-gradient(60% 70% at 50% 45%, #000 20%, transparent 80%);
+  mask-image: radial-gradient(60% 70% at 50% 45%, #000 20%, transparent 80%);
+}
+
+.vm-cta .vm-icon {
+  width: 84px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 0 1px var(--vm-hair-strong), 0 0 80px 4px var(--vm-lamp-ice);
+}
+
+.app-visual_metronome .vm-cta h2 {
+  font-size: clamp(2rem, 1.2rem + 3.4vw, 3.6rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  margin-bottom: 0.4em;
+}
+
+.app-visual_metronome .vm-cta p {
+  color: var(--vm-dim);
+  margin: 0 0 2rem;
+}
+
+.vm-cta .store-badges {
+  justify-content: center;
+}
+
+/* ---------- Footer --------------------------------------------- */
+
+.app-visual_metronome .app-foot {
+  width: min(calc(100% - 2 * var(--vm-gutter)), calc(var(--vm-measure) - 2 * var(--vm-gutter)));
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+  color: var(--vm-ink);
+  --foot-muted: var(--vm-dim);
+}
+
+.app-visual_metronome .app-foot a {
+  color: var(--vm-ink);
+  text-decoration: none;
+}
+
+/* ---------- Wide screens: sticky phone tour -------------------- */
+
+@media (min-width: 980px) {
+  .vm-feat {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+
+  .vm-feat-vis {
+    align-items: start;
+  }
+
+  .app-visual_metronome .vm-feat-shot {
+    --device-w: 280px;
+  }
+
+  .vm-js .vm-tour-inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: start;
+  }
+
+  .vm-js .vm-tour-device {
+    display: block;
+    position: sticky;
+    top: calc(var(--nav-h) + max(16px, (100vh - var(--nav-h) - var(--statusbar-h) - var(--tour-device-h)) / 2));
+    --tour-device-w: clamp(230px, calc((100vh - 190px) / 2.24), 300px);
+    --tour-device-h: calc(var(--tour-device-w) * 2.173 + 22px);
+  }
+
+  .vm-js .vm-tour-device .app-device {
+    --device-w: var(--tour-device-w);
+  }
+
+  .vm-tour-device .app-device-screen img {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .vm-tour-device .app-device-screen img.is-on {
+    opacity: 1;
+  }
+
+  .vm-js .vm-feats {
+    gap: 0;
+  }
+
+  .vm-js .vm-feat {
+    display: flex;
+    min-height: min(66vh, 640px);
+    padding: 3rem 0;
+  }
+
+  .vm-js .vm-feat-vis {
+    min-height: 0;
+    padding-top: 0;
+  }
+
+  /* The sticky phone shows the screens; the inline ones stay for screen readers. */
+  .vm-js .vm-feat-shot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+/* ---------- Narrower screens ----------------------------------- */
+
+@media (max-width: 899px) {
+  .vm-hero-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-visual_metronome .vm-hero-device {
+    --device-w: min(270px, 68vw);
+    justify-self: center;
+  }
+
+  .vm-rig {
+    grid-template-columns: minmax(0, 1fr);
+    border-radius: 24px;
+  }
+
+  .vm-stage {
+    min-height: clamp(320px, 88vw, 460px);
+  }
+
+  .vm-deck {
+    border-left: 0;
+    border-top: 1px solid var(--vm-hair);
+  }
+
+  .vm-sound-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 979px) {
+  .vm-feat-text {
+    order: -1;
+  }
+}
+
+@media (max-width: 599px) {
+  /* Names only on phones; the descriptions stay for screen readers. */
+  .vm-vis-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    border-top: 0;
+  }
+
+  .vm-vis-list li {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--vm-hair);
+    border-radius: 9px;
+    background: var(--vm-fill);
+  }
+
+  .vm-vis-list b {
+    margin: 0;
+    font-size: 0.8rem;
+  }
+
+  .vm-vis-list span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .app-visual_metronome .vm-feat-shot {
+    --device-w: min(240px, 64vw);
+  }
+}
+
+@media (max-width: 520px) {
+  .vm-seg-vis span {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .vm-stage-top {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .vm-seg span {
+    font-size: 0.82rem;
+    padding: 0.3rem 0.25rem;
+  }
+
+  .vm-tracks > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .vm-rig {
+    margin-left: calc(var(--vm-gutter) * -0.5);
+    margin-right: calc(var(--vm-gutter) * -0.5);
+  }
+}
+
+/* ---------- Reduced motion ------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .vm-count {
+    display: none;
+  }
+
+  .vm-pip i,
+  .vm-seg span,
+  .vm-tap svg,
+  .vm-sound svg,
+  .vm-play svg,
+  .vm-tour-device .app-device-screen img {
+    transition: none;
+  }
+
+  .vm-pip.is-now i {
+    transform: none;
+  }
+}
+
+/* Touch screens: no keyboard hints */
+@media (hover: none) and (pointer: coarse) {
+  .vm-tap kbd,
+  .app-visual_metronome .vm-hint {
+    display: none;
+  }
+}

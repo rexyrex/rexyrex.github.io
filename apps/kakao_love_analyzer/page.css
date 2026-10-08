@@ -1,0 +1,1982 @@
+/* ============================================================
+   /apps/kakao_love_analyzer/ — 카카오톡 연애 분석기
+   Blush letter paper by day, a candle-lit room by night. The palette
+   comes from the app's own theme (seed #E91E63, scaffold #FFF5F7,
+   title ink #3D2B2F, card edge #E8C4CC, dark outline #F48FB1).
+   Jua for headings, Gowun Dodum for reading, Hi Melody for the odd
+   hand-written note. Class prefix: lv-.
+   ============================================================ */
+
+/* ---------- 1. Tokens ----------------------------------------
+   Same three blocks as /css/index.css (dark base, light by media and
+   by data-theme) so every rule here overrides its twin there. */
+
+:root {
+  color-scheme: dark;
+
+  /* site tokens, read by the top bar and the status bar */
+  --bg: #1d1216;
+  --bg-raised: #281a20;
+  --bg-inset: #160d11;
+  --bg-hover: #33222a;
+  --line: #3d2a32;
+  --line-strong: #57404a;
+  --fg: #f7e6ea;
+  --fg-muted: #cdb0b8;
+  --fg-faint: #9c808b;
+  --accent: #f48fb1;
+  --accent-strong: #f8bbd0;
+  --accent-ink: #2a0f19;
+  --accent-soft: rgba(244, 143, 177, 0.14);
+  --shadow: 0 1px 0 rgba(0, 0, 0, 0.35), 0 16px 40px -16px rgba(0, 0, 0, 0.7);
+
+  /* page */
+  --lv-band: #24161c;
+  --lv-chat-bg: #170e12;
+  --lv-chat-head: #21151a;
+  --lv-bubble-p: #33232a;
+  --lv-bubble-p-ink: #f7e6ea;
+  --lv-me: #f48fb1;
+  --lv-me-ink: #2a0f19;
+  --lv-pa: #c9a2c0;
+  --lv-pa-ink: #2a0f19;
+  --lv-ok: #7fd1a0;
+  --lv-mid: #f0b45a;
+  --lv-card-shadow: 0 18px 40px -26px rgba(0, 0, 0, 0.8);
+  --lv-glow-1: rgba(255, 170, 128, 0.13);
+  --lv-glow-2: rgba(240, 98, 146, 0.12);
+  --lv-frame: #0e0709;
+  --lv-frame-edge: rgba(255, 255, 255, 0.12);
+  --lv-frame-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.75), 0 0 70px -24px rgba(244, 143, 177, 0.28);
+  --lv-badge-bg: #fff5f7;
+  --lv-badge-fg: #24161b;
+  --lv-badge-line: rgba(255, 255, 255, 0.35);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #fff5f7;
+    --bg-raised: #ffffff;
+    --bg-inset: #fbe9ee;
+    --bg-hover: #fcecf1;
+    --line: #f0d5dc;
+    --line-strong: #e3b6c2;
+    --fg: #3d2b2f;
+    --fg-muted: #6e525a;
+    --fg-faint: #9a7f87;
+    --accent: #c2185b;
+    --accent-strong: #ad1457;
+    --accent-ink: #ffffff;
+    --accent-soft: rgba(233, 30, 99, 0.09);
+    --shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 16px 40px -16px rgba(120, 30, 60, 0.22);
+
+    --lv-band: #fde9ef;
+    --lv-chat-bg: #fce6ec;
+    --lv-chat-head: #ffffff;
+    --lv-bubble-p: #ffffff;
+    --lv-bubble-p-ink: #3d2b2f;
+    --lv-me: #d81b60;
+    --lv-me-ink: #ffffff;
+    --lv-pa: #8e5a73;
+    --lv-pa-ink: #ffffff;
+    --lv-ok: #2e7d4f;
+    --lv-mid: #c27a0e;
+    --lv-card-shadow: 0 18px 40px -24px rgba(194, 24, 91, 0.32);
+    --lv-glow-1: rgba(255, 205, 178, 0.55);
+    --lv-glow-2: rgba(248, 187, 208, 0.55);
+    --lv-frame: #2a1a20;
+    --lv-frame-edge: rgba(255, 255, 255, 0.14);
+    --lv-frame-shadow: 0 40px 80px -34px rgba(150, 20, 70, 0.42), 0 18px 36px -22px rgba(60, 10, 30, 0.32);
+    --lv-badge-bg: #24161b;
+    --lv-badge-fg: #ffffff;
+    --lv-badge-line: rgba(255, 255, 255, 0.16);
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fff5f7;
+  --bg-raised: #ffffff;
+  --bg-inset: #fbe9ee;
+  --bg-hover: #fcecf1;
+  --line: #f0d5dc;
+  --line-strong: #e3b6c2;
+  --fg: #3d2b2f;
+  --fg-muted: #6e525a;
+  --fg-faint: #9a7f87;
+  --accent: #c2185b;
+  --accent-strong: #ad1457;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(233, 30, 99, 0.09);
+  --shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 16px 40px -16px rgba(120, 30, 60, 0.22);
+
+  --lv-band: #fde9ef;
+  --lv-chat-bg: #fce6ec;
+  --lv-chat-head: #ffffff;
+  --lv-bubble-p: #ffffff;
+  --lv-bubble-p-ink: #3d2b2f;
+  --lv-me: #d81b60;
+  --lv-me-ink: #ffffff;
+  --lv-pa: #8e5a73;
+  --lv-pa-ink: #ffffff;
+  --lv-ok: #2e7d4f;
+  --lv-mid: #c27a0e;
+  --lv-card-shadow: 0 18px 40px -24px rgba(194, 24, 91, 0.32);
+  --lv-glow-1: rgba(255, 205, 178, 0.55);
+  --lv-glow-2: rgba(248, 187, 208, 0.55);
+  --lv-frame: #2a1a20;
+  --lv-frame-edge: rgba(255, 255, 255, 0.14);
+  --lv-frame-shadow: 0 40px 80px -34px rgba(150, 20, 70, 0.42), 0 18px 36px -22px rgba(60, 10, 30, 0.32);
+  --lv-badge-bg: #24161b;
+  --lv-badge-fg: #ffffff;
+  --lv-badge-line: rgba(255, 255, 255, 0.16);
+}
+
+:root {
+  --lv-display: "Jua", var(--font-sans);
+  --lv-body: "Gowun Dodum", var(--font-sans);
+  --lv-hand: "Hi Melody", "Gowun Dodum", cursive;
+  --lv-measure: 1180px;
+  --lv-gutter: clamp(1rem, 4vw, 2.5rem);
+  --lv-section: clamp(4.5rem, 9vw, 8rem);
+  --lv-spring: cubic-bezier(0.34, 1.4, 0.55, 1);
+  /* paper grain, tinted rose-brown; reads as fibres on blush, embers on wine */
+  --lv-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .3 0 0 0 0 .36 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+}
+
+/* ---------- 2. Page base ------------------------------------- */
+
+html {
+  background-color: var(--bg);
+  background-image:
+    var(--lv-grain),
+    radial-gradient(1100px 700px at 88% -8%, var(--lv-glow-1), transparent 68%),
+    radial-gradient(900px 640px at -6% 18%, var(--lv-glow-2), transparent 70%);
+  background-repeat: repeat, no-repeat, no-repeat;
+}
+
+body.app-kakao_love_analyzer {
+  background: transparent;
+  font-family: var(--lv-body);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.app-kakao_love_analyzer main {
+  overflow-x: clip;
+}
+
+.app-kakao_love_analyzer main h1,
+.app-kakao_love_analyzer main h2,
+.app-kakao_love_analyzer main h3,
+.app-kakao_love_analyzer main h4 {
+  font-family: var(--lv-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--fg);
+}
+
+.app-kakao_love_analyzer main a:not(.store-badge) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-underline-offset: 0.22em;
+}
+
+.app-kakao_love_analyzer main a:not(.store-badge):hover {
+  text-decoration-color: currentColor;
+}
+
+.lv-wrap {
+  max-width: var(--lv-measure);
+  margin: 0 auto;
+  padding: 0 var(--lv-gutter);
+}
+
+.lv-head {
+  max-width: 40rem;
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.lv-head h2 {
+  font-size: clamp(1.95rem, 1.35rem + 2.2vw, 2.95rem);
+  margin: 0 0 0.6rem;
+}
+
+.lv-head p {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 1.08rem;
+}
+
+.lv-note {
+  font-family: var(--lv-hand);
+  color: var(--accent);
+  line-height: 1.25;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* shared toggle chips (catalog filter, import platform) */
+.lv-chip {
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raised);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.lv-chip:hover {
+  border-color: var(--accent);
+}
+
+.lv-chip[aria-pressed="true"] {
+  background: var(--lv-me);
+  border-color: var(--lv-me);
+  color: var(--lv-me-ink);
+}
+
+/* store buttons + phone frames, themed */
+.app-kakao_love_analyzer .store-badge {
+  --badge-bg: var(--lv-badge-bg);
+  --badge-fg: var(--lv-badge-fg);
+  --badge-line: var(--lv-badge-line);
+  --badge-focus: var(--accent);
+}
+
+.app-kakao_love_analyzer .app-device {
+  --device-frame: var(--lv-frame);
+  --device-edge: var(--lv-frame-edge);
+  --device-shadow: var(--lv-frame-shadow);
+}
+
+/* ---------- 3. Hero ------------------------------------------ */
+
+.lv-hero {
+  padding: clamp(2.25rem, 6vw, 5rem) 0 var(--lv-section);
+}
+
+.lv-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.lv-path {
+  margin: 0 0 1.25rem;
+}
+
+.lv-path code {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+.lv-hero h1 {
+  font-size: clamp(2.7rem, 1.6rem + 4.6vw, 5.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.lv-hero h1 span {
+  white-space: nowrap;
+}
+
+.lv-hero h1 span + span {
+  color: var(--accent);
+}
+
+.lv-hero-chat {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin: 0 0 1.6rem;
+  max-width: 34rem;
+}
+
+.lv-icon {
+  flex: none;
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  box-shadow: 0 0 0 1px var(--line), 0 10px 22px -12px rgba(0, 0, 0, 0.45);
+}
+
+.lv-hero-bubble {
+  position: relative;
+  margin: 0.35rem 0 0;
+  padding: 0.95rem 1.25rem 1rem;
+  border-radius: 6px 24px 24px 24px;
+  background: var(--lv-bubble-p);
+  color: var(--lv-bubble-p-ink);
+  box-shadow: 0 1px 0 var(--line), var(--lv-card-shadow);
+  font-size: clamp(1.12rem, 1rem + 0.5vw, 1.32rem);
+  line-height: 1.55;
+}
+
+.lv-hero-time {
+  position: absolute;
+  right: -4.5rem;
+  bottom: 0.2rem;
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.lv-lead {
+  max-width: 33rem;
+  margin: 0 0 1.9rem;
+  color: var(--fg-muted);
+  font-size: 1.1rem;
+}
+
+.lv-hero-phone {
+  margin: 0;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.lv-hero-phone::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 8% -18% 14%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--lv-me) 22%, transparent), transparent);
+  filter: blur(8px);
+}
+
+.lv-hero-phone .app-device {
+  --device-w: clamp(250px, 24vw, 310px);
+}
+
+.lv-note-hero {
+  white-space: nowrap;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin-top: 0.9rem;
+  margin-right: 30%;
+  transform: rotate(-3deg);
+}
+
+.lv-note-arrow {
+  width: 28px;
+  height: 34px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: translateY(-14px);
+}
+
+/* ---------- 4. Demo (signature) ------------------------------ */
+
+.lv-demo {
+  position: relative;
+  padding: var(--lv-section) 0;
+  background:
+    radial-gradient(800px 420px at 12% 0%, color-mix(in srgb, var(--lv-me) 9%, transparent), transparent 70%),
+    var(--lv-band);
+  border-block: 1px solid var(--line);
+}
+
+.lv-demo-controls {
+  display: none;
+}
+
+html.js .lv-demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin: 0 0 1.25rem;
+}
+
+.lv-seg {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.3rem;
+  border-radius: 999px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+}
+
+.lv-seg-label {
+  padding: 0 0.6rem 0 0.8rem;
+  font-size: 0.92rem;
+  color: var(--fg-muted);
+}
+
+.lv-seg-btn {
+  min-height: 44px;
+  min-width: 4.25rem;
+  padding: 0 1.15rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--lv-display);
+  font-size: 1.08rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.lv-seg-btn:hover {
+  background: var(--bg-hover);
+}
+
+.lv-seg-btn[aria-pressed="true"] {
+  background: var(--lv-me);
+  color: var(--lv-me-ink);
+}
+
+.lv-replay {
+  min-height: 44px;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.lv-replay:hover {
+  background: var(--bg-raised);
+  border-color: var(--accent);
+}
+
+.lv-replay[data-act="replay"]::before {
+  content: "↻";
+  margin-right: 0.4rem;
+}
+
+.lv-stage {
+  display: grid;
+  grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.25rem);
+  align-items: start;
+}
+
+/* --- the chat panel --- */
+
+.lv-phone {
+  display: flex;
+  flex-direction: column;
+  height: 700px;
+  border-radius: 34px;
+  overflow: hidden;
+  background: var(--lv-chat-bg);
+  border: 1px solid var(--line);
+  box-shadow: var(--lv-card-shadow);
+}
+
+.lv-phone-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1rem;
+  background: var(--lv-chat-head);
+  border-bottom: 1px solid var(--line);
+}
+
+.lv-phone-who {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.lv-phone-who b {
+  font-family: var(--lv-display);
+  font-weight: 400;
+  font-size: 1.1rem;
+}
+
+.lv-phone-who small {
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+}
+
+.lv-sample-tag,
+.lv-example-tag {
+  margin-left: auto;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  white-space: nowrap;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.lv-avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 13px;
+  background: var(--lv-pa);
+  color: var(--lv-pa-ink);
+  font-family: var(--lv-display);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.lv-avatar-lg {
+  width: 40px;
+  height: 40px;
+  border-radius: 15px;
+  font-size: 1.1rem;
+}
+
+.lv-avatar.is-blank {
+  visibility: hidden;
+}
+
+.lv-chat {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  padding: 0 0.85rem;
+  scrollbar-width: thin;
+}
+
+.lv-chat:focus-visible {
+  outline-offset: -3px;
+}
+
+.lv-chat-inner {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.9rem 0;
+}
+
+.lv-day {
+  margin: 0 0 0.9rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+}
+
+.lv-day span {
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fg) 7%, transparent);
+}
+
+.lv-msgs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.lv-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.45rem;
+}
+
+.lv-msg:first-child,
+.lv-msg[data-cont],
+.lv-msg.is-cont {
+  margin-top: 0;
+}
+
+.lv-msg.is-m {
+  justify-content: flex-end;
+}
+
+.lv-msg-body {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  min-width: 0;
+}
+
+.lv-msg-name {
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  margin: 0 0 0.15rem 0.15rem;
+  line-height: 1.3;
+}
+
+.lv-msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.lv-msg.is-m .lv-msg-row {
+  flex-direction: row-reverse;
+}
+
+.lv-bubble {
+  margin: 0;
+  padding: 0.5rem 0.8rem;
+  border-radius: 16px;
+  background: var(--lv-bubble-p);
+  color: var(--lv-bubble-p-ink);
+  font-size: 0.97rem;
+  line-height: 1.45;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--fg) 6%, transparent);
+  overflow-wrap: anywhere;
+}
+
+.lv-msg.is-p:not([data-cont]) .lv-bubble {
+  border-top-left-radius: 5px;
+}
+
+.lv-msg.is-m .lv-bubble {
+  background: var(--lv-me);
+  color: var(--lv-me-ink);
+}
+
+.lv-msg.is-m:not([data-cont]) .lv-bubble {
+  border-top-right-radius: 5px;
+}
+
+.lv-time {
+  flex: none;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.lv-msg:has(+ .lv-msg[data-same]) .lv-time {
+  display: none;
+}
+
+.lv-typing .lv-bubble {
+  display: inline-flex;
+  gap: 4px;
+  padding: 0.8rem 0.9rem;
+}
+
+.lv-typing .lv-bubble i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.35;
+  animation: lv-dot 1s ease-in-out infinite;
+}
+
+.lv-typing .lv-bubble i:nth-child(2) { animation-delay: 0.15s; }
+.lv-typing .lv-bubble i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes lv-dot {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 0.85; transform: translateY(-3px); }
+}
+
+.lv-msg {
+  animation: lv-pop 0.32s var(--lv-spring) both;
+}
+
+.lv-msg.is-p { transform-origin: 0 0; }
+.lv-msg.is-m { transform-origin: 100% 0; }
+
+@keyframes lv-pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.94); }
+}
+
+/* status strip at the bottom of the panel */
+.lv-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  min-height: 52px;
+  background: var(--lv-chat-head);
+  border-top: 1px solid var(--line);
+  font-size: 0.88rem;
+  color: var(--fg-muted);
+}
+
+.lv-status-bar {
+  flex: 0 0 72px;
+  height: 6px;
+  border-radius: 6px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.lv-status-bar i {
+  display: block;
+  height: 100%;
+  width: var(--p, 0%);
+  border-radius: inherit;
+  background: var(--lv-me);
+  transition: width 0.45s var(--ease);
+}
+
+.lv-status[data-status="analyzing"] .lv-status-bar i {
+  width: 100%;
+  background: linear-gradient(90deg, var(--lv-pa), var(--lv-me), var(--lv-pa));
+  background-size: 200% 100%;
+  animation: lv-shimmer 1s linear infinite;
+}
+
+.lv-status[data-status="done"] {
+  color: var(--accent);
+}
+
+.lv-status[data-status="done"] .lv-status-bar i {
+  width: 100%;
+}
+
+@keyframes lv-shimmer {
+  to { background-position: -200% 0; }
+}
+
+/* --- the report --- */
+
+.lv-report {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.lv-report-head {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  min-height: 2.6rem;
+}
+
+.lv-report-head h3 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.lv-report-head .lv-example-tag {
+  margin-left: 0;
+}
+
+.lv-report.is-pending .lv-report-head::after {
+  content: "대화가 끝나면 채워져요";
+  margin-left: auto;
+  font-family: var(--lv-hand);
+  font-size: 1.3rem;
+  color: var(--fg-muted);
+}
+
+.lv-block {
+  min-width: 0;
+  padding: 1.1rem 1.2rem 1.15rem;
+  border-radius: 22px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  box-shadow: var(--lv-card-shadow);
+  transition: opacity 0.5s var(--ease), filter 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+/* Before the analysis runs, blocks show their frame with skeleton bars
+   where the values will be. */
+.lv-report.is-pending .lv-block:not(.is-on) {
+  opacity: 0.7;
+}
+
+.lv-report.is-pending .lv-card:not(.is-on) {
+  opacity: 0.55;
+  transform: translateY(8px);
+}
+
+.lv-report.is-pending .lv-block:not(.is-on) :is(.lv-balance-say, .lv-split-labels b, .lv-compare small, .lv-gauge-num b, .lv-gauge-num em, .lv-gauge-cap, .lv-track-score, .lv-track-now b, .lv-track-now span, .lv-signals b, .lv-signals small, .lv-awards b, .lv-awards small, .lv-stats b, .lv-card-verdict, .lv-weight > span) {
+  color: transparent;
+  background: color-mix(in srgb, var(--fg) 10%, transparent);
+  border-radius: 6px;
+}
+
+.lv-report.is-pending .lv-block:not(.is-on) :is(.lv-dot, .lv-award-emoji) {
+  filter: grayscale(1);
+  opacity: 0.4;
+}
+
+.lv-block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+
+.lv-block h4 {
+  margin: 0;
+  font-size: 1.12rem;
+}
+
+/* balance */
+.lv-balance {
+  grid-column: 1 / -1;
+}
+
+.lv-balance-say {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--accent);
+}
+
+.lv-seesaw {
+  position: relative;
+  height: 150px;
+  max-width: 440px;
+  margin: 0.4rem auto 0.4rem;
+}
+
+.lv-beam {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 42px;
+  height: 8px;
+  border-radius: 8px;
+  background: var(--line-strong);
+  transform: rotate(0deg);
+  transition: transform 1.4s var(--lv-spring);
+}
+
+.lv-balance.is-on .lv-beam {
+  transform: rotate(var(--tilt, 0deg));
+}
+
+.lv-weight {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 1px;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-family: var(--lv-display);
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: width 1s var(--lv-spring), height 1s var(--lv-spring);
+}
+
+.lv-weight.is-m {
+  left: 0;
+  background: var(--lv-me);
+  color: var(--lv-me-ink);
+}
+
+.lv-weight.is-p {
+  right: 0;
+  background: var(--lv-pa);
+  color: var(--lv-pa-ink);
+}
+
+.lv-weight > span {
+  transition: transform 1.4s var(--lv-spring);
+}
+
+.lv-balance.is-on .lv-weight.is-m { width: var(--m-size); height: var(--m-size); }
+.lv-balance.is-on .lv-weight.is-p { width: var(--p-size); height: var(--p-size); }
+.lv-balance.is-on .lv-weight > span { transform: rotate(calc(var(--tilt, 0deg) * -1)); }
+
+.lv-fulcrum {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 44px;
+  height: 34px;
+  transform: translateX(-50%);
+  background: var(--line-strong);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.lv-seesaw::after {
+  content: "";
+  position: absolute;
+  left: 30%;
+  right: 30%;
+  bottom: 6px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--line);
+}
+
+.lv-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem 1.5rem;
+  margin: 0;
+}
+
+.lv-compare > div {
+  min-width: 0;
+}
+
+.lv-compare dt {
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  margin-bottom: 0.3rem;
+}
+
+.lv-compare dd {
+  margin: 0;
+}
+
+.lv-compare small {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+
+.lv-split {
+  display: block;
+  height: 10px;
+  border-radius: 10px;
+  background: var(--lv-pa);
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.lv-split i {
+  display: block;
+  height: 100%;
+  width: 50%;
+  background: var(--lv-me);
+  border-right: 2px solid var(--bg-raised);
+  transition: width 1.1s var(--ease);
+}
+
+.lv-balance.is-on .lv-split i {
+  width: var(--m-pct, 50%);
+}
+
+.lv-split-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+}
+
+.lv-split-labels b {
+  font-family: var(--lv-display);
+  font-weight: 400;
+  font-size: 1.12rem;
+  margin-left: 0.15rem;
+}
+
+.lv-split-labels span:first-child b { color: var(--lv-me); }
+
+/* gauge */
+.lv-gauge-dial {
+  position: relative;
+  max-width: 230px;
+  margin: 0.6rem auto 0;
+}
+
+.lv-gauge-dial svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.lv-gauge-track,
+.lv-gauge-fill {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+}
+
+.lv-gauge-track {
+  stroke: var(--bg-inset);
+}
+
+.lv-gauge-fill {
+  stroke: var(--lv-me);
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+  transition: stroke-dashoffset 1.2s var(--ease), opacity 0.2s;
+}
+
+.lv-gauge.is-on .lv-gauge-fill {
+  opacity: 1;
+  stroke-dashoffset: calc(100 - var(--v, 0));
+}
+
+.lv-gauge-num {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.2rem;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.15rem;
+  line-height: 1;
+}
+
+.lv-gauge-num b {
+  font-family: var(--lv-display);
+  font-weight: 400;
+  font-size: 2.7rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.lv-gauge-num span {
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+}
+
+.lv-gauge-num em {
+  font-style: normal;
+  font-family: var(--lv-display);
+  font-size: 0.95rem;
+  margin-left: 0.4rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  align-self: center;
+}
+
+.lv-gauge-cap {
+  margin: 0.55rem 0 0;
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--fg-muted);
+}
+
+/* stage track */
+.lv-track-score {
+  font-family: var(--lv-display);
+  color: var(--accent);
+}
+
+.lv-track-rail {
+  position: relative;
+  height: 32px;
+  margin: 1.3rem 0.5rem 0.2rem;
+}
+
+.lv-track-rail::before,
+.lv-track-fill {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 13px;
+  height: 6px;
+  border-radius: 6px;
+}
+
+.lv-track-rail::before {
+  right: 0;
+  background: var(--bg-inset);
+}
+
+.lv-track-fill {
+  width: 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--lv-me) 45%, transparent), var(--lv-me));
+  transition: width 1.3s var(--ease);
+}
+
+.lv-track.is-on .lv-track-fill {
+  width: var(--at, 0%);
+}
+
+.lv-track-rail ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lv-track-rail li {
+  position: absolute;
+  left: var(--x);
+  top: 16px;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 2px solid var(--line-strong);
+  transition: background-color 0.3s 0.9s, border-color 0.3s 0.9s;
+}
+
+.lv-track.is-on .lv-track-rail li.is-past,
+.lv-track.is-on .lv-track-rail li.is-now {
+  background: var(--lv-me);
+  border-color: var(--lv-me);
+}
+
+.lv-track-mark {
+  position: absolute;
+  left: 0;
+  top: 16px;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  transition: left 1.3s var(--ease);
+}
+
+.lv-track-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: var(--lv-me);
+  stroke: var(--bg-raised);
+  stroke-width: 1.6;
+  transform: scale(0.75);
+  transition: transform 0.45s var(--lv-spring) 1.15s;
+}
+
+.lv-track.is-on .lv-track-mark {
+  left: var(--at, 0%);
+}
+
+.lv-track.is-on .lv-track-mark svg {
+  transform: scale(1);
+}
+
+.lv-track-ends {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+}
+
+.lv-track-now {
+  margin: 0.7rem 0 0;
+}
+
+.lv-track-now b {
+  display: block;
+  font-family: var(--lv-display);
+  font-weight: 400;
+  font-size: 1.22rem;
+  line-height: 1.3;
+  color: var(--accent);
+}
+
+.lv-track-now span {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  margin-top: 0.15rem;
+}
+
+/* app-style analysis cards */
+.lv-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.75rem;
+}
+
+.lv-card-head h4 {
+  font-size: 1.08rem;
+}
+
+.lv-card-head p {
+  margin: 0.05rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--fg-muted);
+}
+
+.lv-card-emoji {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 13px;
+  background: var(--accent-soft);
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.lv-signals,
+.lv-awards,
+.lv-stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lv-signals li,
+.lv-awards li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.lv-signals li:first-child,
+.lv-awards li:first-child,
+.lv-stats li:first-child {
+  border-top: 0;
+}
+
+.lv-signals b,
+.lv-awards b {
+  display: block;
+  font-weight: 400;
+  font-family: var(--lv-display);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.lv-signals small,
+.lv-awards small {
+  display: block;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--fg-muted);
+}
+
+.lv-dot {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.15rem;
+  border-radius: 50%;
+  background: var(--lv-ok);
+  position: relative;
+}
+
+.lv-dot::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--bg-raised);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.is-mid .lv-dot {
+  background: var(--lv-mid);
+}
+
+.is-mid .lv-dot::after {
+  left: 4px;
+  top: 7px;
+  width: 8px;
+  height: 0;
+  border-width: 0 0 2px 0;
+  transform: none;
+}
+
+.lv-award-emoji {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: var(--bg-inset);
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.lv-stats li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.42rem 0;
+  border-top: 1px dashed var(--line-strong);
+  font-size: 0.92rem;
+}
+
+.lv-stats li span {
+  color: var(--fg-muted);
+}
+
+.lv-stats li b {
+  font-family: var(--lv-display);
+  font-weight: 400;
+  font-size: 1.08rem;
+  white-space: nowrap;
+}
+
+.lv-card-verdict {
+  margin: 0.6rem 0 0;
+  font-family: var(--lv-display);
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+.lv-demo-foot {
+  max-width: 50rem;
+  margin: 1.6rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--fg-muted);
+}
+
+/* ---------- 5. Real screens ---------------------------------- */
+
+.lv-screens {
+  padding: var(--lv-section) 0 1rem;
+}
+
+.lv-shots {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 2.25rem);
+  align-items: start;
+}
+
+.lv-shots li:nth-child(even) {
+  margin-top: 3.5rem;
+}
+
+.lv-shots figure {
+  margin: 0;
+}
+
+.lv-shots .app-device {
+  --device-w: 100%;
+  --device-radius: 36px;
+  --device-bezel: 8px;
+}
+
+.lv-shots figcaption h3 {
+  margin: 1.15rem 0 0.25rem;
+  font-size: 1.25rem;
+}
+
+.lv-shots figcaption p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--fg-muted);
+}
+
+/* ---------- 6. Catalog --------------------------------------- */
+
+.lv-catalog {
+  padding: var(--lv-section) 0;
+}
+
+.lv-filter-bar {
+  position: sticky;
+  top: var(--nav-h, 56px);
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  margin: 0 calc(var(--lv-gutter) * -1) 1.75rem;
+  padding: 0.7rem var(--lv-gutter);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border-bottom: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+html:not(.js) .lv-filter-bar {
+  display: none;
+}
+
+.lv-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.lv-filter-status {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+}
+
+.lv-filter-status:empty {
+  display: none;
+}
+
+.lv-catalog-grid {
+  display: grid;
+  grid-template-columns: minmax(200px, 250px) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.lv-catalog-side {
+  position: sticky;
+  top: calc(var(--nav-h, 56px) + 6rem);
+}
+
+.lv-catalog-phone {
+  margin: 0;
+}
+
+.lv-catalog-phone .app-device {
+  --device-w: 100%;
+  --device-radius: 36px;
+  --device-bezel: 8px;
+}
+
+.lv-note-ad {
+  margin-top: 1.1rem;
+  font-size: 1.3rem;
+  transform: rotate(-1.5deg);
+}
+
+.lv-groups {
+  columns: 2 300px;
+  column-gap: clamp(1.75rem, 3.5vw, 3rem);
+}
+
+.lv-group {
+  break-inside: avoid;
+  margin: 0 0 2.4rem;
+}
+
+.lv-group h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  margin: 0 0 0.5rem;
+  font-size: 1.45rem;
+}
+
+.lv-gt {
+  background-image: linear-gradient(transparent 58%, color-mix(in srgb, var(--sec) 32%, transparent) 58%, color-mix(in srgb, var(--sec) 32%, transparent) 90%, transparent 90%);
+  padding: 0 0.15em;
+  margin: 0 -0.15em;
+}
+
+.lv-group h3 em {
+  font-style: normal;
+  font-family: var(--lv-body);
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  white-space: nowrap;
+}
+
+.lv-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lv-group li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.1rem 0.6rem;
+  padding: 0.7rem 0;
+  border-top: 1px dashed var(--line-strong);
+  transition: opacity 0.25s var(--ease);
+}
+
+.lv-group li:first-child {
+  border-top: 0;
+}
+
+.lv-group li b {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: var(--lv-display);
+  font-weight: 400;
+  font-size: 1.06rem;
+  line-height: 1.4;
+}
+
+.lv-group li > span {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+.lv-group li i {
+  grid-column: 2;
+  grid-row: 1;
+  font-style: normal;
+  font-size: 0.74rem;
+  line-height: 1.6;
+  padding: 0 0.55rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--sec) 55%, var(--line-strong));
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.lv-group li.is-off {
+  opacity: 0.3;
+}
+
+.lv-group-off {
+  display: none;
+  margin: 0 0 0.4rem;
+  font-family: var(--lv-hand);
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+
+.lv-group.is-off .lv-group-off {
+  display: block;
+}
+
+/* ---------- 7. Import ---------------------------------------- */
+
+.lv-import {
+  padding: var(--lv-section) 0;
+  background: var(--lv-band);
+  border-block: 1px solid var(--line);
+}
+
+.lv-import-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 6vw, 5.5rem);
+  align-items: center;
+}
+
+.lv-import-phone {
+  margin: 0;
+  justify-self: center;
+}
+
+.lv-import-phone .app-device {
+  --device-w: clamp(240px, 24vw, 290px);
+}
+
+.lv-os {
+  display: none;
+}
+
+html.js .lv-os {
+  display: flex;
+  gap: 0.45rem;
+  margin: 0 0 1.25rem;
+}
+
+.lv-steps[hidden] {
+  display: none;
+}
+
+html.js .lv-steps-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.lv-steps-title {
+  font-size: 1.2rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.lv-steps ol {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+}
+
+.lv-steps li {
+  counter-increment: step;
+  position: relative;
+  padding: 0 0 1rem 3.1rem;
+  min-height: 2.6rem;
+}
+
+.lv-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+  display: grid;
+  place-items: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 50%;
+  background: var(--lv-me);
+  color: var(--lv-me-ink);
+  font-family: var(--lv-display);
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.lv-steps li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: calc(1.075rem - 1px);
+  top: 2.4rem;
+  bottom: 0.2rem;
+  border-left: 2px dotted var(--line-strong);
+}
+
+.lv-steps li b {
+  display: block;
+  font-family: var(--lv-display);
+  font-weight: 400;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.lv-steps li span {
+  display: block;
+  color: var(--fg-muted);
+  font-size: 0.97rem;
+}
+
+.lv-extras {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 1.4rem 0 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 1rem;
+}
+
+.lv-extras b {
+  display: block;
+  font-family: var(--lv-display);
+  font-weight: 400;
+  font-size: 1.08rem;
+}
+
+.lv-extras span {
+  color: var(--fg-muted);
+  font-size: 0.97rem;
+}
+
+/* ---------- 8. Privacy --------------------------------------- */
+
+.lv-privacy {
+  padding: var(--lv-section) 0 0;
+}
+
+.lv-letter {
+  position: relative;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: clamp(2.25rem, 5vw, 3.25rem) clamp(1.4rem, 5vw, 3.25rem) clamp(1.75rem, 4vw, 2.5rem);
+  border-radius: 28px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  box-shadow: var(--lv-card-shadow);
+}
+
+.lv-letter::before {
+  /* a wax seal */
+  content: "";
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
+  border-radius: 50%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' fill-opacity='.92' d='M12 20.6s-7.6-4.6-9.4-9.3C1.4 8 3.3 4.6 6.8 4.6c2.1 0 3.5 1.2 4.3 2.5h1.8c.8-1.3 2.2-2.5 4.3-2.5 3.5 0 5.4 3.4 4.2 6.7-1.8 4.7-9.4 9.3-9.4 9.3z'/%3E%3C/svg%3E") center / 20px no-repeat,
+    radial-gradient(circle at 35% 30%, color-mix(in srgb, #fff 18%, #c2185b), #8c1046);
+  box-shadow: 0 0 0 4px var(--bg), 0 6px 14px -6px rgba(0, 0, 0, 0.5);
+}
+
+.lv-letter h2 {
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem);
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.lv-letter ul {
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.lv-letter li {
+  position: relative;
+  padding: 0.6rem 0 0.6rem 1.6rem;
+  border-top: 1px dashed var(--line-strong);
+}
+
+.lv-letter li:first-child {
+  border-top: 0;
+}
+
+.lv-letter li::before {
+  content: "";
+  position: absolute;
+  left: 0.2rem;
+  top: 1.25rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lv-me);
+}
+
+.lv-letter p {
+  margin: 0;
+  text-align: center;
+}
+
+/* ---------- 9. Closing call to action ------------------------ */
+
+.lv-cta {
+  padding: var(--lv-section) 0 calc(var(--lv-section) + 1rem);
+  text-align: center;
+  background: radial-gradient(700px 360px at 50% 70%, color-mix(in srgb, var(--lv-me) 14%, transparent), transparent 72%);
+}
+
+.lv-icon-cta {
+  width: 76px;
+  height: 76px;
+  border-radius: 22px;
+  margin: 0 auto 1.25rem;
+  display: block;
+}
+
+.lv-cta h2 {
+  max-width: 15em;
+  margin: 0 auto 0.8rem;
+  font-size: clamp(2.1rem, 1.4rem + 3vw, 3.6rem);
+  line-height: 1.12;
+}
+
+.lv-note-cta {
+  max-width: 30rem;
+  margin: 0 auto 2rem;
+  font-size: 1.45rem;
+}
+
+.lv-cta .store-badges {
+  justify-content: center;
+}
+
+/* ---------- 10. Footer --------------------------------------- */
+
+.app-kakao_love_analyzer .app-foot {
+  --app-measure: var(--lv-measure);
+  --gutter: var(--lv-gutter);
+  color: var(--fg);
+  font-family: var(--lv-body);
+}
+
+.app-kakao_love_analyzer .app-foot code {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+/* ---------- 11. Responsive ----------------------------------- */
+
+@media (max-width: 1080px) {
+  .lv-stage {
+    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  }
+  .lv-report {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 960px) {
+  .lv-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lv-hero-time {
+    display: none;
+  }
+  .lv-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lv-phone {
+    width: 100%;
+    max-width: 460px;
+    height: 560px;
+    margin: 0 auto;
+  }
+  .lv-report {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lv-shots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 640px;
+  }
+  .lv-catalog-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lv-catalog-side {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    order: 2;
+  }
+  .lv-catalog-phone {
+    flex: 0 0 180px;
+  }
+  .lv-import-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lv-import-phone {
+    order: 2;
+  }
+}
+
+@media (max-width: 680px) {
+  .lv-report {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lv-compare {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lv-shots {
+    display: flex;
+    gap: 1rem;
+    max-width: none;
+    margin: 0 calc(var(--lv-gutter) * -1);
+    padding: 0 var(--lv-gutter) 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--lv-gutter);
+    overscroll-behavior-x: contain;
+  }
+  .lv-shots li {
+    flex: 0 0 68%;
+    max-width: 260px;
+    scroll-snap-align: start;
+  }
+  .lv-shots li:nth-child(even) {
+    margin-top: 0;
+  }
+  .lv-groups {
+    columns: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .lv-hero h1 {
+    font-size: clamp(2.5rem, 1.4rem + 7vw, 3.2rem);
+  }
+  .lv-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+  }
+  .lv-seg-label {
+    display: none;
+  }
+  .lv-phone {
+    height: 520px;
+    border-radius: 28px;
+  }
+  .lv-catalog-side {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .lv-catalog-phone {
+    flex: none;
+    width: 200px;
+  }
+  .lv-report.is-pending .lv-report-head::after {
+    margin-left: 0;
+    width: 100%;
+  }
+  .lv-filter-bar {
+    padding-block: 0.55rem;
+  }
+  .lv-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 calc(var(--lv-gutter) * -1);
+    padding: 0 var(--lv-gutter);
+  }
+  .lv-filter::-webkit-scrollbar {
+    display: none;
+  }
+  .lv-filter .lv-chip {
+    flex: none;
+  }
+}
+
+/* ---------- 12. Reduced motion ------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .lv-msg,
+  .lv-typing .lv-bubble i,
+  .lv-status[data-status="analyzing"] .lv-status-bar i {
+    animation: none;
+  }
+  .lv-block,
+  .lv-beam,
+  .lv-weight,
+  .lv-weight > span,
+  .lv-split i,
+  .lv-gauge-fill,
+  .lv-track-fill,
+  .lv-track-rail li,
+  .lv-track-mark,
+  .lv-track-mark svg,
+  .lv-status-bar i,
+  .lv-group li,
+  .lv-chip,
+  .lv-seg-btn {
+    transition: none;
+  }
+  .lv-chat {
+    scroll-behavior: auto;
+  }
+}
