@@ -1833,6 +1833,153 @@ html.motion-off .love-fill {
   color: var(--tint);
 }
 
+/* Visual Metronome — a dark stage, an orb and four beat lights at 120 BPM */
+/* the screen stays a dark stage in both themes; only the label needs a deeper brass on light */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .phone-brass .phone-label i {
+    color: #8a6420;
+  }
+}
+
+:root[data-theme="light"] .phone-brass .phone-label i {
+  color: #8a6420;
+}
+
+.ui-vm {
+  background:
+    radial-gradient(80% 45% at 50% 30%, color-mix(in srgb, var(--tint) 16%, transparent), transparent 70%),
+    linear-gradient(180deg, #0c0c0e 0%, #17171b 100%);
+  color: #8e8a82;
+}
+
+.ui-vm .ui-appbar b,
+.ui-vm .ui-rows > span {
+  color: #efeae0;
+}
+
+.ui-vm .ui-rows > span,
+.ui-vm .ui-chips span {
+  background: #1d1d22;
+  border-color: #2a2a30;
+}
+
+.ui-vm .ui-chips span.on {
+  background: var(--tint);
+  color: #17120a;
+}
+
+.vm-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1.25;
+  margin: 2px 0;
+}
+
+.vm-orb {
+  position: absolute;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--tint) 85%, #fff) 0%, var(--tint) 38%, color-mix(in srgb, var(--tint) 30%, transparent) 62%, transparent 72%);
+  opacity: 0.55;
+  transform: scale(0.86);
+}
+
+.is-live .vm-orb {
+  animation: vmPulse 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
+}
+
+.vm-stage b {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff8ea;
+  letter-spacing: -0.03em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+}
+
+.vm-stage em {
+  position: absolute;
+  bottom: 14%;
+  font-style: normal;
+  font-size: 7.5px;
+  letter-spacing: 0.2em;
+  color: #efeae0;
+  opacity: 0.7;
+}
+
+.vm-beats {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.vm-beats i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #2a2a30;
+}
+
+.vm-beats i:first-child {
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--tint) 55%, transparent);
+}
+
+.is-live .vm-beats i {
+  animation: vmBeat 2s steps(1, end) infinite;
+}
+
+.is-live .vm-beats i:nth-child(2) { animation-delay: 0.5s; }
+.is-live .vm-beats i:nth-child(3) { animation-delay: 1s; }
+.is-live .vm-beats i:nth-child(4) { animation-delay: 1.5s; }
+
+html.motion-off .vm-beats i:first-child {
+  background: var(--tint);
+}
+
+@keyframes vmPulse {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.86); opacity: 0.55; }
+}
+
+@keyframes vmBeat {
+  0% { background: var(--tint); }
+  18% { background: #2a2a30; }
+}
+
+/* 슬쩍 — a deleted bubble, and the copy the app kept */
+.phone-peek {
+  --tint: #f2d43a;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .phone-peek {
+    --tint: #8f6f00;
+  }
+}
+
+:root[data-theme="light"] .phone-peek {
+  --tint: #8f6f00;
+}
+
+.chat i.ks-gone {
+  color: var(--fg-faint);
+  font-style: italic;
+  border-style: dashed;
+}
+
+.chat i.ks-kept {
+  border-color: color-mix(in srgb, var(--tint) 55%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tint) 14%, transparent);
+}
+
+.chat i.ks-kept em {
+  color: var(--tint);
+}
+
 /* ---------- 8. /music/ — waveform ------------------------------ */
 
 .chapter-music {
@@ -2069,6 +2216,8 @@ html.motion-off .love-fill {
   .db-plus,
   .db-shot,
   .love-pair b,
+  .vm-orb,
+  .vm-beats i,
   .wave-bars b,
   .hero-cue-line::after,
   .hero-eyebrow::after,

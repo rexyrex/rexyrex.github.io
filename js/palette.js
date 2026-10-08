@@ -17,7 +17,8 @@
             { title: 'Deadly Balloons 2', path: '/deadlyBalloons/index.html', hint: '/deadlyBalloons/', keys: 'balloons desktop game download trailer' },
             { title: 'Music', path: '/music/showcase.html', hint: '/music/', keys: 'music soundcloud superpose newgrounds tracks audio' },
             { title: 'Animation lab', path: '/animation.html', hint: '/animation.html', keys: 'lab css text effects vue scratchpad animation' },
-            { title: 'Apps & privacy policies', path: '/apps/', hint: '/apps/', keys: 'apps privacy policy store google play app store' },
+            { title: 'Apps', path: '/#apps', hint: 'every app, on the home page', keys: 'apps mobile store google play app store android ios' },
+            { title: 'Privacy policies', path: '/apps/', hint: '/apps/', keys: 'privacy policy policies apps store' },
             { title: 'Devlog', path: '/log/', hint: '/log/', keys: 'log blog devlog notes writing how it works' },
             { title: 'Support', path: '/support/', hint: '/support/', keys: 'support contact email help bug feedback' },
             { title: 'KakaoParser help', path: '/parser/index.html', hint: '/parser/', keys: 'kakaoparser kakaotalk 카카오톡 faq 이용약관 help docs' },
@@ -32,14 +33,16 @@
             { title: 'CHESSLINGS', path: 'https://chess.rexy.win', hint: '3D chess with tiny champions', keys: 'chesslings chess 3d strategy' }
         ],
         apps: [
-            { title: 'Age Calculator', path: '/apps/age_calculator/privacy-policy/', hint: 'Google Play · privacy policy', keys: 'age calculator birthday' },
-            { title: 'QR Scanner', path: '/apps/qr_scanner/privacy-policy/', hint: 'Google Play · privacy policy', keys: 'qr barcode scanner' },
-            { title: 'Reverse Image Search', path: '/apps/reverse_image_search/privacy-policy/', hint: 'Google Play · privacy policy', keys: 'reverse image search google bing yandex tineye' },
-            { title: 'Photo Exif Metadata Editor', path: 'https://play.google.com/store/apps/details?id=com.rexyrex.exif', hint: 'Google Play', keys: 'exif metadata photo editor remover' },
-            { title: 'Deadly Balloons (mobile)', path: '/apps/deadly_balloons/privacy-policy/', hint: 'Google Play · privacy policy', keys: 'deadly balloons mobile android' },
-            { title: '카카오톡 대화 분석기 (KakaoParser)', path: '/apps/kakaoparser/privacy-policy/', hint: 'Google Play · App Store · privacy policy', keys: 'kakaoparser kakaotalk 카카오톡 대화 분석기 chat analyzer' },
-            { title: '카톡 연애 분석기', path: '/apps/kakao_love_analyzer/privacy-policy/', hint: 'Google Play · App Store · privacy policy', keys: 'kakao love analyzer 연애 분석기 궁합' },
-            { title: '사주 분석기', path: 'https://play.google.com/store/apps/details?id=com.rexyrex.saju', hint: 'Google Play', keys: 'saju 사주 운세 fortune' }
+            { title: 'How Old Are You? Age Test', path: '/apps/age_calculator/', hint: 'Google Play · App Store', keys: 'age test calculator how old senses hearing reaction memory vision tap trail' },
+            { title: 'QR Scanner: Scan & Create', path: '/apps/qr_scanner/', hint: 'Google Play', keys: 'qr code scanner generator create wifi contact' },
+            { title: 'Reverse Image Search', path: '/apps/reverse_image_search/', hint: 'Google Play · App Store', keys: 'reverse image search ris google lens bing yandex tineye' },
+            { title: 'Photo Exif Metadata Editor', path: '/apps/exif/', hint: 'Google Play', keys: 'exif metadata photo editor remover gps strip' },
+            { title: 'Deadly Balloons: Bullet Hell', path: '/apps/deadly_balloons/', hint: 'Google Play · App Store', keys: 'deadly balloons mobile bullet hell game android ios' },
+            { title: 'Visual Metronome', path: '/apps/visual_metronome/', hint: 'Google Play · App Store', keys: 'visual metronome bpm tempo rhythm tap music beat' },
+            { title: '카톡 정밀 분석기', path: '/apps/kakaoparser/', hint: 'Google Play · App Store', keys: 'kakaoparser kakaotalk 카카오톡 카톡 정밀 대화 분석기 chat analyzer' },
+            { title: '카카오톡 연애 분석기', path: '/apps/kakao_love_analyzer/', hint: 'Google Play · App Store', keys: 'kakao love analyzer 카카오톡 연애 분석기 썸 호감도 궁합' },
+            { title: '슬쩍', path: '/apps/katalk_keeper/', hint: 'Google Play', keys: 'katalk keeper 슬쩍 카톡 몰래보기 읽음 삭제된 메시지 notification' },
+            { title: '사주 분석기', path: '/apps/saju/', hint: 'Google Play', keys: 'saju 사주 분석기 운세 궁합 대운 타로 fortune' }
         ],
         mac: [
             { title: 'Rex Boing', path: 'https://github.com/rexyrex/Rex-Boing', hint: 'menu bar telemetry · open source', keys: 'rex boing macos mac menu bar system monitor cpu gpu memory thermals telemetry dinosaur swift' },

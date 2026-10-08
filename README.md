@@ -14,7 +14,8 @@ Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) — an inde
 | `/log/` | Devlog: hand-written HTML posts (`log/*.html`, styled by `log/log.css`), newest first |
 | `/parser/` | KakaoParser companion pages: admin tools (query/download, Bootstrap 5) + Korean help & ToS docs |
 | `/support/` | App store support/contact page |
-| `/apps/` | **Generated** privacy-policy pages — see below |
+| `/apps/<app_id>/` | **App landing pages**, hand-built, one per public app — see [App landing pages](#app-landing-pages) |
+| `/apps/` | **Generated** privacy-policy index and `/apps/<app_id>/privacy-policy/` pages — see below |
 | `/404.html` | Served by GitHub Pages for unknown paths: the path that failed, a terminal that says so, "did you mean" from the site index |
 | `/smartthings-callback.html` | OAuth hand-off shim for the Project Manager app — do not modify |
 
@@ -40,7 +41,7 @@ The landing page is an Apple-style scroll story. Files: `css/landing.css` (hero,
 - **Statement** — SplitText words scrubbed from faint to full, then the section pins for ~130% of the viewport while the dot charges, flashes and bursts across the screen (`window.rexHero.burst`). Rendering pauses once the burst is over.
 - **/typing/** — a plain section; the editor mockup types generic Korean, English and code sentences on its own (time-based, human-ish rhythm) while it is on screen, cycling through the tabs.
 - **/deadlyBalloons/** — pinned sky with thirty generated balloons at random depths (nearer = bigger, faster, on top; far = small and soft). A dozen pop on their own along the ride — ring flash, shards, "+100" — and every other balloon pops when clicked. A HUD keeps score.
-- **/apps/** — pinned horizontal track of eight CSS phones, each a small app mockup (status bar, app bar, cards, charts, chat, a mini game) with one tint per app. Phones tilt toward the pointer; their bars, rings and sparklines animate in when they come on screen. Native snap scrolling on narrow screens and in windows under 700px tall.
+- **/apps/** — pinned horizontal track of CSS phones, one per public app, each a small app mockup (status bar, app bar, cards, charts, chat, a mini game, a metronome) with one tint per app; every phone opens that app's landing page. Phones tilt toward the pointer; their bars, rings and sparklines animate in when they come on screen. Native snap scrolling on narrow screens and in windows under 700px tall.
 - **games.rexy.win** — a plain reveal section (not pinned): one "browser window" per game, each drawn in CSS in the game's two accent colours from the portal's registry (tile maze + fire eggs, crosshair over a perspective floor, circuit traces, flashlight beam + blinking eyes, a self-drawing scribble, a chessboard). The "dino network" pill turns green when `rexChrome.pingGames()` resolves. The cards are static HTML — when the portal adds a game, add a card here, a row in the index and an entry in `js/palette.js`. Keep the copy count-free: the public pages describe the portal with adjectives ("multiplayer browser games"), never a tally, and never say where it is hosted.
 - **/Applications/** — a plain reveal section: one little macOS desktop per native app — a menu bar with the app's own status item, and a window or a popover hanging from it, all drawn in CSS. Bars fill, the pixel rex in Rex Boing's menu bar gallops and the usage ring lights once a card is on screen (`.is-live`, the same observer as the phones). Rex Boing links to its GitHub repo and releases; App Manager, Project Manager and AI Usage Tracker are in-house tools and their cards are static.
 - **~/teslamate-dashboard/** — the car's own screen: a dark map with a route that draws itself and a dot that follows it (SMIL `animateMotion`, removed under reduced motion), glass cards and four rolling charts. The speed counts up once on screen. The dashboard itself is private: nothing here links to it, and the copy never says where it runs.
@@ -69,7 +70,7 @@ Rules that keep it working:
 
 - **Mounting** — the fragment is cached in `sessionStorage` (`rex-navbar-html`) and mounted synchronously from the cache on the next page, so the bars already exist when a view transition snapshots the new page; the network copy refreshes the cache in the background. A change to `navbar.html` therefore reaches a visitor on their *next* page load.
 - **Skip link** — first in the tab order; `common.js` points it at `<main>` (given `id="main"` and `tabindex="-1"` if missing), or at the first content block on pages without a `<main>` (the typing game, the generated policies).
-- **Top bar** — typing · balloons · games ↗ · music · apps · log · support · github ↗, then the palette button (`⌘K`, `Ctrl K` on other platforms; icon only on touch). The animation lab is reachable from the index, the footer and the palette rather than the top bar. The hidden Parser admin dropdown is still in the fragment.
+- **Top bar** — typing · balloons · games ↗ · music · apps (→ `/#apps`, lit on every `/apps/…` page via `data-match`) · log · support · github ↗, then the palette button (`⌘K`, `Ctrl K` on other platforms; icon only on touch). The animation lab is reachable from the index, the footer and the palette rather than the top bar. The hidden Parser admin dropdown is still in the fragment.
 - **Status bar** — left: branch (links to the repo) with the age of the last commit from the GitHub API (`api.github.com/repos/…/commits`, cached per tab for ten minutes, silent on failure) and the current path (`~/typing/index.html`); right: a games-portal dot, `Ln` following scroll, `Col` following the pointer, scroll percentage, encoding, the **theme toggle** and a second palette button.
 - **Games ping** — `rexChrome.pingGames()` makes one opaque (`mode: 'no-cors'`) request to `https://games.rexy.win/api/status`: it resolves when the server answers at all and rejects when it does not, so it is an honest "up" that never logs a CORS error. The status API sends no CORS header yet; once games-infra adds `Access-Control-Allow-Origin`, the same call can read per-game status.
 - **Theme** — the choice is stored in `localStorage` under `rex-theme`. Hand-written pages run a one-line inline script in `<head>` that applies it before first paint; generated pages get it when `common.js` loads. `common.js` also keeps a media-less `<meta name="theme-color">` in sync (the two media-gated ones in each page cover the first paint) and dispatches `rex:theme` when it changes. `window.rexChrome` exposes `effectiveTheme`, `setTheme`, `toggleTheme`, `pingGames`.
@@ -95,6 +96,39 @@ node _tools/og/render.mjs typing 404 # just those cards
 
 To add a page: an entry in `CARDS` there, the meta block in the page's `<head>` (copy one from `support/index.html`), a row in `sitemap.xml`, an entry in `js/palette.js`.
 
+The app landing pages are the exception: their card is the app's own store feature graphic, copied to `/assets/og/apps/<app_id>.jpg` (1024×500), so they have no entry in `CARDS`.
+
+## App landing pages
+
+Every app that is public on Google Play or the App Store has its own page at `/apps/<app_id>/` (the App Manager id; one page per product, so the Play-only Java KakaoParser and its Flutter iOS twin share `/apps/kakaoparser/`). Each page is designed for its app — palette from the app's own theme, its own Google Fonts pairing, its own layout and one interactive demo — while keeping the site chrome and the light/dark toggle. Korean-market apps get Korean pages.
+
+| Path | App | Stores |
+|---|---|---|
+| `/apps/age_calculator/` | How Old Are You? Age Test | Play · App Store |
+| `/apps/qr_scanner/` | QR Scanner: Scan & Create | Play |
+| `/apps/reverse_image_search/` | Reverse Image Search | Play · App Store |
+| `/apps/exif/` | Photo Exif Metadata Editor | Play |
+| `/apps/deadly_balloons/` | Deadly Balloons: Bullet Hell | Play · App Store |
+| `/apps/visual_metronome/` | Visual Metronome | Play · App Store |
+| `/apps/kakaoparser/` | 카톡 정밀 분석기 | Play · App Store |
+| `/apps/kakao_love_analyzer/` | 카카오톡 연애 분석기 | Play · App Store |
+| `/apps/katalk_keeper/` | 슬쩍 | Play |
+| `/apps/saju/` | 사주 분석기 | Play |
+
+Files per app: `apps/<id>/index.html`, `page.css`, `page.js` (dependency-free), `img/` (WebP screen captures, icon), and the social card `/assets/og/apps/<id>.jpg` (the store feature graphic, 1024×500). Shared pieces live in `/css/app-page.css` — store buttons, the `.app-device` phone frame for real screen captures, the `.app-foot` footer — and a new page starts from `_tools/app-page/skeleton.html`. Each page sets the site tokens (`--bg`, `--fg`, `--accent`, …) for both themes so the top bar and status bar sit on its palette.
+
+These pages sit beside the generated policies but App Manager never touches them: it only writes `apps/index.html` and `apps/<id>/privacy-policy/index.html`, and it indexes only directories that contain a policy.
+
+To add an app when it goes public: build the page from the skeleton, then add a phone to the home page `#apps` chapter, an entry in `js/palette.js` (`INDEX.apps`), a row in `sitemap.xml`, its policy on `/support/`, and a row in the table above. Check it with the screenshot tool:
+
+```
+node _tools/shot/shot.mjs http://localhost:8123/apps/<id>/ --out /tmp/<id> --theme dark --at 0,0.5,1
+node _tools/shot/shot.mjs http://localhost:8123/apps/<id>/ --out /tmp/<id>-m --mobile --theme light
+node _tools/shot/shot.mjs http://localhost:8123/apps/<id>/ --out /tmp/<id>-r --reduced --full
+```
+
+It drives headless Chrome over the DevTools protocol (Node 22, no npm) and prints console errors, exceptions and failed requests; exit code 1 if there are any.
+
 ## Generated pages — do not hand-edit
 
 `apps/index.html` and every `apps/<app_id>/privacy-policy/index.html` are generated by the external **App Manager** tool, which rewrites `apps/index.html` wholesale on each run (display names are parsed from each page's `<title>` after the ` — ` separator). Style them only via the `body > main.privacy-article` / `.privacy-meta` / `ul.apps-index` rules in `/css/index.css`. Those selectors are deliberately one element more specific than the generator's inline `<style>` so the site theme wins. (The generated `apps/index.html` omits `common.js`, so it renders without the chrome; the policy pages include it.)
@@ -118,4 +152,4 @@ To add a page: an entry in `CARDS` there, the meta block in the page's `<head>` 
 - Vue 3.5 (animation lab)
 - Firebase compat 8.2.8 (typing game, parser tools)
 
-`common.js`, `palette.js`, `motion.js` and the 404 page are dependency-free on purpose.
+`common.js`, `palette.js`, `motion.js`, the app landing pages' scripts and the 404 page are dependency-free on purpose.

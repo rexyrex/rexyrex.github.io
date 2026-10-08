@@ -64,6 +64,15 @@
     // Browser chrome (mobile address bar, PWA title bar) follows the page.
     // A theme-color meta without a media query, placed first, wins over the
     // two media-gated ones hand-written pages ship for the first paint.
+    // The colour is the page's own --bg, so the app landing pages (which
+    // set their own palette) keep their colour; the site's two values are
+    // the fallback when --bg is missing or not a plain colour.
+    function pageBackground(t) {
+        var v = '';
+        try { v = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(); } catch (e) {}
+        return /^(#[0-9a-f]{3,8}|(rgb|hsl)a?\()/i.test(v) ? v : (THEME_COLORS[t] || THEME_COLORS.dark);
+    }
+
     function syncThemeColor() {
         var t = effectiveTheme();
         var meta = document.querySelector('meta[name="theme-color"]:not([media])');
@@ -74,7 +83,7 @@
             if (first && first.parentNode) first.parentNode.insertBefore(meta, first);
             else document.head.appendChild(meta);
         }
-        meta.setAttribute('content', THEME_COLORS[t] || THEME_COLORS.dark);
+        meta.setAttribute('content', pageBackground(t));
     }
 
     function emit(name, detail) {
@@ -156,7 +165,9 @@
 
     // A link is "active" when it points into the directory the visitor is
     // in (so /typing/index.html lights up for any page under /typing/), or
-    // to this exact root-level file (animation.html).
+    // to this exact root-level file (animation.html), or when the page sits
+    // under the link's data-match prefix ("apps" → /#apps is lit on every
+    // /apps/… page: the app pages and their privacy policies).
     function highlightActiveLinks(nav) {
         var here = window.location.pathname;
         var hereDir = dirOf(here);
@@ -169,11 +180,13 @@
             var target = url.pathname;
             var targetDir = dirOf(target);
             var active = false;
-            if (targetDir !== '/' && targetDir === hereDir) active = true;
+            var match = a.getAttribute('data-match');
+            if (match) active = here.indexOf(match) === 0;
+            else if (targetDir !== '/' && targetDir === hereDir) active = true;
             else if (targetDir === '/' && target === here) active = true;
             if (active) {
                 a.classList.add('active');
-                a.setAttribute('aria-current', 'page');
+                a.setAttribute('aria-current', match ? 'true' : 'page');
                 var parent = a.closest('.site-nav-item');
                 if (parent) {
                     var toggle = parent.querySelector('.site-dropdown-toggle');
