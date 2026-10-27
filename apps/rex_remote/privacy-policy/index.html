@@ -13,10 +13,11 @@
 <div id="nav-placeholder"></div>
 <main class="privacy-article">
 <h1>Privacy Policy for Rex Remote</h1>
-<p><strong>Effective Date:</strong> 2026-10-26</p>
-<p>Rex Remote shows live statistics, history, widgets and alerts for Linux, macOS and Windows servers that you add yourself. It connects directly from your device to those servers over SSH. There is no Rex Remote account, no Rex Remote server and no cloud service in between.</p>
+<p><strong>Effective Date:</strong> 2026-10-27 (ads, usage statistics and crash reports added)</p>
+<p>Rex Remote shows live statistics, history, widgets and alerts for Linux, macOS and Windows servers that you add yourself. It connects directly from your device to those servers over SSH. There is no Rex Remote account and no Rex Remote server, and nothing passes between your device and your servers through anyone else.</p>
 <h2>1. Information We Collect</h2>
-<p>We do not collect any information. Rex Remote contains no analytics, advertising, crash reporting or tracking code, and the developer never receives data from the app.</p>
+<p>Your servers, their names, addresses, user names, keys and readings stay on your device and go only to the servers themselves (sections 2 and 3). They are never sent to us, to Google or to anyone else.</p>
+<p>The app is free and shows ads from Google AdMob (section 4), and uses Google Firebase for anonymous usage statistics and crash reports (section 5). Those services receive the device and usage information described there.</p>
 <h2>2. Information Stored on Your Device</h2>
 <p>To work, the app keeps the following on your device only:</p>
 <ul>
@@ -31,20 +32,43 @@
 <p>Removing a server in the app deletes its entry and readings from the device. Uninstalling the app deletes the rest; on iOS the system may keep the app’s key in the Keychain after an uninstall, and the app reuses it if you install it again.</p>
 <h2>3. Connections the App Makes</h2>
 <p>The app connects only to the servers you add, using SSH, from your device. On those servers it can only start the Rex Boing agent: the key it authorises is restricted so that it cannot open a shell or forward connections. The setup command the app shows you downloads the agent from the project’s public GitHub releases page; that download is made by your server, not by the app.</p>
-<p>In demo mode the app replays bundled sample recordings and opens no network connections at all.</p>
-<h2>4. Sharing Your Information</h2>
-<p>We do not share, sell or transfer any information, because the app sends none to us or to any third party. When you use the share button, the text you share goes only where you choose to send it.</p>
-<h2>5. Notifications and Background Refresh</h2>
+<p>In demo mode the app replays bundled sample recordings and connects to no servers.</p>
+<h2>4. Advertising (Google AdMob)</h2>
+<p>The app shows a banner ad at the bottom of the server list and of each server’s dashboard. To serve and measure ads and to prevent fraud, Google may collect advertising identifiers (Android advertising ID, iOS IDFA), device and app information, approximate location derived from your IP address, and your interactions with the ads.</p>
+<ul>
+<li><p>In the European Economic Area, the United Kingdom and Switzerland, Google’s consent form asks before ads are personalised. You can change your choice at any time under Settings › About › Ad privacy choices.</p>
+</li>
+<li><p>On iOS, the IDFA is used only if you allow tracking when the app asks; if you don’t, ads are not personalised and every feature works the same.</p>
+</li>
+<li><p>Server names, addresses and readings are never used for or shared with advertising.</p>
+</li>
+<li><p>Google’s privacy policy: <a href="https://policies.google.com/privacy" rel="noopener nofollow">policies.google.com/privacy</a>; how Google uses information from apps that use its services: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener nofollow">policies.google.com/technologies/partner-sites</a>.</p>
+</li>
+</ul>
+<h2>5. Usage Statistics and Crash Reports (Google Firebase)</h2>
+<p>To improve the app and fix errors, it uses Google Analytics for Firebase and Firebase Crashlytics. They receive:</p>
+<ul>
+<li><p><strong>Usage events:</strong> which screens are opened and which features are used, for example that a server was added with a pairing code or a one-time login, that demo mode or alerts were switched on, and how many servers the app has.</p>
+</li>
+<li><p><strong>Crash and error reports:</strong> the stack trace and the state of the app when something fails. Errors from network connections and stored data are reduced to their type, because their messages can contain addresses.</p>
+</li>
+<li><p><strong>Device information:</strong> an app-instance identifier, device model, operating system and app version, and country or region derived from your IP address.</p>
+</li>
+</ul>
+<p>They never include server names, addresses, ports, user names, passwords, keys or readings. Firebase Analytics does not read the advertising identifier and sends no signals for ad personalisation. Usage statistics are kept for up to 14 months and crash reports for 90 days. Firebase’s privacy information: <a href="https://firebase.google.com/support/privacy" rel="noopener nofollow">firebase.google.com/support/privacy</a>.</p>
+<h2>6. Sharing Your Information</h2>
+<p>We do not sell any information. Apart from Google’s ad and Firebase services described above, which process it on our behalf or under their own policies, nothing is shared with third parties. When you use the share button, the text you share goes only where you choose to send it.</p>
+<h2>7. Notifications and Background Refresh</h2>
 <p>If you allow notifications, alerts about your servers are created on your device from readings the app fetched itself. Background refresh, when allowed by your operating system, makes the same direct SSH connections to your servers to keep widgets and alerts current.</p>
-<h2>6. Children’s Privacy</h2>
-<p>Rex Remote is a tool for server administrators and is not directed to children. It collects no personal information from anyone, including children.</p>
-<h2>7. Data Security</h2>
+<h2>8. Children’s Privacy</h2>
+<p>Rex Remote is a tool for server administrators and is not directed to children under 13 (or the minimum age in your country). We do not knowingly collect personal information from children.</p>
+<h2>9. Data Security</h2>
 <p>Connections to your servers are encrypted with SSH, and each server’s host key is pinned so that a changed key stops the connection. The app’s private key is kept in the operating system’s secure storage.</p>
-<h2>8. Your Rights</h2>
-<p>Because we hold no information about you, there is nothing for us to access, correct or delete. You can remove what the app stores by removing your servers in the app or uninstalling it. To take the app’s access away from a server, use the app’s option to uninstall the agent from that server, or delete the app’s line from the server’s <code>authorized_keys</code> file.</p>
-<h2>9. Changes to This Policy</h2>
+<h2>10. Your Rights</h2>
+<p>We hold no account or profile about you. You can remove what the app stores by removing your servers in the app or uninstalling it. You can reset or limit the advertising identifier in your device’s privacy settings, change your ad consent in the app, and ask us at the address below to delete the Firebase data linked to your app installation. To take the app’s access away from a server, use the app’s option to uninstall the agent from that server, or delete the app’s line from the server’s <code>authorized_keys</code> file.</p>
+<h2>11. Changes to This Policy</h2>
 <p>If this policy changes, the new version will be published at this address with a new effective date.</p>
-<h2>10. Contact Us</h2>
+<h2>12. Contact Us</h2>
 <p><strong>Rexyrex</strong>
 Email: <a href="mailto:rexyrex.dev@gmail.com" rel="noopener nofollow">rexyrex.dev@gmail.com</a></p>
 
