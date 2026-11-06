@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>우리 방 퀴즈 — 카톡 정밀 분석기</title>
+    <!-- Quiz pages carry real chat snippets: never index them. -->
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <meta name="description" content="친구가 우리 방 카톡 대화로 만든 퀴즈. 몇 점 나오는지 도전해보세요!">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/kakaoparser/img/icon-64.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="🧩 우리 방 퀴즈에 도전!">
+    <meta property="og:description" content="우리 방 대화로 만든 퀴즈예요. 누가 한 말인지 맞혀보세요. 앱 없이 바로 풀 수 있어요.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/kakaoparser.jpg">
+    <meta property="og:locale" content="ko_KR">
+    <style>
+        :root {
+            --bg: #f2f3f7;
+            --sheet: #ffffff;
+            --inset: #eef0f4;
+            --ink: #17181c;
+            --ink-2: #50545d;
+            --rule: #d6d9e0;
+            --accent: #fee500;
+            --accent-ink: #191919;
+            --chat-bg: #b2c7da;
+            --bubble: #ffffff;
+            --bubble-ink: #191919;
+            --chat-name: #3a4a5a;
+            --ok: #dcfce7;
+            --ok-line: #16a34a;
+            --ok-ink: #14532d;
+            --bad: #fee2e2;
+            --bad-line: #dc2626;
+            --bad-ink: #7f1d1d;
+            --me: #fff7c2;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #121316;
+                --sheet: #1c1d22;
+                --inset: #26282e;
+                --ink: #eceef2;
+                --ink-2: #a8adb7;
+                --rule: #33363d;
+                --chat-bg: #2b3a48;
+                --bubble: #3a3d44;
+                --bubble-ink: #eceef2;
+                --chat-name: #b9c6d3;
+                --ok: #14361f;
+                --ok-ink: #bbf7d0;
+                --bad: #3b1717;
+                --bad-ink: #fecaca;
+                --me: #3a3413;
+            }
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+        }
+        main {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+        }
+        .card {
+            background: var(--sheet);
+            border: 1px solid var(--rule);
+            border-radius: 18px;
+            padding: 20px;
+            margin-top: 14px;
+        }
+        h1 { font-size: 22px; margin: 4px 0 2px; word-break: keep-all; }
+        h2 { font-size: 17px; margin: 0 0 10px; word-break: keep-all; }
+        .muted { color: var(--ink-2); font-size: 14px; }
+        .small { font-size: 12px; }
+        .brand { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
+        .brand img { width: 24px; height: 24px; border-radius: 6px; }
+        .btn {
+            display: block; width: 100%;
+            border: 0; border-radius: 14px;
+            padding: 15px 16px; margin-top: 12px;
+            font: inherit; font-weight: 700; font-size: 16px;
+            background: var(--accent); color: var(--accent-ink);
+            cursor: pointer; text-align: center; text-decoration: none;
+        }
+        .btn.secondary { background: var(--inset); color: var(--ink); font-weight: 600; font-size: 15px; }
+        .btn:disabled { opacity: .5; cursor: default; }
+        input[type=text] {
+            width: 100%; margin-top: 8px;
+            padding: 13px 14px; border-radius: 12px;
+            border: 1px solid var(--rule); background: var(--inset); color: var(--ink);
+            font: inherit; font-size: 16px;
+        }
+        .progress { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-2); }
+        .bar { height: 6px; background: var(--inset); border-radius: 3px; margin: 8px 0 4px; overflow: hidden; }
+        .bar > i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .25s; }
+        .subject {
+            font-size: 22px; font-weight: 800; text-align: center;
+            padding: 18px 12px; border-radius: 14px; background: var(--inset);
+            word-break: break-all;
+        }
+        .chat { background: var(--chat-bg); border-radius: 14px; padding: 12px 10px; }
+        .msg { margin: 0 0 8px; }
+        .msg:last-child { margin-bottom: 0; }
+        .msg .name { font-size: 12px; color: var(--chat-name); margin: 0 0 2px 4px; }
+        .msg .bubble {
+            display: inline-block; max-width: 92%;
+            background: var(--bubble); color: var(--bubble-ink);
+            padding: 8px 11px; border-radius: 4px 14px 14px 14px;
+            font-size: 15px; word-break: break-word;
+        }
+        .choices { margin-top: 14px; }
+        .choice {
+            display: flex; gap: 10px; align-items: flex-start; width: 100%;
+            text-align: left; font: inherit; font-size: 15px;
+            padding: 12px 14px; margin-top: 8px;
+            border-radius: 12px; border: 1.5px solid var(--rule);
+            background: var(--sheet); color: var(--ink); cursor: pointer;
+            word-break: break-word;
+        }
+        .choice b { flex: 0 0 auto; color: var(--ink-2); }
+        .choice.ok { background: var(--ok); border-color: var(--ok-line); color: var(--ok-ink); }
+        .choice.bad { background: var(--bad); border-color: var(--bad-line); color: var(--bad-ink); }
+        .choice.ok b, .choice.bad b { color: inherit; }
+        .choice:disabled { cursor: default; }
+        .verdict { text-align: center; font-weight: 800; font-size: 18px; margin-top: 12px; min-height: 27px; }
+        .score { text-align: center; }
+        .score .big { font-size: 56px; font-weight: 900; line-height: 1.1; }
+        .score .big small { font-size: 24px; color: var(--ink-2); font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; font-size: 15px; }
+        td { padding: 9px 6px; border-top: 1px solid var(--rule); }
+        td.rank { width: 36px; text-align: center; font-weight: 800; color: var(--ink-2); }
+        td.pts { text-align: right; font-weight: 700; white-space: nowrap; }
+        tr.me td { background: var(--me); }
+        .qstat { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-top: 1px solid var(--rule); font-size: 14px; }
+        .qstat span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .hidden { display: none !important; }
+        .center { text-align: center; }
+        .stores { display: flex; gap: 8px; }
+        .stores .btn { font-size: 14px; padding: 13px 8px; }
+        footer { text-align: center; margin-top: 22px; }
+        footer a { color: var(--ink-2); }
+    </style>
+</head>
+<body>
+<main>
+    <div class="brand"><img src="/apps/kakaoparser/img/icon-64.png" alt="">카톡 정밀 분석기 · 우리 방 퀴즈</div>
+
+    <!-- Loading / error -->
+    <section id="vLoading" class="card center">
+        <p class="muted" id="loadingText">퀴즈를 불러오는 중...</p>
+    </section>
+
+    <!-- Intro -->
+    <section id="vIntro" class="card hidden">
+        <h1 id="introTitle"></h1>
+        <p class="muted" id="introMeta"></p>
+        <p>우리 방 대화로 만든 퀴즈예요. 누가 한 말인지, 다음에 뭐라고 했는지 맞혀보세요!</p>
+        <label class="muted small" for="nameInput">내 이름 (순위표에 보여요)</label>
+        <input type="text" id="nameInput" maxlength="12" placeholder="이름 또는 별명" autocomplete="nickname">
+        <button class="btn" id="startBtn">퀴즈 시작</button>
+        <p class="muted small" id="introNotice"></p>
+    </section>
+
+    <!-- Question -->
+    <section id="vQuestion" class="card hidden">
+        <div class="progress"><span id="qProgress"></span><span id="qScore"></span></div>
+        <div class="bar"><i id="qBar"></i></div>
+        <h2 id="qPrompt" style="margin-top:12px"></h2>
+        <div id="qBody"></div>
+        <div class="choices" id="qChoices"></div>
+        <div class="verdict" id="qVerdict"></div>
+        <button class="btn hidden" id="nextBtn">다음</button>
+    </section>
+
+    <!-- Result -->
+    <section id="vResult" class="hidden">
+        <div class="card score">
+            <p class="muted" id="rTitle"></p>
+            <div class="big"><span id="rScore"></span><small id="rTotal"></small></div>
+            <p id="rTier" style="font-weight:700;margin:6px 0 0"></p>
+            <p class="muted small" id="rSubmit"></p>
+            <button class="btn" id="shareBtn">친구에게 이 퀴즈 보내기</button>
+            <button class="btn secondary" id="retryBtn">다시 풀어보기</button>
+        </div>
+        <div class="card">
+            <h2>🏆 순위</h2>
+            <table><tbody id="board"></tbody></table>
+            <p class="muted small" id="boardNote"></p>
+        </div>
+        <div class="card" id="statsCard">
+            <h2>문제별 정답률</h2>
+            <div id="qStats"></div>
+        </div>
+        <div class="card center">
+            <h2>우리 방도 분석해볼까요?</h2>
+            <p class="muted">누가 제일 많이 말하는지, 누가 제일 빨리 답하는지. 카톡 대화를 순위와 차트로 정리하고, 나만의 퀴즈도 만들 수 있어요.</p>
+            <div class="stores">
+                <a class="btn" href="https://play.google.com/store/apps/details?id=com.rexyrex.kakaoparser" target="_blank" rel="noopener">Android</a>
+                <a class="btn" href="https://apps.apple.com/app/id6758269062" target="_blank" rel="noopener">iPhone</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="muted small">
+        퀴즈는 만든 날로부터 7일 뒤 자동으로 사라져요 ·
+        <a href="/apps/kakaoparser/">카톡 정밀 분석기</a>
+    </footer>
+</main>
+<script src="quiz.js?v=1"></script>
+</body>
+</html>
