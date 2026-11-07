@@ -8,6 +8,12 @@
     'use strict';
 
     var BASE = 'https://firestore.googleapis.com/v1/projects/kakaoparser/databases/(default)/documents';
+    // 카카오톡 공유: the Kakao Developers app's JavaScript key (same app as the Android native key;
+    // rexyrex.github.io must be a registered Web domain). Empty = navigator.share / copy only.
+    var KAKAO_JS_KEY = '3c8b0baf532167c1ce493e26044b8a7a';  // Kakao app 1641240
+    var KAKAO_SDK = 'https://t1.kakaocdn.net/kakao_js_sdk/2.8.3/kakao.min.js';
+    var KAKAO_SDK_SRI = 'sha384-oroumrnFVE0xtgqyDZJARgERibXg2C28380uaUZz2kHDS5CR7tu20eGiOU6GkTpy';
+    var CARD_IMAGE = 'https://rexyrex.github.io/assets/og/apps/kakaoparser.jpg';
     var LETTERS = ['A', 'B', 'C', 'D', 'E'];
     var TIERS = [
         [1.0, '🏆 완벽! 이 방의 터줏대감'],
@@ -338,9 +344,47 @@
         renderIntro();
     });
 
+    // ---- Kakao JS SDK, loaded only when a key is configured ----
+    var kakaoReady = null;
+    function loadKakao() {
+        if (!KAKAO_JS_KEY) return Promise.resolve(false);
+        if (kakaoReady) return kakaoReady;
+        kakaoReady = new Promise(function (resolve) {
+            var s = document.createElement('script');
+            s.src = KAKAO_SDK;
+            s.integrity = KAKAO_SDK_SRI;
+            s.crossOrigin = 'anonymous';
+            s.onload = function () {
+                try {
+                    if (!window.Kakao.isInitialized()) window.Kakao.init(KAKAO_JS_KEY);
+                    resolve(true);
+                } catch (e) { resolve(false); }
+            };
+            s.onerror = function () { resolve(false); };
+            document.head.appendChild(s);
+        });
+        return kakaoReady;
+    }
+
+    function shareKakao(url, title, description) {
+        var link = { mobileWebUrl: url, webUrl: url };
+        window.Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: { title: title, description: description, imageUrl: CARD_IMAGE, imageWidth: 1024, imageHeight: 500, link: link },
+            buttons: [{ title: '퀴즈 풀기', link: link }]
+        });
+    }
+
     $('shareBtn').addEventListener('click', function () {
         var url = location.origin + location.pathname + '?id=' + encodeURIComponent(quizId);
-        var text = '🧩 「' + (quiz.title || '우리 방') + '」 퀴즈 ' + quiz.questions.length + '문제, 나는 ' + score + '점! 너는 몇 점? 👇';
+        var cardTitle = '🧩 「' + (quiz.title || '우리 방') + '」 퀴즈 ' + quiz.questions.length + '문제';
+        var text = cardTitle + ', 나는 ' + score + '점! 너는 몇 점? 👇';
+        if (KAKAO_JS_KEY && window.Kakao && window.Kakao.isInitialized()) {
+            try {
+                shareKakao(url, cardTitle, '나는 ' + score + '점! 너는 몇 점? 우리 방 대화로 만든 퀴즈예요.');
+                return;
+            } catch (e) { /* fall through to the generic share */ }
+        }
         if (navigator.share) {
             navigator.share({ title: '우리 방 퀴즈', text: text, url: url }).catch(function () {});
             return;
@@ -355,4 +399,7 @@
     });
 
     load();
+    loadKakao().then(function (ok) {
+        if (ok) $('shareBtn').textContent = '카카오톡으로 이 퀴즈 보내기';
+    });
 })();
