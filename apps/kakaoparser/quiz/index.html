@@ -21,7 +21,7 @@
     <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="preload" href="fonts/nsr-r.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/nsr-b.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="quiz.css?v=7">
+    <link rel="stylesheet" href="quiz.css?v=10">
 </head>
 <body>
 <header class="appbar">
@@ -125,7 +125,7 @@
                     </div>
                     <p class="tier" id="rTier"></p>
                     <p class="rank-line" id="rRank"></p>
-                    <p class="fine" id="rSubmit"></p>
+                    <p class="fine submit-line" id="rSubmit"></p>
                 </div>
                 <div class="score-actions">
                     <button class="btn btn-kakao btn-lg" id="shareBtn">
@@ -151,6 +151,7 @@
                 <section class="card stats-card" id="statsCard">
                     <h2 class="card-title"><svg class="title-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chart"/></svg>문제별 정답률</h2>
                     <p class="hardest" id="hardest" hidden></p>
+                    <p class="stats-note" id="statsNote" hidden></p>
                     <ol class="qstats" id="qStats"></ol>
                 </section>
             </div>
@@ -212,6 +213,6 @@
     </div>
 </template>
 
-<script src="quiz.js?v=6"></script>
+<script src="quiz.js?v=8"></script>
 </body>
 </html>

@@ -502,19 +502,12 @@
 
         var firstPlay = fresh && !store('sq_done_' + quizId);
         if (fresh) store('sq_result_' + quizId, JSON.stringify({ score: score, results: results, name: myName }));
-        if (firstPlay) {
-            $('rSubmit').textContent = '순위표에 올리는 중...';
-            submitScore().then(function (ok) {
-                if (ok) {
-                    store('sq_done_' + quizId, String(Date.now()));
-                    $('rSubmit').textContent = '순위표에 올라갔어요.';
-                } else {
-                    $('rSubmit').textContent = '순위표에 올리지 못했어요. 점수는 위와 같아요.';
-                }
-                loadBoard();
-            });
+        boardState = quizExpired() ? 'gone' : 'normal';
+        setShareVisible(boardState !== 'gone');
+        if (firstPlay && boardState !== 'gone') {
+            submitAndLoad();
         } else {
-            $('rSubmit').textContent = fresh ? '다시 푼 점수는 순위표에 올라가지 않아요.' : '';
+            $('rSubmit').textContent = fresh && boardState !== 'gone' ? '다시 푼 점수는 순위표에 올라가지 않아요.' : '';
             loadBoard();
         }
     }
@@ -552,7 +545,35 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
-        }).then(function (r) { return r.ok; }).catch(function () { return false; });
+        }).then(function (r) {
+            // The rules refuse a score once the quiz is past expireAt or deleted.
+            if (r.ok) return 'ok';
+            return r.status === 403 || r.status === 404 ? 'gone' : 'failed';
+        }).catch(function () { return 'failed'; });
+    }
+
+    function quizExpired() {
+        return !!(quiz && quiz.expireAt && new Date(quiz.expireAt).getTime() <= Date.now());
+    }
+
+    var boardState = 'normal';   // normal | gone | failed | loadError
+    function submitAndLoad() {
+        $('rSubmit').textContent = '순위표에 올리는 중...';
+        submitScore().then(function (outcome) {
+            if (outcome === 'ok') {
+                store('sq_done_' + quizId, String(Date.now()));
+                $('rSubmit').textContent = '순위표에 올라갔어요.';
+                boardState = 'normal';
+            } else if (outcome === 'gone') {
+                $('rSubmit').textContent = '';
+                boardState = 'gone';
+                setShareVisible(false);  // the link is dead; don't invite friends to it
+            } else {
+                $('rSubmit').textContent = '';
+                boardState = 'failed';
+            }
+            loadBoard();
+        });
     }
 
     function loadBoard() {
@@ -588,7 +609,8 @@
                 renderStats(scores);
             })
             .catch(function () {
-                $('boardNote').textContent = '순위를 불러오지 못했어요. 새로고침해주세요.';
+                if (boardState === 'normal') boardState = 'loadError';
+                renderBoard([], mine);
                 renderStats([]);
             });
     }
@@ -617,10 +639,11 @@
             li.appendChild(pts);
             list.appendChild(li);
         });
-        if (!scores.length) list.appendChild(el('li', 'board-empty', '아직 아무도 순위에 없어요. 첫 번째가 되어보세요!'));
-        $('boardNote').textContent = scores.length
-            ? '지금까지 ' + scores.length + (scores.length >= 50 ? '명 이상' : '명') + '이 풀었어요.'
-            : '';
+        if (!scores.length) list.appendChild(emptyBoard());
+        var note = '';
+        if (scores.length === 1) note = myRank ? '아직 나 혼자예요. 친구에게 보내서 순위를 겨뤄보세요!' : '지금까지 1명이 풀었어요.';
+        else if (scores.length) note = '지금까지 ' + scores.length + (scores.length >= 50 ? '명 이상' : '명') + '이 풀었어요.';
+        $('boardNote').textContent = note;
         var rankLine = $('rRank');
         rankLine.textContent = '';
         if (myRank) {
@@ -629,6 +652,38 @@
             rankLine.appendChild(document.createTextNode(prefix + scores.length + '명 중 '));
             rankLine.appendChild(el('b', null, myRank + '등'));
         }
+    }
+
+    // Empty leaderboard, by why it's empty.
+    function emptyBoard() {
+        var c = {
+            gone: ['⌛', '기간이 끝난 퀴즈예요', '퀴즈는 7일이 지나면 순위표와 함께 사라져요. 점수는 위에서 확인할 수 있어요.'],
+            failed: ['📡', '순위표에 올리지 못했어요', '인터넷 연결을 확인하고 다시 시도해주세요. 점수는 그대로 남아 있어요.'],
+            loadError: ['📡', '순위를 불러오지 못했어요', '잠시 후 다시 시도해주세요.'],
+            normal: ['🏁', '아직 순위표가 비어 있어요', '친구에게 퀴즈를 보내 첫 기록을 남겨보세요!']
+        }[boardState] || [];
+        var li = el('li', 'board-empty');
+        li.appendChild(el('div', 'be-emoji', c[0]));
+        li.appendChild(el('b', 'be-title', c[1]));
+        li.appendChild(el('p', 'be-text', c[2]));
+        if (boardState === 'failed' || boardState === 'loadError') {
+            var btn = el('button', 'btn btn-secondary be-btn');
+            btn.type = 'button';
+            btn.appendChild(icon('i-replay', 'btn-icon sm'));
+            btn.appendChild(document.createTextNode(boardState === 'failed' ? '다시 올리기' : '다시 불러오기'));
+            btn.addEventListener('click', function () {
+                if (boardState === 'failed') submitAndLoad();
+                else { boardState = 'normal'; loadBoard(); }
+            });
+            li.appendChild(btn);
+        }
+        return li;
+    }
+
+    function setShareVisible(on) {
+        $('shareBtn').hidden = !on;
+        if (!on) $('otherShareBtn').hidden = true;
+        else $('otherShareBtn').hidden = !kakaoAvailable();
     }
 
     function questionLabel(q) {
@@ -642,6 +697,13 @@
         var list = $('qStats');
         list.textContent = '';
         var counted = scores.filter(function (s) { return s.correct && s.correct.length === n; });
+        var hasRates = counted.length > 0;
+        list.classList.toggle('no-rates', !hasRates);
+        var statsNote = $('statsNote');
+        statsNote.hidden = hasRates && counted.length > 1;
+        statsNote.textContent = !hasRates
+            ? (results.length === n ? '정답률은 순위표에 기록이 쌓이면 보여요. 지금은 내 결과만 표시돼요.' : '정답률은 순위표에 기록이 쌓이면 보여요.')
+            : '아직 1명의 기록이에요. 친구들이 풀수록 정답률이 정확해져요.';
         var hardest = -1, hardestRate = 2;
         for (var i = 0; i < n; i++) {
             var q = quiz.questions[i];
@@ -755,7 +817,7 @@
     load();
     loadKakao().then(function (ok) {
         $('shareLabel').textContent = ok ? '카카오톡으로 보내기' : '친구에게 이 퀴즈 보내기';
-        $('otherShareBtn').hidden = !ok;
+        $('otherShareBtn').hidden = !ok || $('shareBtn').hidden;
     });
     $('otherShareLabel').textContent = navigator.share && platform !== 'desktop' ? '다른 앱으로 공유' : '링크 복사';
 })();
