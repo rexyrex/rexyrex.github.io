@@ -332,8 +332,8 @@ kbd {
     transition: border-color .12s ease, background-color .12s ease, transform .08s ease;
     -webkit-tap-highlight-color: transparent;
 }
-.choice:hover:not(:disabled) { border-color: var(--ink-2); background: var(--surface-2); }
-.choice:active:not(:disabled) { transform: scale(.995); }
+.choice:hover:not(:disabled):not(.static) { border-color: var(--ink-2); background: var(--surface-2); }
+.choice:active:not(:disabled):not(.static) { transform: scale(.995); }
 .choice:disabled { cursor: default; }
 .c-letter { font-size: 20px; font-weight: 800; text-align: center; }
 .c-text { font-size: 15px; word-break: break-word; display: flex; align-items: center; gap: 8px; min-width: 0; }
@@ -471,6 +471,34 @@ kbd {
 .qs-bar { height: 7px; border-radius: 99px; background: var(--line-2); overflow: hidden; }
 .qs-bar i { display: block; height: 100%; border-radius: 99px; background: #4ADE80; }
 .qs-bar i.mid { background: var(--accent); } .qs-bar i.low { background: var(--bad); }
+
+/* per-question review: the stats row is a toggle, the panel replays the question */
+.qs-hint { margin: 0 0 10px; font-size: 12.5px; color: var(--ink-3); word-break: keep-all; }
+.qs-row {
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 5px; min-width: 0;
+    width: calc(100% + 16px); margin: -6px -8px; padding: 6px 8px;
+    background: none; border: 0; border-radius: 10px; color: inherit; font: inherit; text-align: left;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.qs-row:hover { background: var(--surface-2); }
+.qs-row:focus-visible { outline: 2px solid var(--ink-2); outline-offset: 0; }
+.qs-row .qs-bar { display: block; }
+.qs-chev { flex: none; width: 16px; height: 16px; color: var(--ink-3); transition: transform .15s ease; }
+.qstats.no-rates .qs-chev { margin-left: auto; }
+.qstats li.open .qs-chev { transform: rotate(180deg); }
+.qs-detail { display: grid; gap: 10px; padding: 12px 0 8px; min-width: 0; }
+.qs-detail[hidden] { display: none; }
+.qs-prompt { font-size: 15px; }
+.qs-detail .chat { max-height: 300px; }
+.review-choices { margin-top: 0; gap: 8px; }
+.review-choices .choice { min-height: 46px; padding: 9px 10px 9px 12px; cursor: default; }
+.review-choices .c-letter { font-size: 17px; }
+.review-choices .choice.dim { opacity: .55; }
+.c-pick {
+    flex: none; margin-left: auto; font-size: 11.5px; font-weight: 800; padding: 2px 8px; border-radius: 99px;
+    background: var(--fill-ink); color: #fff;
+}
+.qs-nopick { margin: 0; }
 
 /* ---------- install CTA + store badges ---------- */
 .install-head { display: flex; align-items: center; gap: 12px; }

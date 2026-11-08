@@ -41,7 +41,8 @@
     var quizId = new URLSearchParams(location.search).get('id') || '';
     var quiz = null;          // decoded document
     var expireAtRaw = null;   // exact timestampValue, copied into the score doc (rules compare it)
-    var idx = 0, score = 0, results = [], answered = false, myName = '';
+    var idx = 0, score = 0, results = [], picks = [], answered = false, myName = '';
+    var openStats = {};       // question index → review panel open (results page)
     var platform = detectPlatform();
 
     // ---------------------------------------------------------------- utilities
@@ -298,6 +299,9 @@
         var r = savedResult();
         if (!r) return;
         score = r.score; results = r.results; myName = r.name || '';
+        // Results saved before the review existed carry no picks: the review then shows the answer only.
+        picks = Array.isArray(r.picks) && r.picks.length === r.results.length ? r.picks : [];
+        openStats = {};
         finish(false);
     });
 
@@ -305,15 +309,16 @@
         var typed = $('nameInput').value.trim().slice(0, 12);
         myName = typed || '익명';
         if (typed) store('sq_name', typed);
-        idx = 0; score = 0; results = [];
+        idx = 0; score = 0; results = []; picks = []; openStats = {};
         renderQuestion();
     }
 
     // ---------------------------------------------------------------- question
 
-    function renderBody(q) {
-        var body = $('qBody');
-        body.textContent = '';
+    // The question's chat lines or subject box. `review` (results page) drops the "다음 메시지"
+    // placeholder: the answer is in the choices right below it.
+    function buildBody(q, review) {
+        var frag = document.createDocumentFragment();
         if (q.lines && q.lines.length) {
             var chat = el('div', 'chat');
             var prev = null;
@@ -330,7 +335,7 @@
                 chat.appendChild(m);
                 prev = who;
             });
-            if (q.type === 'NEXT_CHAT') {
+            if (q.type === 'NEXT_CHAT' && !review) {
                 var n = el('div', 'msg');
                 n.appendChild(avatar(null));
                 var col2 = el('div');
@@ -344,7 +349,7 @@
                 n.appendChild(col2);
                 chat.appendChild(n);
             }
-            body.appendChild(chat);
+            frag.appendChild(chat);
         } else if (q.subject) {
             var box = el('div', 'subject');
             if (q.type === 'PERSON_FROM_WORD') {
@@ -353,8 +358,9 @@
                 box.appendChild(avatar(q.subject));
                 box.appendChild(el('div', 'subject-name', q.subject));
             }
-            body.appendChild(box);
+            frag.appendChild(box);
         }
+        return frag;
     }
 
     // One choice's content: a member chip for names, "[N회]" as a pill after answering.
@@ -384,7 +390,8 @@
         $('qScore').textContent = score;
         $('qType').textContent = (TYPES[q.type] ? TYPES[q.type].emoji + ' ' + TYPES[q.type].label : '') + ' · Q' + (idx + 1);
         $('qPrompt').textContent = q.prompt;
-        renderBody(q);
+        $('qBody').textContent = '';
+        $('qBody').appendChild(buildBody(q, false));
 
         var box = $('qChoices');
         box.textContent = '';
@@ -429,6 +436,7 @@
         var correct = correctSet.indexOf(choice) >= 0;
         if (correct) score++;
         results.push(correct);
+        picks.push(choice);
         var buttons = $('qChoices').children;
         for (var i = 0; i < buttons.length; i++) {
             var b = buttons[i];
@@ -501,7 +509,7 @@
         });
 
         var firstPlay = fresh && !store('sq_done_' + quizId);
-        if (fresh) store('sq_result_' + quizId, JSON.stringify({ score: score, results: results, name: myName }));
+        if (fresh) store('sq_result_' + quizId, JSON.stringify({ score: score, results: results, picks: picks, name: myName }));
         boardState = quizExpired() ? 'gone' : 'normal';
         setShareVisible(boardState !== 'gone');
         if (firstPlay && boardState !== 'gone') {
@@ -711,7 +719,10 @@
             var rate = counted.length ? right / counted.length : null;
             if (rate !== null && rate < hardestRate) { hardestRate = rate; hardest = i; }
             var li = el('li');
-            var top = el('div', 'qs-top');
+            // The whole row toggles the question's review panel. Spans only: a <button> holds phrasing content.
+            var row = el('button', 'qs-row');
+            row.type = 'button';
+            var top = el('span', 'qs-top');
             top.appendChild(el('span', 'qs-num', 'Q' + (i + 1)));
             if (results.length === n) {
                 var mine = el('span', 'qs-mine ' + (results[i] ? 'ok' : 'bad'));
@@ -721,14 +732,27 @@
             }
             top.appendChild(el('span', 'qs-label', (TYPES[q.type] ? TYPES[q.type].emoji + ' ' : '') + questionLabel(q)));
             top.appendChild(el('span', 'qs-pct', rate === null ? '-' : Math.round(rate * 100) + '%'));
-            li.appendChild(top);
-            var bar = el('div', 'qs-bar');
+            top.appendChild(icon('i-chev', 'qs-chev'));
+            row.appendChild(top);
+            var bar = el('span', 'qs-bar');
             var fill = el('i', rate === null ? '' : rate < 0.4 ? 'low' : rate < 0.7 ? 'mid' : '');
             fill.style.width = (rate === null ? 0 : Math.round(rate * 100)) + '%';
             bar.appendChild(fill);
-            li.appendChild(bar);
+            row.appendChild(bar);
+            li.appendChild(row);
+            var panel = el('div', 'qs-detail');
+            panel.id = 'qsDetail' + i;
+            row.setAttribute('aria-controls', panel.id);
+            li.appendChild(panel);
+            setReviewOpen(li, i, !!openStats[i]);
+            row.addEventListener('click', (function (item, k) {
+                return function () { setReviewOpen(item, k, !openStats[k]); };
+            })(li, i));
             list.appendChild(li);
         }
+        $('statsHint').textContent = picks.length === n
+            ? '문제를 누르면 내가 고른 답과 정답을 볼 수 있어요.'
+            : '문제를 누르면 정답을 볼 수 있어요.';
         var h = $('hardest');
         if (counted.length >= 2 && hardest >= 0) {
             h.textContent = '😈 가장 어려웠던 문제: Q' + (hardest + 1) + ' (정답률 ' + Math.round(hardestRate * 100) + '%)';
@@ -736,6 +760,54 @@
         } else {
             h.hidden = true;
         }
+    }
+
+    // Opens or closes one question's review. The panel is built on first open (and rebuilt on every
+    // open, which keeps it in step with picks after a replay).
+    function setReviewOpen(li, i, open) {
+        openStats[i] = open;
+        var row = li.querySelector('.qs-row');
+        var panel = li.querySelector('.qs-detail');
+        row.setAttribute('aria-expanded', open ? 'true' : 'false');
+        li.classList.toggle('open', open);
+        panel.hidden = !open;
+        panel.textContent = '';
+        if (open) panel.appendChild(buildReview(quiz.questions[i], i));
+    }
+
+    // The question as it was asked, every choice with its revealed text, the correct answer(s)
+    // and — when this browser recorded it — the player's own pick.
+    function buildReview(q, i) {
+        var frag = document.createDocumentFragment();
+        frag.appendChild(el('div', 'q-title qs-prompt', q.prompt));
+        frag.appendChild(buildBody(q, true));
+        var correctSet = q.correct || [];
+        var pick = picks.length === quiz.questions.length ? picks[i] : null;
+        var box = el('div', 'choices review-choices');
+        (q.choices || []).forEach(function (c, k) {
+            var isCorrect = correctSet.indexOf(k) >= 0;
+            var isPick = k === pick;
+            var row = el('div', 'choice static' + (isCorrect ? ' ok' : isPick ? ' bad' : ' dim'));
+            row.appendChild(el('span', 'c-letter', LETTERS[k] || ''));
+            var text = el('span', 'c-text');
+            fillChoiceText(text, q, c.r || c.l);
+            if (isPick) text.appendChild(el('span', 'c-pick', '내 선택'));
+            row.appendChild(text);
+            var mark = el('span', 'c-mark');
+            if (isCorrect) mark.appendChild(icon('i-check', 'c-mark'));
+            else if (isPick) mark.appendChild(icon('i-x', 'c-mark'));
+            row.appendChild(mark);
+            var said = (LETTERS[k] || '') + '. ' + (c.r || c.l);
+            if (isCorrect) said += ', 정답';
+            if (isPick) said += ', 내가 고른 답';
+            row.setAttribute('aria-label', said);
+            box.appendChild(row);
+        });
+        frag.appendChild(box);
+        if (pick === null) {
+            frag.appendChild(el('p', 'fine qs-nopick', '내가 고른 답은 이 브라우저에 기록되지 않았어요.'));
+        }
+        return frag;
     }
 
     $('retryBtn').addEventListener('click', function () { renderIntro(); });

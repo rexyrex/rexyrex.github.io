@@ -21,7 +21,7 @@
     <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="preload" href="fonts/nsr-r.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/nsr-b.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="quiz.css?v=12">
+    <link rel="stylesheet" href="quiz.css?v=13">
 </head>
 <body>
 <header class="appbar">
@@ -152,6 +152,7 @@
                     <h2 class="card-title"><svg class="title-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chart"/></svg>문제별 정답률</h2>
                     <p class="hardest" id="hardest" hidden></p>
                     <p class="stats-note" id="statsNote" hidden></p>
+                    <p class="qs-hint" id="statsHint"></p>
                     <ol class="qstats" id="qStats"></ol>
                 </section>
             </div>
@@ -175,6 +176,7 @@
     <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h13M13 6l6 6-6 6"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
     <symbol id="i-replay" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5"/></symbol>
     <symbol id="i-link" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></symbol>
@@ -213,6 +215,6 @@
     </div>
 </template>
 
-<script src="quiz.js?v=8"></script>
+<script src="quiz.js?v=9"></script>
 </body>
 </html>
