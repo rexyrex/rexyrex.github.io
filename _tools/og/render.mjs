@@ -30,7 +30,8 @@ const CARDS = {
     support:  { path: '/support/', file: '/support/index.html', title: 'Support', desc: 'How to reach the developer about any of the apps, and where each privacy policy lives.' },
     parser:   { path: '/parser/', file: '/parser/index.html', title: 'KakaoParser', desc: 'Companion pages for the KakaoTalk chat analyzer: tools and help documents.' },
     404:      { path: '/404', file: '/404.html', title: 'File not found', desc: 'That path does not exist here. The rex looked everywhere.' },
-    log:      { path: '/log/', file: '/log/index.html', title: 'Devlog', desc: 'Notes on how the things on this site are built.' }
+    log:      { path: '/log/', file: '/log/index.html', title: 'Devlog', desc: 'Notes on how the things on this site are built.' },
+    app_manager: { path: '/apps/app_manager/', file: '/apps/app_manager/index.html', title: 'App Manager', desc: 'From Flutter folder to Google Play and the App Store, in one window. For macOS and Windows.' }
 };
 
 const ICONS = [
