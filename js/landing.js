@@ -269,9 +269,9 @@
     }
 
     // Mockups come alive (bars fill, rings draw, the rex gallops, the
-    // route draws) once on screen: the phones, the Mac desktops, the car.
+    // route draws) once on screen: the Mac desktops, the car.
     (function () {
-        var phones = $$('.phone, .mac, .car');
+        var phones = $$('.mac, .car');
         if (!phones.length) return;
         if (reduce || !hasIO) {
             phones.forEach(function (p) { p.classList.add('is-live'); });
@@ -286,6 +286,21 @@
             });
         }, { threshold: 0.3 });
         phones.forEach(function (p) { io.observe(p); });
+    })();
+
+    // /apps/ cards: a soft light in the card's tint follows a fine pointer
+    // (landing.css reads --mx / --my). Plain CSS variables, no GSAP, so it
+    // works with motion off too; touch screens skip it.
+    (function () {
+        var bento = document.getElementById('appsBento');
+        if (!bento || coarse) return;
+        bento.addEventListener('pointermove', function (e) {
+            var tile = e.target.closest && e.target.closest('.app-tile');
+            if (!tile) return;
+            var r = tile.getBoundingClientRect();
+            tile.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+            tile.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+        });
     })();
 
     // The car screen: the speed counts up once it is on screen. With
@@ -598,66 +613,9 @@
             }
         }
 
-        // 04 · /apps/: horizontal track pinned on desktop; native snap scrolling
-        // on mobile and in short windows (landing.css switches the layout too).
-        var track = document.getElementById('appsTrack');
-        var appsStage = document.getElementById('appsStage');
-        var phones = track ? $$('.phone', track) : [];
-        if (desktop && tall && track && appsStage) {
-            var dist = function () { return Math.max(0, track.offsetWidth - window.innerWidth); };
-
-            var tilt = function () {
-                var cx = window.innerWidth / 2;
-                phones.forEach(function (ph) {
-                    var r = ph.getBoundingClientRect();
-                    var rel = (r.left + r.width / 2 - cx) / window.innerWidth;
-                    ph.style.transform = 'perspective(1000px) rotateY(' + (rel * -12).toFixed(2) + 'deg) translateZ(' + (-Math.abs(rel) * 70).toFixed(1) + 'px)';
-                });
-            };
-
-            gsap.to(track, {
-                x: function () { return -dist(); },
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: appsStage,
-                    start: 'top top',
-                    end: function () { return '+=' + (dist() + vh() * 0.4); },
-                    pin: true,
-                    scrub: 0.7,
-                    anticipatePin: 1,
-                    invalidateOnRefresh: true,
-                    onUpdate: tilt,
-                    onRefresh: tilt
-                }
-            });
-            tilt();
-        }
-
-        // Phones tilt toward the pointer and catch a glare (fine pointers only).
-        if (desktop && !coarse) {
-            phones.forEach(function (ph) {
-                if (ph.hasAttribute('data-tilt')) return;
-                var frame = $('.phone-frame', ph);
-                if (!frame) return;
-                ph.setAttribute('data-tilt', '1');
-                gsap.set(frame, { transformPerspective: 900 });
-                var toY = gsap.quickTo(frame, 'rotationY', { duration: 0.5, ease: 'power2.out' });
-                var toX = gsap.quickTo(frame, 'rotationX', { duration: 0.5, ease: 'power2.out' });
-                ph.addEventListener('pointermove', function (e) {
-                    var r = frame.getBoundingClientRect();
-                    var px = (e.clientX - r.left) / r.width - 0.5;
-                    var py = (e.clientY - r.top) / r.height - 0.5;
-                    toY(px * 18);
-                    toX(-py * 14);
-                    frame.style.setProperty('--gx', (px * 100 + 50).toFixed(1) + '%');
-                    frame.style.setProperty('--gy', (py * 100 + 50).toFixed(1) + '%');
-                });
-                ph.addEventListener('pointerleave', function () {
-                    toY(0);
-                    toX(0);
-                });
-            });
-        }
+        // 04 · /apps/ is a plain grid of cards (no pin): the generic
+        // [data-reveal-group] pass below brings them in, and the pointer light
+        // is set up outside GSAP.
 
         // 05 · /music/: the waveform grows in, and rises under the pointer.
         var wave = document.getElementById('wave');
@@ -731,7 +689,6 @@
         });
 
         return function () {
-            phones.forEach(function (ph) { ph.style.transform = ''; });
             splits.forEach(function (s) { try { s.revert(); } catch (e) { /* already gone */ } });
         };
     });

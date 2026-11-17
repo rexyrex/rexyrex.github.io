@@ -15,7 +15,7 @@ Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) — an inde
 | `/parser/` | KakaoParser companion pages: admin tools (query/download, Bootstrap 5) + Korean help & ToS docs |
 | `/support/` | App store support/contact page |
 | `/apps/<app_id>/` | **App landing pages**, hand-built, one per public app — see [App landing pages](#app-landing-pages) |
-| `/apps/` | **Generated** privacy-policy index and `/apps/<app_id>/privacy-policy/` pages — see below |
+| `/apps/` | **App directory**: every public app as a card (search, store and language filters), the desktop app, and every privacy policy — see [App directory](#app-directory-apps). The `/apps/<app_id>/privacy-policy/` pages under it are **generated** — see below |
 | `/404.html` | Served by GitHub Pages for unknown paths: the path that failed, a terminal that says so, "did you mean" from the site index |
 | `/smartthings-callback.html` | OAuth hand-off shim for the Project Manager app — do not modify |
 
@@ -41,7 +41,7 @@ The landing page is an Apple-style scroll story. Files: `css/landing.css` (hero,
 - **Statement** — SplitText words scrubbed from faint to full, then the section pins for ~130% of the viewport while the dot charges, flashes and bursts across the screen (`window.rexHero.burst`). Rendering pauses once the burst is over.
 - **/typing/** — a plain section; the editor mockup types generic Korean, English and code sentences on its own (time-based, human-ish rhythm) while it is on screen, cycling through the tabs.
 - **/deadlyBalloons/** — pinned sky with thirty generated balloons at random depths (nearer = bigger, faster, on top; far = small and soft). A dozen pop on their own along the ride — ring flash, shards, "+100" — and every other balloon pops when clicked. A HUD keeps score.
-- **/apps/** — pinned horizontal track of CSS phones, one per public app, each a small app mockup (status bar, app bar, cards, charts, chat, a mini game, a metronome) with one tint per app; every phone opens that app's landing page. Phones tilt toward the pointer; their bars, rings and sparklines animate in when they come on screen. Native snap scrolling on narrow screens and in windows under 700px tall.
+- **/apps/** — a bento grid (not pinned): one card per public app in its own tint (`--t-dark` / `--t-light` on the card), built around a real screen capture from the app's page; wide cards fan two screens. Cards rise in with the generic reveal, lift on hover (the `translate` property, so it composes with the reveal's inline transform) and carry a soft light in their tint that follows a fine pointer (`--mx` / `--my`, plain JS outside GSAP). Under 680px the grid becomes a swipe carousel. An "All apps" button leads to `/apps/`. The cards are generated with the directory page — see [App directory](#app-directory-apps).
 - **games.rexy.win** — a plain reveal section (not pinned): one "browser window" per game, each drawn in CSS in the game's two accent colours from the portal's registry (tile maze + fire eggs, crosshair over a perspective floor, circuit traces, flashlight beam + blinking eyes, a self-drawing scribble, a chessboard). The "dino network" pill turns green when `rexChrome.pingGames()` resolves. The cards are static HTML — when the portal adds a game, add a card here, a row in the index and an entry in `js/palette.js`. Keep the copy count-free: the public pages describe the portal with adjectives ("multiplayer browser games"), never a tally, and never say where it is hosted.
 - **/Applications/** — a plain reveal section: one little macOS desktop per native app — a menu bar with the app's own status item, and a window or a popover hanging from it, all drawn in CSS. Bars fill, the pixel rex in Rex Boing's menu bar gallops and the usage ring lights once a card is on screen (`.is-live`, the same observer as the phones). Rex Boing links to its GitHub repo and releases, App Manager to its download page (`/apps/app_manager/`); Project Manager and AI Usage Tracker are in-house tools and their cards are static.
 - **~/teslamate-dashboard/** — the car's own screen: a dark map with a route that draws itself and a dot that follows it (SMIL `animateMotion`, removed under reduced motion), glass cards and four rolling charts. The speed counts up once on screen. The dashboard itself is private: nothing here links to it, and the copy never says where it runs.
@@ -124,11 +124,11 @@ The desktop app itself, not a store app: bilingual (English / Korean) with an EN
 
 Files per app: `apps/<id>/index.html`, `page.css`, `page.js` (dependency-free), `img/` (WebP screen captures, icon), and the social card `/assets/og/apps/<id>.jpg` (the store feature graphic, 1024×500). Shared pieces live in `/css/app-page.css` — store buttons, the `.app-device` phone frame for real screen captures, the `.app-foot` footer — and a new page starts from `_tools/app-page/skeleton.html`. Each page sets the site tokens (`--bg`, `--fg`, `--accent`, …) for both themes so the top bar and status bar sit on its palette.
 
-These pages sit beside the generated policies but App Manager never touches them: it only writes `apps/index.html` and `apps/<id>/privacy-policy/index.html`, and it indexes only directories that contain a policy.
+These pages sit beside the generated policies but App Manager never touches them: it only writes `apps/<id>/privacy-policy/index.html` (and `apps/index.html` only when that page lacks the marker described under [App directory](#app-directory-apps)).
 
 App Manager does check for them: each app's Overview shows a **Landing page** tile (At a glance) and card — not created / not committed / not pushed / published — read from `apps/<slug>/index.html` here and the pushed branch. The slug is the App Manager id, else the folder of the app's privacy policy URL, else the folder its App Store marketing URL points at (that is how the iOS twin of KakaoParser finds `/apps/kakaoparser/`). A missing page has a **Build Page** button that runs App Manager's `rex-app-landing-page` skill in the app's agent session; the skill reads this README, the skeleton and the existing pages first, so the rules here stay the source of truth. Its `scripts/images.mjs` converts captures to WebP through headless Chrome when `cwebp` isn't installed. Every App Store listing's *Marketing URL* points at its app's page (keep it that way when an app gains a page or an iOS version).
 
-To add an app when it goes public: build the page from the skeleton, then add a phone to the home page `#apps` chapter, an entry in `js/palette.js` (`INDEX.apps`), a row in `sitemap.xml`, its policy on `/support/`, and a row in the table above. Check it with the screenshot tool:
+To add an app when it goes public: build the page from the skeleton, add it to `APPS` in `_tools/app-page/apps.py` and run it (the home page card and the `/apps/` card and policy row), then an entry in `js/palette.js` (`INDEX.apps`), a row in `sitemap.xml`, its policy on `/support/`, and a row in the table above. Check it with the screenshot tool:
 
 ```
 node _tools/shot/shot.mjs http://localhost:8123/apps/<id>/ --out /tmp/<id> --theme dark --at 0,0.5,1
@@ -138,9 +138,15 @@ node _tools/shot/shot.mjs http://localhost:8123/apps/<id>/ --out /tmp/<id>-r --r
 
 It drives headless Chrome over the DevTools protocol (Node 22, no npm) and prints console errors, exceptions and failed requests; exit code 1 if there are any.
 
+## App directory (`/apps/`)
+
+`apps/index.html` is hand-made, generated together with the home page's app cards by `_tools/app-page/apps.py` (one `APPS` list: name, English one-liner, stores, language, tint pair, which captures, privacy URL; plus the policies of apps still in testing). It has a hero with every app's icon, a search box and filter chips (App Store / Google Play / 한국어 / Global; `?q=` and `?show=` make a filtered view shareable — `/js/apps-index.js`), a card per app built around a real capture, App Manager, and every privacy policy on the site ("On the stores" / "In testing"), so `/apps/` still works as the policy index the frozen URL contract promises. Styles: `/css/apps-index.css`.
+
+It carries `<meta name="appmanager-apps-index" content="manual">`. App Manager used to rewrite `apps/index.html` as a bare list on every privacy publish; with that marker (App Manager from 2026-11-17 on) it writes only the policy page, and refuses to publish while the directory page has uncommitted edits instead of resetting them. Remove the marker and the next publish replaces the page with the generated list.
+
 ## Generated pages — do not hand-edit
 
-`apps/index.html` and every `apps/<app_id>/privacy-policy/index.html` are generated by the external **App Manager** tool, which rewrites `apps/index.html` wholesale on each run (display names are parsed from each page's `<title>` after the ` — ` separator). Style them only via the `body > main.privacy-article` / `.privacy-meta` / `ul.apps-index` rules in `/css/index.css`. Those selectors are deliberately one element more specific than the generator's inline `<style>` so the site theme wins. (The generated `apps/index.html` omits `common.js`, so it renders without the chrome; the policy pages include it.)
+Every `apps/<app_id>/privacy-policy/index.html` is generated by the external **App Manager** tool (display names are parsed from each page's `<title>` after the ` — ` separator). Style them only via the `body > main.privacy-article` / `.privacy-meta` rules in `/css/index.css` (`ul.apps-index` styles App Manager's bare list, which only appears if the marker above goes away). Those selectors are deliberately one element more specific than the generator's inline `<style>` so the site theme wins.
 
 ### Frozen URL contract (referenced by live app-store listings and tools)
 

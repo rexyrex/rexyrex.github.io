@@ -150,304 +150,126 @@
             </div>
         </section>
 
-        <!-- 04 · /apps/ — phones scroll sideways as you scroll down -->
+        <!-- 04 · /apps/ — a bento of the apps, each card a real screen; every card opens the app's page -->
         <section class="chapter chapter-apps" id="apps" aria-labelledby="apps-title">
-            <div class="stage stage-apps" id="appsStage">
-                <div class="wrap chapter-copy chapter-copy-wide" data-reveal-group>
-                    <span class="eyebrow">/apps/</span>
-                    <h2 id="apps-title" data-lines>Published on Google Play and the App Store.</h2>
-                    <p>Mostly Flutter, some native Android, all built and published solo. Every phone opens that app's own page.</p>
+            <div class="wrap">
+                <div class="apps-head">
+                    <div class="chapter-copy chapter-copy-wide" data-reveal-group>
+                        <span class="eyebrow">/apps/</span>
+                        <h2 id="apps-title" data-lines>Published on Google Play and the App Store.</h2>
+                        <p>Mostly Flutter, some native Android, all built and published solo. Every card opens that app's own page — with a demo you can try right there.</p>
+                    </div>
+                    <a class="btn btn-ghost apps-all" href="/apps/">All apps <span class="arrow">→</span></a>
                 </div>
-                <div class="apps-track" id="appsTrack">
-
-                    <a class="phone" href="/apps/age_calculator/" style="--tint: var(--tok-num)">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>How Old Are You?</b><i class="ui-icon">◎</i></span>
-                                <span class="ui-card ui-card-hero">
-                                    <span class="ui-kicker">your senses age</span>
-                                    <span class="ui-big">27<small>years</small></span>
-                                    <span class="ui-bar ui-bar-wide"><span style="--p: 64%"></span></span>
-                                    <span class="ui-fine">from five quick tests</span>
-                                </span>
-                                <span class="ui-card">
-                                    <span class="ui-card-head"><span class="ui-kicker">tests</span><b class="ui-badge">5 / 5</b></span>
-                                    <span class="ui-test"><i>hearing</i><span class="ui-bar"><span style="--p: 64%"></span></span><b>16 kHz</b></span>
-                                    <span class="ui-test"><i>reaction</i><span class="ui-bar"><span style="--p: 82%"></span></span><b>212 ms</b></span>
-                                    <span class="ui-test"><i>pairs</i><span class="ui-bar"><span style="--p: 70%"></span></span><b>12 s</b></span>
-                                    <span class="ui-test"><i>vision</i><span class="ui-bar"><span style="--p: 88%"></span></span><b>sharp</b></span>
-                                    <span class="ui-test"><i>trail</i><span class="ui-bar"><span style="--p: 76%"></span></span><b>9.4 s</b></span>
-                                </span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                <div class="bento" id="appsBento" data-reveal-group>
+                    <a class="app-tile is-wide" href="/apps/kakaoparser/" style="--t-dark: #fb9a4b; --t-light: #c2410c">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/kakaoparser/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
+                            <b class="tile-name" lang="ko">카톡 정밀 분석기</b>
+                            <span class="tile-line">Rankings, hourly charts and signature words from an exported KakaoTalk chat.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>How Old Are You?</b><i>age_calculator</i><em class="phone-stores">Google Play · App Store</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/kakaoparser/img/android-03-rankings.webp" width="540" height="1200" alt="" loading="lazy" decoding="async"></span><span class="tile-phone tile-phone-back"><img src="/apps/kakaoparser/img/android-02-time.webp" width="540" height="1200" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone" href="/apps/qr_scanner/" style="--tint: var(--accent)">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>QR Scanner</b><i class="ui-icon">⚡</i></span>
-                                <span class="qr-cam">
-                                    <span class="qr-frame"><i></i><i></i><i></i><i></i></span>
-                                    <span class="qr" id="qrGrid"></span>
-                                    <span class="qr-scan"></span>
-                                </span>
-                                <span class="ui-sheet">
-                                    <span class="ui-sheet-row"><i class="ui-dot"></i><span class="ui-sheet-text"><b>rexyrex.github.io</b><i>URL · just now</i></span></span>
-                                    <span class="ui-chips"><span class="on">open</span><span>copy</span><span>share</span></span>
-                                </span>
-                                <span class="ui-kicker">history</span>
-                                <span class="ui-rows">
-                                    <span><i class="ui-tag">wifi</i>Home network<b>2h</b></span>
-                                    <span><i class="ui-tag">text</i>Table 12 · order<b>1d</b></span>
-                                    <span><i class="ui-tag">url</i>github.com/rexyrex<b>3d</b></span>
-                                </span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile" href="/apps/age_calculator/" style="--t-dark: #ff8a7a; --t-light: #c93838">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/age_calculator/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
+                            <b class="tile-name">How Old Are You? Age Test</b>
+                            <span class="tile-line">Five quick tests of your senses, each with a playful age guess.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>QR Scanner</b><i>qr_scanner</i><em class="phone-stores">Google Play</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/age_calculator/img/result.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone" href="/apps/reverse_image_search/" style="--tint: var(--tok-kw)">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>Reverse Image Search</b><i class="ui-icon">⌕</i></span>
-                                <span class="ris-photo"><i class="ris-sun"></i><i class="ris-mtn ris-mtn-1"></i><i class="ris-mtn ris-mtn-2"></i><i class="ris-crop"></i></span>
-                                <span class="ui-kicker">search on</span>
-                                <span class="ui-chips ui-chips-engines"><span class="on">Google</span><span>Bing</span><span>Yandex</span><span>TinEye</span></span>
-                                <span class="ui-card-head"><span class="ui-kicker">similar images</span><b class="ui-fine">12 matches</b></span>
-                                <span class="ris-results"><i style="--i: 0; --hue: 205"></i><i style="--i: 1; --hue: 32"></i><i style="--i: 2; --hue: 150"></i><i style="--i: 3; --hue: 275"></i><i style="--i: 4; --hue: 12"></i><i style="--i: 5; --hue: 190"></i></span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile" href="/apps/deadly_balloons/" style="--t-dark: #ff5d6c; --t-light: #b0152e">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/deadly_balloons/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
+                            <b class="tile-name">Deadly Balloons: Bullet Hell</b>
+                            <span class="tile-line">A one-thumb bullet-hell shooter: dodge balloon fire, topple huge bosses.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>Reverse Image Search</b><i>reverse_image_search</i><em class="phone-stores">Google Play · App Store</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/deadly_balloons/img/boss-battle.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone" href="/apps/exif/" style="--tint: #5fc9b5">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>Exif Editor</b><i class="ui-icon">⌗</i></span>
-                                <span class="exif-photo"><i class="exif-pin"></i><b>IMG_2041.jpg</b><i class="exif-dim">4032 × 3024 · 3.1 MB</i></span>
-                                <span class="ui-card-head"><span class="ui-kicker">metadata</span><b class="ui-badge">14 tags</b></span>
-                                <span class="ui-rows">
-                                    <span><i class="ui-tag">gps</i>37.5665, 126.9780<b>wipe</b></span>
-                                    <span><i class="ui-tag">date</i>2026-05-02 14:31<b>edit</b></span>
-                                    <span><i class="ui-tag">lens</i>f/1.8 · 1/120 s · ISO 64<b>keep</b></span>
-                                    <span><i class="ui-tag">make</i>Apple · iPhone<b>keep</b></span>
-                                </span>
-                                <span class="ui-chips"><span class="on">strip all</span><span>edit</span><span>share</span></span>
-                                <span class="ui-fine">100% on-device · works offline</span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile" href="/apps/alba_pay/" style="--t-dark: #d8f35b; --t-light: #5c7400">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/alba_pay/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
+                            <b class="tile-name" lang="ko">알바수첩</b>
+                            <span class="tile-line">Clock in, clock out — holiday pay, night and overtime rates down to take-home pay.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>Photo Exif Metadata Editor</b><i>exif</i><em class="phone-stores">Google Play</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/alba_pay/img/home.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone" href="/apps/deadly_balloons/" style="--tint: var(--danger)">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen ui-db">
-                                <span class="ui-status ui-status-dark"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="db-hud"><span>score <b>01240</b></span><span>wave <b>3</b></span><span class="db-lives">♥♥♥</span></span>
-                                <span class="db-sky">
-                                    <img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 6%; --y: 4%; --s: 0.9; --sd: -0.4s">
-                                    <img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 58%; --y: 14%; --s: 1.1; --sd: -1.6s">
-                                    <img src="/assets/img/balloon-green.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 30%; --y: 30%; --s: 1; --sd: -2.4s">
-                                    <img src="/assets/img/balloon-red.png" alt="" width="256" height="256" loading="lazy" decoding="async" style="--x: 70%; --y: 42%; --s: 0.7; --sd: -0.9s">
-                                    <span class="db-popper" style="--x: 14%; --y: 50%; --s: 0.85; --sd: -3s"><img src="/assets/img/balloon-blue.png" alt="" width="256" height="256" loading="lazy" decoding="async"></span>
-                                    <i class="db-burst"></i>
-                                    <b class="db-plus">+100</b>
-                                    <i class="db-shot" style="--d: 0s"></i><i class="db-shot" style="--d: -0.4s"></i><i class="db-shot" style="--d: -0.8s"></i>
-                                    <img class="db-rex" src="/assets/rexGreenSmall.png" alt="" width="256" height="256" loading="lazy" decoding="async">
-                                </span>
-                                <span class="db-bar"><span>❚❚ pause</span><span>top 10</span></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile" href="/apps/visual_metronome/" style="--t-dark: #e4b96a; --t-light: #7a5512">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/visual_metronome/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
+                            <b class="tile-name">Visual Metronome</b>
+                            <span class="tile-line">A metronome you can watch: 19 visualizers that move with the click.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>Deadly Balloons</b><i>deadly_balloons</i><em class="phone-stores">Google Play · App Store</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/visual_metronome/img/main.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone" href="/apps/kakaoparser/" style="--tint: var(--tok-str)">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>대화 분석기</b><i class="ui-icon">≡</i></span>
-                                <span class="kp-summary"><span><b>12,480</b><i>메시지</i></span><span><b>2</b><i>참여자</i></span><span><b>1y 3m</b><i>기간</i></span></span>
-                                <span class="chat">
-                                    <i class="them">오늘 뭐해?<em>21:02</em></i>
-                                    <i class="me">코딩 ㅋㅋ<em>21:03</em></i>
-                                    <i class="them">또?? 진짜 ㅋㅋㅋ<em>21:03</em></i>
-                                </span>
-                                <span class="ui-card-head"><span class="ui-kicker">월별 대화량</span><b class="ui-fine">↑ 12%</b></span>
-                                <svg class="kp-spark" viewBox="0 0 100 32" preserveAspectRatio="none"><path class="kp-area" d="M0,26 L10,22 L20,24 L30,15 L40,18 L50,9 L60,12 L70,6 L80,10 L90,4 L100,7 L100,32 L0,32 Z"/><polyline class="kp-line" points="0,26 10,22 20,24 30,15 40,18 50,9 60,12 70,6 80,10 90,4 100,7"/></svg>
-                                <span class="ui-kicker">signature words</span>
-                                <span class="ui-chips"><span class="on">ㅋㅋㅋ</span><span>진짜</span><span>오늘</span><span>내일</span><span>ㅇㅇ</span></span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile is-wide" href="/apps/line_chat_analyzer/" style="--t-dark: #a99dff; --t-light: #5b4bdb">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/line_chat_analyzer/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
+                            <b class="tile-name">TalkScope</b>
+                            <span class="tile-line">Reply speed, habit words and chemistry from an exported LINE chat — in English, 日本語 and 한국어.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>카톡 정밀 분석기</b><i>kakaoparser</i><em class="phone-stores">Google Play · App Store</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/line_chat_analyzer/img/overview-en.webp" width="660" height="1277" alt="" loading="lazy" decoding="async"></span><span class="tile-phone tile-phone-back"><img src="/apps/line_chat_analyzer/img/words-en.webp" width="660" height="1277" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone" href="/apps/kakao_love_analyzer/" style="--tint: #f08aa8">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>연애 분석기</b><i class="ui-icon">♥</i></span>
-                                <span class="love-pair"><i class="love-avatar">나</i><b>♥</b><i class="love-avatar love-avatar-2">너</i></span>
-                                <span class="love-ring-wrap">
-                                    <svg class="love-ring" viewBox="0 0 100 100"><circle class="love-track" cx="50" cy="50" r="42"/><circle class="love-fill" cx="50" cy="50" r="42" style="--p: 87"/></svg>
-                                    <span class="love-ring-label"><b>87%</b><i>궁합 A+</i></span>
-                                </span>
-                                <span class="love-rows">
-                                    <span><i>답장 속도</i><span class="ui-bar"><span style="--p: 90%"></span></span><b>빠름</b></span>
-                                    <span><i>먼저 연락</i><span class="ui-bar"><span style="--p: 58%"></span></span><b>58%</b></span>
-                                    <span><i>이모티콘</i><span class="ui-bar"><span style="--p: 76%"></span></span><b>많음</b></span>
-                                    <span><i>하트</i><span class="ui-bar"><span style="--p: 84%"></span></span><b>142</b></span>
-                                </span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile is-wide" href="/apps/kakao_love_analyzer/" style="--t-dark: #f48fb1; --t-light: #c2185b">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/kakao_love_analyzer/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
+                            <b class="tile-name" lang="ko">카카오톡 연애 분석기</b>
+                            <span class="tile-line">Balance, interest and chemistry, read from a KakaoTalk conversation.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>카카오톡 연애 분석기</b><i>kakao_love_analyzer</i><em class="phone-stores">Google Play · App Store</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/kakao_love_analyzer/img/hub.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span><span class="tile-phone tile-phone-back"><img src="/apps/kakao_love_analyzer/img/chemistry.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-
-                    <a class="phone" href="/apps/saju/" style="--tint: #e8895a">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>사주 분석기</b><i class="ui-icon">☯</i></span>
-                                <span class="ui-card ui-card-hero">
-                                    <span class="ui-card-head"><span class="ui-kicker">사주팔자</span><b class="ui-fine">1995.05.05 · 오시</b></span>
-                                    <span class="saju-pillars">
-                                        <span><i>시</i><b>壬</b><b>午</b></span>
-                                        <span><i>일</i><b>丙</b><b>寅</b></span>
-                                        <span><i>월</i><b>辛</b><b>巳</b></span>
-                                        <span><i>년</i><b>乙</b><b>亥</b></span>
-                                    </span>
-                                </span>
-                                <span class="ui-card">
-                                    <span class="ui-card-head"><span class="ui-kicker">오행</span><b class="ui-badge">火 강</b></span>
-                                    <span class="ui-test"><i>木</i><span class="ui-bar"><span style="--p: 40%"></span></span><b>2</b></span>
-                                    <span class="ui-test"><i>火</i><span class="ui-bar"><span style="--p: 78%"></span></span><b>3</b></span>
-                                    <span class="ui-test"><i>土</i><span class="ui-bar"><span style="--p: 22%"></span></span><b>1</b></span>
-                                    <span class="ui-test"><i>金</i><span class="ui-bar"><span style="--p: 30%"></span></span><b>1</b></span>
-                                    <span class="ui-test"><i>水</i><span class="ui-bar"><span style="--p: 30%"></span></span><b>1</b></span>
-                                </span>
-                                <span class="ui-chips"><span class="on">오늘 82점</span><span>궁합</span><span>대운</span><span>타로</span></span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile is-wide" href="/apps/reverse_image_search/" style="--t-dark: #818cf8; --t-light: #4f46e5">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/reverse_image_search/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
+                            <b class="tile-name">Reverse Image Search</b>
+                            <span class="tile-line">One photo, four engines: Google Lens, TinEye, Yandex and Bing side by side.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>사주 분석기</b><i>saju</i><em class="phone-stores">Google Play</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/reverse_image_search/img/result-google-lens.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span><span class="tile-phone tile-phone-back"><img src="/apps/reverse_image_search/img/result-tineye.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone phone-brass" href="/apps/visual_metronome/" style="--tint: #e4b96a">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen ui-vm">
-                                <span class="ui-status ui-status-dark"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>Visual Metronome</b><i class="ui-icon">♩</i></span>
-                                <span class="vm-stage"><i class="vm-orb"></i><b>120</b><em>BPM</em></span>
-                                <span class="vm-beats"><i></i><i></i><i></i><i></i></span>
-                                <span class="ui-chips"><span class="on">4/4</span><span>3/4</span><span>6/8</span><span>tap</span></span>
-                                <span class="ui-rows">
-                                    <span><i class="ui-tag">viz</i>Pulse Orb<b>on</b></span>
-                                    <span><i class="ui-tag">viz</i>Bar Map<b>·</b></span>
-                                    <span><i class="ui-tag">feel</i>Click + haptics<b>on</b></span>
-                                </span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile" href="/apps/qr_scanner/" style="--t-dark: #aba3ff; --t-light: #4e3ee6">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/qr_scanner/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
+                            <b class="tile-name">QR Scanner: Scan &amp; Create</b>
+                            <span class="tile-line">Scan from the camera or a photo, keep a searchable history, make your own codes.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>Visual Metronome</b><i>visual_metronome</i><em class="phone-stores">Google Play · App Store</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/qr_scanner/img/show-qr.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone phone-peek" href="/apps/katalk_keeper/">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>슬쩍</b><i class="ui-icon">◐</i></span>
-                                <span class="ui-card-head"><span class="ui-kicker">읽음 표시 없이</span><b class="ui-badge">안 읽음 2</b></span>
-                                <span class="ui-rows">
-                                    <span><i class="ui-tag">대화</i>지수 · 내일 몇 시에 볼까?<b>1</b></span>
-                                    <span><i class="ui-tag">대화</i>동아리 · 회비 공지<b>1</b></span>
-                                </span>
-                                <span class="chat">
-                                    <i class="them">내일 몇 시에 볼까?<em>21:02</em></i>
-                                    <i class="them ks-gone">메시지가 삭제되었습니다<em>21:04</em></i>
-                                    <i class="them ks-kept">사실 나 늦을 것 같아 ㅠ<em>보관됨</em></i>
-                                </span>
-                                <span class="ui-fine">카톡을 열지 않고 확인했어요</span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile" href="/apps/exif/" style="--t-dark: #b6c3f7; --t-light: #4a5268">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/exif/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
+                            <b class="tile-name">Photo Exif Metadata Editor</b>
+                            <span class="tile-line">View, edit and wipe the EXIF and GPS data in your photos.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>슬쩍</b><i>katalk_keeper</i><em class="phone-stores">Google Play</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/exif/img/editor.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone phone-alba" href="/apps/alba_pay/">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>알바수첩</b><i class="ui-icon">₩</i></span>
-                                <span class="ui-card ui-card-hero">
-                                    <span class="ui-kicker">이번 달 예상 수령액</span>
-                                    <span class="ui-big ui-big-money">1,545,802<small>원</small></span>
-                                    <span class="ui-bar ui-bar-wide"><span style="--p: 72%"></span></span>
-                                    <span class="ui-fine">오후의 카페 · 126시간 30분</span>
-                                </span>
-                                <span class="ui-card">
-                                    <span class="ui-card-head"><span class="ui-kicker">급여 내역</span><b class="ui-badge">주휴 대상</b></span>
-                                    <span class="ui-test"><i>기본급</i><span class="ui-bar"><span style="--p: 86%"></span></span><b>1,268,750</b></span>
-                                    <span class="ui-test"><i>주휴</i><span class="ui-bar"><span style="--p: 40%"></span></span><b>211,250</b></span>
-                                    <span class="ui-test"><i>야간</i><span class="ui-bar"><span style="--p: 18%"></span></span><b>59,167</b></span>
-                                    <span class="ui-test"><i>휴일</i><span class="ui-bar"><span style="--p: 14%"></span></span><b>46,875</b></span>
-                                    <span class="ui-test"><i>3.3%</i><span class="ui-bar"><span style="--p: 12%"></span></span><b>−52,740</b></span>
-                                </span>
-                                <span class="ui-chips"><span class="on">출근하기</span><span>달력</span><span>급여</span><span>계산기</span></span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile" href="/apps/saju/" style="--t-dark: #8cc3d3; --t-light: #1c5a6e">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/saju/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
+                            <b class="tile-name" lang="ko">사주 분석기</b>
+                            <span class="tile-line">Four pillars, daily fortune, compatibility and tarot, explained in plain words.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>알바수첩</b><i>alba_pay</i><em class="phone-stores">Google Play · App Store</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/saju/img/pillars.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
-                    <a class="phone phone-talk" href="/apps/line_chat_analyzer/">
-                        <span class="phone-frame" aria-hidden="true">
-                            <span class="phone-screen">
-                                <span class="ui-status"><b>12:30</b><span class="ui-status-right"><i class="ui-sig"></i><i class="ui-wifi"></i><i class="ui-bat"></i></span></span>
-                                <span class="ui-appbar"><b>TalkScope</b><i class="ui-icon">◔</i></span>
-                                <span class="ui-card ui-card-hero">
-                                    <span class="ui-kicker">chat type · in-sync pair</span>
-                                    <span class="ui-big">82 <small>balance</small></span>
-                                    <span class="ui-bar ui-bar-wide"><span style="--p: 82%"></span></span>
-                                    <span class="ui-fine">7,943 messages · 339 days</span>
-                                </span>
-                                <span class="ui-card">
-                                    <span class="ui-card-head"><span class="ui-kicker">records</span><b class="ui-badge">Yui &amp; Sota</b></span>
-                                    <span class="ui-rows">
-                                        <span><i class="ui-tag">streak</i>Longest<b>49d</b></span>
-                                        <span><i class="ui-tag">quiet</i>Silence<b>2d</b></span>
-                                        <span><i class="ui-tag">calls</i>Call time<b>54h</b></span>
-                                    </span>
-                                </span>
-                                <span class="ui-chips"><span class="on">Overview</span><span>Members</span><span>Words</span></span>
-                                <span class="ui-nav"><i class="on"></i><i></i><i></i></span>
-                            </span>
-                            <span class="phone-glare"></span>
+                    <a class="app-tile" href="/apps/katalk_keeper/" style="--t-dark: #fde524; --t-light: #8f6f00">
+                        <span class="tile-copy">
+                            <span class="tile-meta"><img class="tile-icon" src="/apps/katalk_keeper/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
+                            <b class="tile-name" lang="ko">슬쩍</b>
+                            <span class="tile-line">Read KakaoTalk messages without marking them read, and keep the ones that get deleted.</span>
+                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
                         </span>
-                        <span class="phone-label"><b>TalkScope</b><i>line_chat_analyzer</i><em class="phone-stores">Google Play</em></span>
+                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/katalk_keeper/img/chat-dark.webp" width="600" height="1067" alt="" loading="lazy" decoding="async"></span></span>
                     </a>
-
                 </div>
             </div>
         </section>

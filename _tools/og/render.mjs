@@ -31,6 +31,7 @@ const CARDS = {
     parser:   { path: '/parser/', file: '/parser/index.html', title: 'KakaoParser', desc: 'Companion pages for the KakaoTalk chat analyzer: tools and help documents.' },
     404:      { path: '/404', file: '/404.html', title: 'File not found', desc: 'That path does not exist here. The rex looked everywhere.' },
     log:      { path: '/log/', file: '/log/index.html', title: 'Devlog', desc: 'Notes on how the things on this site are built.' },
+    apps:     { path: '/apps/', file: '/apps/index.html', title: 'Apps, one page each.', desc: 'Every app on Google Play and the App Store, each with its own page, demo and privacy policy.' },
     app_manager: { path: '/apps/app_manager/', file: '/apps/app_manager/index.html', title: 'App Manager', desc: 'From Flutter folder to Google Play and the App Store, in one window. For macOS and Windows.' }
 };
 

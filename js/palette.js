@@ -18,7 +18,7 @@
             { title: 'Music', path: '/music/showcase.html', hint: '/music/', keys: 'music soundcloud superpose newgrounds tracks audio' },
             { title: 'Animation lab', path: '/animation.html', hint: '/animation.html', keys: 'lab css text effects vue scratchpad animation' },
             { title: 'Apps', path: '/#apps', hint: 'every app, on the home page', keys: 'apps mobile store google play app store android ios' },
-            { title: 'Privacy policies', path: '/apps/', hint: '/apps/', keys: 'privacy policy policies apps store' },
+            { title: 'All apps', path: '/apps/', hint: '/apps/ · every app and privacy policy', keys: 'apps all directory list privacy policy policies store play app store' },
             { title: 'Devlog', path: '/log/', hint: '/log/', keys: 'log blog devlog notes writing how it works' },
             { title: 'Support', path: '/support/', hint: '/support/', keys: 'support contact email help bug feedback' },
             { title: 'KakaoParser help', path: '/parser/index.html', hint: '/parser/', keys: 'kakaoparser kakaotalk 카카오톡 faq 이용약관 help docs' },

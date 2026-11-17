@@ -1,35 +1,256 @@
 <!doctype html>
+<!-- The site's app directory. App Manager regenerates /apps/ as a bare
+     policy list unless this page carries the appmanager-apps-index meta
+     below; with it, a privacy publish only writes the policy page. Keep the
+     cards and the policy lists in step with the home page's /apps/ chapter
+     (README → App landing pages). -->
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/css/index.css">
-<title>Apps</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="appmanager-apps-index" content="manual">
+    <title>Apps — Rexyrex</title>
+    <meta name="description" content="Every app Rexyrex has published on Google Play and the App Store, each with its own page, demo and privacy policy.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0f1214" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f7f4" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/">
+    <meta property="og:title" content="Apps — Rexyrex">
+    <meta property="og:description" content="Every app on Google Play and the App Store, each with its own page, demo and privacy policy.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Apps — Rexyrex">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Apps — Rexyrex">
+    <meta name="twitter:description" content="Every app on Google Play and the App Store, each with its own page, demo and privacy policy.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps.png">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/motion.css">
+    <link rel="stylesheet" href="/css/apps-index.css">
 </head>
-<body>
-<div id="nav-placeholder"></div>
-<main class="privacy-article">
-<h1>Apps</h1>
-<ul class="apps-index">
-  <li><a href="/apps/age_calculator/privacy-policy/"><strong>How Old Are You? Age Test</strong> <span class="path">/apps/age_calculator/privacy-policy/</span></a></li>
-  <li><a href="/apps/alba_pay/privacy-policy/"><strong>alba_pay</strong> <span class="path">/apps/alba_pay/privacy-policy/</span></a></li>
-  <li><a href="/apps/deadly_balloons/privacy-policy/"><strong>deadly_balloons</strong> <span class="path">/apps/deadly_balloons/privacy-policy/</span></a></li>
-  <li><a href="/apps/dm_analyzer/privacy-policy/"><strong>dm_analyzer</strong> <span class="path">/apps/dm_analyzer/privacy-policy/</span></a></li>
-  <li><a href="/apps/exif/privacy-policy/"><strong>exif</strong> <span class="path">/apps/exif/privacy-policy/</span></a></li>
-  <li><a href="/apps/get_out_alive/privacy-policy/"><strong>get_out_alive</strong> <span class="path">/apps/get_out_alive/privacy-policy/</span></a></li>
-  <li><a href="/apps/kakao_love_analyzer/privacy-policy/"><strong>kakao_love_analyzer</strong> <span class="path">/apps/kakao_love_analyzer/privacy-policy/</span></a></li>
-  <li><a href="/apps/kakaoparser/privacy-policy/"><strong>카톡 정밀 분석기</strong> <span class="path">/apps/kakaoparser/privacy-policy/</span></a></li>
-  <li><a href="/apps/katalk_keeper/privacy-policy/"><strong>katalk_keeper</strong> <span class="path">/apps/katalk_keeper/privacy-policy/</span></a></li>
-  <li><a href="/apps/land_the_beat/privacy-policy/"><strong>land_the_beat</strong> <span class="path">/apps/land_the_beat/privacy-policy/</span></a></li>
-  <li><a href="/apps/line_chat_analyzer/privacy-policy/"><strong>line_chat_analyzer</strong> <span class="path">/apps/line_chat_analyzer/privacy-policy/</span></a></li>
-  <li><a href="/apps/make_your_choice/privacy-policy/"><strong>make_your_choice</strong> <span class="path">/apps/make_your_choice/privacy-policy/</span></a></li>
-  <li><a href="/apps/qr_scanner/privacy-policy/"><strong>qr_scanner</strong> <span class="path">/apps/qr_scanner/privacy-policy/</span></a></li>
-  <li><a href="/apps/redline_garage/privacy-policy/"><strong>redline_garage</strong> <span class="path">/apps/redline_garage/privacy-policy/</span></a></li>
-  <li><a href="/apps/reverse_image_search/privacy-policy/"><strong>reverse_image_search</strong> <span class="path">/apps/reverse_image_search/privacy-policy/</span></a></li>
-  <li><a href="/apps/rex_remote/privacy-policy/"><strong>rex_remote</strong> <span class="path">/apps/rex_remote/privacy-policy/</span></a></li>
-  <li><a href="/apps/second_thought/privacy-policy/"><strong>second_thought</strong> <span class="path">/apps/second_thought/privacy-policy/</span></a></li>
-  <li><a href="/apps/visual_metronome/privacy-policy/"><strong>visual_metronome</strong> <span class="path">/apps/visual_metronome/privacy-policy/</span></a></li>
-</ul>
-</main>
+<body class="apps-dir">
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+        <header class="dir-hero">
+            <div class="wrap">
+                <div class="dir-hero-art" aria-hidden="true">
+                    <span style="--t-dark: #fb9a4b; --t-light: #c2410c; --i: 0"><img src="/apps/kakaoparser/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #ff8a7a; --t-light: #c93838; --i: 1"><img src="/apps/age_calculator/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #ff5d6c; --t-light: #b0152e; --i: 2"><img src="/apps/deadly_balloons/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #d8f35b; --t-light: #5c7400; --i: 3"><img src="/apps/alba_pay/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #e4b96a; --t-light: #7a5512; --i: 4"><img src="/apps/visual_metronome/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #a99dff; --t-light: #5b4bdb; --i: 5"><img src="/apps/line_chat_analyzer/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #f48fb1; --t-light: #c2185b; --i: 6"><img src="/apps/kakao_love_analyzer/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #818cf8; --t-light: #4f46e5; --i: 7"><img src="/apps/reverse_image_search/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #aba3ff; --t-light: #4e3ee6; --i: 8"><img src="/apps/qr_scanner/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #b6c3f7; --t-light: #4a5268; --i: 9"><img src="/apps/exif/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #8cc3d3; --t-light: #1c5a6e; --i: 10"><img src="/apps/saju/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                    <span style="--t-dark: #fde524; --t-light: #8f6f00; --i: 11"><img src="/apps/katalk_keeper/img/icon.webp" width="256" height="256" alt="" decoding="async"></span>
+                </div>
+                <p class="eyebrow">/apps/</p>
+                <h1>Apps, one page each.</h1>
+                <p class="dir-lede">Everything published on Google Play and the App Store — mostly Flutter, some native Android, all built solo. Open one to see what it does and try its demo.</p>
+                <div class="dir-tools">
+                    <label class="dir-search">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+                        <input type="search" id="dirSearch" placeholder="Search by name or what it does" aria-label="Search apps" autocomplete="off" spellcheck="false">
+                    </label>
+                    <div class="dir-filters" role="group" aria-label="Show">
+                        <button type="button" class="dir-chip" data-filter="all" aria-pressed="true">All</button>
+                        <button type="button" class="dir-chip" data-filter="ios" aria-pressed="false">App Store</button>
+                        <button type="button" class="dir-chip" data-filter="play" aria-pressed="false">Google Play</button>
+                        <button type="button" class="dir-chip" data-filter="ko" aria-pressed="false" lang="ko">한국어</button>
+                        <button type="button" class="dir-chip" data-filter="global" aria-pressed="false">Global</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="dir-section" aria-labelledby="dir-phone-title">
+            <div class="wrap">
+                <h2 class="dir-h2" id="dir-phone-title"><span>Phone apps</span><output class="dir-count" id="dirCount" aria-live="polite"></output></h2>
+                <ul class="dir-grid" id="dirGrid" data-reveal-group>
+                <li class="dir-card" data-tags="play ios ko" data-keys="kakaoparser kakaotalk 카카오톡 카톡 정밀 분석기 대화 chat analyzer rankings 카톡 정밀 분석기 kakaoparser" style="--t-dark: #fb9a4b; --t-light: #c2410c">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/kakaoparser/img/android-03-rankings.webp" width="540" height="1200" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/kakaoparser/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i><i>App Store</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/kakaoparser/"><span lang="ko">카톡 정밀 분석기</span></a></h3>
+                        <p class="dir-line">Rankings, hourly charts and signature words from an exported KakaoTalk chat.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/kakaoparser/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play ios global" data-keys="age test calculator how old senses hearing reaction memory vision how old are you? age test age_calculator" style="--t-dark: #ff8a7a; --t-light: #c93838">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/age_calculator/img/result.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/age_calculator/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i><i>App Store</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/age_calculator/"><span>How Old Are You? Age Test</span></a></h3>
+                        <p class="dir-line">Five quick tests of your senses, each with a playful age guess.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/age_calculator/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play ios global game" data-keys="deadly balloons bullet hell shooter game boss deadly balloons: bullet hell deadly_balloons" style="--t-dark: #ff5d6c; --t-light: #b0152e">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/deadly_balloons/img/boss-battle.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/deadly_balloons/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i><i>App Store</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/deadly_balloons/"><span>Deadly Balloons: Bullet Hell</span></a></h3>
+                        <p class="dir-line">A one-thumb bullet-hell shooter: dodge balloon fire, topple huge bosses.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/deadly_balloons/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play ios ko" data-keys="alba pay 알바수첩 알바 급여 계산기 주휴수당 시급 월급 실수령액 payroll 알바수첩 alba_pay" style="--t-dark: #d8f35b; --t-light: #5c7400">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/alba_pay/img/home.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/alba_pay/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i><i>App Store</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/alba_pay/"><span lang="ko">알바수첩</span></a></h3>
+                        <p class="dir-line">Clock in, clock out — holiday pay, night and overtime rates down to take-home pay.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/alba_pay/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play ios global" data-keys="visual metronome bpm tempo rhythm tap music beat practice visual metronome visual_metronome" style="--t-dark: #e4b96a; --t-light: #7a5512">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/visual_metronome/img/main.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/visual_metronome/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i><i>App Store</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/visual_metronome/"><span>Visual Metronome</span></a></h3>
+                        <p class="dir-line">A metronome you can watch: 19 visualizers that move with the click.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/visual_metronome/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play global" data-keys="talkscope line chat analyzer トークスコープ トーク分析 대화 분석 reply speed words talkscope line_chat_analyzer" style="--t-dark: #a99dff; --t-light: #5b4bdb">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/line_chat_analyzer/img/overview-en.webp" width="660" height="1277" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/line_chat_analyzer/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/line_chat_analyzer/"><span>TalkScope</span></a></h3>
+                        <p class="dir-line">Reply speed, habit words and chemistry from an exported LINE chat — in English, 日本語 and 한국어.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/line_chat_analyzer/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play ios ko" data-keys="kakao love analyzer 카카오톡 연애 분석기 썸 호감도 궁합 chemistry chat 카카오톡 연애 분석기 kakao_love_analyzer" style="--t-dark: #f48fb1; --t-light: #c2185b">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/kakao_love_analyzer/img/hub.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/kakao_love_analyzer/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i><i>App Store</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/kakao_love_analyzer/"><span lang="ko">카카오톡 연애 분석기</span></a></h3>
+                        <p class="dir-line">Balance, interest and chemistry, read from a KakaoTalk conversation.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/kakao_love_analyzer/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play ios global" data-keys="reverse image search google lens tineye yandex bing photo reverse image search reverse_image_search" style="--t-dark: #818cf8; --t-light: #4f46e5">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/reverse_image_search/img/result-google-lens.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/reverse_image_search/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i><i>App Store</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/reverse_image_search/"><span>Reverse Image Search</span></a></h3>
+                        <p class="dir-line">One photo, four engines: Google Lens, TinEye, Yandex and Bing side by side.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/reverse_image_search/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play global" data-keys="qr code scanner generator create wifi contact qr scanner: scan &amp; create qr_scanner" style="--t-dark: #aba3ff; --t-light: #4e3ee6">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/qr_scanner/img/show-qr.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/qr_scanner/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/qr_scanner/"><span>QR Scanner: Scan &amp; Create</span></a></h3>
+                        <p class="dir-line">Scan from the camera or a photo, keep a searchable history, make your own codes.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/qr_scanner/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play global" data-keys="exif metadata photo editor remover gps strip photo exif metadata editor exif" style="--t-dark: #b6c3f7; --t-light: #4a5268">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/exif/img/editor.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/exif/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/exif/"><span>Photo Exif Metadata Editor</span></a></h3>
+                        <p class="dir-line">View, edit and wipe the EXIF and GPS data in your photos.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/exif/privacy-policy/">Privacy</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play ko" data-keys="saju 사주 분석기 운세 궁합 대운 타로 fortune 사주 분석기 saju" style="--t-dark: #8cc3d3; --t-light: #1c5a6e">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/saju/img/pillars.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/saju/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/saju/"><span lang="ko">사주 분석기</span></a></h3>
+                        <p class="dir-line">Four pillars, daily fortune, compatibility and tarot, explained in plain words.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="https://psychedelic-cattle-134.notion.site/33f369f50e3d809ababcf454cf24381f" target="_blank" rel="noopener noreferrer">Privacy ↗</a></p>
+                    </div>
+                </li>
+                <li class="dir-card" data-tags="play ko" data-keys="katalk keeper 슬쩍 카톡 몰래보기 읽음 삭제된 메시지 notification chat messages 슬쩍 katalk_keeper" style="--t-dark: #fde524; --t-light: #8f6f00">
+                    <div class="dir-shot" aria-hidden="true"><span class="dir-phone"><img src="/apps/katalk_keeper/img/chat-dark.webp" width="600" height="1067" alt="" loading="lazy" decoding="async"></span></div>
+                    <div class="dir-body">
+                        <div class="dir-top"><img class="dir-icon" src="/apps/katalk_keeper/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="dir-stores"><i>Google Play</i></span></div>
+                        <h3 class="dir-name"><a class="dir-link" href="/apps/katalk_keeper/"><span lang="ko">슬쩍</span></a></h3>
+                        <p class="dir-line">Read KakaoTalk messages without marking them read, and keep the ones that get deleted.</p>
+                        <p class="dir-foot"><span class="dir-open" aria-hidden="true">Open page <i>→</i></span><a class="dir-policy" href="/apps/katalk_keeper/privacy/">Privacy</a></p>
+                    </div>
+                </li>
+                </ul>
+                <p class="dir-empty" id="dirEmpty" hidden>Nothing matches that. <button type="button" class="dir-reset" id="dirReset">Show every app</button></p>
+            </div>
+        </section>
+
+        <section class="dir-section" aria-labelledby="dir-desk-title">
+            <div class="wrap">
+                <h2 class="dir-h2" id="dir-desk-title"><span>On the desktop</span></h2>
+                <a class="dir-desk" href="/apps/app_manager/" style="--t-dark: #8fd069; --t-light: #3a8a1c" data-reveal>
+                    <img class="dir-icon" src="/apps/app_manager/img/icon.png" width="512" height="512" alt="" loading="lazy" decoding="async">
+                    <span class="dir-desk-copy">
+                        <b>App Manager</b>
+                        <span>One window for a whole portfolio of Flutter apps: store listings, screenshots, questionnaires, signing, deploys and reviews — with an AI agent that can drive all of it.</span>
+                    </span>
+                    <span class="dir-desk-meta"><i>macOS</i><i>Windows</i><span class="dir-open">Download <i>→</i></span></span>
+                </a>
+            </div>
+        </section>
+
+        <section class="dir-section dir-policies" id="privacy" aria-labelledby="dir-privacy-title">
+            <div class="wrap">
+                <h2 class="dir-h2" id="dir-privacy-title"><span>Privacy policies</span></h2>
+                <p class="dir-note">The same pages the store listings link to. Questions about any of them: <a href="/support/">/support/</a>.</p>
+                <div class="dir-policy-cols">
+                    <div>
+                        <h3>On the stores</h3>
+                        <ul class="dir-policy-list">
+                            <li><a href="/apps/age_calculator/privacy-policy/"><span>How Old Are You? Age Test</span><span class="path">/apps/age_calculator/privacy-policy/</span></a></li>
+                            <li><a href="/apps/alba_pay/privacy-policy/"><span lang="ko">알바수첩</span><span class="path">/apps/alba_pay/privacy-policy/</span></a></li>
+                            <li><a href="/apps/deadly_balloons/privacy-policy/"><span>Deadly Balloons: Bullet Hell</span><span class="path">/apps/deadly_balloons/privacy-policy/</span></a></li>
+                            <li><a href="/apps/exif/privacy-policy/"><span>Photo Exif Metadata Editor</span><span class="path">/apps/exif/privacy-policy/</span></a></li>
+                            <li><a href="/apps/kakao_love_analyzer/privacy-policy/"><span lang="ko">카카오톡 연애 분석기</span><span class="path">/apps/kakao_love_analyzer/privacy-policy/</span></a></li>
+                            <li><a href="/apps/kakaoparser/privacy-policy/"><span lang="ko">카톡 정밀 분석기</span><span class="path">/apps/kakaoparser/privacy-policy/</span></a></li>
+                            <li><a href="/apps/katalk_keeper/privacy/"><span lang="ko">슬쩍</span><span class="path">/apps/katalk_keeper/privacy/</span></a></li>
+                            <li><a href="/apps/line_chat_analyzer/privacy-policy/"><span>TalkScope</span><span class="path">/apps/line_chat_analyzer/privacy-policy/</span></a></li>
+                            <li><a href="/apps/qr_scanner/privacy-policy/"><span>QR Scanner: Scan &amp; Create</span><span class="path">/apps/qr_scanner/privacy-policy/</span></a></li>
+                            <li><a href="/apps/reverse_image_search/privacy-policy/"><span>Reverse Image Search</span><span class="path">/apps/reverse_image_search/privacy-policy/</span></a></li>
+                            <li><a href="https://psychedelic-cattle-134.notion.site/33f369f50e3d809ababcf454cf24381f" target="_blank" rel="noopener noreferrer"><span lang="ko">사주 분석기</span><span class="path">notion.site ↗</span></a></li>
+                            <li><a href="/apps/visual_metronome/privacy-policy/"><span>Visual Metronome</span><span class="path">/apps/visual_metronome/privacy-policy/</span></a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>In testing</h3>
+                        <ul class="dir-policy-list">
+                            <li><a href="/apps/dm_analyzer/privacy-policy/"><span>DMA - DM Analyzer</span><span class="path">/apps/dm_analyzer/privacy-policy/</span></a></li>
+                            <li><a href="/apps/get_out_alive/privacy-policy/"><span>Get Out Alive</span><span class="path">/apps/get_out_alive/privacy-policy/</span></a></li>
+                            <li><a href="/apps/land_the_beat/privacy-policy/"><span>Land the Beat</span><span class="path">/apps/land_the_beat/privacy-policy/</span></a></li>
+                            <li><a href="/apps/make_your_choice/privacy-policy/"><span>Make Your Choice</span><span class="path">/apps/make_your_choice/privacy-policy/</span></a></li>
+                            <li><a href="/apps/redline_garage/privacy-policy/"><span>Redline Garage: Engine Sounds</span><span class="path">/apps/redline_garage/privacy-policy/</span></a></li>
+                            <li><a href="/apps/rex_remote/privacy-policy/"><span>Rex Remote: Server Monitor</span><span class="path">/apps/rex_remote/privacy-policy/</span></a></li>
+                            <li><a href="/apps/second_thought/privacy-policy/"><span>Second Thought: Pause Apps</span><span class="path">/apps/second_thought/privacy-policy/</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/motion.js"></script>
+    <script src="/js/apps-index.js" defer></script>
 </body>
 </html>
