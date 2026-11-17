@@ -114,6 +114,9 @@ Every app that is public on Google Play or the App Store has its own page at `/a
 | `/apps/kakao_love_analyzer/` | 카카오톡 연애 분석기 | Play · App Store |
 | `/apps/katalk_keeper/` | 슬쩍 | Play |
 | `/apps/saju/` | 사주 분석기 | Play |
+| `/apps/alba_pay/` | 알바수첩 - 알바 급여·주휴수당 계산기 | Play · App Store |
+| `/apps/date_planner_2/` | 데이트코스 - AI 데이트 플래너 | Play (production release sent, listing not public yet — not linked from the home page, palette, sitemap or support until it is) |
+| `/apps/line_chat_analyzer/` | TalkScope - Chat Analyzer (EN · 日本語 · 한국어) | Play |
 
 ### App Manager download page (`/apps/app_manager/`)
 
@@ -122,6 +125,8 @@ The desktop app itself, not a store app: bilingual (English / Korean) with an EN
 Files per app: `apps/<id>/index.html`, `page.css`, `page.js` (dependency-free), `img/` (WebP screen captures, icon), and the social card `/assets/og/apps/<id>.jpg` (the store feature graphic, 1024×500). Shared pieces live in `/css/app-page.css` — store buttons, the `.app-device` phone frame for real screen captures, the `.app-foot` footer — and a new page starts from `_tools/app-page/skeleton.html`. Each page sets the site tokens (`--bg`, `--fg`, `--accent`, …) for both themes so the top bar and status bar sit on its palette.
 
 These pages sit beside the generated policies but App Manager never touches them: it only writes `apps/index.html` and `apps/<id>/privacy-policy/index.html`, and it indexes only directories that contain a policy.
+
+App Manager does check for them: each app's Overview shows a **Landing page** tile (At a glance) and card — not created / not committed / not pushed / published — read from `apps/<slug>/index.html` here and the pushed branch. The slug is the App Manager id, else the folder of the app's privacy policy URL, else the folder its App Store marketing URL points at (that is how the iOS twin of KakaoParser finds `/apps/kakaoparser/`). A missing page has a **Build Page** button that runs App Manager's `rex-app-landing-page` skill in the app's agent session; the skill reads this README, the skeleton and the existing pages first, so the rules here stay the source of truth. Its `scripts/images.mjs` converts captures to WebP through headless Chrome when `cwebp` isn't installed. Every App Store listing's *Marketing URL* points at its app's page (keep it that way when an app gains a page or an iOS version).
 
 To add an app when it goes public: build the page from the skeleton, then add a phone to the home page `#apps` chapter, an entry in `js/palette.js` (`INDEX.apps`), a row in `sitemap.xml`, its policy on `/support/`, and a row in the table above. Check it with the screenshot tool:
 

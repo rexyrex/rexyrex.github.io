@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>TalkScope - Chat Analyzer — Rexyrex</title>
+    <meta name="description" content="See your LINE chats in numbers: reply speed, habit words and chemistry, from a chat you export. Analyzed entirely on your phone. Free on Google Play.">
+    <meta name="color-scheme" content="dark light">
+    <!-- Language before first paint: ?lang=en|ja|ko wins (shareable), then the
+         visitor's last choice (rex-lang), then the browser's language; English
+         otherwise. Also preloads the hero capture in that language, since the
+         three hero <img>s are lazy so only the visible one is fetched. -->
+    <script>(function(){var d=document.documentElement,l=null,ok=function(v){return v==='en'||v==='ja'||v==='ko';};try{var q=new URLSearchParams(location.search).get('lang');if(q){q=q.toLowerCase().slice(0,2);if(ok(q))l=q;}}catch(e){}if(!l){try{var s=localStorage.getItem('rex-lang');if(ok(s))l=s;}catch(e){}}if(!l){var n=(navigator.languages&&navigator.languages[0])||navigator.language||'';l=/^ja\b/i.test(n)?'ja':/^ko\b/i.test(n)?'ko':'en';}d.setAttribute('lang',l);d.setAttribute('data-lang',l);if(l==='ja')document.title='トークスコープ - トーク分析 — Rexyrex';if(l==='ko')document.title='TalkScope - 대화 분석 — Rexyrex';try{var p=document.createElement('link');p.rel='preload';p.as='image';p.href='/apps/line_chat_analyzer/img/overview-'+l+'.webp';p.setAttribute('fetchpriority','high');document.head.appendChild(p);}catch(e){}})();</script>
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/line_chat_analyzer/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/line_chat_analyzer/">
+    <link rel="alternate" hreflang="en" href="https://rexyrex.github.io/apps/line_chat_analyzer/?lang=en">
+    <link rel="alternate" hreflang="ja" href="https://rexyrex.github.io/apps/line_chat_analyzer/?lang=ja">
+    <link rel="alternate" hreflang="ko" href="https://rexyrex.github.io/apps/line_chat_analyzer/?lang=ko">
+    <link rel="alternate" hreflang="x-default" href="https://rexyrex.github.io/apps/line_chat_analyzer/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/line_chat_analyzer/img/icon-180.png">
+    <meta name="theme-color" content="#111117" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f6f5fb" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/line_chat_analyzer/">
+    <meta property="og:title" content="TalkScope - Chat Analyzer">
+    <meta property="og:description" content="Load a chat export and see reply speed, habits and chemistry in numbers.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/line_chat_analyzer.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="TalkScope — Your chats, in numbers. Analyzed on your phone.">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="ja_JP">
+    <meta property="og:locale:alternate" content="ko_KR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TalkScope - Chat Analyzer">
+    <meta name="twitter:description" content="Load a chat export and see reply speed, habits and chemistry in numbers.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/line_chat_analyzer.jpg">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script>document.documentElement.classList.add('js');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- IBM Plex stays: the site chrome is set in it, and Plex Sans KR carries the Hangul.
+         M PLUS Rounded 1c (display, Latin + Japanese, the store art's headline face),
+         Plus Jakarta Sans (reading, Latin), Noto Sans JP (reading, Japanese). -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/css/motion.css">
+    <link rel="stylesheet" href="/apps/line_chat_analyzer/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TalkScope - Chat Analyzer",
+        "alternateName": ["トークスコープ - トーク分析", "TalkScope - 대화 분석"],
+        "operatingSystem": "Android",
+        "applicationCategory": "EntertainmentApplication",
+        "description": "Load a chat export and see reply speed, habits and chemistry in numbers.",
+        "inLanguage": ["ja", "en", "zh-Hant", "th", "ko"],
+        "url": "https://rexyrex.github.io/apps/line_chat_analyzer/",
+        "image": "https://rexyrex.github.io/apps/line_chat_analyzer/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id=com.rexyrex.line_chat_analyzer"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-line_chat_analyzer">
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <!-- ============ Hero ============ -->
+        <section class="ts-hero" aria-labelledby="ts-title">
+            <div class="ts-sky" aria-hidden="true"><span class="ts-glow ts-glow-a"></span><span class="ts-glow ts-glow-b"></span></div>
+            <div class="ts-wrap">
+                <div class="ts-topline">
+                    <nav class="ts-crumb" aria-label="Breadcrumb">
+                        <a href="/apps/">/apps/</a><span aria-current="page">line_chat_analyzer/</span>
+                    </nav>
+                    <div class="ts-lang" role="group" aria-label="Language · 言語 · 언어">
+                        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+                        <button type="button" data-set-lang="ja" aria-pressed="false">日本語</button>
+                        <button type="button" data-set-lang="ko" aria-pressed="false">한국어</button>
+                    </div>
+                </div>
+
+                <div class="ts-hero-grid">
+                    <div class="ts-hero-copy">
+                        <div class="ts-id">
+                            <img class="ts-icon" src="/apps/line_chat_analyzer/img/icon.webp" width="256" height="256" alt="TalkScope app icon: a white speech bubble holding three rising bars">
+                            <span class="ts-id-text">
+                                <span class="ts-kicker" lang="en">Chat analyzer for LINE</span>
+                                <span class="ts-kicker" lang="ja">LINEトーク分析アプリ</span>
+                                <span class="ts-kicker" lang="ko">LINE 대화 분석 앱</span>
+                                <span class="ts-alias"><span lang="ja" data-keep>トークスコープ</span> · <span>TalkScope</span></span>
+                            </span>
+                        </div>
+                        <h1 id="ts-title" class="ts-title"><span lang="en">TalkScope</span><span lang="ja">トークスコープ</span><span lang="ko">TalkScope</span></h1>
+                        <p class="ts-claim" lang="en">See your LINE chats <em>in numbers.</em></p>
+                        <p class="ts-claim" lang="ja">LINEのトークを、<em>数字で見える化。</em></p>
+                        <p class="ts-claim" lang="ko">LINE 대화를 <em>숫자로 한눈에.</em></p>
+                        <p class="ts-lede" lang="en">Who really talks more? Who replies faster? Export a chat from LINE, open it in TalkScope, and the conversation turns into numbers and charts: reply speed, habit words and chemistry, for two people or a whole group.</p>
+                        <p class="ts-lede" lang="ja">あのトーク、どっちがたくさん話してる？返信が速いのは？LINEで書き出したトーク履歴を読み込むだけで、返信の速さ、口ぐせ、相性まで、ふたりやグループの会話を数字とグラフで見える化します。</p>
+                        <p class="ts-lede" lang="ko">그 대화방, 누가 더 많이 말할까요? 답장은 누가 더 빠를까요? LINE에서 내보낸 대화 기록만 불러오면 답장 속도, 말버릇, 케미까지 1:1 대화와 단체 대화를 숫자와 그래프로 보여 드려요.</p>
+
+                        <div class="store-badges">
+                            <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.line_chat_analyzer" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                                <span><small lang="en">GET IT ON</small><small lang="ja">今すぐダウンロード</small><small lang="ko">다운로드하기</small><b>Google Play</b></span>
+                            </a>
+                            <a class="ts-ghost" href="#scope"><span lang="en">Try the sample chat</span><span lang="ja">サンプルで試す</span><span lang="ko">샘플로 체험하기</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"/></svg></a>
+                        </div>
+                        <p class="ts-fine" lang="en">Free on Android, with ads. No account. Your messages never leave your phone.</p>
+                        <p class="ts-fine" lang="ja">Android版・無料（広告あり）。アカウント登録なし。トーク内容が端末の外に出ることはありません。</p>
+                        <p class="ts-fine" lang="ko">Android용 무료(광고 포함). 계정 없이 사용해요. 대화 내용은 휴대폰 밖으로 나가지 않아요.</p>
+                    </div>
+
+                    <div class="ts-hero-visual">
+                        <div class="ts-mark" aria-hidden="true">
+                            <span class="ts-mark-bubble"></span>
+                            <span class="ts-mark-bars"><i></i><i></i><i></i><span class="ts-mark-spark"></span></span>
+                        </div>
+                        <figure class="app-device ts-device ts-hero-device">
+                            <span class="app-device-screen">
+                                <span class="ts-sb" aria-hidden="true"><b>9:41</b><i></i></span>
+                                <img lang="en" src="/apps/line_chat_analyzer/img/overview-en.webp" width="660" height="1277" loading="lazy" fetchpriority="high" decoding="async" alt="TalkScope's Overview tab for the sample chat between Yui and Sota: chat type In-sync pair with a balance of 82, 7,943 messages, 339 days talked and a longest streak of 49 days">
+                                <img lang="ja" src="/apps/line_chat_analyzer/img/overview-ja.webp" width="660" height="1277" loading="lazy" fetchpriority="high" decoding="async" alt="サンプル（ゆい・そうた）の概要タブ。トークタイプは「ぴったりシンクロ型」でバランス度82、メッセージ7,943件、トークした日339日、連続トーク最長49日">
+                                <img lang="ko" src="/apps/line_chat_analyzer/img/overview-ko.webp" width="660" height="1277" loading="lazy" fetchpriority="high" decoding="async" alt="샘플 대화(유이와 소타)의 개요 탭. 대화 유형 ‘찰떡 싱크형’, 밸런스 82, 메시지 7,943개, 대화한 날 339일, 최장 연속 대화 49일">
+                            </span>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Signature: the scope (sample chat → live analysis) ============ -->
+        <section class="ts-scope" id="scope" aria-labelledby="scope-title">
+            <div class="ts-wrap">
+                <header class="ts-head" data-reveal>
+                    <p class="ts-eyebrow"><span class="ts-dot" aria-hidden="true"></span><span lang="en">Sample chat · made up for this page</span><span lang="ja">サンプルトーク・このページ用の架空の会話</span><span lang="ko">샘플 대화 · 이 페이지용 가상 대화</span></p>
+                    <h2 id="scope-title"><span lang="en">Who’s keeping whom waiting?</span><span lang="ja">待たせているのは、どっち？</span><span lang="ko">누가 누구를 기다리게 할까?</span></h2>
+                    <p lang="en">Three days of chat between Yui and Sota, analyzed right here with TalkScope’s own rules: the same reply windows and thresholds as the app. Drag the slider to make one of them answer slower, and watch the chat type, reply speed and personalities move.</p>
+                    <p lang="ja">ゆいとそうたの3日分のトークを、アプリと同じルール（返信の数え方としきい値）でこのページ上で分析しています。スライダーでどちらかの返信を遅くすると、トークタイプや返信スピード、トーク性格が変わります。</p>
+                    <p lang="ko">유이와 소타의 사흘치 대화를 앱과 같은 규칙(답장 계산 방식과 기준값)으로 이 페이지에서 바로 분석해요. 슬라이더로 한 사람의 답장을 느리게 만들면 대화 유형, 답장 속도, 채팅 유형이 바뀌어요.</p>
+                </header>
+
+                <div class="ts-dial" data-dial hidden>
+                    <div class="ts-dial-top">
+                        <label for="ts-wait" class="ts-dial-label"><span lang="en">Reply speed</span><span lang="ja">返信の速さ</span><span lang="ko">답장 속도</span></label>
+                        <output class="ts-dial-out" for="ts-wait" data-dial-out></output>
+                        <button type="button" class="ts-reset" data-reset disabled><span lang="en">Reset</span><span lang="ja">元に戻す</span><span lang="ko">되돌리기</span></button>
+                    </div>
+                    <div class="ts-dial-track">
+                        <span class="ts-dial-end is-yui"><span lang="en">Yui slower</span><span lang="ja">ゆいが遅い</span><span lang="ko">유이가 느림</span></span>
+                        <span class="ts-range-wrap">
+                            <input type="range" id="ts-wait" min="-4" max="4" step="1" value="0" data-dial-input>
+                            <span class="ts-ticks" aria-hidden="true"><i>×16</i><i>×8</i><i>×4</i><i>×2</i><i>=</i><i>×2</i><i>×4</i><i>×8</i><i>×16</i></span>
+                        </span>
+                        <span class="ts-dial-end is-sota"><span lang="en">Sota slower</span><span lang="ja">そうたが遅い</span><span lang="ko">소타가 느림</span></span>
+                    </div>
+                </div>
+
+                <div class="ts-bench">
+                    <!-- the chat, as the app reads it -->
+                    <div class="ts-phone">
+                        <div class="ts-phone-head">
+                            <span class="ts-phone-title"><span lang="en">Sample chat (Yui &amp; Sota)</span><span lang="ja">サンプル（ゆい・そうた）</span><span lang="ko">샘플 대화 (유이와 소타)</span></span>
+                            <div class="ts-views" role="tablist" aria-label="Chat view" data-views hidden>
+                                <button type="button" role="tab" id="tv-chat" aria-controls="tp-chat" aria-selected="true"><span lang="en">Chat</span><span lang="ja">トーク</span><span lang="ko">대화</span></button>
+                                <button type="button" role="tab" id="tv-file" aria-controls="tp-file" aria-selected="false" tabindex="-1"><span lang="en">Export .txt</span><span lang="ja">書き出し .txt</span><span lang="ko">내보낸 .txt</span></button>
+                            </div>
+                        </div>
+                        <div class="ts-panel" id="tp-chat" role="tabpanel" aria-labelledby="tv-chat" tabindex="0">
+                            <ol class="ts-chat" lang="en" data-chat="en" aria-label="Sample chat between Yui and Sota">
+                                <li class="ts-day">Sat, Sep 26</li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Good morning! Are you up?</span><time class="ts-time" datetime="2026-09-26T09:02Z">9:02 AM</time></span><span class="ts-mark-tag is-start">✦ new conversation</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Morning, just woke up</span><time class="ts-time" datetime="2026-09-26T09:03Z">9:03 AM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">A new cafe opened by the station</span><time class="ts-time" datetime="2026-09-26T09:05Z">9:05 AM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">literally two minutes from your place</span><time class="ts-time" datetime="2026-09-26T09:05Z">9:05 AM</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Oh nice. Tomorrow?</span><time class="ts-time" datetime="2026-09-26T09:06Z">9:06 AM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Yes!! Their cheesecake is literally famous</span><time class="ts-time" datetime="2026-09-26T09:08Z">9:08 AM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Okay. 2pm?</span><time class="ts-time" datetime="2026-09-26T09:09Z">9:09 AM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Perfect, I'll book a table</span><time class="ts-time" datetime="2026-09-26T09:11Z">9:11 AM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble is-media">◉ Sticker</span><time class="ts-time" datetime="2026-09-26T09:12Z">9:12 AM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-line"><span class="ts-bubble">Finally done with work</span><time class="ts-time" datetime="2026-09-26T21:34Z">9:34 PM</time></span><span class="ts-mark-tag is-start">✦ new conversation</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-line"><span class="ts-bubble">So tired</span><time class="ts-time" datetime="2026-09-26T21:34Z">9:34 PM</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Good job!! Did you eat?</span><time class="ts-time" datetime="2026-09-26T21:37Z">9:37 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3 min</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">I made way too much curry again haha</span><time class="ts-time" datetime="2026-09-26T21:37Z">9:37 PM</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Not yet. Send a pic</span><time class="ts-time" datetime="2026-09-26T21:38Z">9:38 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">▣ Photo</span><time class="ts-time" datetime="2026-09-26T21:40Z">9:40 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">That looks so good</span><time class="ts-time" datetime="2026-09-26T21:41Z">9:41 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Come over and eat it next time</span><time class="ts-time" datetime="2026-09-26T21:43Z">9:43 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">It's literally my best dish</span><time class="ts-time" datetime="2026-09-26T21:43Z">9:43 PM</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Okay, it's a deal</span><time class="ts-time" datetime="2026-09-26T21:44Z">9:44 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">The cafe confirmed our table for 2pm</span><time class="ts-time" datetime="2026-09-26T21:46Z">9:46 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Thanks 👍</span><time class="ts-time" datetime="2026-09-26T21:47Z">9:47 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Going to bed early. Goodnight 🌙</span><time class="ts-time" datetime="2026-09-26T21:48Z">9:48 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 1 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Night, sleep well</span><time class="ts-time" datetime="2026-09-26T21:49Z">9:49 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">◉ Sticker</span><time class="ts-time" datetime="2026-09-26T21:51Z">9:51 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-day">Sun, Sep 27</li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Don't forget, 2pm!</span><time class="ts-time" datetime="2026-09-27T11:40Z">11:40 AM</time></span><span class="ts-mark-tag is-start">✦ new conversation</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">I won't, I'm up already</span><time class="ts-time" datetime="2026-09-27T11:41Z">11:41 AM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Wear the blue jacket? It's getting cold</span><time class="ts-time" datetime="2026-09-27T11:43Z">11:43 AM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Okay</span><time class="ts-time" datetime="2026-09-27T11:44Z">11:44 AM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-line"><span class="ts-bubble is-media">◉ Sticker</span><time class="ts-time" datetime="2026-09-27T11:44Z">11:44 AM</time></span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-line"><span class="ts-bubble is-media">▣ Photo</span><time class="ts-time" datetime="2026-09-27T18:12Z">6:12 PM</time></span><span class="ts-mark-tag is-start">✦ new conversation</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-line"><span class="ts-bubble">Today was really fun</span><time class="ts-time" datetime="2026-09-27T18:12Z">6:12 PM</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">So fun!! That cheesecake was amazing</span><time class="ts-time" datetime="2026-09-27T18:15Z">6:15 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3 min</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble is-media">▣ Photo</span><time class="ts-time" datetime="2026-09-27T18:15Z">6:15 PM</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Best one I've ever had</span><time class="ts-time" datetime="2026-09-27T18:16Z">6:16 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Same cafe next week? I want to try their lunch</span><time class="ts-time" datetime="2026-09-27T18:18Z">6:18 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Okay, sure</span><time class="ts-time" datetime="2026-09-27T18:19Z">6:19 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">lol you always say okay</span><time class="ts-time" datetime="2026-09-27T18:21Z">6:21 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Okay</span><time class="ts-time" datetime="2026-09-27T18:22Z">6:22 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-line"><span class="ts-bubble is-media">◉ Sticker</span><time class="ts-time" datetime="2026-09-27T18:22Z">6:22 PM</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Thanks for today ❤️</span><time class="ts-time" datetime="2026-09-27T18:24Z">6:24 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Thank you too</span><time class="ts-time" datetime="2026-09-27T18:25Z">6:25 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-day">Mon, Sep 28</li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">The train is packed this morning</span><time class="ts-time" datetime="2026-09-28T07:46Z">7:46 AM</time></span><span class="ts-mark-tag is-start">✦ new conversation</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Same here, it's literally a sardine can</span><time class="ts-time" datetime="2026-09-28T07:48Z">7:48 AM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Big meeting at work today</span><time class="ts-time" datetime="2026-09-28T07:49Z">7:49 AM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">You'll do great! Tell me how it goes?</span><time class="ts-time" datetime="2026-09-28T07:51Z">7:51 AM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Okay</span><time class="ts-time" datetime="2026-09-28T07:52Z">7:52 AM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">◉ Sticker</span><time class="ts-time" datetime="2026-09-28T07:53Z">7:53 AM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 1 min</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">Lunch break! What are you eating?</span><time class="ts-time" datetime="2026-09-28T12:31Z">12:31 PM</time></span><span class="ts-mark-tag is-start">✦ new conversation</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">A sandwich at my desk</span><time class="ts-time" datetime="2026-09-28T12:32Z">12:32 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Poor you. I'm at the cafe again haha</span><time class="ts-time" datetime="2026-09-28T12:35Z">12:35 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3 min</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">Their pasta is good too</span><time class="ts-time" datetime="2026-09-28T12:35Z">12:35 PM</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Jealous. Meeting's about to start</span><time class="ts-time" datetime="2026-09-28T12:36Z">12:36 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Good luck!! 💪</span><time class="ts-time" datetime="2026-09-28T12:37Z">12:37 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 1 min</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">How was the meeting??</span><time class="ts-time" datetime="2026-09-28T19:20Z">7:20 PM</time></span><span class="ts-mark-tag is-start">✦ new conversation</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">It went well actually</span><time class="ts-time" datetime="2026-09-28T19:21Z">7:21 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-line"><span class="ts-bubble">My boss liked the plan</span><time class="ts-time" datetime="2026-09-28T19:21Z">7:21 PM</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">Told you!! Let's celebrate</span><time class="ts-time" datetime="2026-09-28T19:24Z">7:24 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3 min</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">Ramen tonight?</span><time class="ts-time" datetime="2026-09-28T19:24Z">7:24 PM</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Okay. 8?</span><time class="ts-time" datetime="2026-09-28T19:25Z">7:25 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">8 works. The place next to the cafe?</span><time class="ts-time" datetime="2026-09-28T19:27Z">7:27 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-who">Sota</span><span class="ts-line"><span class="ts-bubble">Yes</span><time class="ts-time" datetime="2026-09-28T19:28Z">7:28 PM</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1 min</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">S</span><span class="ts-line"><span class="ts-bubble">Leaving work now</span><time class="ts-time" datetime="2026-09-28T19:29Z">7:29 PM</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">◉ Sticker</span><time class="ts-time" datetime="2026-09-28T19:31Z">7:31 PM</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2 min</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">See you soon!</span><time class="ts-time" datetime="2026-09-28T19:31Z">7:31 PM</time></span></li>
+                            </ol>
+                            <ol class="ts-chat" lang="ja" data-chat="ja" aria-label="ゆいとそうたのサンプルトーク">
+                                <li class="ts-day">9月26日(土)</li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">おはよ！起きてる？</span><time class="ts-time" datetime="2026-09-26T09:02Z">9:02</time></span><span class="ts-mark-tag is-start">✦ 会話のはじまり</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">おはよう、いま起きた</span><time class="ts-time" datetime="2026-09-26T09:03Z">9:03</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">駅前に新しいカフェできたの</span><time class="ts-time" datetime="2026-09-26T09:05Z">9:05</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">そうたの家から歩いて2分！</span><time class="ts-time" datetime="2026-09-26T09:05Z">9:05</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">へえ、いいね。明日行く？</span><time class="ts-time" datetime="2026-09-26T09:06Z">9:06</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">行く！！チーズケーキが最高らしい</span><time class="ts-time" datetime="2026-09-26T09:08Z">9:08</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">了解、14時でいい？</span><time class="ts-time" datetime="2026-09-26T09:09Z">9:09</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">いいね、席を予約しとくね</span><time class="ts-time" datetime="2026-09-26T09:11Z">9:11</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble is-media">◉ スタンプ</span><time class="ts-time" datetime="2026-09-26T09:12Z">9:12</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-line"><span class="ts-bubble">やっと仕事おわった</span><time class="ts-time" datetime="2026-09-26T21:34Z">21:34</time></span><span class="ts-mark-tag is-start">✦ 会話のはじまり</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-line"><span class="ts-bubble">つかれた〜</span><time class="ts-time" datetime="2026-09-26T21:34Z">21:34</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">おつかれさま！ごはん食べた？</span><time class="ts-time" datetime="2026-09-26T21:37Z">21:37</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3分</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">またカレー作りすぎちゃった笑</span><time class="ts-time" datetime="2026-09-26T21:37Z">21:37</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">まだ。写真見せて</span><time class="ts-time" datetime="2026-09-26T21:38Z">21:38</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">▣ 写真</span><time class="ts-time" datetime="2026-09-26T21:40Z">21:40</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">うまそう！</span><time class="ts-time" datetime="2026-09-26T21:41Z">21:41</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">今度うちで食べよ</span><time class="ts-time" datetime="2026-09-26T21:43Z">21:43</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">これは自信作、ほんとに最高だから</span><time class="ts-time" datetime="2026-09-26T21:43Z">21:43</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">了解、楽しみにしてる</span><time class="ts-time" datetime="2026-09-26T21:44Z">21:44</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">カフェ、明日の14時で予約とれたよ</span><time class="ts-time" datetime="2026-09-26T21:46Z">21:46</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">ありがとう👍</span><time class="ts-time" datetime="2026-09-26T21:47Z">21:47</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">今日は早めに寝るね、おやすみ🌙</span><time class="ts-time" datetime="2026-09-26T21:48Z">21:48</time></span><span class="ts-mark-tag is-reply is-yui">↩ 1分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">おやすみ、ゆっくり寝てね</span><time class="ts-time" datetime="2026-09-26T21:49Z">21:49</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">◉ スタンプ</span><time class="ts-time" datetime="2026-09-26T21:51Z">21:51</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-day">9月27日(日)</li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">14時、忘れないでね！</span><time class="ts-time" datetime="2026-09-27T11:40Z">11:40</time></span><span class="ts-mark-tag is-start">✦ 会話のはじまり</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">わかってる、もう起きてるよ</span><time class="ts-time" datetime="2026-09-27T11:41Z">11:41</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">青いジャケット着てきて？寒くなってきたし</span><time class="ts-time" datetime="2026-09-27T11:43Z">11:43</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">了解</span><time class="ts-time" datetime="2026-09-27T11:44Z">11:44</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-line"><span class="ts-bubble is-media">◉ スタンプ</span><time class="ts-time" datetime="2026-09-27T11:44Z">11:44</time></span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-line"><span class="ts-bubble is-media">▣ 写真</span><time class="ts-time" datetime="2026-09-27T18:12Z">18:12</time></span><span class="ts-mark-tag is-start">✦ 会話のはじまり</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-line"><span class="ts-bubble">今日ほんとに楽しかった</span><time class="ts-time" datetime="2026-09-27T18:12Z">18:12</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">ほんとに！チーズケーキ最高だった</span><time class="ts-time" datetime="2026-09-27T18:15Z">18:15</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3分</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble is-media">▣ 写真</span><time class="ts-time" datetime="2026-09-27T18:15Z">18:15</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">今までで一番うまかった</span><time class="ts-time" datetime="2026-09-27T18:16Z">18:16</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">来週も同じカフェ行かない？ランチも気になる</span><time class="ts-time" datetime="2026-09-27T18:18Z">18:18</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">了解、行こう</span><time class="ts-time" datetime="2026-09-27T18:19Z">18:19</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">そうたっていつも「了解」だよね笑</span><time class="ts-time" datetime="2026-09-27T18:21Z">18:21</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">了解</span><time class="ts-time" datetime="2026-09-27T18:22Z">18:22</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-line"><span class="ts-bubble is-media">◉ スタンプ</span><time class="ts-time" datetime="2026-09-27T18:22Z">18:22</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">今日はありがとね❤️</span><time class="ts-time" datetime="2026-09-27T18:24Z">18:24</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">こちらこそ、ありがとう</span><time class="ts-time" datetime="2026-09-27T18:25Z">18:25</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-day">9月28日(月)</li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">今朝の電車ぎゅうぎゅう</span><time class="ts-time" datetime="2026-09-28T07:46Z">7:46</time></span><span class="ts-mark-tag is-start">✦ 会話のはじまり</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">こっちもすし詰め状態だよ</span><time class="ts-time" datetime="2026-09-28T07:48Z">7:48</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">今日は仕事で大事な会議がある</span><time class="ts-time" datetime="2026-09-28T07:49Z">7:49</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">そうたなら大丈夫！どうだったか教えてね？</span><time class="ts-time" datetime="2026-09-28T07:51Z">7:51</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">了解</span><time class="ts-time" datetime="2026-09-28T07:52Z">7:52</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">◉ スタンプ</span><time class="ts-time" datetime="2026-09-28T07:53Z">7:53</time></span><span class="ts-mark-tag is-reply is-yui">↩ 1分</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">お昼休み！なに食べてる？</span><time class="ts-time" datetime="2026-09-28T12:31Z">12:31</time></span><span class="ts-mark-tag is-start">✦ 会話のはじまり</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">デスクでサンドイッチ</span><time class="ts-time" datetime="2026-09-28T12:32Z">12:32</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">かわいそうに…わたしはまたあのカフェ笑</span><time class="ts-time" datetime="2026-09-28T12:35Z">12:35</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3分</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">パスタも最高</span><time class="ts-time" datetime="2026-09-28T12:35Z">12:35</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">うらやましい。そろそろ会議</span><time class="ts-time" datetime="2026-09-28T12:36Z">12:36</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">がんばって！！💪</span><time class="ts-time" datetime="2026-09-28T12:37Z">12:37</time></span><span class="ts-mark-tag is-reply is-yui">↩ 1分</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">会議どうだった？？</span><time class="ts-time" datetime="2026-09-28T19:20Z">19:20</time></span><span class="ts-mark-tag is-start">✦ 会話のはじまり</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">けっこううまくいった</span><time class="ts-time" datetime="2026-09-28T19:21Z">19:21</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-line"><span class="ts-bubble">上司も企画をほめてくれた</span><time class="ts-time" datetime="2026-09-28T19:21Z">19:21</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">ほらね！！お祝いしよ</span><time class="ts-time" datetime="2026-09-28T19:24Z">19:24</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3分</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">今夜ラーメンどう？</span><time class="ts-time" datetime="2026-09-28T19:24Z">19:24</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">了解、8時？</span><time class="ts-time" datetime="2026-09-28T19:25Z">19:25</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">8時で！カフェの隣のお店ね</span><time class="ts-time" datetime="2026-09-28T19:27Z">19:27</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-who">そうた</span><span class="ts-line"><span class="ts-bubble">うん</span><time class="ts-time" datetime="2026-09-28T19:28Z">19:28</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1分</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">そ</span><span class="ts-line"><span class="ts-bubble">いま仕事出た</span><time class="ts-time" datetime="2026-09-28T19:29Z">19:29</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">◉ スタンプ</span><time class="ts-time" datetime="2026-09-28T19:31Z">19:31</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2分</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">またあとでね！</span><time class="ts-time" datetime="2026-09-28T19:31Z">19:31</time></span></li>
+                            </ol>
+                            <ol class="ts-chat" lang="ko" data-chat="ko" aria-label="유이와 소타의 샘플 대화">
+                                <li class="ts-day">9월 26일 (토)</li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">좋은 아침! 일어났어?</span><time class="ts-time" datetime="2026-09-26T09:02Z">오전 9:02</time></span><span class="ts-mark-tag is-start">✦ 대화 시작</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">응 방금 일어났어</span><time class="ts-time" datetime="2026-09-26T09:03Z">오전 9:03</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">역 앞에 카페 새로 생겼대</span><time class="ts-time" datetime="2026-09-26T09:05Z">오전 9:05</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">너네 집에서 완전 가까워</span><time class="ts-time" datetime="2026-09-26T09:05Z">오전 9:05</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오 좋다 내일 갈까?</span><time class="ts-time" datetime="2026-09-26T09:06Z">오전 9:06</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">좋아!! 거기 치즈케이크 완전 유명해</span><time class="ts-time" datetime="2026-09-26T09:08Z">오전 9:08</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오케이 2시 어때?</span><time class="ts-time" datetime="2026-09-26T09:09Z">오전 9:09</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">좋아 내가 자리 예약할게</span><time class="ts-time" datetime="2026-09-26T09:11Z">오전 9:11</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble is-media">◉ 스티커</span><time class="ts-time" datetime="2026-09-26T09:12Z">오전 9:12</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-line"><span class="ts-bubble">드디어 회사 끝났다</span><time class="ts-time" datetime="2026-09-26T21:34Z">오후 9:34</time></span><span class="ts-mark-tag is-start">✦ 대화 시작</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-line"><span class="ts-bubble">너무 피곤해</span><time class="ts-time" datetime="2026-09-26T21:34Z">오후 9:34</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">고생했어!! 밥은 먹었어?</span><time class="ts-time" datetime="2026-09-26T21:37Z">오후 9:37</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3분</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">나 카레 또 너무 많이 만들었어 ㅋㅋ</span><time class="ts-time" datetime="2026-09-26T21:37Z">오후 9:37</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">아직 사진 보여줘</span><time class="ts-time" datetime="2026-09-26T21:38Z">오후 9:38</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">▣ 사진</span><time class="ts-time" datetime="2026-09-26T21:40Z">오후 9:40</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">와 맛있겠다</span><time class="ts-time" datetime="2026-09-26T21:41Z">오후 9:41</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">다음에 와서 같이 먹자</span><time class="ts-time" datetime="2026-09-26T21:43Z">오후 9:43</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">이건 완전 자신 있어</span><time class="ts-time" datetime="2026-09-26T21:43Z">오후 9:43</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오케이 약속했다</span><time class="ts-time" datetime="2026-09-26T21:44Z">오후 9:44</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">카페 내일 2시로 예약됐어</span><time class="ts-time" datetime="2026-09-26T21:46Z">오후 9:46</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">고마워 👍</span><time class="ts-time" datetime="2026-09-26T21:47Z">오후 9:47</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">오늘은 일찍 잘게 잘 자 🌙</span><time class="ts-time" datetime="2026-09-26T21:48Z">오후 9:48</time></span><span class="ts-mark-tag is-reply is-yui">↩ 1분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">잘 자 푹 쉬어</span><time class="ts-time" datetime="2026-09-26T21:49Z">오후 9:49</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">◉ 스티커</span><time class="ts-time" datetime="2026-09-26T21:51Z">오후 9:51</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-day">9월 27일 (일)</li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">2시 잊지 마!</span><time class="ts-time" datetime="2026-09-27T11:40Z">오전 11:40</time></span><span class="ts-mark-tag is-start">✦ 대화 시작</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">안 잊어 벌써 일어났어</span><time class="ts-time" datetime="2026-09-27T11:41Z">오전 11:41</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">파란 재킷 입고 와? 날씨 추워졌어</span><time class="ts-time" datetime="2026-09-27T11:43Z">오전 11:43</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오케이</span><time class="ts-time" datetime="2026-09-27T11:44Z">오전 11:44</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-line"><span class="ts-bubble is-media">◉ 스티커</span><time class="ts-time" datetime="2026-09-27T11:44Z">오전 11:44</time></span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-line"><span class="ts-bubble is-media">▣ 사진</span><time class="ts-time" datetime="2026-09-27T18:12Z">오후 6:12</time></span><span class="ts-mark-tag is-start">✦ 대화 시작</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-line"><span class="ts-bubble">오늘 진짜 재밌었다</span><time class="ts-time" datetime="2026-09-27T18:12Z">오후 6:12</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">진짜!! 치즈케이크 완전 맛있었어</span><time class="ts-time" datetime="2026-09-27T18:15Z">오후 6:15</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3분</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble is-media">▣ 사진</span><time class="ts-time" datetime="2026-09-27T18:15Z">오후 6:15</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">인생 케이크였어</span><time class="ts-time" datetime="2026-09-27T18:16Z">오후 6:16</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">다음 주에도 그 카페 갈래? 런치도 궁금해</span><time class="ts-time" datetime="2026-09-27T18:18Z">오후 6:18</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오케이 좋아</span><time class="ts-time" datetime="2026-09-27T18:19Z">오후 6:19</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">ㅋㅋ 너는 맨날 오케이래</span><time class="ts-time" datetime="2026-09-27T18:21Z">오후 6:21</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오케이</span><time class="ts-time" datetime="2026-09-27T18:22Z">오후 6:22</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-line"><span class="ts-bubble is-media">◉ 스티커</span><time class="ts-time" datetime="2026-09-27T18:22Z">오후 6:22</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">오늘 고마워 ❤️</span><time class="ts-time" datetime="2026-09-27T18:24Z">오후 6:24</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">나도 고마워</span><time class="ts-time" datetime="2026-09-27T18:25Z">오후 6:25</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-day">9월 28일 (월)</li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오늘 지하철 사람 너무 많아</span><time class="ts-time" datetime="2026-09-28T07:46Z">오전 7:46</time></span><span class="ts-mark-tag is-start">✦ 대화 시작</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">나도 완전 지옥철이야</span><time class="ts-time" datetime="2026-09-28T07:48Z">오전 7:48</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오늘 회사 큰 회의 있어</span><time class="ts-time" datetime="2026-09-28T07:49Z">오전 7:49</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">넌 잘할 거야! 어땠는지 알려줘?</span><time class="ts-time" datetime="2026-09-28T07:51Z">오전 7:51</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오케이</span><time class="ts-time" datetime="2026-09-28T07:52Z">오전 7:52</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">◉ 스티커</span><time class="ts-time" datetime="2026-09-28T07:53Z">오전 7:53</time></span><span class="ts-mark-tag is-reply is-yui">↩ 1분</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">점심시간! 뭐 먹어?</span><time class="ts-time" datetime="2026-09-28T12:31Z">오후 12:31</time></span><span class="ts-mark-tag is-start">✦ 대화 시작</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">자리에서 샌드위치 먹어</span><time class="ts-time" datetime="2026-09-28T12:32Z">오후 12:32</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">불쌍해 ㅋㅋ 나는 또 그 카페 왔어</span><time class="ts-time" datetime="2026-09-28T12:35Z">오후 12:35</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3분</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">파스타도 완전 맛있어</span><time class="ts-time" datetime="2026-09-28T12:35Z">오후 12:35</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">부럽다 곧 회의 시작해</span><time class="ts-time" datetime="2026-09-28T12:36Z">오후 12:36</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">화이팅!! 💪</span><time class="ts-time" datetime="2026-09-28T12:37Z">오후 12:37</time></span><span class="ts-mark-tag is-reply is-yui">↩ 1분</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">회의 어땠어??</span><time class="ts-time" datetime="2026-09-28T19:20Z">오후 7:20</time></span><span class="ts-mark-tag is-start">✦ 대화 시작</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">생각보다 잘 됐어</span><time class="ts-time" datetime="2026-09-28T19:21Z">오후 7:21</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-line"><span class="ts-bubble">팀장님이 기획 좋대</span><time class="ts-time" datetime="2026-09-28T19:21Z">오후 7:21</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">거봐!! 축하하자</span><time class="ts-time" datetime="2026-09-28T19:24Z">오후 7:24</time></span><span class="ts-mark-tag is-reply is-yui">↩ 3분</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">오늘 저녁 라멘 어때?</span><time class="ts-time" datetime="2026-09-28T19:24Z">오후 7:24</time></span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">오케이 8시?</span><time class="ts-time" datetime="2026-09-28T19:25Z">오후 7:25</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble">8시 좋아 그 카페 옆집?</span><time class="ts-time" datetime="2026-09-28T19:27Z">오후 7:27</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-other is-first"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-who">소타</span><span class="ts-line"><span class="ts-bubble">응</span><time class="ts-time" datetime="2026-09-28T19:28Z">오후 7:28</time></span><span class="ts-mark-tag is-reply is-sota">↩ 1분</span></li>
+                                <li class="ts-msg is-other"><span class="ts-ava" aria-hidden="true">소</span><span class="ts-line"><span class="ts-bubble">지금 회사 나왔어</span><time class="ts-time" datetime="2026-09-28T19:29Z">오후 7:29</time></span></li>
+                                <li class="ts-msg is-me is-first"><span class="ts-line"><span class="ts-bubble is-media">◉ 스티커</span><time class="ts-time" datetime="2026-09-28T19:31Z">오후 7:31</time></span><span class="ts-mark-tag is-reply is-yui">↩ 2분</span></li>
+                                <li class="ts-msg is-me"><span class="ts-line"><span class="ts-bubble">이따 봐!</span><time class="ts-time" datetime="2026-09-28T19:31Z">오후 7:31</time></span></li>
+                            </ol>
+                        </div>
+                        <div class="ts-panel ts-file" id="tp-file" role="tabpanel" aria-labelledby="tv-file" tabindex="0" hidden>
+                            <pre lang="en" data-file="en"><span class="h">[LINE] Chat history with Sota</span>
+<span class="h">Saved on: 2026/09/28 19:43</span>
+
+<span class="d">2026/09/26(Sat)</span>
+<span class="t">09:02</span>	<span class="n-yui">Yui</span>	Good morning! Are you up?
+<span class="t">09:03</span>	<span class="n-sota">Sota</span>	Morning, just woke up
+<span class="t">09:05</span>	<span class="n-yui">Yui</span>	A new cafe opened by the station
+<span class="t">09:05</span>	<span class="n-yui">Yui</span>	literally two minutes from your place
+<span class="t">09:06</span>	<span class="n-sota">Sota</span>	Oh nice. Tomorrow?
+<span class="t">09:08</span>	<span class="n-yui">Yui</span>	Yes!! Their cheesecake is literally famous
+<span class="t">09:09</span>	<span class="n-sota">Sota</span>	Okay. 2pm?
+<span class="t">09:11</span>	<span class="n-yui">Yui</span>	Perfect, I'll book a table
+<span class="t">09:12</span>	<span class="n-sota">Sota</span>	[Sticker]
+<span class="t">21:34</span>	<span class="n-sota">Sota</span>	Finally done with work
+<span class="t">21:34</span>	<span class="n-sota">Sota</span>	So tired
+<span class="t">21:37</span>	<span class="n-yui">Yui</span>	Good job!! Did you eat?
+<span class="t">21:37</span>	<span class="n-yui">Yui</span>	I made way too much curry again haha
+<span class="t">21:38</span>	<span class="n-sota">Sota</span>	Not yet. Send a pic
+<span class="t">21:40</span>	<span class="n-yui">Yui</span>	[Photo]
+<span class="t">21:41</span>	<span class="n-sota">Sota</span>	That looks so good
+<span class="t">21:43</span>	<span class="n-yui">Yui</span>	Come over and eat it next time
+<span class="t">21:43</span>	<span class="n-yui">Yui</span>	It's literally my best dish
+<span class="t">21:44</span>	<span class="n-sota">Sota</span>	Okay, it's a deal
+<span class="t">21:46</span>	<span class="n-yui">Yui</span>	The cafe confirmed our table for 2pm
+<span class="t">21:47</span>	<span class="n-sota">Sota</span>	Thanks 👍
+<span class="t">21:48</span>	<span class="n-yui">Yui</span>	Going to bed early. Goodnight 🌙
+<span class="t">21:49</span>	<span class="n-sota">Sota</span>	Night, sleep well
+<span class="t">21:51</span>	<span class="n-yui">Yui</span>	[Sticker]
+<span class="d">2026/09/27(Sun)</span>
+<span class="t">11:40</span>	<span class="n-yui">Yui</span>	Don't forget, 2pm!
+<span class="t">11:41</span>	<span class="n-sota">Sota</span>	I won't, I'm up already
+<span class="t">11:43</span>	<span class="n-yui">Yui</span>	Wear the blue jacket? It's getting cold
+<span class="t">11:44</span>	<span class="n-sota">Sota</span>	Okay
+<span class="t">11:44</span>	<span class="n-sota">Sota</span>	[Sticker]
+<span class="t">18:12</span>	<span class="n-sota">Sota</span>	[Photo]
+<span class="t">18:12</span>	<span class="n-sota">Sota</span>	Today was really fun
+<span class="t">18:15</span>	<span class="n-yui">Yui</span>	So fun!! That cheesecake was amazing
+<span class="t">18:15</span>	<span class="n-yui">Yui</span>	[Photo]
+<span class="t">18:16</span>	<span class="n-sota">Sota</span>	Best one I've ever had
+<span class="t">18:18</span>	<span class="n-yui">Yui</span>	Same cafe next week? I want to try their lunch
+<span class="t">18:19</span>	<span class="n-sota">Sota</span>	Okay, sure
+<span class="t">18:21</span>	<span class="n-yui">Yui</span>	lol you always say okay
+<span class="t">18:22</span>	<span class="n-sota">Sota</span>	Okay
+<span class="t">18:22</span>	<span class="n-sota">Sota</span>	[Sticker]
+<span class="t">18:24</span>	<span class="n-yui">Yui</span>	Thanks for today ❤️
+<span class="t">18:25</span>	<span class="n-sota">Sota</span>	Thank you too
+<span class="d">2026/09/28(Mon)</span>
+<span class="t">07:46</span>	<span class="n-sota">Sota</span>	The train is packed this morning
+<span class="t">07:48</span>	<span class="n-yui">Yui</span>	Same here, it's literally a sardine can
+<span class="t">07:49</span>	<span class="n-sota">Sota</span>	Big meeting at work today
+<span class="t">07:51</span>	<span class="n-yui">Yui</span>	You'll do great! Tell me how it goes?
+<span class="t">07:52</span>	<span class="n-sota">Sota</span>	Okay
+<span class="t">07:53</span>	<span class="n-yui">Yui</span>	[Sticker]
+<span class="t">12:31</span>	<span class="n-yui">Yui</span>	Lunch break! What are you eating?
+<span class="t">12:32</span>	<span class="n-sota">Sota</span>	A sandwich at my desk
+<span class="t">12:35</span>	<span class="n-yui">Yui</span>	Poor you. I'm at the cafe again haha
+<span class="t">12:35</span>	<span class="n-yui">Yui</span>	Their pasta is good too
+<span class="t">12:36</span>	<span class="n-sota">Sota</span>	Jealous. Meeting's about to start
+<span class="t">12:37</span>	<span class="n-yui">Yui</span>	Good luck!! 💪
+<span class="t">19:20</span>	<span class="n-yui">Yui</span>	How was the meeting??
+<span class="t">19:21</span>	<span class="n-sota">Sota</span>	It went well actually
+<span class="t">19:21</span>	<span class="n-sota">Sota</span>	My boss liked the plan
+<span class="t">19:24</span>	<span class="n-yui">Yui</span>	Told you!! Let's celebrate
+<span class="t">19:24</span>	<span class="n-yui">Yui</span>	Ramen tonight?
+<span class="t">19:25</span>	<span class="n-sota">Sota</span>	Okay. 8?
+<span class="t">19:27</span>	<span class="n-yui">Yui</span>	8 works. The place next to the cafe?
+<span class="t">19:28</span>	<span class="n-sota">Sota</span>	Yes
+<span class="t">19:29</span>	<span class="n-sota">Sota</span>	Leaving work now
+<span class="t">19:31</span>	<span class="n-yui">Yui</span>	[Sticker]
+<span class="t">19:31</span>	<span class="n-yui">Yui</span>	See you soon!</pre>
+                            <pre lang="ja" data-file="ja"><span class="h">[LINE] そうたとのトーク履歴</span>
+<span class="h">保存日時：2026/09/28 19:43</span>
+
+<span class="d">2026/09/26(土)</span>
+<span class="t">09:02</span>	<span class="n-yui">ゆい</span>	おはよ！起きてる？
+<span class="t">09:03</span>	<span class="n-sota">そうた</span>	おはよう、いま起きた
+<span class="t">09:05</span>	<span class="n-yui">ゆい</span>	駅前に新しいカフェできたの
+<span class="t">09:05</span>	<span class="n-yui">ゆい</span>	そうたの家から歩いて2分！
+<span class="t">09:06</span>	<span class="n-sota">そうた</span>	へえ、いいね。明日行く？
+<span class="t">09:08</span>	<span class="n-yui">ゆい</span>	行く！！チーズケーキが最高らしい
+<span class="t">09:09</span>	<span class="n-sota">そうた</span>	了解、14時でいい？
+<span class="t">09:11</span>	<span class="n-yui">ゆい</span>	いいね、席を予約しとくね
+<span class="t">09:12</span>	<span class="n-sota">そうた</span>	[スタンプ]
+<span class="t">21:34</span>	<span class="n-sota">そうた</span>	やっと仕事おわった
+<span class="t">21:34</span>	<span class="n-sota">そうた</span>	つかれた〜
+<span class="t">21:37</span>	<span class="n-yui">ゆい</span>	おつかれさま！ごはん食べた？
+<span class="t">21:37</span>	<span class="n-yui">ゆい</span>	またカレー作りすぎちゃった笑
+<span class="t">21:38</span>	<span class="n-sota">そうた</span>	まだ。写真見せて
+<span class="t">21:40</span>	<span class="n-yui">ゆい</span>	[写真]
+<span class="t">21:41</span>	<span class="n-sota">そうた</span>	うまそう！
+<span class="t">21:43</span>	<span class="n-yui">ゆい</span>	今度うちで食べよ
+<span class="t">21:43</span>	<span class="n-yui">ゆい</span>	これは自信作、ほんとに最高だから
+<span class="t">21:44</span>	<span class="n-sota">そうた</span>	了解、楽しみにしてる
+<span class="t">21:46</span>	<span class="n-yui">ゆい</span>	カフェ、明日の14時で予約とれたよ
+<span class="t">21:47</span>	<span class="n-sota">そうた</span>	ありがとう👍
+<span class="t">21:48</span>	<span class="n-yui">ゆい</span>	今日は早めに寝るね、おやすみ🌙
+<span class="t">21:49</span>	<span class="n-sota">そうた</span>	おやすみ、ゆっくり寝てね
+<span class="t">21:51</span>	<span class="n-yui">ゆい</span>	[スタンプ]
+<span class="d">2026/09/27(日)</span>
+<span class="t">11:40</span>	<span class="n-yui">ゆい</span>	14時、忘れないでね！
+<span class="t">11:41</span>	<span class="n-sota">そうた</span>	わかってる、もう起きてるよ
+<span class="t">11:43</span>	<span class="n-yui">ゆい</span>	青いジャケット着てきて？寒くなってきたし
+<span class="t">11:44</span>	<span class="n-sota">そうた</span>	了解
+<span class="t">11:44</span>	<span class="n-sota">そうた</span>	[スタンプ]
+<span class="t">18:12</span>	<span class="n-sota">そうた</span>	[写真]
+<span class="t">18:12</span>	<span class="n-sota">そうた</span>	今日ほんとに楽しかった
+<span class="t">18:15</span>	<span class="n-yui">ゆい</span>	ほんとに！チーズケーキ最高だった
+<span class="t">18:15</span>	<span class="n-yui">ゆい</span>	[写真]
+<span class="t">18:16</span>	<span class="n-sota">そうた</span>	今までで一番うまかった
+<span class="t">18:18</span>	<span class="n-yui">ゆい</span>	来週も同じカフェ行かない？ランチも気になる
+<span class="t">18:19</span>	<span class="n-sota">そうた</span>	了解、行こう
+<span class="t">18:21</span>	<span class="n-yui">ゆい</span>	そうたっていつも「了解」だよね笑
+<span class="t">18:22</span>	<span class="n-sota">そうた</span>	了解
+<span class="t">18:22</span>	<span class="n-sota">そうた</span>	[スタンプ]
+<span class="t">18:24</span>	<span class="n-yui">ゆい</span>	今日はありがとね❤️
+<span class="t">18:25</span>	<span class="n-sota">そうた</span>	こちらこそ、ありがとう
+<span class="d">2026/09/28(月)</span>
+<span class="t">07:46</span>	<span class="n-sota">そうた</span>	今朝の電車ぎゅうぎゅう
+<span class="t">07:48</span>	<span class="n-yui">ゆい</span>	こっちもすし詰め状態だよ
+<span class="t">07:49</span>	<span class="n-sota">そうた</span>	今日は仕事で大事な会議がある
+<span class="t">07:51</span>	<span class="n-yui">ゆい</span>	そうたなら大丈夫！どうだったか教えてね？
+<span class="t">07:52</span>	<span class="n-sota">そうた</span>	了解
+<span class="t">07:53</span>	<span class="n-yui">ゆい</span>	[スタンプ]
+<span class="t">12:31</span>	<span class="n-yui">ゆい</span>	お昼休み！なに食べてる？
+<span class="t">12:32</span>	<span class="n-sota">そうた</span>	デスクでサンドイッチ
+<span class="t">12:35</span>	<span class="n-yui">ゆい</span>	かわいそうに…わたしはまたあのカフェ笑
+<span class="t">12:35</span>	<span class="n-yui">ゆい</span>	パスタも最高
+<span class="t">12:36</span>	<span class="n-sota">そうた</span>	うらやましい。そろそろ会議
+<span class="t">12:37</span>	<span class="n-yui">ゆい</span>	がんばって！！💪
+<span class="t">19:20</span>	<span class="n-yui">ゆい</span>	会議どうだった？？
+<span class="t">19:21</span>	<span class="n-sota">そうた</span>	けっこううまくいった
+<span class="t">19:21</span>	<span class="n-sota">そうた</span>	上司も企画をほめてくれた
+<span class="t">19:24</span>	<span class="n-yui">ゆい</span>	ほらね！！お祝いしよ
+<span class="t">19:24</span>	<span class="n-yui">ゆい</span>	今夜ラーメンどう？
+<span class="t">19:25</span>	<span class="n-sota">そうた</span>	了解、8時？
+<span class="t">19:27</span>	<span class="n-yui">ゆい</span>	8時で！カフェの隣のお店ね
+<span class="t">19:28</span>	<span class="n-sota">そうた</span>	うん
+<span class="t">19:29</span>	<span class="n-sota">そうた</span>	いま仕事出た
+<span class="t">19:31</span>	<span class="n-yui">ゆい</span>	[スタンプ]
+<span class="t">19:31</span>	<span class="n-yui">ゆい</span>	またあとでね！</pre>
+                            <pre lang="ko" data-file="ko"><span class="h">[LINE] 소타님과의 대화 내용</span>
+<span class="h">저장일시: 2026. 9. 28. 19:43</span>
+
+<span class="d">2026. 9. 26. (토)</span>
+<span class="t">오전 9:02</span>	<span class="n-yui">유이</span>	좋은 아침! 일어났어?
+<span class="t">오전 9:03</span>	<span class="n-sota">소타</span>	응 방금 일어났어
+<span class="t">오전 9:05</span>	<span class="n-yui">유이</span>	역 앞에 카페 새로 생겼대
+<span class="t">오전 9:05</span>	<span class="n-yui">유이</span>	너네 집에서 완전 가까워
+<span class="t">오전 9:06</span>	<span class="n-sota">소타</span>	오 좋다 내일 갈까?
+<span class="t">오전 9:08</span>	<span class="n-yui">유이</span>	좋아!! 거기 치즈케이크 완전 유명해
+<span class="t">오전 9:09</span>	<span class="n-sota">소타</span>	오케이 2시 어때?
+<span class="t">오전 9:11</span>	<span class="n-yui">유이</span>	좋아 내가 자리 예약할게
+<span class="t">오전 9:12</span>	<span class="n-sota">소타</span>	[스티커]
+<span class="t">오후 9:34</span>	<span class="n-sota">소타</span>	드디어 회사 끝났다
+<span class="t">오후 9:34</span>	<span class="n-sota">소타</span>	너무 피곤해
+<span class="t">오후 9:37</span>	<span class="n-yui">유이</span>	고생했어!! 밥은 먹었어?
+<span class="t">오후 9:37</span>	<span class="n-yui">유이</span>	나 카레 또 너무 많이 만들었어 ㅋㅋ
+<span class="t">오후 9:38</span>	<span class="n-sota">소타</span>	아직 사진 보여줘
+<span class="t">오후 9:40</span>	<span class="n-yui">유이</span>	[사진]
+<span class="t">오후 9:41</span>	<span class="n-sota">소타</span>	와 맛있겠다
+<span class="t">오후 9:43</span>	<span class="n-yui">유이</span>	다음에 와서 같이 먹자
+<span class="t">오후 9:43</span>	<span class="n-yui">유이</span>	이건 완전 자신 있어
+<span class="t">오후 9:44</span>	<span class="n-sota">소타</span>	오케이 약속했다
+<span class="t">오후 9:46</span>	<span class="n-yui">유이</span>	카페 내일 2시로 예약됐어
+<span class="t">오후 9:47</span>	<span class="n-sota">소타</span>	고마워 👍
+<span class="t">오후 9:48</span>	<span class="n-yui">유이</span>	오늘은 일찍 잘게 잘 자 🌙
+<span class="t">오후 9:49</span>	<span class="n-sota">소타</span>	잘 자 푹 쉬어
+<span class="t">오후 9:51</span>	<span class="n-yui">유이</span>	[스티커]
+<span class="d">2026. 9. 27. (일)</span>
+<span class="t">오전 11:40</span>	<span class="n-yui">유이</span>	2시 잊지 마!
+<span class="t">오전 11:41</span>	<span class="n-sota">소타</span>	안 잊어 벌써 일어났어
+<span class="t">오전 11:43</span>	<span class="n-yui">유이</span>	파란 재킷 입고 와? 날씨 추워졌어
+<span class="t">오전 11:44</span>	<span class="n-sota">소타</span>	오케이
+<span class="t">오전 11:44</span>	<span class="n-sota">소타</span>	[스티커]
+<span class="t">오후 6:12</span>	<span class="n-sota">소타</span>	[사진]
+<span class="t">오후 6:12</span>	<span class="n-sota">소타</span>	오늘 진짜 재밌었다
+<span class="t">오후 6:15</span>	<span class="n-yui">유이</span>	진짜!! 치즈케이크 완전 맛있었어
+<span class="t">오후 6:15</span>	<span class="n-yui">유이</span>	[사진]
+<span class="t">오후 6:16</span>	<span class="n-sota">소타</span>	인생 케이크였어
+<span class="t">오후 6:18</span>	<span class="n-yui">유이</span>	다음 주에도 그 카페 갈래? 런치도 궁금해
+<span class="t">오후 6:19</span>	<span class="n-sota">소타</span>	오케이 좋아
+<span class="t">오후 6:21</span>	<span class="n-yui">유이</span>	ㅋㅋ 너는 맨날 오케이래
+<span class="t">오후 6:22</span>	<span class="n-sota">소타</span>	오케이
+<span class="t">오후 6:22</span>	<span class="n-sota">소타</span>	[스티커]
+<span class="t">오후 6:24</span>	<span class="n-yui">유이</span>	오늘 고마워 ❤️
+<span class="t">오후 6:25</span>	<span class="n-sota">소타</span>	나도 고마워
+<span class="d">2026. 9. 28. (월)</span>
+<span class="t">오전 7:46</span>	<span class="n-sota">소타</span>	오늘 지하철 사람 너무 많아
+<span class="t">오전 7:48</span>	<span class="n-yui">유이</span>	나도 완전 지옥철이야
+<span class="t">오전 7:49</span>	<span class="n-sota">소타</span>	오늘 회사 큰 회의 있어
+<span class="t">오전 7:51</span>	<span class="n-yui">유이</span>	넌 잘할 거야! 어땠는지 알려줘?
+<span class="t">오전 7:52</span>	<span class="n-sota">소타</span>	오케이
+<span class="t">오전 7:53</span>	<span class="n-yui">유이</span>	[스티커]
+<span class="t">오후 12:31</span>	<span class="n-yui">유이</span>	점심시간! 뭐 먹어?
+<span class="t">오후 12:32</span>	<span class="n-sota">소타</span>	자리에서 샌드위치 먹어
+<span class="t">오후 12:35</span>	<span class="n-yui">유이</span>	불쌍해 ㅋㅋ 나는 또 그 카페 왔어
+<span class="t">오후 12:35</span>	<span class="n-yui">유이</span>	파스타도 완전 맛있어
+<span class="t">오후 12:36</span>	<span class="n-sota">소타</span>	부럽다 곧 회의 시작해
+<span class="t">오후 12:37</span>	<span class="n-yui">유이</span>	화이팅!! 💪
+<span class="t">오후 7:20</span>	<span class="n-yui">유이</span>	회의 어땠어??
+<span class="t">오후 7:21</span>	<span class="n-sota">소타</span>	생각보다 잘 됐어
+<span class="t">오후 7:21</span>	<span class="n-sota">소타</span>	팀장님이 기획 좋대
+<span class="t">오후 7:24</span>	<span class="n-yui">유이</span>	거봐!! 축하하자
+<span class="t">오후 7:24</span>	<span class="n-yui">유이</span>	오늘 저녁 라멘 어때?
+<span class="t">오후 7:25</span>	<span class="n-sota">소타</span>	오케이 8시?
+<span class="t">오후 7:27</span>	<span class="n-yui">유이</span>	8시 좋아 그 카페 옆집?
+<span class="t">오후 7:28</span>	<span class="n-sota">소타</span>	응
+<span class="t">오후 7:29</span>	<span class="n-sota">소타</span>	지금 회사 나왔어
+<span class="t">오후 7:31</span>	<span class="n-yui">유이</span>	[스티커]
+<span class="t">오후 7:31</span>	<span class="n-yui">유이</span>	이따 봐!</pre>
+                        </div>
+                        <p class="ts-legend" aria-hidden="true">
+                            <span class="is-start">✦ <span lang="en">starts a conversation (after 3 h of quiet)</span><span lang="ja">会話のはじまり（3時間以上あいたら）</span><span lang="ko">대화 시작 (3시간 이상 조용했다면)</span></span>
+                            <span class="is-reply">↩ <span lang="en">counted as a reply</span><span lang="ja">返信としてカウント</span><span lang="ko">답장으로 집계</span></span>
+                        </p>
+                    </div>
+
+                    <!-- what TalkScope makes of it -->
+                    <p class="app-visually-hidden" role="status" data-status></p>
+                    <div class="ts-readout" lang="en" data-readout="en">
+                        <div class="ts-card is-wide ts-type" data-card="type"><div><p class="ts-k">Chat type</p><h3>In-sync pair</h3><p>Even volume and fast replies on both sides — a conversation that flows.</p></div><div class="ts-ring" role="img" aria-label="Balance 80 / 100"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="trk" cx="50" cy="50" r="42"></circle><circle class="val" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="52.8"></circle></svg><b aria-hidden="true">80<small>Balance</small></b></div></div>
+                        <div class="ts-card" data-card="share"><h3>Share of messages</h3><div class="ts-share" aria-hidden="true"><i class="is-yui" style="flex-basis:52%"></i><i class="is-sota" style="flex-basis:48%"></i></div><p class="ts-legend2"><span class="is-yui">Yui <em>52%</em></span><span class="is-sota">Sota <em>48%</em></span></p><p class="ts-sub">7 conversations: Yui started 4, Sota 3.</p></div>
+                        <div class="ts-card" data-card="gap"><h3>Reply temperature gap</h3><p class="ts-help">Pairs where one side answers far faster than the other (average reply time, counting replies within 12 hours).</p><p class="ts-gap-none">No big gaps: everyone answers each other at a similar pace.</p></div>
+                        <div class="ts-card is-wide" data-card="dist"><h3>Reply speed distribution</h3><div class="ts-dist"><div class="is-yui"><div class="ts-dist-who"><b>Yui</b><span>avg 2 min</span></div><div class="ts-row"><span>≤ 1 min</span><span class="ts-bar"><i style="width:14%"></i></span><span>14%</span></div><div class="ts-row"><span>≤ 5 min</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>≤ 30 min</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>≤ 1 hour</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>≤ 3 hours</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div></div><div class="is-sota"><div class="ts-dist-who"><b>Sota</b><span>avg 1 min</span></div><div class="ts-row"><span>≤ 1 min</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>≤ 5 min</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>≤ 30 min</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>≤ 1 hour</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>≤ 3 hours</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div></div></div></div>
+                        <div class="ts-card" data-card="persona"><h3>Chat personalities</h3><p class="ts-help">Who starts conversations more, who is in the faster half at replying, who writes longer.</p><div class="ts-personas"><div class="ts-persona is-yui"><span class="ts-emo" aria-hidden="true">🐻</span><div><small>Yui</small><b>Romantic bear</b><span>Starter · Unhurried · Long</span></div></div><div class="ts-persona is-sota"><span class="ts-emo" aria-hidden="true">🐹</span><div><small>Sota</small><b>Shy hamster</b><span>Responder · Fast · Short</span></div></div></div></div>
+                        <div class="ts-card" data-card="sig"><h3>Signature words</h3><p class="ts-help">Words someone uses far more often than everyone else.</p><div class="ts-sig"><div class="is-yui"><p class="ts-sig-who">Yui</p><ul class="ts-words"><li>cafe<small>×5</small></li><li>literally<small>×4</small></li></ul></div><div class="is-sota"><p class="ts-sig-who">Sota</p><ul class="ts-words"><li>okay<small>×7</small></li><li>work<small>×3</small></li></ul></div></div></div>
+                    </div>
+                    <div class="ts-readout" lang="ja" data-readout="ja">
+                        <div class="ts-card is-wide ts-type" data-card="type"><div><p class="ts-k">トークタイプ</p><h3>ぴったりシンクロ型</h3><p>量も返信の速さもほぼ互角。テンポよく続く、息の合ったトークです。</p></div><div class="ts-ring" role="img" aria-label="バランス度 82 / 100"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="trk" cx="50" cy="50" r="42"></circle><circle class="val" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="47.5"></circle></svg><b aria-hidden="true">82<small>バランス度</small></b></div></div>
+                        <div class="ts-card" data-card="share"><h3>メッセージの割合</h3><div class="ts-share" aria-hidden="true"><i class="is-yui" style="flex-basis:52%"></i><i class="is-sota" style="flex-basis:48%"></i></div><p class="ts-legend2"><span class="is-yui">ゆい <em>52%</em></span><span class="is-sota">そうた <em>48%</em></span></p><p class="ts-sub">会話は7回。ゆいが4回、そうたが3回話しかけました。</p></div>
+                        <div class="ts-card" data-card="gap"><h3>返信の温度差</h3><p class="ts-help">片方だけ返信がずっと速いペアです（12時間以内の返信の平均時間）。</p><p class="ts-gap-none">大きな温度差はありません。みんな同じくらいのペースで返信しています。</p></div>
+                        <div class="ts-card is-wide" data-card="dist"><h3>返信スピードの分布</h3><div class="ts-dist"><div class="is-yui"><div class="ts-dist-who"><b>ゆい</b><span>平均2分</span></div><div class="ts-row"><span>1分以内</span><span class="ts-bar"><i style="width:14%"></i></span><span>14%</span></div><div class="ts-row"><span>5分以内</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>30分以内</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>1時間以内</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>3時間以内</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div></div><div class="is-sota"><div class="ts-dist-who"><b>そうた</b><span>平均1分</span></div><div class="ts-row"><span>1分以内</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>5分以内</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>30分以内</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>1時間以内</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>3時間以内</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div></div></div></div>
+                        <div class="ts-card" data-card="persona"><h3>トーク性格診断</h3><p class="ts-help">会話を始めることが多いか、返信の速さが上位半分か、メッセージが長いか。</p><div class="ts-personas"><div class="ts-persona is-yui"><span class="ts-emo" aria-hidden="true">🐻</span><div><small>ゆい</small><b>ロマンチックくま</b><span>話しかける · マイペース · 長文</span></div></div><div class="ts-persona is-sota"><span class="ts-emo" aria-hidden="true">🐹</span><div><small>そうた</small><b>ツンデレハムスター</b><span>受け身 · 即レス · 短文</span></div></div></div></div>
+                        <div class="ts-card" data-card="sig"><h3>口ぐせワード</h3><p class="ts-help">ほかの人よりずっとよく使う言葉です。</p><div class="ts-sig"><div class="is-yui"><p class="ts-sig-who">ゆい</p><ul class="ts-words"><li>カフェ<small>5回</small></li><li>最高<small>4回</small></li></ul></div><div class="is-sota"><p class="ts-sig-who">そうた</p><ul class="ts-words"><li>了解<small>7回</small></li><li>仕事<small>3回</small></li></ul></div></div></div>
+                    </div>
+                    <div class="ts-readout" lang="ko" data-readout="ko">
+                        <div class="ts-card is-wide ts-type" data-card="type"><div><p class="ts-k">대화 유형</p><h3>찰떡 싱크형</h3><p>메시지 양도 답장 속도도 막상막하. 술술 이어지는 대화예요.</p></div><div class="ts-ring" role="img" aria-label="밸런스 81 / 100"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="trk" cx="50" cy="50" r="42"></circle><circle class="val" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="50.1"></circle></svg><b aria-hidden="true">81<small>밸런스</small></b></div></div>
+                        <div class="ts-card" data-card="share"><h3>메시지 비율</h3><div class="ts-share" aria-hidden="true"><i class="is-yui" style="flex-basis:52%"></i><i class="is-sota" style="flex-basis:48%"></i></div><p class="ts-legend2"><span class="is-yui">유이 <em>52%</em></span><span class="is-sota">소타 <em>48%</em></span></p><p class="ts-sub">대화 7번 중 유이가 4번, 소타가 3번 먼저 말을 걸었어요.</p></div>
+                        <div class="ts-card" data-card="gap"><h3>짝사랑 지수</h3><p class="ts-help">한쪽만 훨씬 빨리 답하는 두 사람이에요 (12시간 안의 답장 평균 시간).</p><p class="ts-gap-none">큰 온도 차는 없어요. 모두 비슷한 속도로 답하고 있어요.</p></div>
+                        <div class="ts-card is-wide" data-card="dist"><h3>답장 속도 분포</h3><div class="ts-dist"><div class="is-yui"><div class="ts-dist-who"><b>유이</b><span>평균 2분</span></div><div class="ts-row"><span>1분 이내</span><span class="ts-bar"><i style="width:14%"></i></span><span>14%</span></div><div class="ts-row"><span>5분 이내</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>30분 이내</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>1시간 이내</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>3시간 이내</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div></div><div class="is-sota"><div class="ts-dist-who"><b>소타</b><span>평균 1분</span></div><div class="ts-row"><span>1분 이내</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>5분 이내</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>30분 이내</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>1시간 이내</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div><div class="ts-row"><span>3시간 이내</span><span class="ts-bar"><i style="width:100%"></i></span><span>100%</span></div></div></div></div>
+                        <div class="ts-card" data-card="persona"><h3>채팅 유형 테스트</h3><p class="ts-help">대화를 자주 시작하는지, 답장 속도가 빠른 절반에 드는지, 메시지가 긴지로 정해져요.</p><div class="ts-personas"><div class="ts-persona is-yui"><span class="ts-emo" aria-hidden="true">🐻</span><div><small>유이</small><b>낭만 곰돌이</b><span>선톡 · 느긋 · 장문</span></div></div><div class="ts-persona is-sota"><span class="ts-emo" aria-hidden="true">🐹</span><div><small>소타</small><b>츤데레 햄스터</b><span>기다림 · 칼답 · 단문</span></div></div></div></div>
+                        <div class="ts-card" data-card="sig"><h3>시그니처 단어</h3><p class="ts-help">유독 그 사람만 자주 쓰는 단어예요.</p><div class="ts-sig"><div class="is-yui"><p class="ts-sig-who">유이</p><ul class="ts-words"><li>완전<small>6번</small></li><li>카페<small>5번</small></li></ul></div><div class="is-sota"><p class="ts-sig-who">소타</p><ul class="ts-words"><li>오케이<small>7번</small></li><li>회사<small>3번</small></li></ul></div></div></div>
+                    </div>
+                </div>
+
+                <p class="ts-note" lang="en">Same thresholds as the app: a pause of 3 hours starts a new conversation, the temperature gap needs 10 replies each way within 12 hours, and personalities need 30 messages each. Words are split with your browser’s ICU word breaker, as Android does. In the app, Reply speed, Words and Recap unlock per chat with one short video.</p>
+                <p class="ts-note" lang="ja">しきい値はアプリと同じです。3時間あいたら新しい会話、返信の温度差は12時間以内の返信がそれぞれ10回以上、トーク性格はそれぞれ30件以上が必要です。言葉の区切りは Android 版と同じく ICU（ブラウザ内蔵）で行っています。アプリでは、返信スピード・ことば・まとめは動画1本でトークごとに解放されます。</p>
+                <p class="ts-note" lang="ko">기준값은 앱과 같아요. 3시간 동안 조용하면 새 대화로 보고, 온도차는 12시간 안의 답장이 서로 10번 이상, 채팅 유형은 각자 메시지 30개 이상이 필요해요. 단어는 Android 앱처럼 브라우저에 내장된 ICU로 나눠요. 앱에서는 답장 속도, 단어, 회고를 대화별로 짧은 동영상 한 편을 보고 열 수 있어요.</p>
+            </div>
+        </section>
+
+        <!-- ============ Features ============ -->
+        <section class="ts-feature" aria-labelledby="f-members">
+            <div class="ts-wrap ts-split">
+                <figure class="app-device ts-device" data-reveal>
+                    <span class="app-device-screen">
+                        <span class="ts-sb" aria-hidden="true"><b>9:41</b><i></i></span>
+                        <img lang="en" src="/apps/line_chat_analyzer/img/members-en.webp" width="660" height="1277" loading="lazy" decoding="async" alt="Members tab: Yui and Sota ranked by messages, their chat personalities Romantic bear and Shy hamster, and Sota's reply speed distribution">
+                        <img lang="ja" src="/apps/line_chat_analyzer/img/members-ja.webp" width="660" height="1277" loading="lazy" decoding="async" alt="メンバータブ。メッセージ数のランキング、トーク性格「ロマンチックくま」と「ツンデレハムスター」、そうたの返信スピードの分布">
+                        <img lang="ko" src="/apps/line_chat_analyzer/img/members-ko.webp" width="660" height="1277" loading="lazy" decoding="async" alt="멤버 탭. 메시지 수 순위, 채팅 유형 ‘낭만 곰돌이’와 ‘츤데레 햄스터’, 소타의 답장 속도 분포">
+                    </span>
+                </figure>
+                <div class="ts-copy" data-reveal>
+                    <p class="ts-tag"><span lang="en">Members</span><span lang="ja">メンバー</span><span lang="ko">멤버</span></p>
+                    <h2 id="f-members"><span lang="en">Who talks more, and who answers faster</span><span lang="ja">たくさん話すのは？<br>返信が速いのは？</span><span lang="ko">누가 더 많이 말하고,<br>누가 더 빨리 답할까</span></h2>
+                    <p lang="en">Rank everyone by messages, characters, reply speed and 21 metrics in all. See how fast each person replies, the temperature gap between two people and, in group chats, the pair who answer each other most. Eight chat personalities come from how each person writes and replies.</p>
+                    <p lang="ja">メッセージ数、文字数、返信の速さなど21項目でランキング。返信までの時間の分布やふたりの温度差、グループなら相性ベストペアもわかります。書き方と返信のクセから決まる、8タイプのトーク性格診断も。</p>
+                    <p lang="ko">메시지 수, 글자 수, 답장 속도 등 21개 항목으로 순위를 매겨요. 답장까지 걸린 시간 분포와 두 사람의 온도차, 단체 대화라면 서로 가장 많이 답한 케미왕까지. 쓰는 습관과 답장 습관으로 정해지는 8가지 채팅 유형도 있어요.</p>
+                    <ul class="ts-chips">
+                        <li><span lang="en">21 rankings</span><span lang="ja">ランキング21項目</span><span lang="ko">21개 랭킹</span></li>
+                        <li><span lang="en">Reply speed</span><span lang="ja">返信スピード</span><span lang="ko">답장 속도</span></li>
+                        <li><span lang="en">Chemistry pairs</span><span lang="ja">相性ベストペア</span><span lang="ko">케미왕</span></li>
+                        <li><span lang="en">8 personalities</span><span lang="ja">性格診断8タイプ</span><span lang="ko">8가지 유형</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="ts-feature is-flip" aria-labelledby="f-time">
+            <div class="ts-wrap ts-split">
+                <figure class="app-device ts-device" data-reveal>
+                    <span class="app-device-screen">
+                        <span class="ts-sb" aria-hidden="true"><b>9:41</b><i></i></span>
+                        <img lang="en" src="/apps/line_chat_analyzer/img/time-en.webp" width="660" height="1277" loading="lazy" decoding="async" alt="Time tab: messages by hour peaking at 3 p.m., by weekday with Monday highest, and a weekday by hour heatmap">
+                        <img lang="ja" src="/apps/line_chat_analyzer/img/time-ja.webp" width="660" height="1277" loading="lazy" decoding="async" alt="時間タブ。15時がピークの時間帯別グラフ、月曜がいちばん多い曜日別グラフ、曜日×時間帯のヒートマップ">
+                        <img lang="ko" src="/apps/line_chat_analyzer/img/time-ko.webp" width="660" height="1277" loading="lazy" decoding="async" alt="시간 탭. 오후 3시가 가장 많은 시간대별 그래프, 월요일이 가장 많은 요일별 그래프, 요일 × 시간대 히트맵">
+                    </span>
+                </figure>
+                <div class="ts-copy" data-reveal>
+                    <p class="ts-tag"><span lang="en">Time</span><span lang="ja">時間</span><span lang="ko">시간</span></p>
+                    <h2 id="f-time"><span lang="en">When your chat comes alive</span><span lang="ja">いちばん盛り上がるのは、いつ？</span><span lang="ko">대화가 가장 뜨거운 시간</span></h2>
+                    <p lang="en">Messages by hour and by weekday, and a weekday × hour heatmap. Find out who owns the late nights and early mornings, follow each month with the power shift and the mood thermometer, and see every day’s count on a calendar.</p>
+                    <p lang="ja">時間帯・曜日ごとのメッセージ数と、曜日×時間帯のヒートマップ。深夜と早朝に強いのは誰か、月ごとのトップの交代劇やトーク温度計、毎日のメッセージ数がひと目でわかるカレンダーも。</p>
+                    <p lang="ko">시간대·요일별 메시지와 요일 × 시간대 히트맵. 밤과 새벽에 강한 사람은 누구인지, 월별 권력 이동과 관계 온도계, 날마다 주고받은 메시지 수를 보여 주는 캘린더까지.</p>
+                    <ul class="ts-chips">
+                        <li><span lang="en">Heatmap</span><span lang="ja">ヒートマップ</span><span lang="ko">히트맵</span></li>
+                        <li><span lang="en">Night owls &amp; early birds</span><span lang="ja">夜ふかし・早起き</span><span lang="ko">올빼미형·아침형</span></li>
+                        <li><span lang="en">Power shift</span><span lang="ja">トップの交代劇</span><span lang="ko">권력 이동</span></li>
+                        <li><span lang="en">Calendar</span><span lang="ja">カレンダー</span><span lang="ko">캘린더</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="ts-feature" aria-labelledby="f-words">
+            <div class="ts-wrap ts-split">
+                <figure class="app-device ts-device" data-reveal>
+                    <span class="app-device-screen">
+                        <span class="ts-sb" aria-hidden="true"><b>9:41</b><i></i></span>
+                        <img lang="en" src="/apps/line_chat_analyzer/img/words-en.webp" width="660" height="1277" loading="lazy" decoding="async" alt="Words tab: a word search button and the most used words for everyone, led by うん, ごめん and ありがとう">
+                        <img lang="ja" src="/apps/line_chat_analyzer/img/words-ja.webp" width="660" height="1277" loading="lazy" decoding="async" alt="ことばタブ。ことば検索ボタンと、うん・ごめん・ありがとうが上位のよく使われた言葉ランキング">
+                        <img lang="ko" src="/apps/line_chat_analyzer/img/words-ko.webp" width="660" height="1277" loading="lazy" decoding="async" alt="단어 탭. 단어 검색 버튼과 うん, ごめん, ありがとう가 상위인 가장 많이 쓴 단어 순위">
+                    </span>
+                </figure>
+                <div class="ts-copy" data-reveal>
+                    <p class="ts-tag"><span lang="en">Words</span><span lang="ja">ことば</span><span lang="ko">단어</span></p>
+                    <h2 id="f-words"><span lang="en">The words that are yours</span><span lang="ja">ふたりの口ぐせ、まるわかり</span><span lang="ko">우리만의 말버릇</span></h2>
+                    <p lang="en">Most used words for everyone or per member, who sends which emoji, the signature words someone uses far more than the rest, and the words that defined each period. Word search shows who said something, when, and how often.</p>
+                    <p lang="ja">みんなやメンバー別のよく使う言葉、誰がどの絵文字をよく使うか、ほかの人よりずっとよく使う口ぐせワード、時期ごとの言葉の年表。ことば検索なら、誰がいつ、その言葉を何回使ったかもわかります。</p>
+                    <p lang="ko">전체 또는 멤버별로 자주 쓴 단어, 누가 어떤 이모티콘을 많이 쓰는지, 다른 사람보다 훨씬 자주 쓰는 시그니처 단어, 시기마다 대화를 대표하는 단어 연대기. 단어 검색으로 누가 언제 그 말을 몇 번 했는지도 찾아봐요.</p>
+                    <ul class="ts-chips">
+                        <li><span lang="en">Signature words</span><span lang="ja">口ぐせワード</span><span lang="ko">시그니처 단어</span></li>
+                        <li><span lang="en">Word eras</span><span lang="ja">言葉の年表</span><span lang="ko">단어 연대기</span></li>
+                        <li><span lang="en">Emoji</span><span lang="ja">絵文字</span><span lang="ko">이모티콘</span></li>
+                        <li><span lang="en">Word search</span><span lang="ja">ことば検索</span><span lang="ko">단어 검색</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="ts-feature is-flip ts-playback" aria-labelledby="f-play">
+            <div class="ts-wrap ts-split">
+                <div class="ts-pair" data-reveal>
+                    <figure class="app-device ts-device ts-device-back">
+                        <span class="app-device-screen">
+                            <span class="ts-sb" aria-hidden="true"><b>9:41</b><i></i></span>
+                            <img lang="en" src="/apps/line_chat_analyzer/img/quiz-en.webp" width="660" height="1277" loading="lazy" decoding="async" alt="Chat quiz, question 1 of 10: Who sent this? Two messages and the choices Sota and Yui">
+                            <img lang="ja" src="/apps/line_chat_analyzer/img/quiz-ja.webp" width="660" height="1277" loading="lazy" decoding="async" alt="トーククイズ第1問「次に来たメッセージはどれ？」。そうたの3つのメッセージと4つの選択肢">
+                            <img lang="ko" src="/apps/line_chat_analyzer/img/quiz-ko.webp" width="660" height="1277" loading="lazy" decoding="async" alt="채팅 퀴즈 1번 문제 ‘이 메시지를 보낸 사람은?’. 메시지 두 개와 선택지 ゆい, そうた">
+                        </span>
+                    </figure>
+                    <figure class="app-device ts-device ts-device-front is-dark">
+                        <span class="app-device-screen">
+                            <span class="ts-sb" aria-hidden="true"><b>9:41</b><i></i></span>
+                            <img lang="en" src="/apps/line_chat_analyzer/img/recap-en.webp" width="660" height="1277" loading="lazy" decoding="async" alt="2026 in review: the first recap slide for Sota, 6,470 messages on 254 days, with a Share image button">
+                            <img lang="ja" src="/apps/line_chat_analyzer/img/recap-ja.webp" width="660" height="1277" loading="lazy" decoding="async" alt="2026年のまとめの1枚目。そうたは6,470件、254日トーク。下に「画像でシェア」ボタン">
+                            <img lang="ko" src="/apps/line_chat_analyzer/img/recap-ko.webp" width="660" height="1277" loading="lazy" decoding="async" alt="2026년 결산 첫 장. 소타의 메시지 6,470개, 254일 대화. 아래에 이미지 공유 버튼">
+                        </span>
+                    </figure>
+                </div>
+                <div class="ts-copy" data-reveal>
+                    <p class="ts-tag"><span lang="en">Quiz · Recap</span><span lang="ja">クイズ・まとめ</span><span lang="ko">퀴즈 · 결산</span></p>
+                    <h2 id="f-play"><span lang="en">Then play it back</span><span lang="ja">思い出は、遊んで振り返る</span><span lang="ko">다시 꺼내 보는 재미</span></h2>
+                    <p lang="en">The chat quiz asks ten questions built from your own messages and numbers: Who sent this? What came next? The recap turns each year into slides you swipe through and share as images, with names swapped for A and B if you like. The time machine reopens “N years ago today”, or any random day, as chat bubbles.</p>
+                    <p lang="ja">トーククイズは、実際のメッセージと数字から10問。「誰の発言？」「次のメッセージは？」で記憶力をチェック。まとめでは1年をスライドで振り返って画像でシェアでき、名前は「A」「B」に置き換えられます。タイムマシンで「◯年前の今日」やランダムな1日のトークも読み返せます。</p>
+                    <p lang="ko">채팅 퀴즈는 실제 메시지와 숫자로 만든 10문제. “누가 보낸 메시지일까?”, “다음 메시지는?”으로 기억력을 체크해요. 결산에서는 한 해를 슬라이드로 넘겨 보고 이미지로 공유할 수 있고, 이름은 A, B로 바꿀 수 있어요. 타임머신으로 “N년 전 오늘”이나 무작위 하루의 대화도 다시 볼 수 있어요.</p>
+                    <ul class="ts-chips">
+                        <li><span lang="en">10-question quiz</span><span lang="ja">クイズ10問</span><span lang="ko">퀴즈 10문제</span></li>
+                        <li><span lang="en">Yearly recap</span><span lang="ja">1年のまとめ</span><span lang="ko">연간 결산</span></li>
+                        <li><span lang="en">Time machine</span><span lang="ja">タイムマシン</span><span lang="ko">타임머신</span></li>
+                        <li><span lang="en">Awards &amp; records</span><span lang="ja">称号と記録</span><span lang="ko">칭호와 기록</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ How it works ============ -->
+        <section class="ts-how" aria-labelledby="how-title">
+            <div class="ts-wrap">
+                <header class="ts-head" data-reveal>
+                    <h2 id="how-title"><span lang="en">From LINE to TalkScope in three steps</span><span lang="ja">使い方は3ステップ</span><span lang="ko">사용 방법은 세 단계</span></h2>
+                </header>
+                <ol class="ts-steps" data-reveal-group>
+                    <li>
+                        <span class="ts-step-n" aria-hidden="true">1</span>
+                        <h3><span lang="en">Export the chat</span><span lang="ja">トーク履歴を送信</span><span lang="ko">대화 내보내기</span></h3>
+                        <p lang="en">In LINE, open the chat, tap <b>≡</b> at the top right, then <b>Settings</b> → <b>Export chat history</b>.</p>
+                        <p lang="ja">LINEでトークを開き、右上の<b>≡</b>から<b>設定</b>→<b>トーク履歴を送信</b>。</p>
+                        <p lang="ko">LINE에서 채팅방을 열고 오른쪽 위 <b>≡</b> → <b>설정</b> → <b>대화 내용 보내기</b>.</p>
+                    </li>
+                    <li>
+                        <span class="ts-step-n" aria-hidden="true">2</span>
+                        <h3><span lang="en">Choose TalkScope</span><span lang="ja">トークスコープを選ぶ</span><span lang="ko">TalkScope 선택</span></h3>
+                        <p lang="en">Pick TalkScope in the share sheet. A saved <code>.txt</code> or <code>.zip</code> works too: choose it from inside the app.</p>
+                        <p lang="ja">共有先でトークスコープを選びます。保存した <code>.txt</code>・<code>.zip</code> ファイルをアプリから選ぶこともできます。</p>
+                        <p lang="ko">공유 목록에서 TalkScope를 고르세요. 저장해 둔 <code>.txt</code>·<code>.zip</code> 파일을 앱에서 선택해도 돼요.</p>
+                    </li>
+                    <li>
+                        <span class="ts-step-n" aria-hidden="true">3</span>
+                        <h3><span lang="en">Explore the tabs</span><span lang="ja">タブごとにチェック</span><span lang="ko">탭별로 확인</span></h3>
+                        <p lang="en">When the analysis finishes, look through Overview, Members, Time, Words, Quiz, Calls and Recap. Want a look first? Tap <b>Try a sample</b>.</p>
+                        <p lang="ja">分析が終わったら、概要・メンバー・時間・ことば・クイズ・通話・まとめを順にチェック。まず雰囲気を見たいときは<b>サンプルで試す</b>から。</p>
+                        <p lang="ko">분석이 끝나면 개요, 멤버, 시간, 단어, 퀴즈, 통화, 결산 탭을 둘러보세요. 먼저 구경하고 싶다면 <b>샘플로 체험하기</b>를 눌러 보세요.</p>
+                    </li>
+                </ol>
+                <p class="ts-tip" lang="en">LINE exports the history stored on that phone. Right after switching phones, only recent messages may be there.</p>
+                <p class="ts-tip" lang="ja">送信されるのは、そのスマホに残っているトーク履歴です。機種変更の直後は、直近の履歴だけの場合があります。</p>
+                <p class="ts-tip" lang="ko">LINE은 그 휴대폰에 저장된 대화만 내보내요. 기기를 바꾼 직후라면 최근 대화만 있을 수 있어요.</p>
+            </div>
+        </section>
+
+        <!-- ============ Privacy ============ -->
+        <section class="ts-private" aria-labelledby="private-title">
+            <div class="ts-wrap">
+                <div class="ts-private-card" data-reveal>
+                    <div class="ts-private-head">
+                        <span class="ts-lock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/><circle cx="12" cy="15.5" r="1.3"/></svg></span>
+                        <h2 id="private-title"><span lang="en">Your chat stays on your phone</span><span lang="ja">トークは、スマホの中だけで</span><span lang="ko">대화는 휴대폰 안에만</span></h2>
+                    </div>
+                    <div class="ts-private-grid">
+                        <div>
+                            <h3><span lang="en">Analyzed on the device</span><span lang="ja">端末の中で分析</span><span lang="ko">기기 안에서 분석</span></h3>
+                            <p lang="en">Reading, analysis and storage all happen on your phone. There’s no upload feature and no account, so the developer never sees your chats.</p>
+                            <p lang="ja">読み込み・分析・保存はすべて端末の中。アップロード機能もアカウント登録もないので、開発者がトークを見ることもありません。</p>
+                            <p lang="ko">불러오기, 분석, 저장 모두 휴대폰 안에서 이루어져요. 업로드 기능도 계정도 없어서 개발자도 대화를 볼 수 없어요.</p>
+                        </div>
+                        <div>
+                            <h3><span lang="en">Delete any time</span><span lang="ja">いつでも削除</span><span lang="ko">언제든 삭제</span></h3>
+                            <p lang="en">Remove one chat, or everything at once in Settings. Uninstalling the app erases it all too.</p>
+                            <p lang="ja">トークごとに削除するか、設定からすべてのデータを削除。アプリをアンインストールしても消去されます。</p>
+                            <p lang="ko">대화별로 지우거나 설정에서 모든 데이터를 한 번에 지울 수 있어요. 앱을 삭제해도 모두 지워져요.</p>
+                        </div>
+                        <div>
+                            <h3><span lang="en">Free, with ads</span><span lang="ja">無料・広告あり</span><span lang="ko">무료, 광고 포함</span></h3>
+                            <p lang="en">Ads come from Google AdMob, never on screens that show your messages. Firebase records app usage and crashes. Neither ever receives your chat content.</p>
+                            <p lang="ja">広告は Google AdMob で、メッセージ本文を表示する画面には出ません。Firebase でアプリの利用状況とクラッシュを記録しますが、どちらにもトーク内容は送られません。</p>
+                            <p lang="ko">광고는 Google AdMob이 보여 주며, 메시지 내용이 보이는 화면에는 나오지 않아요. Firebase로 앱 사용 현황과 오류를 기록하지만, 어느 쪽에도 대화 내용은 전달되지 않아요.</p>
+                        </div>
+                    </div>
+                    <p class="ts-private-link">
+                        <a href="/apps/line_chat_analyzer/privacy-policy/"><span lang="en">Read the privacy policy</span><span lang="ja">プライバシーポリシーを読む</span><span lang="ko">개인정보처리방침 보기 (일본어·영어)</span></a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="ts-faq" aria-labelledby="faq-title">
+            <div class="ts-wrap ts-faq-inner">
+                <h2 id="faq-title" data-reveal><span lang="en">Questions</span><span lang="ja">よくある質問</span><span lang="ko">자주 묻는 질문</span></h2>
+                <div class="ts-faq-list" data-reveal-group>
+                    <details>
+                        <summary><span lang="en">Is TalkScope free?</span><span lang="ja">無料で使えますか？</span><span lang="ko">무료인가요?</span></summary>
+                        <p lang="en">Yes, it’s free with ads. Watching one short video unlocks Words, Recap and the detailed reply-speed cards for that chat. The quiz is free. If no video is available, the button unlocks it for free.</p>
+                        <p lang="ja">はい、広告つきで無料です。短い動画を1本見ると、そのトークの「ことば」「まとめ」と返信スピードの詳しいカードが解放されます。クイズは無料。動画が用意できないときは、ボタンから無料で解放できます。</p>
+                        <p lang="ko">네, 광고가 있는 무료 앱이에요. 짧은 동영상 한 편을 보면 그 대화의 단어, 결산, 답장 속도 상세 카드가 열려요. 퀴즈는 무료예요. 볼 수 있는 동영상이 없을 때는 버튼으로 무료로 열 수 있어요.</p>
+                    </details>
+                    <details>
+                        <summary><span lang="en">Are my messages uploaded anywhere?</span><span lang="ja">トーク内容がどこかに送られることは？</span><span lang="ko">대화 내용이 어딘가로 업로드되나요?</span></summary>
+                        <p lang="en">No. The file you hand to TalkScope is read and analyzed on your phone and kept in the app’s private storage. Ads (AdMob) and usage statistics (Firebase) never receive message text, names, the file or the results.</p>
+                        <p lang="ja">いいえ。トークスコープに渡したファイルは端末の中で読み込み・分析され、アプリ専用の保存領域に保存されます。広告（AdMob）や利用統計（Firebase）に、メッセージ本文、名前、ファイル、分析結果が送られることはありません。</p>
+                        <p lang="ko">아니요. TalkScope에 넘긴 파일은 휴대폰 안에서 읽고 분석해 앱 전용 저장 공간에 보관해요. 광고(AdMob)나 사용 통계(Firebase)로 메시지 내용, 이름, 파일, 분석 결과가 전송되는 일은 없어요.</p>
+                    </details>
+                    <details>
+                        <summary><span lang="en">Which chats can it read?</span><span lang="ja">どんなトークを読み込めますか？</span><span lang="ko">어떤 대화를 불러올 수 있나요?</span></summary>
+                        <p lang="en">Chat histories exported from LINE, one-to-one or group, as a <code>.txt</code> file or a <code>.zip</code> with the text inside. Exports in Japanese, English, Chinese, Thai and Korean are supported. Photos and stickers are counted from placeholders like [Photo]; the images themselves aren’t in the export.</p>
+                        <p lang="ja">LINEで書き出したトーク履歴（1対1・グループ）を、<code>.txt</code> ファイルか、それを含む <code>.zip</code> で読み込めます。日本語・英語・中国語・タイ語・韓国語の書き出し形式に対応。写真やスタンプは「[写真]」「[スタンプ]」の表記から数えます（画像そのものは含まれません）。</p>
+                        <p lang="ko">LINE에서 내보낸 대화 기록(1:1·단체)을 <code>.txt</code> 파일이나 그 파일이 든 <code>.zip</code>으로 불러올 수 있어요. 한국어, 일본어, 영어, 중국어, 태국어로 내보낸 파일을 지원해요. 사진과 스티커는 [사진], [스티커] 같은 표시로 세요(이미지 자체는 포함되지 않아요).</p>
+                    </details>
+                    <details>
+                        <summary><span lang="en">Can it handle years of chat?</span><span lang="ja">何年分もの長いトークでも大丈夫？</span><span lang="ko">몇 년치 긴 대화도 괜찮나요?</span></summary>
+                        <p lang="en">Yes. Exports of up to 300 MB of text are analyzed on the phone, in the background with a progress bar, and the results are saved so the chat opens instantly next time.</p>
+                        <p lang="ja">はい。テキスト300MBまでの書き出しを、進み具合を表示しながら端末の中で分析します。結果は保存されるので、次からはすぐに開けます。</p>
+                        <p lang="ko">네. 텍스트 300MB까지의 파일을 진행 막대와 함께 휴대폰 안에서 분석해요. 결과가 저장되니 다음부터는 바로 열려요.</p>
+                    </details>
+                    <details>
+                        <summary><span lang="en">Which phones and countries?</span><span lang="ja">対応端末と配信国は？</span><span lang="ko">어떤 기기와 나라에서 쓸 수 있나요?</span></summary>
+                        <p lang="en">Android 7.0 or later, from Google Play in Japan, South Korea, Taiwan and Thailand. There’s no App Store version yet. The app itself is in Japanese, English, Traditional Chinese, Thai and Korean.</p>
+                        <p lang="ja">Android 7.0以降。Google Playで日本・韓国・台湾・タイに配信しています。App Store版はまだありません。アプリの表示言語は日本語・英語・繁体字中国語・タイ語・韓国語です。</p>
+                        <p lang="ko">Android 7.0 이상이며, Google Play에서 일본, 한국, 대만, 태국에 출시되어 있어요. App Store 버전은 아직 없어요. 앱은 일본어, 영어, 중국어(번체), 태국어, 한국어로 쓸 수 있어요.</p>
+                    </details>
+                    <details>
+                        <summary><span lang="en">Is TalkScope made by LINE?</span><span lang="ja">LINE公式のアプリですか？</span><span lang="ko">LINE 공식 앱인가요?</span></summary>
+                        <p lang="en">No. TalkScope is an independent app and is not affiliated with LY Corporation. LINE is a trademark or registered trademark of LY Corporation.</p>
+                        <p lang="ja">いいえ。トークスコープはLINEヤフー株式会社とは関係のない、独立したアプリです。「LINE」はLINEヤフー株式会社の商標または登録商標です。</p>
+                        <p lang="ko">아니요. TalkScope는 LY Corporation과 관련이 없는 독립 앱이에요. LINE은 LY Corporation의 상표 또는 등록 상표입니다.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Closing call to action ============ -->
+        <section class="ts-cta" aria-labelledby="cta-title">
+            <div class="ts-wrap ts-cta-inner" data-reveal>
+                <img class="ts-icon" src="/apps/line_chat_analyzer/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
+                <h2 id="cta-title"><span lang="en">Look back on your chats in numbers</span><span lang="ja">あの日の会話、数字で振り返ってみませんか？</span><span lang="ko">대화를 숫자로 돌아보세요</span></h2>
+                <p lang="en">Free on Google Play for Android.</p>
+                <p lang="ja">Google Playで無料（Android）。</p>
+                <p lang="ko">Google Play에서 무료 (Android).</p>
+                <div class="store-badges">
+                    <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.line_chat_analyzer" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                        <span><small lang="en">GET IT ON</small><small lang="ja">今すぐダウンロード</small><small lang="ko">다운로드하기</small><b>Google Play</b></span>
+                    </a>
+                </div>
+                <p class="ts-disclaimer" lang="en">TalkScope is an independent app, not affiliated with LY Corporation. LINE is a trademark or registered trademark of LY Corporation.</p>
+                <p class="ts-disclaimer" lang="ja">トークスコープはLINEヤフー株式会社とは関係のない独立したアプリです。「LINE」はLINEヤフー株式会社の商標または登録商標です。</p>
+                <p class="ts-disclaimer" lang="ko">TalkScope는 LY Corporation과 관련이 없는 독립 앱입니다. LINE은 LY Corporation의 상표 또는 등록 상표입니다.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="About this app">
+            <a href="/apps/line_chat_analyzer/privacy-policy/"><span lang="en">Privacy policy</span><span lang="ja">プライバシーポリシー</span><span lang="ko">개인정보처리방침</span></a>
+            <a href="/support/"><span lang="en">Support</span><span lang="ja">お問い合わせ</span><span lang="ko">문의하기</span></a>
+            <a href="/#apps"><span lang="en">More apps by Rexyrex</span><span lang="ja">Rexyrexのほかのアプリ</span><span lang="ko">Rexyrex의 다른 앱</span></a>
+        </nav>
+        <p><span lang="en">Made by</span><span lang="ja">開発</span><span lang="ko">만든 사람</span> <a href="/">Rexyrex</a> · <code>/apps/line_chat_analyzer/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/motion.js" defer></script>
+    <script src="/apps/line_chat_analyzer/page.js" defer></script>
+</body>
+</html>

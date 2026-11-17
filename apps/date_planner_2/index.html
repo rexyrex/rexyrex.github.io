@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>데이트코스 - AI 데이트 플래너 — Rexyrex</title>
+    <meta name="description" content="지역만 고르면 AI가 실제 장소와 후기, 날씨·주차 정보를 근거로 카페·맛집·놀거리를 잇는 하루 데이트 코스를 짜 주는 무료 Android 앱이에요.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/date_planner_2/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/date_planner_2/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/date_planner_2/img/icon-180.png">
+    <meta name="theme-color" content="#151119" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#fff7f6" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/date_planner_2/">
+    <meta property="og:title" content="데이트코스 - AI 데이트 플래너">
+    <meta property="og:description" content="지역과 취향만 고르면 AI가 맛집부터 놀거리까지 데이트 코스를 완성해요.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/date_planner_2.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="데이트코스 - AI 데이트 플래너">
+    <meta property="og:locale" content="ko_KR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="데이트코스 - AI 데이트 플래너">
+    <meta name="twitter:description" content="지역과 취향만 고르면 AI가 맛집부터 놀거리까지 데이트 코스를 완성해요.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/date_planner_2.jpg">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- IBM Plex stays: the site chrome (top bar, status bar) is set in it. Hahmlet (display) + Noto Sans KR (text — the same Hangul as the app's Pretendard) belong to this page. -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Hahmlet:wght@400..800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/apps/date_planner_2/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "데이트코스 - AI 데이트 플래너",
+        "operatingSystem": "Android",
+        "applicationCategory": "LifestyleApplication",
+        "description": "지역과 취향만 고르면 AI가 맛집부터 놀거리까지 데이트 코스를 완성해요.",
+        "inLanguage": "ko",
+        "url": "https://rexyrex.github.io/apps/date_planner_2/",
+        "image": "https://rexyrex.github.io/apps/date_planner_2/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id=com.rexyrex.date_planner_2"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-date_planner_2">
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <!-- ============ Hero ============ -->
+        <section class="dc-hero" aria-labelledby="dc-title">
+            <div class="dc-wrap dc-hero-grid">
+                <div class="dc-hero-copy">
+                    <nav class="dc-crumb" aria-label="현재 위치"><a href="/apps/">/apps/</a><span aria-current="page">date_planner_2/</span></nav>
+
+                    <h1 class="dc-title" id="dc-title">
+                        <span class="dc-name"><img src="/apps/date_planner_2/img/icon.webp" width="256" height="256" alt="">데이트코스<small>AI 데이트 플래너</small></span>
+                        <span class="dc-claim">지역만 고르면,<br>나머지는 <em>AI가.</em></span>
+                    </h1>
+
+                    <p class="dc-lede">맛집, 카페, 놀거리를 따로 검색하고 동선을 머릿속으로 잇던 일을 대신해 드려요. 카카오맵에서 모은 실제 장소와 블로그 후기, 날씨·주차 정보를 근거로 AI가 시간대별 하루 코스를 짜고, 마음에 안 드는 곳은 그 자리에서 바꿀 수 있어요.</p>
+
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.date_planner_2" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>다운로드하기</small><b>Google Play</b></span>
+                        </a>
+                        <!-- App Store: version 1.0.0 is in review. Once it is on sale (READY_FOR_SALE),
+                             add the App Store badge here and in the closing section
+                             (https://apps.apple.com/app/id6795987964, <small>다운로드하기</small><b>App Store</b>),
+                             <meta name="apple-itunes-app" content="app-id=6795987964"> in <head>, and
+                             "Android, iOS" + the App Store URL in the JSON-LD. -->
+                    </div>
+                    <p class="dc-fine">Android 무료 앱이에요. 회원가입 없이 바로 쓰고, 저장한 코스는 내 폰에만 남아요.</p>
+                </div>
+
+                <div class="dc-stage">
+                    <svg class="dc-stage-route" viewBox="0 0 400 560" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                        <defs>
+                            <linearGradient id="dc-route-grad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0" stop-color="#ff4e6a"/>
+                                <stop offset="1" stop-color="#ff8a5c"/>
+                            </linearGradient>
+                        </defs>
+                        <path class="dc-stage-glow" vector-effect="non-scaling-stroke" d="M40 40C150 30 330 70 340 150S90 230 70 320s250 90 290 200"/>
+                        <path class="dc-stage-path" vector-effect="non-scaling-stroke" d="M40 40C150 30 330 70 340 150S90 230 70 320s250 90 290 200"/>
+                    </svg>
+                    <figure class="app-device dc-device dc-hero-device">
+                        <span class="app-device-screen"><img src="/apps/date_planner_2/img/builder.webp" width="660" height="1434" alt="데이트코스의 코스 만들기 화면. ‘어디로 데이트 갈까요?’ 아래 데이트 지역에 홍대가 입력 완료로 표시되어 있고, 태그로 취향 담기, 코스 짜임(AI가 알아서), 조건 설정 항목과 맨 아래 ‘AI 코스 추천받기’ 버튼이 보인다." fetchpriority="high"></span>
+                    </figure>
+                    <ul class="dc-stage-stops" aria-hidden="true">
+                        <li style="--i:0"><i>1</i><span><b>14:00</b> 카페</span></li>
+                        <li style="--i:1"><i>2</i><span><b>15:30</b> 보드게임</span></li>
+                        <li style="--i:2"><i>3</i><span><b>17:30</b> 저녁</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Signature: assemble a course ============ -->
+        <section class="dc-sec dc-demo-sec" id="demo" aria-labelledby="demo-title">
+            <div class="dc-wrap">
+                <header class="dc-head" data-reveal>
+                    <p class="dc-kicker">직접 해 보기</p>
+                    <h2 id="demo-title">코스가 짜이는 과정을<br>눌러 보세요</h2>
+                    <p>지역을 고르고 조건을 바꿔 보세요. 식사는 식사 시간대에, 카페는 한 시간 남짓, 장소 사이는 고른 도보 한도 안으로. 앱이 코스를 짤 때 따르는 규칙대로 예시 코스가 다시 짜여요.</p>
+                </header>
+
+                <div class="dc-demo" id="dc-demo">
+                    <form class="dc-form" id="dc-form" aria-label="코스 조건">
+                        <fieldset class="dc-field dc-field-region">
+                            <legend>데이트 지역 <span class="dc-req">필수</span></legend>
+                            <div class="dc-chips">
+                                <label class="dc-chip"><input type="radio" name="region" value="seongsu" checked><span><i aria-hidden="true">🏭</i>성수</span></label>
+                                <label class="dc-chip"><input type="radio" name="region" value="yeonnam"><span><i aria-hidden="true">🌿</i>연남</span></label>
+                                <label class="dc-chip"><input type="radio" name="region" value="ikseon"><span><i aria-hidden="true">🏮</i>익선동·종로</span></label>
+                                <label class="dc-chip"><input type="radio" name="region" value="jamsil"><span><i aria-hidden="true">🎢</i>잠실</span></label>
+                                <label class="dc-chip"><input type="radio" name="region" value="haeundae"><span><i aria-hidden="true">🏖</i>해운대</span></label>
+                                <label class="dc-chip"><input type="radio" name="region" value="jeonju"><span><i aria-hidden="true">🪷</i>전주 한옥마을</span></label>
+                            </div>
+                        </fieldset>
+
+                        <p class="dc-form-sub"><b>조건 설정</b> 선택할수록 코스가 정교해져요. 앱에서는 전부 건너뛰어도 돼요.</p>
+
+                        <fieldset class="dc-field">
+                            <legend>시작 시간</legend>
+                            <div class="dc-chips">
+                                <label class="dc-chip"><input type="radio" name="start" value="690"><span>11:30 점심부터</span></label>
+                                <label class="dc-chip"><input type="radio" name="start" value="840" checked><span>14:00 오후부터</span></label>
+                                <label class="dc-chip"><input type="radio" name="start" value="1020"><span>17:00 저녁부터</span></label>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="dc-field">
+                            <legend>데이트 유형</legend>
+                            <div class="dc-chips">
+                                <label class="dc-chip"><input type="radio" name="type" value="general" checked><span>일반 데이트</span></label>
+                                <label class="dc-chip"><input type="radio" name="type" value="first"><span>첫데이트</span></label>
+                                <label class="dc-chip"><input type="radio" name="type" value="anniv"><span>기념일</span></label>
+                                <label class="dc-chip"><input type="radio" name="type" value="long"><span>장기연애</span></label>
+                            </div>
+                        </fieldset>
+
+                        <div class="dc-field-pair">
+                            <fieldset class="dc-field">
+                                <legend>이동수단</legend>
+                                <div class="dc-chips">
+                                    <label class="dc-chip"><input type="radio" name="move" value="public" checked><span>대중교통</span></label>
+                                    <label class="dc-chip"><input type="radio" name="move" value="car"><span>자차</span></label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="dc-field">
+                                <legend>날씨 예보 <span class="dc-legend-note">예시</span></legend>
+                                <div class="dc-chips">
+                                    <label class="dc-chip"><input type="radio" name="sky" value="clear" checked><span>맑음</span></label>
+                                    <label class="dc-chip"><input type="radio" name="sky" value="rain"><span>비 70%</span></label>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <fieldset class="dc-field">
+                            <legend>도보</legend>
+                            <div class="dc-chips">
+                                <label class="dc-chip"><input type="radio" name="walk" value="short"><span>조금만 걷기</span></label>
+                                <label class="dc-chip"><input type="radio" name="walk" value="medium" checked><span>보통</span></label>
+                                <label class="dc-chip"><input type="radio" name="walk" value="long"><span>많이 걸어도 좋아요</span></label>
+                            </div>
+                            <p class="dc-field-note" id="dc-walk-note">장소 사이를 800m 안쪽으로 이어요.</p>
+                        </fieldset>
+
+                        <fieldset class="dc-field">
+                            <legend>예산 <span class="dc-legend-note">1인 기준</span></legend>
+                            <div class="dc-chips">
+                                <label class="dc-chip"><input type="radio" name="budget" value="1"><span>₩ 3만원대</span></label>
+                                <label class="dc-chip"><input type="radio" name="budget" value="2" checked><span>₩₩ 5만원대</span></label>
+                                <label class="dc-chip"><input type="radio" name="budget" value="3"><span>₩₩₩ 7만원대</span></label>
+                                <label class="dc-chip"><input type="radio" name="budget" value="4"><span>₩₩₩₩ 10만원 이상</span></label>
+                            </div>
+                        </fieldset>
+
+                        <button type="button" class="dc-run" id="dc-run" hidden>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.6 2.6.9-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9L19 15z"/></svg>
+                            다른 옵션으로 다시 짜기
+                        </button>
+                        <noscript><p class="dc-field-note">자바스크립트를 켜면 조건을 바꿔 가며 직접 짜 볼 수 있어요.</p></noscript>
+                    </form>
+
+                    <div class="dc-out">
+                        <div class="dc-screen">
+                            <div class="dc-loading" id="dc-loading" hidden>
+                                <div class="dc-loading-in">
+                                    <p class="dc-loading-region"></p>
+                                    <p class="dc-loading-title">데이트 코스를<br>만들고 있어요</p>
+                                    <ol class="dc-loading-steps"></ol>
+                                </div>
+                            </div>
+
+                            <article class="dc-course" id="dc-course" aria-label="예시 코스">
+                                <!-- The course for the default conditions, as page.js draws it (so the page reads the same without JS). -->
+                                <header class="dc-c-head"><p class="dc-c-region">성수 · 예시 코스</p><h3 class="dc-c-title">성수 가볍게 즐기는 오후 코스</h3><p class="dc-c-sum">카페 → 활동 → 식당 → 바·술집</p><ul class="dc-stats"><li><span>총 소요</span><b>6시간 25분</b></li><li><span>총 도보</span><b>1.7km</b></li><li><span>1인 예산</span><b>약 54,000원</b></li></ul><p class="dc-advice is-sun">맑음 · 강수확률 10%. 날씨 걱정 없는 날이에요.</p></header>
+                                <figure class="dc-map"><svg viewBox="0 0 320 170" role="img" aria-label="예시 지도: 4곳을 잇는 동선"><defs><mask id="dc-mreveal" maskUnits="userSpaceOnUse" x="0" y="0" width="320" height="170"><path class="m-draw" pathLength="1" d="M123.2 26.0Q142.5 51.9 173.9 59.6Q193.7 80.5 195.6 109.3Q190.0 126.9 196.8 144.0" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"></path></mask></defs><rect class="m-block" x="77.8" y="13.6" width="40.7" height="28.6" rx="6"></rect><rect class="m-block" x="196.2" y="59.3" width="41.6" height="48.0" rx="6"></rect><rect class="m-block" x="216.4" y="117.4" width="78.3" height="46.7" rx="6"></rect><rect class="m-block" x="122.6" y="63.1" width="61.2" height="32.3" rx="6"></rect><rect class="m-block" x="39.6" y="99.9" width="72.5" height="34.4" rx="6"></rect><rect class="m-block" x="187.0" y="130.1" width="70.7" height="47.9" rx="6"></rect><rect class="m-block" x="109.8" y="95.2" width="84.1" height="37.6" rx="6"></rect><rect class="m-block" x="281.0" y="47.4" width="70.3" height="40.6" rx="6"></rect><rect class="m-block" x="65.7" y="7.3" width="45.2" height="33.6" rx="6"></rect><path class="m-street" stroke-width="9" d="M-10.0 93.5L330.0 92.7"></path><path class="m-street" stroke-width="9" d="M211.2 -10.0L247.8 180.0"></path><path class="m-street" stroke-width="5" d="M-10.0 131.2L330.0 78.6"></path><path class="m-street" stroke-width="5" d="M271.3 -10.0L282.6 180.0"></path><path class="m-street" stroke-width="5" d="M-10.0 77.4L330.0 35.0"></path><path class="m-street" stroke-width="5" d="M130.7 -10.0L166.8 180.0"></path><g mask="url(#dc-mreveal)"><path class="m-walk" d="M123.2 26.0Q142.5 51.9 173.9 59.6"></path><path class="m-walk" d="M173.9 59.6Q193.7 80.5 195.6 109.3"></path><path class="m-walk" d="M195.6 109.3Q190.0 126.9 196.8 144.0"></path></g><g class="m-pin" style="--i:0"><circle cx="123.2" cy="26.0" r="11"></circle><text x="123.2" y="26.0">1</text></g><g class="m-pin" style="--i:1"><circle cx="173.9" cy="59.6" r="11"></circle><text x="173.9" y="59.6">2</text></g><g class="m-pin" style="--i:2"><circle cx="195.6" cy="109.3" r="11"></circle><text x="195.6" y="109.3">3</text></g><g class="m-pin" style="--i:3"><circle cx="196.8" cy="144.0" r="11"></circle><text x="196.8" y="144.0">4</text></g><g><rect class="m-tag" x="243.6" y="146" width="68.4" height="17" rx="5"></rect><path class="m-drive" style="stroke-dasharray:none;stroke-width:2" d="M249.6 159h56.4"></path><text class="m-tag-text" x="277.8" y="155" text-anchor="middle">500m</text></g></svg><figcaption class="dc-map-caption">성수 일대 · 예시 지도</figcaption></figure>
+                                <ol class="dc-stops">
+                                <li class="dc-stop" style="--i:0"><div class="dc-stop-card"><div class="dc-stop-meta"><span class="dc-time">14:00 – 15:10</span><span class="dc-cat">카페</span><span class="dc-io">실내</span></div><p class="dc-stop-name"><span class="dc-num" aria-hidden="true">1</span>통창 2층 카페<span class="dc-sample">예시</span></p><p class="dc-stop-why"><span class="dc-pro">좌석 간격이 넓어 대화하기 편해요</span><span class="dc-con">주말 오후엔 자리가 빨리 차요</span></p><div class="dc-opts" role="group" aria-label="1번째 카페 옵션"><button type="button" class="dc-opt" data-slot="0" data-opt="0" aria-pressed="true"><b>A</b><span>통창 2층 카페</span></button><button type="button" class="dc-opt" data-slot="0" data-opt="1" aria-pressed="false"><b>B</b><span>디저트가 강한 카페</span></button><button type="button" class="dc-opt" data-slot="0" data-opt="2" aria-pressed="false"><b>C</b><span>루프탑 뷰 카페</span></button></div></div></li>
+                                <li class="dc-stop" style="--i:1"><p class="dc-hop"><span>도보 약 11분 · 700m</span></p><div class="dc-stop-card"><div class="dc-stop-meta"><span class="dc-time">15:30 – 17:00</span><span class="dc-cat">활동</span><span class="dc-io">실내</span></div><p class="dc-stop-name"><span class="dc-num" aria-hidden="true">2</span>보드게임 카페<span class="dc-sample">예시</span></p><p class="dc-stop-why"><span class="dc-pro">처음 하는 게임도 직원이 설명해 줘요</span><span class="dc-con">인기 시간대엔 자리가 없을 수 있어요</span></p><div class="dc-opts" role="group" aria-label="2번째 활동 옵션"><button type="button" class="dc-opt" data-slot="1" data-opt="0" aria-pressed="true"><b>A</b><span>보드게임 카페</span></button><button type="button" class="dc-opt" data-slot="1" data-opt="1" aria-pressed="false"><b>B</b><span>셀프 사진관</span></button><button type="button" class="dc-opt" data-slot="1" data-opt="2" aria-pressed="false"><b>C</b><span>인형뽑기·오락실</span></button></div></div></li>
+                                <li class="dc-stop" style="--i:2"><p class="dc-hop"><span>도보 약 10분 · 630m</span></p><div class="dc-stop-card"><div class="dc-stop-meta"><span class="dc-time">17:30 – 19:00</span><span class="dc-cat">식당</span><span class="dc-io">실내</span></div><p class="dc-stop-name"><span class="dc-num" aria-hidden="true">3</span>화덕 피자·파스타<span class="dc-sample">예시</span></p><p class="dc-stop-why"><span class="dc-pro">나눠 먹기 좋은 메뉴가 많아요</span><span class="dc-con">저녁 피크엔 웨이팅이 있을 수 있어요</span></p><div class="dc-opts" role="group" aria-label="3번째 식당 옵션"><button type="button" class="dc-opt" data-slot="2" data-opt="0" aria-pressed="true"><b>A</b><span>화덕 피자·파스타</span></button><button type="button" class="dc-opt" data-slot="2" data-opt="1" aria-pressed="false"><b>B</b><span>숯불 고깃집</span></button><button type="button" class="dc-opt" data-slot="2" data-opt="2" aria-pressed="false"><b>C</b><span>이자카야</span></button></div></div></li>
+                                <li class="dc-stop" style="--i:3"><p class="dc-hop"><span>도보 약 6분 · 400m</span></p><div class="dc-stop-card"><div class="dc-stop-meta"><span class="dc-time">19:15 – 20:25</span><span class="dc-cat">바·술집</span><span class="dc-io">실내</span></div><p class="dc-stop-name"><span class="dc-num" aria-hidden="true">4</span>조용한 와인 바<span class="dc-sample">예시</span></p><p class="dc-stop-why"><span class="dc-pro">조용히 이야기 나누며 마무리하기 좋아요</span><span class="dc-con">안주 가격대가 있는 편이에요</span></p><div class="dc-opts" role="group" aria-label="4번째 바·술집 옵션"><button type="button" class="dc-opt" data-slot="3" data-opt="0" aria-pressed="true"><b>A</b><span>조용한 와인 바</span></button><button type="button" class="dc-opt" data-slot="3" data-opt="1" aria-pressed="false"><b>B</b><span>디저트 바</span></button><button type="button" class="dc-opt" data-slot="3" data-opt="2" aria-pressed="false"><b>C</b><span>루프탑 바</span></button></div></div></li>
+                                </ol>
+                            </article>
+                        </div>
+                        <p class="dc-status app-visually-hidden" id="dc-status" aria-live="polite"></p>
+                        <p class="dc-demo-note">장소 이름과 지도는 설명을 위해 만든 예시예요. 실제 앱은 카카오맵에서 찾은 실제 장소 후보 안에서만 코스를 짜고, 후기·날씨·주차 정보도 그때그때 실제 데이터로 확인해요.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Features as a course ============ -->
+        <section class="dc-sec dc-tour" aria-labelledby="tour-title">
+            <div class="dc-wrap">
+                <header class="dc-head" data-reveal>
+                    <p class="dc-kicker">앱에서는</p>
+                    <h2 id="tour-title">코스부터 장소 하나까지,<br>데이트 준비를 한곳에서</h2>
+                    <p>홈에서 코스 추천받기, 원하는 장소 찾기, 중간에서 만나요 가운데 하나로 시작해요. 아래 앱 화면은 예시 데이터로 찍은 것이라 장소 정보와 후기 요약이 실제와 다를 수 있어요.</p>
+                </header>
+
+                <ol class="dc-route">
+                    <li class="dc-feature" aria-labelledby="f-course">
+                        <div class="dc-feature-copy" data-reveal>
+                            <p class="dc-tab"><span class="dc-pin" aria-hidden="true">1</span>코스 만들기</p>
+                            <h3 id="f-course">시간대마다 고를 수 있는<br>옵션 A·B·C</h3>
+                            <p>결과는 하루 시간표예요. 카페, 식사, 놀거리가 시간대별 슬롯으로 놓이고, 슬롯마다 분위기가 다른 장소가 최대 세 곳씩 들어 있어요. 맨 위에는 총 소요 시간, 총 도보 거리, 1인 예산이 정리돼요.</p>
+                            <p>마음에 드는 곳은 ‘이 장소 유지’로 고정하고 나머지만 새 옵션을 받거나, 순서를 끌어서 바꾸거나, “2번째 장소를 실내로 바꿔줘”처럼 말로 고쳐 달라고 할 수 있어요.</p>
+                        </div>
+                        <figure class="app-device dc-device" data-reveal>
+                            <span class="app-device-screen"><img src="/apps/date_planner_2/img/result.webp" width="660" height="1434" alt="코스 결과 화면. ‘홍대 감성 카페 데이트 코스’ 제목 아래 총 소요 4시간 30분, 총 도보 1.6km, 1인 예산 칩과 날씨 한 줄, 코스 전체 팁이 있고, 첫 슬롯 14:00–15:20 카페 카드에 옵션 A와 B 버튼이 보인다." loading="lazy" decoding="async"></span>
+                        </figure>
+                    </li>
+
+                    <li class="dc-feature is-flip" aria-labelledby="f-why">
+                        <div class="dc-feature-copy" data-reveal>
+                            <p class="dc-tab"><span class="dc-pin" aria-hidden="true">2</span>장소마다 근거</p>
+                            <h3 id="f-why">좋은 점만큼<br>아쉬운 점도 솔직하게</h3>
+                            <p>장소마다 AI가 고른 이유와 좋은 점, 아쉬운 점, 팁이 붙어요. 근거는 네이버 블로그의 실제 방문 후기예요. 장소 사이 도보 거리와 시간은 AI가 아니라 앱이 좌표로 직접 계산하고, 그 구간을 지도로 바로 보여 줘요.</p>
+                            <p>네이버지도나 카카오맵 앱으로 바로 열고, 주소를 복사하거나 전화를 걸 수 있어요. 자차로 간다면 무료 주차가 끝나기 전에 차를 옮길 시각과 그대로 둘 때의 예상 요금까지 짚어 줘요.</p>
+                        </div>
+                        <figure class="app-device dc-device" data-reveal>
+                            <span class="app-device-screen"><img src="/apps/date_planner_2/img/details.webp" width="660" height="1434" alt="코스 상세 화면. 장소 카드에 AI가 고른 이유, 초록 체크 표시의 좋은 점 세 가지와 주황 표시의 아쉬운 점 하나, 팁, 1인 가격대와 가는 길이 적혀 있고, 그 아래 다음 장소까지 ‘도보 약 19분 · 1.2km’ 구간이 작은 지도에 점선으로 그려져 있다." loading="lazy" decoding="async"></span>
+                        </figure>
+                    </li>
+
+                    <li class="dc-feature" aria-labelledby="f-search">
+                        <div class="dc-feature-copy" data-reveal>
+                            <p class="dc-tab"><span class="dc-pin" aria-hidden="true">3</span>장소 찾기</p>
+                            <h3 id="f-search">“파스타 잘하고<br>주차 편한 곳” 같은 검색</h3>
+                            <p>코스 말고 한 곳만 찾을 때는 맛집, 카페, 놀거리, 명소·문화, 주차장, 숙박 가운데 고르고 음식 종류, 분위기, 실내·야외, 반경으로 좁혀요.</p>
+                            <p>상위 결과는 AI가 블로그 후기를 읽어 1인 가격대와 주차 사정을 추정하고, 모든 추정값에 ‘추정’이라고 적어 둬요. 데이트 점수는 고른 조건과 얼마나 맞는지, 영업 중인지, 거리와 예산을 따져 앱이 계산해요.</p>
+                        </div>
+                        <figure class="app-device dc-device" data-reveal>
+                            <span class="app-device-screen"><img src="/apps/date_planner_2/img/search.webp" width="660" height="1434" alt="장소 찾기 결과 화면. ‘홍대 · 맛집’ 결과 10곳 위에 음식 종류와 분위기 태그, 주차 무료·주차 저렴·가격대 같은 AI 필터(추정) 칩이 있고, 목록의 가게마다 데이트 점수, 거리, 1인 가격대 추정, 주차 태그와 후기 한 줄 요약이 붙어 있다." loading="lazy" decoding="async"></span>
+                        </figure>
+                    </li>
+
+                    <li class="dc-feature is-flip" aria-labelledby="f-meet">
+                        <div class="dc-feature-copy" data-reveal>
+                            <p class="dc-tab"><span class="dc-pin" aria-hidden="true">4</span>중간에서 만나요</p>
+                            <h3 id="f-meet">둘 다 덜 억울한<br>중간 동네</h3>
+                            <p>나와 상대가 있는 동네를 넣으면 두 사람의 이동 거리가 공평하고 지하철로 가기 좋은 동네를 추천해요. AI가 후기를 바탕으로 동네마다 좋은 점과 아쉬운 점을 정리해 주고, 마음에 드는 동네에서 바로 장소 찾기나 코스 만들기로 이어져요.</p>
+                        </div>
+                        <figure class="app-device dc-device" data-reveal>
+                            <span class="app-device-screen"><img src="/apps/date_planner_2/img/meet.webp" width="660" height="1434" alt="중간에서 만나요 화면. 나의 위치 홍대, 상대방 위치 잠실을 넣은 뒤 ‘이런 동네 어때요?’ 아래 1위 신사·가로수길(나 9.6km · 상대 6.9km, 지하철 신사역·압구정역)과 2위 이태원·한남이 인기 표시와 함께 추천되어 있고, 카드마다 ‘이 지역에서 장소 찾기’, ‘이 지역으로 코스 만들기’ 버튼이 있다." loading="lazy" decoding="async"></span>
+                        </figure>
+                    </li>
+                </ol>
+
+                <div class="dc-keep" data-reveal>
+                    <h3>보관함과 공유</h3>
+                    <p>마음에 든 코스는 30개까지, 장소는 50개까지 보관함에 담아 두고, 마지막으로 본 코스는 홈에서 이어 볼 수 있어요. 공유하면 장소와 시간, 네이버지도나 카카오맵 링크가 담긴 글로 정리돼 카카오톡이나 문자로 바로 보낼 수 있어요.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ How the AI builds it ============ -->
+        <section class="dc-sec dc-how" aria-labelledby="how-title">
+            <div class="dc-wrap dc-how-grid">
+                <div class="dc-how-copy">
+                    <header class="dc-head" data-reveal>
+                        <p class="dc-kicker">AI가 코스를 짜는 순서</p>
+                        <h2 id="how-title">AI에게 장소를<br>지어내게 하지 않아요</h2>
+                        <p>후보는 앱이 실제 데이터로 먼저 모으고, AI는 그 안에서 고르기만 해요. 거리와 시간 같은 숫자는 앱이 직접 계산해요.</p>
+                    </header>
+
+                    <ol class="dc-steps" data-reveal>
+                        <li><b>후보 모으기</b> 고른 지역 주변의 카페, 맛집, 놀거리를 카카오맵에서 여러 검색어로 모아요.</li>
+                        <li><b>근거 붙이기</b> 후보마다 네이버 블로그 후기를 찾고, 날짜를 정했다면 기상청 예보와 미세먼지, 그날 열리는 축제·공연도 살펴요. 자차라면 근처 공영주차장도요.</li>
+                        <li><b>동선 묶기</b> 걸어서 이어지는 장소끼리 묶어 고른 도보 한도(400m, 800m, 1.5km)를 넘지 않게 해요.</li>
+                        <li><b>AI가 고르기</b> Google Gemini가 후보 목록 안에서만 장소와 순서를 고르고 이유를 써요. 목록에 없는 장소가 나오면 앱이 버려요.</li>
+                        <li><b>시간표 맞추기</b> 식사는 점심·저녁 시간대에 두고, 이동 시간과 영업시간을 맞춰 시간표를 다시 계산해요. 비 소식이 있으면 실내 위주로 바꿔요.</li>
+                    </ol>
+
+                    <p class="dc-how-extra" data-reveal>만들기 전에는 ‘못 먹는 음식’과 음식 취향이 부딪히는지 같은 조건을 먼저 점검하고, 조건이 애매하면 AI가 한두 가지를 되물어요. 질문은 건너뛰어도 돼요.</p>
+
+                    <ul class="dc-sources" aria-label="참고하는 데이터" data-reveal>
+                        <li>카카오 로컬</li>
+                        <li>네이버 블로그·이미지 검색</li>
+                        <li>기상청 단기예보</li>
+                        <li>에어코리아</li>
+                        <li>한국관광공사</li>
+                        <li>KOPIS 공연예술통합전산망</li>
+                        <li>전국주차장정보 표준데이터</li>
+                        <li>Google Gemini</li>
+                    </ul>
+                </div>
+
+                <figure class="app-device dc-device dc-how-device" data-reveal>
+                    <span class="app-device-screen"><img src="/apps/date_planner_2/img/loading.webp" width="660" height="1434" alt="코스를 만드는 동안의 화면. ‘데이트 코스를 만들고 있어요’ 아래 주변 인기 장소 모으기, 블로그 후기 읽기, 동선 계산이 체크 표시로 끝나 있고, ‘AI가 코스를 조합하고 있어요’ 단계가 진행 중이며 다음은 장소 사진 모으기다." loading="lazy" decoding="async"></span>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ============ What it needs / doesn't do ============ -->
+        <section class="dc-sec dc-trust" aria-labelledby="trust-title">
+            <div class="dc-wrap">
+                <header class="dc-head" data-reveal>
+                    <p class="dc-kicker">미리 알아 두세요</p>
+                    <h2 id="trust-title">필요한 건 지역 하나,<br>묻지 않는 건 더 많아요</h2>
+                </header>
+
+                <div class="dc-trust-grid" data-reveal>
+                    <div class="dc-card">
+                        <h3>하지 않는 일</h3>
+                        <ul>
+                            <li>회원가입이나 로그인을 요구하지 않아요.</li>
+                            <li>위치 권한을 묻지 않아요. 지역은 목록, 동네 이름 검색, 지도에서 직접 골라요.</li>
+                            <li>연락처, 사진, 마이크, 카메라, 광고 식별자에 접근하지 않아요.</li>
+                            <li>광고가 없어요.</li>
+                        </ul>
+                    </div>
+                    <div class="dc-card">
+                        <h3>데이터는 이렇게</h3>
+                        <ul>
+                            <li>저장한 코스와 장소, 최근 검색은 이 기기에만 보관돼요. 앱에서 지우거나 앱을 삭제하면 사라져요.</li>
+                            <li>코스를 만들 때 고른 지역과 조건, 검색어는 Google Gemini, 카카오, 네이버와 공공데이터 서비스로 전송될 수 있어요.</li>
+                            <li>사용자 데이터를 팔거나 광고에 쓰지 않아요.</li>
+                        </ul>
+                        <p><a class="dc-link" href="https://rexyrex-date-planner.web.app/privacy" target="_blank" rel="noopener noreferrer">개인정보 처리방침 전문 보기</a></p>
+                    </div>
+                    <div class="dc-card">
+                        <h3>미리 알아 둘 한계</h3>
+                        <ul>
+                            <li>AI 코스와 검색에는 인터넷 연결이 필요해요.</li>
+                            <li>영업시간, 가격, 주차 정보는 바뀔 수 있어요. 방문 전에 그 장소에서 최신 정보를 확인해 주세요.</li>
+                            <li>가격대와 주차 사정은 후기를 읽고 AI가 추정한 값이에요.</li>
+                            <li>국내 장소만 찾을 수 있어요.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="dc-sec dc-faq" aria-labelledby="faq-title">
+            <div class="dc-wrap dc-faq-grid">
+                <header class="dc-head" data-reveal>
+                    <p class="dc-kicker">자주 묻는 질문</p>
+                    <h2 id="faq-title">궁금한 점</h2>
+                </header>
+
+                <div class="dc-faq-list" data-reveal>
+                    <details>
+                        <summary>무료인가요?</summary>
+                        <p>네, 무료예요. 광고나 앱 안 결제도 없어요.</p>
+                    </details>
+                    <details>
+                        <summary>추천해 주는 장소는 실제로 있는 곳인가요?</summary>
+                        <p>네. 앱이 카카오맵에서 찾은 실제 장소를 후보로 모으고, AI는 그 후보 안에서만 고를 수 있어요. 후보 목록에 없는 장소가 나오면 앱이 걸러내요. 다만 영업시간이나 가격은 바뀔 수 있으니 방문 전에 한 번 확인해 주세요.</p>
+                    </details>
+                    <details>
+                        <summary>어느 지역에서 쓸 수 있나요?</summary>
+                        <p>국내 어디서나요. 성수, 연남, 해운대, 전주 한옥마을 같은 인기 데이트 동네와 전국 229개 시·군·구를 목록에서 고를 수 있고, 목록에 없는 동네는 이름으로 검색하거나 지도에서 직접 콕 집으면 돼요.</p>
+                    </details>
+                    <details>
+                        <summary>코스가 마음에 안 들면요?</summary>
+                        <p>슬롯마다 옵션 A·B·C 중에서 바꾸거나, ‘이 장소 유지’로 마음에 드는 곳만 남기고 새 옵션을 받을 수 있어요. 순서는 끌어서 바꾸고, “더 저렴하게”, “덜 걷게”처럼 말로 수정을 요청할 수도 있어요.</p>
+                    </details>
+                    <details>
+                        <summary>저장한 코스는 어디에 남나요?</summary>
+                        <p>이 기기 안에만 남아요. 계정이나 서버에 따로 저장하지 않아서, 앱을 지우면 보관함도 함께 지워져요.</p>
+                    </details>
+                    <details>
+                        <summary>상대에게 코스를 보낼 수 있나요?</summary>
+                        <p>공유를 누르면 장소와 시간, 지도 링크가 담긴 글이 만들어져요. 지도 링크는 네이버지도와 카카오맵 중에서 고를 수 있고, 주소와 이동 정보까지 넣을지도 정할 수 있어요.</p>
+                    </details>
+                    <details>
+                        <summary>아이폰에서도 쓸 수 있나요?</summary>
+                        <p>iPhone 버전은 준비 중이에요. 지금은 Google Play에서 Android용으로 받을 수 있어요.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Closing CTA ============ -->
+        <section class="dc-sec dc-cta" aria-labelledby="cta-title">
+            <div class="dc-wrap">
+                <svg class="dc-cta-route" viewBox="0 0 600 120" aria-hidden="true" focusable="false">
+                    <path d="M10 90C90 90 110 30 190 30S290 95 370 95 470 25 590 25"/>
+                    <circle cx="10" cy="90" r="7"/>
+                    <circle cx="190" cy="30" r="7"/>
+                    <circle cx="370" cy="95" r="7"/>
+                </svg>
+                <img class="dc-cta-icon" src="/apps/date_planner_2/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
+                <h2 id="cta-title">이번 주말 코스,<br>지역 하나로 시작해요</h2>
+                <p>앱을 열고 동네를 고른 다음 ‘AI 코스 추천받기’를 누르면 돼요.</p>
+                <div class="store-badges">
+                    <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.date_planner_2" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                        <span><small>다운로드하기</small><b>Google Play</b></span>
+                    </a>
+                    <!-- App Store badge goes here once version 1.0.0 is approved and on sale. -->
+                </div>
+                <p class="dc-disclaimer">데이트코스는 카카오, 네이버, Google의 공식 앱이 아니며 제휴 관계가 없어요. 각 서비스의 이름은 해당 회사의 것이에요.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="앱 정보">
+            <a href="https://rexyrex-date-planner.web.app/privacy" target="_blank" rel="noopener noreferrer">개인정보처리방침</a>
+            <a href="https://rexyrex-date-planner.web.app/support" target="_blank" rel="noopener noreferrer">문의·데이터 삭제</a>
+            <a href="/#apps">Rexyrex의 다른 앱</a>
+        </nav>
+        <p>만든 사람 <a href="/">Rexyrex</a> · <code>/apps/date_planner_2/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/apps/date_planner_2/page.js" defer></script>
+</body>
+</html>

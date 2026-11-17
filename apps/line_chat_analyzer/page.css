@@ -1,0 +1,2207 @@
+/* ============================================================
+   TalkScope - Chat Analyzer — /apps/line_chat_analyzer/
+   A chat put under a scope. The app's own brand (lib/ui/theme.dart,
+   brand_mark.dart): indigo #5B4BDB → violet #8E62F0 → coral #FF7A59,
+   night #111117 with #1C1B24 cards, day #F6F5FB with white cards,
+   20 px card corners. Member colours as in the app's charts: Yui
+   coral, Sota indigo. The hero phone is the icon's white bubble on
+   its gradient, with a scope reticle behind it.
+   Type: M PLUS Rounded 1c (display, Latin + Japanese — the store
+   art's headline face), Plus Jakarta Sans (reading), Noto Sans JP
+   and IBM Plex Sans KR for Japanese and Hangul, IBM Plex Mono for
+   timestamps and the export file.
+   Trilingual: every string exists three times (lang="en" / "ja" /
+   "ko"); html[data-lang] shows one (set before first paint).
+   Class prefix: ts-.
+   ============================================================ */
+
+/* ---------- Language ------------------------------------------- */
+
+html:not([data-lang="ja"]) body.app-line_chat_analyzer [lang="ja"]:not([data-keep]),
+html:not([data-lang="ko"]) body.app-line_chat_analyzer [lang="ko"]:not([data-keep]),
+html[data-lang="ja"] body.app-line_chat_analyzer [lang="en"]:not([data-keep]),
+html[data-lang="ko"] body.app-line_chat_analyzer [lang="en"]:not([data-keep]) {
+  display: none !important;
+}
+
+/* ---------- Tokens: dark is the base, like the site ------------ */
+
+:root {
+  color-scheme: dark;
+
+  --ts-bg: #111117;
+  --ts-band: #15141c;
+  --ts-card: #1c1b24;
+  --ts-card-2: #25232f;
+  --ts-sunk: #0c0c11;
+  --ts-ink: #eeedf7;
+  --ts-dim: #aeabc4;
+  --ts-faint: #858199;
+  --ts-line: rgba(238, 237, 247, 0.09);
+  --ts-line-2: rgba(238, 237, 247, 0.16);
+  --ts-indigo: #5b4bdb;
+  --ts-violet: #8e62f0;
+  --ts-coral: #ff7a59;
+  --ts-indigo-text: #a99dff;
+  --ts-coral-text: #ff9b81;
+  --ts-grad: linear-gradient(135deg, #5b4bdb 0%, #8e62f0 55%, #ff7a59 100%);
+  --ts-grad-text: linear-gradient(100deg, #a99dff 0%, #c59bff 45%, #ff9b81 100%);
+  --ts-yui: #ff7a59;
+  --ts-yui-text: #ff9b81;
+  --ts-yui-soft: rgba(255, 122, 89, 0.16);
+  --ts-yui-bubble: #ff8f72;
+  --ts-yui-bubble-ink: #2b1109;
+  --ts-sota: #7b6cf0;
+  --ts-sota-text: #a99dff;
+  --ts-sota-soft: rgba(123, 108, 240, 0.18);
+  --ts-sota-bubble: #26243a;
+  --ts-glow-a: rgba(91, 75, 219, 0.34);
+  --ts-glow-b: rgba(255, 122, 89, 0.16);
+  --ts-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.75);
+  --ts-card-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 18px 40px -28px rgba(0, 0, 0, 0.7);
+  --ts-device-frame: #2a2834;
+  --ts-device-edge: rgba(255, 255, 255, 0.12);
+
+  /* site chrome (top bar + status bar) */
+  --bg: #111117;
+  --bg-raised: #1c1b24;
+  --bg-inset: #0c0c11;
+  --bg-hover: #23212d;
+  --line: #26242f;
+  --line-strong: #393646;
+  --fg: #eeedf7;
+  --fg-muted: #aeabc4;
+  --fg-faint: #858199;
+  --accent: #a99dff;
+  --accent-strong: #c4bbff;
+  --accent-ink: #14121f;
+  --accent-soft: rgba(123, 108, 240, 0.16);
+
+  --ts-display: "M PLUS Rounded 1c", "IBM Plex Sans KR", system-ui, -apple-system, sans-serif;
+  --ts-text: "Plus Jakarta Sans", "Noto Sans JP", "IBM Plex Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ts-text-ko: "Plus Jakarta Sans", "IBM Plex Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  --ts-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ts-measure: 1180px;
+  --ts-gutter: clamp(16px, 4vw, 40px);
+  --app-measure: 1180px;
+  --gutter: var(--ts-gutter);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --ts-bg: #f6f5fb;
+    --ts-band: #efedf8;
+    --ts-card: #ffffff;
+    --ts-card-2: #f2f0fa;
+    --ts-sunk: #ebe9f5;
+    --ts-ink: #1b1930;
+    --ts-dim: #545070;
+    --ts-faint: #7a7694;
+    --ts-line: rgba(27, 25, 48, 0.09);
+    --ts-line-2: rgba(27, 25, 48, 0.16);
+    --ts-indigo-text: #5b4bdb;
+    --ts-coral-text: #c2441f;
+    --ts-grad-text: linear-gradient(100deg, #5b4bdb 0%, #8e62f0 45%, #e2552f 100%);
+    --ts-yui: #ff7a59;
+    --ts-yui-text: #c2441f;
+    --ts-yui-soft: rgba(255, 122, 89, 0.16);
+    --ts-yui-bubble: #ff9a7f;
+    --ts-yui-bubble-ink: #2b1109;
+    --ts-sota: #5b4bdb;
+    --ts-sota-text: #5b4bdb;
+    --ts-sota-soft: rgba(91, 75, 219, 0.12);
+    --ts-sota-bubble: #ffffff;
+    --ts-glow-a: rgba(91, 75, 219, 0.2);
+    --ts-glow-b: rgba(255, 122, 89, 0.16);
+    --ts-shadow: 0 30px 60px -32px rgba(48, 36, 120, 0.4);
+    --ts-card-shadow: 0 1px 2px rgba(27, 25, 48, 0.04), 0 18px 40px -30px rgba(48, 36, 120, 0.35);
+    --ts-device-frame: #ffffff;
+    --ts-device-edge: rgba(27, 25, 48, 0.1);
+    --bg: #f6f5fb;
+    --bg-raised: #ffffff;
+    --bg-inset: #ebe9f5;
+    --bg-hover: #eceaf6;
+    --line: #e1def0;
+    --line-strong: #c9c5de;
+    --fg: #1b1930;
+    --fg-muted: #545070;
+    --fg-faint: #7a7694;
+    --accent: #5b4bdb;
+    --accent-strong: #4a3bc4;
+    --accent-ink: #ffffff;
+    --accent-soft: rgba(91, 75, 219, 0.1);
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --ts-bg: #f6f5fb;
+  --ts-band: #efedf8;
+  --ts-card: #ffffff;
+  --ts-card-2: #f2f0fa;
+  --ts-sunk: #ebe9f5;
+  --ts-ink: #1b1930;
+  --ts-dim: #545070;
+  --ts-faint: #7a7694;
+  --ts-line: rgba(27, 25, 48, 0.09);
+  --ts-line-2: rgba(27, 25, 48, 0.16);
+  --ts-indigo-text: #5b4bdb;
+  --ts-coral-text: #c2441f;
+  --ts-grad-text: linear-gradient(100deg, #5b4bdb 0%, #8e62f0 45%, #e2552f 100%);
+  --ts-yui: #ff7a59;
+  --ts-yui-text: #c2441f;
+  --ts-yui-soft: rgba(255, 122, 89, 0.16);
+  --ts-yui-bubble: #ff9a7f;
+  --ts-yui-bubble-ink: #2b1109;
+  --ts-sota: #5b4bdb;
+  --ts-sota-text: #5b4bdb;
+  --ts-sota-soft: rgba(91, 75, 219, 0.12);
+  --ts-sota-bubble: #ffffff;
+  --ts-glow-a: rgba(91, 75, 219, 0.2);
+  --ts-glow-b: rgba(255, 122, 89, 0.16);
+  --ts-shadow: 0 30px 60px -32px rgba(48, 36, 120, 0.4);
+  --ts-card-shadow: 0 1px 2px rgba(27, 25, 48, 0.04), 0 18px 40px -30px rgba(48, 36, 120, 0.35);
+  --ts-device-frame: #ffffff;
+  --ts-device-edge: rgba(27, 25, 48, 0.1);
+  --bg: #f6f5fb;
+  --bg-raised: #ffffff;
+  --bg-inset: #ebe9f5;
+  --bg-hover: #eceaf6;
+  --line: #e1def0;
+  --line-strong: #c9c5de;
+  --fg: #1b1930;
+  --fg-muted: #545070;
+  --fg-faint: #7a7694;
+  --accent: #5b4bdb;
+  --accent-strong: #4a3bc4;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(91, 75, 219, 0.1);
+}
+
+/* Korean pages read in Plex Sans KR. Switching the stack (not setting
+   fonts per element) leaves the site chrome's own fonts alone. */
+html[data-lang="ko"] {
+  --ts-text: var(--ts-text-ko);
+}
+
+/* ---------- Page ----------------------------------------------- */
+
+body.app-line_chat_analyzer {
+  background: var(--ts-bg);
+  color: var(--ts-ink);
+  font-family: var(--ts-text);
+  overflow-x: hidden;
+}
+
+.app-line_chat_analyzer main {
+  overflow-x: clip;
+}
+
+.app-line_chat_analyzer h1,
+.app-line_chat_analyzer h2,
+.app-line_chat_analyzer h3 {
+  font-family: var(--ts-display);
+  color: var(--ts-ink);
+  margin: 0;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+html[data-lang="ja"] .app-line_chat_analyzer h1,
+html[data-lang="ja"] .app-line_chat_analyzer h2,
+html[data-lang="ja"] .app-line_chat_analyzer h3,
+html[data-lang="ja"] .app-line_chat_analyzer .ts-claim,
+html[data-lang="ja"] .app-line_chat_analyzer .ts-persona b {
+  letter-spacing: 0.01em;
+  line-break: strict;
+  /* break Japanese headings between phrases, not inside words (Chrome 119+) */
+  word-break: auto-phrase;
+}
+
+html[data-lang="ko"] .app-line_chat_analyzer h1,
+html[data-lang="ko"] .app-line_chat_analyzer h2,
+html[data-lang="ko"] .app-line_chat_analyzer h3 {
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+
+html[data-lang="ko"] .app-line_chat_analyzer p,
+html[data-lang="ko"] .app-line_chat_analyzer li,
+html[data-lang="ko"] .app-line_chat_analyzer summary {
+  word-break: keep-all;
+}
+
+html[data-lang="ja"] .app-line_chat_analyzer p,
+html[data-lang="ja"] .app-line_chat_analyzer li {
+  line-break: strict;
+}
+
+.app-line_chat_analyzer p {
+  margin: 0;
+}
+
+.app-line_chat_analyzer a {
+  color: var(--ts-indigo-text);
+}
+
+.app-line_chat_analyzer .store-badge,
+.app-line_chat_analyzer .store-badge:hover {
+  color: var(--badge-fg);
+}
+
+.app-line_chat_analyzer code {
+  font-family: var(--ts-mono);
+  font-size: 0.88em;
+}
+
+.ts-wrap {
+  max-width: var(--ts-measure);
+  margin: 0 auto;
+  padding: 0 var(--ts-gutter);
+}
+
+/* ---------- Phone frames: the captures are status-bar cropped ----
+   iPhone 17 Pro captures (1206 × 2622) with the 62 pt status bar and
+   34 pt home indicator cut off, so the screen draws them back. */
+
+.app-line_chat_analyzer .ts-device {
+  --device-w: 276px;
+  --device-frame: var(--ts-device-frame);
+  --device-edge: var(--ts-device-edge);
+  --device-shadow: var(--ts-shadow);
+  --scr: #f6f5fb;
+  --scr-ink: #111117;
+}
+
+.app-line_chat_analyzer .ts-device.is-dark {
+  --scr: #15131f;
+  --scr-ink: #ffffff;
+}
+
+.ts-device .app-device-screen {
+  aspect-ratio: 1206 / 2622;
+  background: var(--scr);
+  container-type: inline-size;
+}
+
+.ts-device .app-device-screen > img {
+  position: absolute;
+  left: 0;
+  top: 7.094%;
+  width: 100%;
+  height: 89.016%;
+  object-fit: cover;
+}
+
+/* home indicator */
+.ts-device .app-device-screen::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 1.25%;
+  width: 36%;
+  height: 5px;
+  height: 1.4cqw;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: var(--scr-ink);
+  opacity: 0.86;
+}
+
+.ts-sb {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 7.094%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7.5% 0 12%;
+  color: var(--scr-ink);
+  font: 600 12px/1 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 4.3cqw;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+
+.ts-sb i {
+  display: block;
+  width: 19cqw;
+  height: 3.9cqw;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 16'%3E%3Crect x='0' y='10' width='3.4' height='5' rx='1'/%3E%3Crect x='5' y='7.5' width='3.4' height='7.5' rx='1'/%3E%3Crect x='10' y='5' width='3.4' height='10' rx='1'/%3E%3Crect x='15' y='2.5' width='3.4' height='12.5' rx='1'/%3E%3Cpath d='M33 4.2a11 11 0 0 1 14 0l-1.6 1.8a8.6 8.6 0 0 0-10.8 0zM35.4 7a7.4 7.4 0 0 1 9.2 0L43 8.8a5 5 0 0 0-6 0zM37.8 9.8a3.6 3.6 0 0 1 4.4 0L40 12.4z'/%3E%3Crect x='53.5' y='2' width='21' height='12' rx='3.6' fill='none' stroke='%23000' stroke-opacity='.45' stroke-width='1.2'/%3E%3Crect x='55.4' y='3.9' width='17.2' height='8.2' rx='2.2'/%3E%3Crect x='75.6' y='6' width='1.6' height='4' rx='.8' fill-opacity='.45'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 16'%3E%3Crect x='0' y='10' width='3.4' height='5' rx='1'/%3E%3Crect x='5' y='7.5' width='3.4' height='7.5' rx='1'/%3E%3Crect x='10' y='5' width='3.4' height='10' rx='1'/%3E%3Crect x='15' y='2.5' width='3.4' height='12.5' rx='1'/%3E%3Cpath d='M33 4.2a11 11 0 0 1 14 0l-1.6 1.8a8.6 8.6 0 0 0-10.8 0zM35.4 7a7.4 7.4 0 0 1 9.2 0L43 8.8a5 5 0 0 0-6 0zM37.8 9.8a3.6 3.6 0 0 1 4.4 0L40 12.4z'/%3E%3Crect x='53.5' y='2' width='21' height='12' rx='3.6' fill='none' stroke='%23000' stroke-opacity='.45' stroke-width='1.2'/%3E%3Crect x='55.4' y='3.9' width='17.2' height='8.2' rx='2.2'/%3E%3Crect x='75.6' y='6' width='1.6' height='4' rx='.8' fill-opacity='.45'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* ---------- Hero ----------------------------------------------- */
+
+.ts-hero {
+  position: relative;
+  padding: clamp(84px, 11vh, 120px) 0 clamp(64px, 8vw, 112px);
+  isolation: isolate;
+}
+
+.ts-sky {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ts-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+.ts-glow-a {
+  width: min(900px, 120vw);
+  aspect-ratio: 1.3;
+  left: -18%;
+  top: -30%;
+  background: radial-gradient(closest-side, var(--ts-glow-a), transparent 72%);
+}
+
+.ts-glow-b {
+  width: min(780px, 110vw);
+  aspect-ratio: 1.2;
+  right: -16%;
+  bottom: -24%;
+  background: radial-gradient(closest-side, var(--ts-glow-b), transparent 72%);
+}
+
+.ts-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(28px, 5vw, 52px);
+}
+
+.ts-crumb {
+  font-family: var(--ts-mono);
+  font-size: 0.84rem;
+  color: var(--ts-dim);
+  overflow-wrap: anywhere;
+}
+
+.ts-crumb a {
+  color: var(--ts-dim);
+  text-decoration: none;
+}
+
+.ts-crumb a:hover {
+  color: var(--ts-ink);
+}
+
+.ts-crumb [aria-current] {
+  color: var(--ts-ink);
+}
+
+/* the toggle needs JS (the language is picked in <head>) */
+html:not(.js) .ts-lang {
+  display: none;
+}
+
+/* language toggle */
+.ts-lang {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--ts-card);
+  border: 1px solid var(--ts-line-2);
+  box-shadow: var(--ts-card-shadow);
+}
+
+.ts-lang button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ts-dim);
+  font: 600 0.82rem/1 var(--ts-text);
+  padding: 0.55rem 0.85rem;
+  min-height: 36px;
+  min-width: 44px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.ts-lang button[data-set-lang="ja"] {
+  font-family: "Noto Sans JP", var(--ts-text);
+}
+
+.ts-lang button[data-set-lang="ko"] {
+  font-family: var(--ts-text-ko);
+}
+
+.ts-lang button:hover {
+  color: var(--ts-ink);
+}
+
+.ts-lang button[aria-pressed="true"] {
+  background: var(--ts-indigo);
+  color: #fff;
+}
+
+.ts-lang button:focus-visible {
+  outline: 2px solid var(--ts-indigo-text);
+  outline-offset: 2px;
+}
+
+.ts-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+  gap: clamp(36px, 6vw, 80px);
+  align-items: center;
+}
+
+.ts-id {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.ts-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  flex: none;
+  box-shadow: 0 12px 28px -12px rgba(91, 75, 219, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+.ts-id-text {
+  display: grid;
+  gap: 3px;
+}
+
+.ts-kicker {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ts-ink);
+}
+
+.ts-alias {
+  font-family: var(--ts-mono);
+  font-size: 0.78rem;
+  color: var(--ts-faint);
+}
+
+.ts-alias [lang="ja"] {
+  font-family: "Noto Sans JP", var(--ts-mono);
+}
+
+.ts-title {
+  font-weight: 800;
+  font-size: clamp(3rem, 7.6vw, 5.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+html[data-lang="ja"] .ts-title {
+  font-size: clamp(2.6rem, 6.4vw, 4.6rem);
+  letter-spacing: 0;
+}
+
+.ts-claim {
+  margin-top: 14px !important;
+  font-family: var(--ts-display);
+  font-weight: 700;
+  font-size: clamp(1.45rem, 2.9vw, 2.15rem);
+  line-height: 1.3;
+  color: var(--ts-ink);
+  text-wrap: balance;
+}
+
+.ts-claim em {
+  font-style: normal;
+  background: var(--ts-grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ts-lede {
+  margin-top: 20px !important;
+  max-width: 34em;
+  font-size: 1.06rem;
+  line-height: 1.75;
+  color: var(--ts-dim);
+}
+
+.ts-hero .store-badges {
+  margin-top: 30px;
+}
+
+.ts-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 54px;
+  padding: 0 1.25rem;
+  border-radius: 13px;
+  border: 1px solid var(--ts-line-2);
+  background: color-mix(in srgb, var(--ts-card) 70%, transparent);
+  color: var(--ts-ink) !important;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+  transition: border-color 0.2s, background-color 0.2s, transform 0.2s var(--ease, ease);
+}
+
+.ts-ghost svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ts-ghost:hover {
+  border-color: var(--ts-indigo-text);
+  transform: translateY(-2px);
+}
+
+.ts-ghost:focus-visible,
+.app-line_chat_analyzer .store-badge:focus-visible {
+  outline: 2px solid var(--ts-indigo-text);
+  outline-offset: 3px;
+}
+
+.ts-fine {
+  margin-top: 16px !important;
+  font-size: 0.86rem;
+  color: var(--ts-faint);
+  max-width: 36em;
+}
+
+/* hero visual: the icon, opened up — gradient bubble, white phone,
+   rising bars and the coral spark, over a scope reticle */
+.ts-hero-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 34px 0 40px;
+}
+
+.ts-mark {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ts-mark-bubble {
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  top: 12%;
+  bottom: 18%;
+  border-radius: 28% / 32%;
+  background: var(--ts-grad);
+  box-shadow: 0 40px 90px -40px rgba(91, 75, 219, 0.8);
+  overflow: hidden;
+}
+
+.ts-mark-bubble::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.22)) 50% 50% / 1px 100% no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.22)) 50% 50% / 100% 1px no-repeat,
+    repeating-radial-gradient(circle at 50% 50%, transparent 0 54px, rgba(255, 255, 255, 0.2) 54px 55.5px);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 30%, transparent 72%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 30%, transparent 72%);
+}
+
+/* the bubble's tail, bottom left as on the icon */
+.ts-mark::after {
+  content: "";
+  position: absolute;
+  left: 13%;
+  bottom: 9%;
+  width: 17%;
+  aspect-ratio: 1.1;
+  background: #8a5cf0;
+  clip-path: polygon(30% 0, 100% 0, 0 100%);
+}
+
+.ts-mark-bars {
+  position: absolute;
+  left: 7%;
+  bottom: 24%;
+  display: flex;
+  align-items: flex-end;
+  gap: 9px;
+  height: 34%;
+}
+
+.ts-mark-bars i {
+  display: block;
+  width: 22px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 10px 20px -10px rgba(20, 10, 60, 0.6);
+}
+
+.ts-mark-bars i:nth-child(1) { height: 42%; background: #fff; }
+.ts-mark-bars i:nth-child(2) { height: 66%; background: #fff; }
+.ts-mark-bars i:nth-child(3) { height: 92%; background: var(--ts-coral); }
+
+.ts-mark-spark {
+  position: absolute;
+  left: 100%;
+  bottom: 100%;
+  margin: 0 0 -4px -24px;
+  width: 38px;
+  aspect-ratio: 1;
+  background: var(--ts-coral);
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  filter: drop-shadow(0 6px 12px rgba(255, 122, 89, 0.45));
+}
+
+.app-line_chat_analyzer .ts-hero-device {
+  --device-w: 286px;
+  margin-left: 20%;
+  --device-frame: #ffffff;
+  --device-edge: rgba(27, 25, 48, 0.08);
+  --device-shadow: 0 50px 80px -36px rgba(20, 10, 60, 0.75), 0 20px 40px -24px rgba(20, 10, 60, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js .ts-mark-bars i {
+    transform-origin: 50% 100%;
+    animation: tsRise 0.9s var(--ease, ease) both;
+  }
+
+  html.js .ts-mark-bars i:nth-child(2) { animation-delay: 0.12s; }
+  html.js .ts-mark-bars i:nth-child(3) { animation-delay: 0.24s; }
+
+  html.js .ts-mark-spark {
+    animation: tsSpark 0.7s 0.55s var(--ease, ease) both, tsTwinkle 4.5s 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes tsRise {
+  from { transform: scaleY(0.05); }
+  to { transform: none; }
+}
+
+@keyframes tsSpark {
+  from { transform: scale(0) rotate(-45deg); }
+  to { transform: none; }
+}
+
+@keyframes tsTwinkle {
+  0%, 100% { transform: none; }
+  50% { transform: scale(0.82) rotate(12deg); }
+}
+
+/* ---------- Section heads -------------------------------------- */
+
+.ts-head {
+  max-width: 760px;
+  margin-bottom: clamp(26px, 4vw, 40px);
+}
+
+.ts-head h2 {
+  font-weight: 800;
+  font-size: clamp(2rem, 4.4vw, 3.1rem);
+  line-height: 1.12;
+}
+
+.ts-head p {
+  margin-top: 14px;
+  font-size: 1.04rem;
+  line-height: 1.75;
+  color: var(--ts-dim);
+}
+
+.ts-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 16px !important;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  background: var(--ts-card);
+  border: 1px solid var(--ts-line);
+  font-family: var(--ts-mono);
+  font-size: 0.78rem !important;
+  line-height: 1.3 !important;
+  color: var(--ts-dim) !important;
+}
+
+.ts-eyebrow :lang(ja),
+.ts-eyebrow :lang(ko) {
+  font-family: inherit;
+}
+
+.ts-dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--ts-coral);
+  box-shadow: 0 0 0 4px var(--ts-yui-soft);
+}
+
+/* ---------- The scope (signature demo) -------------------------- */
+
+.ts-scope {
+  position: relative;
+  scroll-margin-top: var(--nav-h, 56px);
+  padding: clamp(72px, 9vw, 120px) 0;
+  background: var(--ts-band);
+  border-top: 1px solid var(--ts-line);
+  border-bottom: 1px solid var(--ts-line);
+}
+
+/* the dial */
+.ts-dial {
+  display: grid;
+  gap: 14px;
+  padding: 18px 22px 14px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  background: var(--ts-card);
+  border: 1px solid var(--ts-line);
+  box-shadow: var(--ts-card-shadow);
+}
+
+.ts-dial[hidden],
+.ts-views[hidden],
+.ts-panel[hidden] {
+  display: none;
+}
+
+.ts-dial-top {
+  display: flex;
+  align-items: center;
+  gap: 10px 16px;
+  flex-wrap: wrap;
+}
+
+.ts-dial-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.ts-dial-out {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--ts-display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--ts-dim);
+}
+
+.ts-dial-out .is-yui { color: var(--ts-yui-text); }
+.ts-dial-out .is-sota { color: var(--ts-sota-text); }
+
+.ts-reset {
+  appearance: none;
+  border: 1px solid var(--ts-line-2);
+  background: transparent;
+  color: var(--ts-ink);
+  font: 600 0.84rem/1 var(--ts-text);
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.2s, opacity 0.2s;
+}
+
+.ts-reset:hover:not(:disabled) {
+  border-color: var(--ts-indigo-text);
+}
+
+.ts-reset:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.ts-reset:focus-visible {
+  outline: 2px solid var(--ts-indigo-text);
+  outline-offset: 2px;
+}
+
+.ts-dial-track {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 14px;
+}
+
+.ts-dial-end {
+  padding-top: 11px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ts-dial-end.is-yui { color: var(--ts-yui-text); }
+.ts-dial-end.is-sota { color: var(--ts-sota-text); text-align: right; }
+
+.ts-range-wrap {
+  display: grid;
+  gap: 4px;
+  --pos: 50%;
+  --from: 50%;
+  --fill: var(--ts-faint);
+}
+
+.ts-range-wrap input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+.ts-range-wrap input[type="range"]::-webkit-slider-runnable-track {
+  height: 10px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, transparent calc(min(var(--from), var(--pos))), var(--fill) calc(min(var(--from), var(--pos))), var(--fill) calc(max(var(--from), var(--pos))), transparent calc(max(var(--from), var(--pos)))),
+    linear-gradient(90deg, var(--ts-yui-soft), var(--ts-card-2) 50%, var(--ts-sota-soft));
+}
+
+.ts-range-wrap input[type="range"]::-moz-range-track {
+  height: 10px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, transparent calc(min(var(--from), var(--pos))), var(--fill) calc(min(var(--from), var(--pos))), var(--fill) calc(max(var(--from), var(--pos))), transparent calc(max(var(--from), var(--pos)))),
+    linear-gradient(90deg, var(--ts-yui-soft), var(--ts-card-2) 50%, var(--ts-sota-soft));
+}
+
+.ts-range-wrap input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  margin-top: -10px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--fill);
+  box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.6);
+  transition: transform 0.15s;
+}
+
+.ts-range-wrap input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--fill);
+  box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.6);
+}
+
+.ts-range-wrap input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+.ts-range-wrap input[type="range"]:focus-visible {
+  outline: 2px solid var(--ts-indigo-text);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+.ts-ticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 7px;
+  font-family: var(--ts-mono);
+  font-size: 0.7rem;
+  color: var(--ts-faint);
+}
+
+.ts-ticks i {
+  font-style: normal;
+  width: 2.2em;
+  margin: 0 -1.1em;
+  text-align: center;
+}
+
+.ts-ticks i:first-child { margin-left: 0; text-align: left; }
+.ts-ticks i:last-child { margin-right: 0; text-align: right; }
+
+/* bench: chat on the left, readout on the right */
+.ts-bench {
+  display: grid;
+  grid-template-columns: minmax(0, 390px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.ts-phone {
+  position: sticky;
+  top: calc(var(--nav-h, 56px) + 16px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  background: var(--ts-bg);
+  border: 1px solid var(--ts-line);
+  box-shadow: var(--ts-card-shadow);
+  overflow: hidden;
+}
+
+.ts-phone-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 10px;
+  padding: 14px 14px 12px 18px;
+  border-bottom: 1px solid var(--ts-line);
+  background: var(--ts-card);
+}
+
+.ts-phone-title {
+  flex: 1 1 10em;
+  font-weight: 700;
+  font-size: 0.95rem;
+  min-width: 0;
+}
+
+.ts-views {
+  display: inline-flex;
+  flex: none;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--ts-sunk);
+}
+
+.ts-views button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ts-dim);
+  font: 600 0.76rem/1 var(--ts-text);
+  min-height: 32px;
+  padding: 0 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ts-views button[aria-selected="true"] {
+  background: var(--ts-card);
+  color: var(--ts-ink);
+  box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.35);
+}
+
+.ts-views button:focus-visible {
+  outline: 2px solid var(--ts-indigo-text);
+  outline-offset: 1px;
+}
+
+.ts-panel {
+  height: min(640px, 70vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.ts-panel:focus-visible {
+  outline: 2px solid var(--ts-indigo-text);
+  outline-offset: -2px;
+}
+
+.ts-chat {
+  list-style: none;
+  margin: 0;
+  padding: 12px 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ts-day {
+  align-self: center;
+  margin: 12px 0 8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--ts-sunk);
+  color: var(--ts-dim);
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.ts-msg {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: 8px;
+  align-items: end;
+  max-width: 100%;
+}
+
+.ts-msg.is-me {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: end;
+}
+
+.ts-msg.is-first:not(:first-child) {
+  margin-top: 8px;
+}
+
+.ts-ava {
+  grid-row: 1 / span 3;
+  align-self: start;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ts-sota);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  visibility: hidden;
+}
+
+.ts-msg.is-first .ts-ava {
+  visibility: visible;
+}
+
+.ts-who {
+  grid-column: 2;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ts-sota-text);
+  margin: 0 0 2px 2px;
+}
+
+.ts-line {
+  grid-column: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ts-msg.is-me .ts-line {
+  grid-column: 1;
+  flex-direction: row-reverse;
+}
+
+.ts-bubble {
+  max-width: min(250px, 78%);
+  padding: 8px 12px;
+  border-radius: 18px;
+  border-top-left-radius: 6px;
+  background: var(--ts-sota-bubble);
+  border: 1px solid var(--ts-line);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.ts-msg.is-me .ts-bubble {
+  border-radius: 18px;
+  border-top-right-radius: 6px;
+  background: var(--ts-yui-bubble);
+  color: var(--ts-yui-bubble-ink);
+  border-color: transparent;
+}
+
+.ts-bubble.is-media {
+  font-family: var(--ts-mono);
+  font-size: 0.78rem;
+  color: var(--ts-dim);
+  background: transparent;
+  border: 1px dashed var(--ts-line-2);
+}
+
+.ts-msg.is-me .ts-bubble.is-media {
+  color: var(--ts-dim);
+  background: transparent;
+  border-color: color-mix(in srgb, var(--ts-yui) 45%, transparent);
+}
+
+.ts-time {
+  flex: none;
+  font-family: var(--ts-mono);
+  font-size: 0.66rem;
+  color: var(--ts-faint);
+  padding-bottom: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-mark-tag {
+  grid-column: 2;
+  font-size: 0.68rem;
+  font-weight: 600;
+  margin: 2px 0 0 4px;
+  color: var(--ts-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-msg.is-me .ts-mark-tag {
+  grid-column: 1;
+  margin: 2px 4px 0 0;
+}
+
+.ts-mark-tag.is-reply.is-sota { color: var(--ts-sota-text); }
+.ts-mark-tag.is-reply.is-yui { color: var(--ts-yui-text); }
+.ts-mark-tag.is-start { color: var(--ts-dim); }
+
+.ts-mark-tag.is-slow {
+  font-weight: 800;
+}
+
+.ts-file pre {
+  margin: 0;
+  padding: 16px 18px 22px;
+  font-family: var(--ts-mono);
+  font-size: 0.74rem;
+  line-height: 1.7;
+  color: var(--ts-ink);
+  white-space: pre;
+  tab-size: 2;
+  -moz-tab-size: 2;
+}
+
+.ts-file pre:lang(ja) {
+  font-family: "IBM Plex Mono", "Noto Sans JP", ui-monospace, monospace;
+}
+
+.ts-file pre:lang(ko) {
+  font-family: "IBM Plex Mono", "IBM Plex Sans KR", ui-monospace, monospace;
+}
+
+.ts-file .h { color: var(--ts-faint); }
+.ts-file .d { color: var(--ts-indigo-text); font-weight: 600; }
+.ts-file .n-yui { color: var(--ts-yui-text); }
+.ts-file .n-sota { color: var(--ts-sota-text); }
+.ts-file .t { color: var(--ts-faint); }
+
+.ts-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  padding: 10px 16px 12px;
+  border-top: 1px solid var(--ts-line);
+  background: var(--ts-card);
+  font-size: 0.72rem;
+  color: var(--ts-dim);
+}
+
+.ts-legend .is-reply { color: var(--ts-indigo-text); }
+
+/* the readout */
+.ts-readout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-content: start;
+}
+
+.ts-card {
+  position: relative;
+  padding: 18px 20px 20px;
+  border-radius: 20px;
+  background: var(--ts-card);
+  border: 1px solid var(--ts-line);
+  box-shadow: var(--ts-card-shadow);
+  min-width: 0;
+}
+
+.ts-card.is-wide {
+  grid-column: 1 / -1;
+}
+
+.ts-card h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.ts-card .ts-help {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--ts-faint);
+  margin-bottom: 12px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ts-card.is-changed {
+    animation: tsPing 0.9s var(--ease, ease);
+  }
+}
+
+@keyframes tsPing {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ts-violet) 55%, transparent), var(--ts-card-shadow); }
+  100% { box-shadow: 0 0 0 14px transparent, var(--ts-card-shadow); }
+}
+
+/* chat type, like the app's Overview card */
+.ts-type {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  background: linear-gradient(120deg, #5b4bdb 0%, #7856e8 60%, #8e62f0 100%);
+  border-color: transparent;
+  color: #fff;
+}
+
+.ts-type .ts-k {
+  font-size: 0.78rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.ts-type h3 {
+  color: #fff;
+  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  margin: 4px 0 6px;
+}
+
+.ts-type p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  opacity: 0.9;
+  max-width: 36em;
+}
+
+.ts-ring {
+  position: relative;
+  width: 104px;
+  height: 104px;
+}
+
+.ts-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ts-ring circle {
+  fill: none;
+  stroke-width: 9;
+}
+
+.ts-ring .trk {
+  stroke: rgba(255, 255, 255, 0.24);
+}
+
+.ts-ring .val {
+  stroke: #fff;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s var(--ease, ease);
+}
+
+.ts-ring b {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  font-family: var(--ts-display);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-ring b small {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  font-family: var(--ts-text);
+  opacity: 0.85;
+}
+
+/* share of messages */
+.ts-share {
+  display: flex;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 10px 0 10px;
+  background: var(--ts-sunk);
+}
+
+.ts-share i {
+  display: block;
+  height: 100%;
+  transition: flex-basis 0.5s var(--ease, ease);
+}
+
+.ts-share .is-yui { background: var(--ts-yui); }
+.ts-share .is-sota { background: var(--ts-sota); }
+
+.ts-legend2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.ts-legend2 span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ts-legend2 span::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.ts-legend2 .is-yui { color: var(--ts-yui-text); }
+.ts-legend2 .is-sota { color: var(--ts-sota-text); }
+.ts-legend2 em {
+  font-style: normal;
+  color: var(--ts-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-sub {
+  margin-top: 10px !important;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--ts-dim);
+}
+
+/* reply speed distribution */
+.ts-dist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 22px;
+}
+
+.ts-dist-who {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.ts-dist-who b {
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+
+.ts-dist-who span {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ts-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-dist .is-yui .ts-dist-who b { color: var(--ts-yui-text); }
+.ts-dist .is-sota .ts-dist-who b { color: var(--ts-sota-text); }
+
+.ts-row {
+  display: grid;
+  grid-template-columns: 5.6em minmax(0, 1fr) 2.8em;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+  font-size: 0.74rem;
+}
+
+.ts-row > span:first-child {
+  color: var(--ts-dim);
+  white-space: nowrap;
+}
+
+.ts-row > span:last-child {
+  text-align: right;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-bar {
+  height: 9px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ts-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.5s var(--ease, ease);
+}
+
+.is-yui .ts-bar { background: var(--ts-yui-soft); }
+.is-yui .ts-bar i { background: var(--ts-yui); }
+.is-sota .ts-bar { background: var(--ts-sota-soft); }
+.is-sota .ts-bar i { background: var(--ts-sota); }
+
+/* temperature gap */
+.ts-gap-none {
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.ts-gap-bars {
+  display: grid;
+  gap: 8px;
+  margin: 4px 0 10px;
+}
+
+.ts-gap-bar {
+  display: grid;
+  grid-template-columns: minmax(4.5em, auto) minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.ts-gap-bar .ts-bar {
+  height: 12px;
+}
+
+.ts-gap-bar em {
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-gap-bar.is-yui > span:first-child { color: var(--ts-yui-text); }
+.ts-gap-bar.is-sota > span:first-child { color: var(--ts-sota-text); }
+
+.ts-ratio {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ts-coral) 18%, transparent);
+  color: var(--ts-coral-text);
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.ts-gap-row {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--ts-dim);
+  margin-top: 8px !important;
+}
+
+/* personalities */
+.ts-personas {
+  display: grid;
+  gap: 12px;
+}
+
+.ts-persona {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.ts-persona .ts-emo {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.ts-persona.is-yui .ts-emo { background: var(--ts-yui-soft); }
+.ts-persona.is-sota .ts-emo { background: var(--ts-sota-soft); }
+
+.ts-persona small {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.ts-persona.is-yui small { color: var(--ts-yui-text); }
+.ts-persona.is-sota small { color: var(--ts-sota-text); }
+
+.ts-persona b {
+  display: block;
+  font-family: var(--ts-display);
+  font-size: 1.04rem;
+  font-weight: 800;
+}
+
+.ts-persona span {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--ts-dim);
+}
+
+/* signature words */
+.ts-sig {
+  display: grid;
+  gap: 12px;
+}
+
+.ts-sig-who {
+  font-size: 0.78rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.ts-sig .is-yui .ts-sig-who { color: var(--ts-yui-text); }
+.ts-sig .is-sota .ts-sig-who { color: var(--ts-sota-text); }
+
+.ts-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ts-words li {
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.ts-words li small {
+  margin-left: 4px;
+  font-weight: 600;
+  font-size: 0.74rem;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+
+.ts-sig .is-yui li { background: var(--ts-yui-soft); }
+.ts-sig .is-sota li { background: var(--ts-sota-soft); }
+
+.ts-note {
+  margin-top: 22px !important;
+  max-width: 64em;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: var(--ts-faint);
+}
+
+/* ---------- Features ------------------------------------------- */
+
+.ts-feature {
+  padding: clamp(72px, 10vw, 128px) 0 0;
+}
+
+.ts-split {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(40px, 8vw, 120px);
+  align-items: center;
+}
+
+.ts-feature.is-flip .ts-split > :first-child {
+  order: 2;
+}
+
+.ts-copy {
+  max-width: 560px;
+}
+
+.ts-tag {
+  display: inline-block;
+  margin-bottom: 14px !important;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--ts-indigo-text);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.ts-copy h2 {
+  font-weight: 800;
+  font-size: clamp(1.9rem, 3.8vw, 2.75rem);
+  line-height: 1.16;
+}
+
+.ts-copy p {
+  margin-top: 16px;
+  font-size: 1.04rem;
+  line-height: 1.8;
+  color: var(--ts-dim);
+}
+
+.ts-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+}
+
+.ts-chips li {
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: var(--ts-card);
+  border: 1px solid var(--ts-line);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--ts-ink);
+}
+
+.ts-pair {
+  position: relative;
+  width: 400px;
+  height: 640px;
+  max-width: 100%;
+}
+
+.ts-pair .ts-device {
+  position: absolute;
+  --device-w: 250px;
+}
+
+.ts-device-back {
+  left: 0;
+  top: 0;
+  transform: rotate(-5deg);
+  opacity: 0.94;
+}
+
+.ts-device-front {
+  right: 0;
+  bottom: 0;
+  transform: rotate(3deg);
+}
+
+/* ---------- How it works --------------------------------------- */
+
+.ts-how {
+  padding: clamp(88px, 11vw, 140px) 0 0;
+}
+
+.ts-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.ts-steps li {
+  padding: 22px 22px 24px;
+  border-radius: 20px;
+  background: var(--ts-card);
+  border: 1px solid var(--ts-line);
+  box-shadow: var(--ts-card-shadow);
+}
+
+.ts-step-n {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: var(--ts-grad);
+  color: #fff;
+  font-family: var(--ts-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+
+.ts-steps h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.ts-steps p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ts-dim);
+}
+
+.ts-steps b {
+  color: var(--ts-ink);
+  font-weight: 700;
+}
+
+.ts-tip {
+  margin-top: 16px !important;
+  font-size: 0.86rem;
+  color: var(--ts-faint);
+}
+
+/* ---------- Privacy --------------------------------------------- */
+
+.ts-private {
+  padding: clamp(72px, 9vw, 112px) 0 0;
+}
+
+.ts-private-card {
+  position: relative;
+  padding: clamp(24px, 4vw, 44px);
+  border-radius: 28px;
+  background:
+    linear-gradient(var(--ts-card), var(--ts-card)) padding-box,
+    var(--ts-grad) border-box;
+  border: 1.5px solid transparent;
+  box-shadow: var(--ts-card-shadow);
+}
+
+.ts-private-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.ts-lock {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 16px;
+  background: var(--ts-grad);
+}
+
+.ts-lock svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.ts-private-head h2 {
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+  line-height: 1.2;
+}
+
+.ts-private-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 32px;
+}
+
+.ts-private-grid h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.ts-private-grid p {
+  font-size: 0.93rem;
+  line-height: 1.7;
+  color: var(--ts-dim);
+}
+
+.ts-private-link {
+  margin-top: 24px !important;
+  font-weight: 700;
+}
+
+/* ---------- FAQ ------------------------------------------------- */
+
+.ts-faq {
+  padding: clamp(80px, 10vw, 128px) 0 0;
+}
+
+.ts-faq-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: 24px 56px;
+  align-items: start;
+}
+
+.ts-faq h2 {
+  font-weight: 800;
+  font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+}
+
+.ts-faq-list {
+  display: grid;
+  gap: 10px;
+}
+
+.ts-faq details {
+  border-radius: 18px;
+  background: var(--ts-card);
+  border: 1px solid var(--ts-line);
+}
+
+.ts-faq summary {
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  padding: 17px 54px 17px 20px;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.45;
+  min-height: 44px;
+  border-radius: 18px;
+}
+
+.ts-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.ts-faq summary::after {
+  content: "";
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--ts-indigo-text);
+  border-bottom: 2px solid var(--ts-indigo-text);
+  transform: translateY(-70%) rotate(45deg);
+  transition: transform 0.2s;
+}
+
+.ts-faq details[open] summary::after {
+  transform: translateY(-30%) rotate(-135deg);
+}
+
+.ts-faq summary:focus-visible {
+  outline: 2px solid var(--ts-indigo-text);
+  outline-offset: 2px;
+}
+
+.ts-faq details p {
+  padding: 0 20px 18px;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--ts-dim);
+}
+
+/* ---------- Closing CTA ----------------------------------------- */
+
+.ts-cta {
+  padding: clamp(88px, 11vw, 140px) 0 clamp(64px, 8vw, 96px);
+}
+
+.ts-cta-inner {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding-top: clamp(44px, 6vw, 72px) !important;
+  padding-bottom: clamp(40px, 6vw, 64px) !important;
+  border-radius: 32px;
+  background: var(--ts-grad);
+  color: #fff;
+  overflow: hidden;
+  isolation: isolate;
+  max-width: calc(var(--ts-measure) - 2 * var(--ts-gutter));
+}
+
+.ts-cta-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: repeating-radial-gradient(circle at 50% 120%, transparent 0 70px, rgba(255, 255, 255, 0.1) 70px 71.5px);
+  -webkit-mask-image: radial-gradient(ellipse 70% 90% at 50% 100%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 90% at 50% 100%, #000 30%, transparent 75%);
+}
+
+.ts-cta .ts-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 16px 34px -14px rgba(20, 10, 60, 0.7), 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.ts-cta h2 {
+  color: #fff;
+  font-weight: 800;
+  font-size: clamp(1.8rem, 4vw, 2.9rem);
+  line-height: 1.2;
+  max-width: 18em;
+  padding: 0 var(--ts-gutter);
+}
+
+.ts-cta-inner > p {
+  margin-top: 10px !important;
+  font-size: 1.02rem;
+  opacity: 0.9;
+}
+
+.ts-cta .store-badges {
+  justify-content: center;
+  margin-top: 26px;
+}
+
+.ts-cta .store-badge {
+  --badge-line: rgba(255, 255, 255, 0.3);
+}
+
+.ts-cta .store-badge:focus-visible {
+  outline-color: #fff;
+}
+
+.ts-cta-inner > .ts-disclaimer {
+  margin-top: 28px !important;
+  max-width: 40em;
+  padding: 0 var(--ts-gutter);
+  font-size: 0.76rem;
+  line-height: 1.6;
+  opacity: 0.92;
+}
+
+.app-line_chat_analyzer .app-foot a {
+  color: var(--ts-ink);
+}
+
+/* ---------- Responsive ------------------------------------------ */
+
+@media (max-width: 1080px) {
+  .ts-bench {
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  }
+
+  .ts-readout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ts-dist {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .ts-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ts-hero-visual {
+    max-width: 440px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .ts-bench {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* results first, right under the dial; the chat they come from after */
+  .ts-phone {
+    position: relative;
+    top: auto;
+    order: 2;
+  }
+
+  /* the dial stays in reach while the results scroll under it */
+  .ts-dial {
+    position: sticky;
+    top: calc(var(--nav-h, 56px) + 8px);
+    z-index: 6;
+    box-shadow: 0 18px 30px -18px rgba(0, 0, 0, 0.45), var(--ts-card-shadow);
+  }
+
+  .ts-panel {
+    height: 420px;
+  }
+
+  .ts-readout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ts-split {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 40px;
+  }
+
+  .ts-feature .ts-split > .ts-copy {
+    order: -1;
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .ts-feature.is-flip .ts-split > :first-child {
+    order: 2;
+  }
+
+  .ts-steps,
+  .ts-private-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ts-faq-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .ts-readout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ts-type {
+    grid-template-columns: minmax(0, 1fr) 84px;
+    gap: 12px;
+  }
+
+  .ts-ring {
+    width: 84px;
+    height: 84px;
+  }
+
+  .ts-ring b {
+    font-size: 1.6rem;
+  }
+
+  .ts-dial {
+    gap: 8px;
+    padding: 12px 14px 8px;
+    border-radius: 18px;
+  }
+
+  .ts-dial-top {
+    gap: 6px 10px;
+  }
+
+  .ts-dial-label {
+    font-size: 0.86rem;
+  }
+
+  .ts-dial-out {
+    font-size: 0.92rem;
+  }
+
+  .ts-reset {
+    min-height: 32px;
+    padding: 0 12px;
+  }
+
+  .ts-dial-end {
+    font-size: 0.76rem;
+  }
+
+  .ts-range-wrap input[type="range"] {
+    height: 38px;
+  }
+
+  .ts-dial-track {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 4px 10px;
+  }
+
+  .ts-range-wrap {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .ts-dial-end {
+    padding-top: 0;
+  }
+
+  .ts-hero .store-badges {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ts-hero .store-badges > * {
+    justify-content: center;
+  }
+
+  .ts-pair {
+    width: 320px;
+    height: 540px;
+  }
+
+  .ts-pair .ts-device {
+    --device-w: 212px;
+  }
+
+  .app-line_chat_analyzer .ts-hero-device {
+    --device-w: 236px;
+  }
+
+  .ts-hero-visual {
+    padding: 18px 0 10px;
+  }
+
+  .ts-mark-bars i {
+    width: 16px;
+  }
+
+  .ts-mark-spark {
+    width: 30px;
+  }
+
+  .ts-cta-inner {
+    border-radius: 24px;
+    margin: 0 var(--ts-gutter);
+  }
+}
+
+@media (max-width: 400px) {
+  .ts-dist {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ts-type {
+    grid-template-columns: minmax(0, 1fr) 74px;
+    padding: 16px;
+  }
+
+  .ts-type h3 {
+    font-size: 1.22rem;
+  }
+
+  .ts-ring {
+    width: 74px;
+    height: 74px;
+  }
+
+  .ts-ring b {
+    font-size: 1.4rem;
+  }
+
+  .ts-lang button {
+    padding: 0.55rem 0.7rem;
+  }
+}
+
+@media (pointer: coarse) {
+  .ts-lang button,
+  .ts-reset,
+  .ts-views button {
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts-ghost,
+  .ts-ghost:hover {
+    transition: none;
+    transform: none;
+  }
+
+  .ts-share i,
+  .ts-bar i,
+  .ts-ring .val {
+    transition: none;
+  }
+}

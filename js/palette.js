@@ -42,7 +42,9 @@
             { title: '카톡 정밀 분석기', path: '/apps/kakaoparser/', hint: 'Google Play · App Store', keys: 'kakaoparser kakaotalk 카카오톡 카톡 정밀 대화 분석기 chat analyzer' },
             { title: '카카오톡 연애 분석기', path: '/apps/kakao_love_analyzer/', hint: 'Google Play · App Store', keys: 'kakao love analyzer 카카오톡 연애 분석기 썸 호감도 궁합' },
             { title: '슬쩍', path: '/apps/katalk_keeper/', hint: 'Google Play', keys: 'katalk keeper 슬쩍 카톡 몰래보기 읽음 삭제된 메시지 notification' },
-            { title: '사주 분석기', path: '/apps/saju/', hint: 'Google Play', keys: 'saju 사주 분석기 운세 궁합 대운 타로 fortune' }
+            { title: '사주 분석기', path: '/apps/saju/', hint: 'Google Play', keys: 'saju 사주 분석기 운세 궁합 대운 타로 fortune' },
+            { title: '알바수첩', path: '/apps/alba_pay/', hint: 'Google Play · App Store', keys: 'alba pay 알바수첩 알바 급여 계산기 주휴수당 시급 월급 실수령액 최저시급 3.3% 4대보험 payroll' },
+            { title: 'TalkScope - Chat Analyzer', path: '/apps/line_chat_analyzer/', hint: 'Google Play', keys: 'talkscope line chat analyzer トークスコープ トーク分析 대화 분석 reply speed habit words chemistry quiz recap' }
         ],
         mac: [
             { title: 'Rex Boing', path: 'https://github.com/rexyrex/Rex-Boing', hint: 'menu bar telemetry · open source', keys: 'rex boing macos mac menu bar system monitor cpu gpu memory thermals telemetry dinosaur swift' },

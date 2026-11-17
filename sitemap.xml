@@ -85,6 +85,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://rexyrex.github.io/apps/alba_pay/</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rexyrex.github.io/apps/line_chat_analyzer/</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://rexyrex.github.io/music/showcase.html</loc>
     <lastmod>2026-09-09</lastmod>
     <changefreq>yearly</changefreq>

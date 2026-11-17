@@ -1980,6 +1980,40 @@ html.motion-off .vm-beats i:first-child {
   color: var(--tint);
 }
 
+/* 알바수첩 — this month's take-home and the pay lines behind it, in the app's lime */
+.phone-alba {
+  --tint: #d8f35b;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .phone-alba {
+    --tint: #5c7400;
+  }
+}
+
+:root[data-theme="light"] .phone-alba {
+  --tint: #5c7400;
+}
+
+.ui-big.ui-big-money {
+  font-size: 19px;
+}
+
+/* TalkScope — a LINE chat's balance score and its records, in the app's indigo */
+.phone-talk {
+  --tint: #a99dff;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .phone-talk {
+    --tint: #5b4bdb;
+  }
+}
+
+:root[data-theme="light"] .phone-talk {
+  --tint: #5b4bdb;
+}
+
 /* ---------- 8. /music/ — waveform ------------------------------ */
 
 .chapter-music {

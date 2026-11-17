@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>알바수첩 - 알바 급여·주휴수당 계산기 — Rexyrex</title>
+    <meta name="description" content="출퇴근 버튼만 누르면 근무가 기록되고, 주휴수당·야간·연장·휴일수당과 3.3%·4대보험 공제 후 실수령액까지 계산해 주는 알바 급여 계산기 알바수첩.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/alba_pay/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/alba_pay/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/alba_pay/img/icon-180.png">
+    <meta name="theme-color" content="#10141f" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f7f5ef" media="(prefers-color-scheme: light)">
+    <meta name="apple-itunes-app" content="app-id=6822588676">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/alba_pay/">
+    <meta property="og:title" content="알바수첩 - 알바 급여·주휴수당 계산기">
+    <meta property="og:description" content="출퇴근 버튼 한 번으로 근무기록, 주휴수당·야간수당·3.3% 공제 후 실수령액까지 자동 계산">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/apps/alba_pay.jpg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="알바수첩 - 알바 급여·주휴수당 계산기">
+    <meta property="og:locale" content="ko_KR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="알바수첩 - 알바 급여·주휴수당 계산기">
+    <meta name="twitter:description" content="출퇴근 버튼 한 번으로 근무기록, 주휴수당·야간수당·3.3% 공제 후 실수령액까지 자동 계산">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/apps/alba_pay.jpg">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script>document.documentElement.classList.add('js');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- IBM Plex stays: the site chrome (top bar, status bar) is set in it. Black Han Sans (headlines) + Noto Sans KR (text, amounts) are this page's own. -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/apps/alba_pay/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "알바수첩 - 알바 급여·주휴수당 계산기",
+        "alternateName": "알바수첩",
+        "operatingSystem": "Android, iOS",
+        "applicationCategory": "FinanceApplication",
+        "description": "출퇴근 버튼 한 번으로 근무기록, 주휴수당·야간수당·3.3% 공제 후 실수령액까지 자동 계산",
+        "inLanguage": "ko",
+        "url": "https://rexyrex.github.io/apps/alba_pay/",
+        "image": "https://rexyrex.github.io/apps/alba_pay/img/icon.webp",
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "sameAs": ["https://play.google.com/store/apps/details?id=com.rexyrex.alba_pay", "https://apps.apple.com/app/id6822588676"]
+    }
+    </script>
+</head>
+
+<body class="app-page app-alba_pay">
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <!-- ============ Hero ============ -->
+        <header class="ab-hero">
+            <div class="ab-wrap ab-hero-grid">
+                <div class="ab-hero-copy">
+                    <nav class="ab-crumb" aria-label="현재 위치"><a href="/apps/">/apps/</a><span aria-current="page">alba_pay/</span></nav>
+
+                    <h1 class="ab-title">
+                        <span class="ab-name"><img src="/apps/alba_pay/img/icon.webp" width="256" height="256" alt="">알바수첩</span>
+                        <span class="ab-claim">일한 만큼,<br><span class="ab-mark ab-mark-draw">한눈에</span></span>
+                    </h1>
+
+                    <p class="ab-lede">출근할 때 한 번, 퇴근할 때 한 번 누르면 근무가 기록돼요. 주휴수당과 야간·연장·휴일수당, <span class="ab-nw">3.3%나</span> 4대보험 공제까지 계산해서 이번 달 실수령액을 바로 보여 드려요.</p>
+
+                    <div class="store-badges">
+                        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.alba_pay" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                            <span><small>다운로드하기</small><b>Google Play</b></span>
+                        </a>
+                        <a class="store-badge" href="https://apps.apple.com/app/id6822588676" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                            <span><small>다운로드하기</small><b>App Store</b></span>
+                        </a>
+                    </div>
+                    <p class="ab-fine">Android · iPhone 무료 앱이에요. 회원가입 없이 쓰고, 근무 기록은 내 폰에만 저장돼요.</p>
+                </div>
+
+                <div class="ab-hero-stage">
+                    <figure class="app-device ab-device ab-hero-device">
+                        <span class="app-device-screen"><img src="/apps/alba_pay/img/home.webp" width="660" height="1434" alt="알바수첩 홈 화면. 출근 기록 카드에 오후의 카페 출근, 동네 책방 출근 버튼이 있고, 이번 정산기간 예상 수령액 1,820,802원이 형광펜으로 강조되어 있다. 아래에 근무지별 금액과 ‘이번 주 · 오후의 카페 주휴수당 대상이에요, 23시간 / 15시간’ 진행 막대가 보인다." fetchpriority="high"></span>
+                    </figure>
+                    <div class="ab-punch" aria-hidden="true">
+                        <p class="punch-top"><i></i>오후의 카페 근무 중</p>
+                        <p class="punch-time">3시간 12분</p>
+                        <p class="punch-sub">09:30 출근 · 지금까지 약 40,000원</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============ Signature: a month of a regular schedule → the pay screen ============ -->
+        <section class="ab-sec ab-calc-sec" id="calc" aria-labelledby="calc-title">
+            <div class="ab-wrap">
+                <header class="ab-head">
+                    <h2 id="calc-title">이번 달 알바비, 미리 계산해 보세요</h2>
+                    <p>예시 근무표를 고르거나 요일과 시간, 시급을 바꿔 보세요. 앱과 같은 규칙으로 기본급과 주휴수당, 가산수당, 공제를 계산해 한 달 치 급여 화면으로 보여 드려요.</p>
+                </header>
+
+                <div class="calc">
+                    <div class="calc-book">
+                        <span class="ab-rings ab-rings-book" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                        <h3 class="calc-h">근무표</h3>
+                        <p class="calc-static" data-no-js>예시 근무표 ‘카페 오픈’이에요. 월·수·금 09:30 – 17:30, 휴게 30분, 시급 12,500원, 상시 5인 이상 사업장, 3.3% 공제로 2026년 11월을 계산했어요.</p>
+
+                        <form class="calc-form" id="calc-form" hidden>
+                            <fieldset class="f">
+                                <legend>예시 근무표</legend>
+                                <div class="presets">
+                                    <button type="button" class="preset" data-preset="cafe" aria-pressed="true"><b>카페 오픈</b><small>월·수·금 낮</small></button>
+                                    <button type="button" class="preset" data-preset="night" aria-pressed="false"><b>편의점 야간</b><small>금·토·일 밤</small></button>
+                                    <button type="button" class="preset" data-preset="weekend" aria-pressed="false"><b>주말 알바</b><small>토·일 6시간</small></button>
+                                </div>
+                            </fieldset>
+
+                            <div class="f">
+                                <label class="f-label" for="f-wage">시급</label>
+                                <div class="f-unit">
+                                    <input id="f-wage" name="wage" type="text" inputmode="numeric" autocomplete="off" maxlength="7" value="12500">
+                                    <span aria-hidden="true">원</span>
+                                </div>
+                                <button type="button" class="f-link" id="f-minwage">최저시급 넣기</button>
+                            </div>
+
+                            <fieldset class="f">
+                                <legend>일하는 요일</legend>
+                                <div class="days">
+                                    <label class="day"><input type="checkbox" name="day" value="1" checked><span>월</span></label>
+                                    <label class="day"><input type="checkbox" name="day" value="2"><span>화</span></label>
+                                    <label class="day"><input type="checkbox" name="day" value="3" checked><span>수</span></label>
+                                    <label class="day"><input type="checkbox" name="day" value="4"><span>목</span></label>
+                                    <label class="day"><input type="checkbox" name="day" value="5" checked><span>금</span></label>
+                                    <label class="day is-sat"><input type="checkbox" name="day" value="6"><span>토</span></label>
+                                    <label class="day is-sun"><input type="checkbox" name="day" value="7"><span>일</span></label>
+                                </div>
+                            </fieldset>
+
+                            <div class="f f-times">
+                                <div>
+                                    <label class="f-label" for="f-start">출근</label>
+                                    <input id="f-start" name="start" type="time" value="09:30" required>
+                                </div>
+                                <div>
+                                    <label class="f-label" for="f-end">퇴근</label>
+                                    <input id="f-end" name="end" type="time" value="17:30" required>
+                                </div>
+                            </div>
+                            <p class="f-note" id="f-overnight" hidden>퇴근이 출근보다 이르면 다음 날 퇴근하는 밤샘 근무로 계산해요.</p>
+
+                            <fieldset class="f">
+                                <legend>휴게시간 (무급)</legend>
+                                <div class="chips">
+                                    <label class="chip"><input type="radio" name="brk" value="0"><span>없음</span></label>
+                                    <label class="chip"><input type="radio" name="brk" value="30" checked><span>30분</span></label>
+                                    <label class="chip"><input type="radio" name="brk" value="60"><span>1시간</span></label>
+                                    <label class="chip"><input type="radio" name="brk" value="90"><span>1시간 30분</span></label>
+                                </div>
+                                <p class="f-note is-warn" id="f-break-hint" hidden></p>
+                            </fieldset>
+
+                            <fieldset class="f">
+                                <legend>사업장 (상시 근로자 수)</legend>
+                                <div class="chips">
+                                    <label class="chip"><input type="radio" name="size" value="4"><span>5인 미만</span></label>
+                                    <label class="chip"><input type="radio" name="size" value="5" checked><span>5인 이상</span></label>
+                                </div>
+                                <p class="f-note">5인 이상이면 연장·야간·휴일 가산수당(50%)이 붙어요. 사장님은 빼고, 알바는 포함해서 세요.</p>
+                            </fieldset>
+
+                            <fieldset class="f">
+                                <legend>세금·보험 공제</legend>
+                                <div class="chips">
+                                    <label class="chip"><input type="radio" name="ded" value="none"><span>공제 없음</span></label>
+                                    <label class="chip"><input type="radio" name="ded" value="tax33" checked><span>3.3%</span></label>
+                                    <label class="chip"><input type="radio" name="ded" value="insurance"><span>4대보험</span></label>
+                                </div>
+                            </fieldset>
+                            <p class="f-note" id="f-holiday-hint" hidden></p>
+                        </form>
+                    </div>
+
+                    <div class="slip">
+                        <div class="slip-top">
+                            <h3 class="calc-h">급여명세서 <span>(예상)</span></h3>
+                            <img src="/apps/alba_pay/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
+                        </div>
+                        <div class="slip-nav">
+                            <button type="button" class="slip-step" id="slip-prev" aria-label="이전 달" hidden data-js-only><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                            <p class="slip-when"><b id="slip-month">2026년 11월</b><span id="slip-range">11.1 (일) ~ 11.30 (월)</span></p>
+                            <button type="button" class="slip-step" id="slip-next" aria-label="다음 달" hidden data-js-only><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                        </div>
+                        <div class="slip-body" id="slip-body">
+                            <!-- STATIC:SLIP:BEGIN -->
+<div class="slip-total"><p class="slip-k">예상 실수령액</p><p class="slip-net"><span class="ab-mark" data-net>1,450,500원</span></p><p class="slip-sub"><span>세전 1,500,000원</span> · <span>공제 49,500원</span> · <span>13일 97시간 30분</span></p></div><div class="slip-sec"><h4>지급 내역</h4><dl class="rows"><div class="row"><dt>기본급<small>97시간 30분</small></dt><dd>1,218,750원</dd></div><div class="row"><dt>주휴수당<small>5주 · 22시간 30분</small></dt><dd>281,250원</dd></div><div class="row"><dt>연장근로수당</dt><dd>0원</dd></div><div class="row"><dt>야간근로수당</dt><dd>0원</dd></div><div class="row"><dt>휴일근로수당</dt><dd>0원</dd></div><div class="row is-sum"><dt>세전 합계</dt><dd>1,500,000원</dd></div><div class="row is-minus"><dt>소득세 (3%)</dt><dd>-45,000원</dd></div><div class="row is-minus"><dt>지방소득세</dt><dd>-4,500원</dd></div><div class="row is-net"><dt>실수령액</dt><dd>1,450,500원</dd></div></dl></div><div class="slip-sec"><h4>주휴수당 주별 내역</h4><ul class="weeks"><li class="is-ok"><span class="wk-ico" aria-hidden="true"></span><span class="wk-t"><b>10.26 (월) – 11.1 (일)</b><small>소정근로 22시간 30분 → 주휴 4시간 30분</small></span><span class="wk-v">+56,250원</span></li><li class="is-ok"><span class="wk-ico" aria-hidden="true"></span><span class="wk-t"><b>11.2 (월) – 11.8 (일)</b><small>소정근로 22시간 30분 → 주휴 4시간 30분</small></span><span class="wk-v">+56,250원</span></li><li class="is-ok"><span class="wk-ico" aria-hidden="true"></span><span class="wk-t"><b>11.9 (월) – 11.15 (일)</b><small>소정근로 22시간 30분 → 주휴 4시간 30분</small></span><span class="wk-v">+56,250원</span></li><li class="is-ok"><span class="wk-ico" aria-hidden="true"></span><span class="wk-t"><b>11.16 (월) – 11.22 (일)</b><small>소정근로 22시간 30분 → 주휴 4시간 30분</small></span><span class="wk-v">+56,250원</span></li><li class="is-ok"><span class="wk-ico" aria-hidden="true"></span><span class="wk-t"><b>11.23 (월) – 11.29 (일)</b><small>소정근로 22시간 30분 → 주휴 4시간 30분</small></span><span class="wk-v">+56,250원</span></li></ul></div>
+<!-- STATIC:SLIP:END -->
+                        </div>
+                    </div>
+
+                    <div class="cal" id="cal">
+                        <!-- STATIC:CAL:BEGIN -->
+<div class="cal-head"><h3>11월 근무 달력</h3><p>근무 13일 · 97시간 30분 · 기본+가산 1,218,750원</p></div><div class="cal-wd" aria-hidden="true"><span class="is-sun">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span class="is-sat">토</span></div><ol class="cal-grid"><li class="cal-day is-sun" aria-hidden="true"><span class="cal-n">1</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">2</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 2일, 근무 93,750원</span></li><li class="cal-day" aria-hidden="true"><span class="cal-n">3</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">4</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 4일, 근무 93,750원</span></li><li class="cal-day" aria-hidden="true"><span class="cal-n">5</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">6</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 6일, 근무 93,750원</span></li><li class="cal-day is-sat" aria-hidden="true"><span class="cal-n">7</span></li><li class="cal-day is-sun" aria-hidden="true"><span class="cal-n">8</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">9</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 9일, 근무 93,750원</span></li><li class="cal-day" aria-hidden="true"><span class="cal-n">10</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">11</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 11일, 근무 93,750원</span></li><li class="cal-day" aria-hidden="true"><span class="cal-n">12</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">13</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 13일, 근무 93,750원</span></li><li class="cal-day is-sat" aria-hidden="true"><span class="cal-n">14</span></li><li class="cal-day is-sun" aria-hidden="true"><span class="cal-n">15</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">16</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 16일, 근무 93,750원</span></li><li class="cal-day" aria-hidden="true"><span class="cal-n">17</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">18</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 18일, 근무 93,750원</span></li><li class="cal-day" aria-hidden="true"><span class="cal-n">19</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">20</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 20일, 근무 93,750원</span></li><li class="cal-day is-sat" aria-hidden="true"><span class="cal-n">21</span></li><li class="cal-day is-sun" aria-hidden="true"><span class="cal-n">22</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">23</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 23일, 근무 93,750원</span></li><li class="cal-day" aria-hidden="true"><span class="cal-n">24</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">25</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 25일, 근무 93,750원</span></li><li class="cal-day" aria-hidden="true"><span class="cal-n">26</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">27</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 27일, 근무 93,750원</span></li><li class="cal-day is-sat" aria-hidden="true"><span class="cal-n">28</span></li><li class="cal-day is-sun" aria-hidden="true"><span class="cal-n">29</span></li><li class="cal-day is-work"><span class="cal-n" aria-hidden="true">30</span><span class="cal-dot" aria-hidden="true"></span><span class="cal-amt" aria-hidden="true">9.4만</span><span class="app-visually-hidden">11월 30일, 근무 93,750원</span></li></ol>
+<!-- STATIC:CAL:END -->
+                    </div>
+                </div>
+
+                <p class="app-visually-hidden" id="calc-live" aria-live="polite"></p>
+                <p class="calc-foot">근무표와 금액은 설명을 위한 예시예요. 계산은 앱의 급여 계산 코드를 그대로 옮겼고, 정산기간은 매월 1일 ~ 말일, 주휴 주는 월요일에 시작해요. 결근·지각, 수습 감액, 근로소득세(간이세액)는 넣지 않은 예상치예요. 입력한 값은 이 페이지 안에서만 계산되고 어디로도 보내지지 않아요.</p>
+            </div>
+        </section>
+
+        <!-- ============ Features around real screens ============ -->
+        <section class="ab-sec ab-feature" aria-labelledby="f-punch">
+            <div class="ab-wrap ab-feature-grid">
+                <div class="ab-feature-copy" data-reveal>
+                    <p class="ab-tab" aria-hidden="true">홈 · 달력</p>
+                    <h2 id="f-punch">출근 한 번,<br>퇴근 한 번</h2>
+                    <p>홈 화면의 ‘출근하기’를 누르면 그 시각부터 근무가 기록돼요. 퇴근할 때는 휴게시간만 확인하고 저장하면 끝이에요.</p>
+                    <p>깜빡한 날은 달력에서 날짜를 눌러 바로 넣고, 같은 시간에 일하는 날은 여러 날을 골라 한 번에 등록해요. 다음 날 아침에 끝나는 밤샘 근무도 그대로 계산해요.</p>
+                    <p class="ab-aside">휴게시간이 법정 기준보다 짧으면 저장하기 전에 알려 줘요. 근무지는 여러 곳을 등록할 수 있고, 근무지마다 색이 달라 달력에서 한눈에 구분돼요.</p>
+                </div>
+                <div class="ab-duo" data-reveal>
+                    <figure class="app-device ab-device duo-back">
+                        <span class="app-device-screen"><img src="/apps/alba_pay/img/calendar.webp" width="660" height="1434" alt="달력 화면. 2026년 10월 칸마다 근무지 색 점과 그날 금액(9.4만, 12.4만, 5.5만)이 적혀 있고, 일요일과 공휴일 숫자는 빨간색이다. 위에 ‘근무 18일 · 126시간 30분’, 아래에 10월 23일 09:30–17:30 근무 93,750원이 보인다." loading="lazy" decoding="async"></span>
+                    </figure>
+                    <figure class="app-device ab-device duo-front">
+                        <span class="app-device-screen"><img src="/apps/alba_pay/img/shift.webp" width="660" height="1434" alt="근무 수정 시트. 오후의 카페, 10월 23일(금), 출근 09:30, 퇴근 17:30, 휴게시간 30분이 선택되어 있고, 휴일근무 스위치와 시급 12,500원, 메모 ‘오픈 · 원두 재고 정리’ 아래에 ‘근무 7시간 30분, 예상 93,750원’이 표시된다." loading="lazy" decoding="async"></span>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section class="ab-sec ab-feature is-flip" aria-labelledby="f-pay">
+            <div class="ab-wrap ab-feature-grid">
+                <div class="ab-feature-copy" data-reveal>
+                    <p class="ab-tab" aria-hidden="true">급여</p>
+                    <h2 id="f-pay">세전부터 실수령액까지,<br>항목별로</h2>
+                    <p>기본급과 주휴수당, 연장·야간·휴일근로수당을 따로 계산하고 공제 내역과 실수령액까지 정산기간별로 보여 줘요. 정산 시작일(예: 16일 ~ 다음 달 15일)과 급여일도 근무지마다 정할 수 있어요.</p>
+                    <dl class="ab-points">
+                        <div><dt>주휴수당</dt><dd>주 15시간을 채우면 자동으로 더해요. 홈에서는 ‘주휴수당까지 3시간’처럼 이번 주 진행 상황을 보여 줘요.</dd></div>
+                        <div><dt>가산수당</dt><dd>상시 5인 이상 사업장이면 연장·야간·휴일 가산을, 5인 미만이면 가산 없이 계산해요.</dd></div>
+                        <div><dt>공제</dt><dd>공제 없음, 3.3%, 4대보험, 직접 입력 가운데 골라요.</dd></div>
+                    </dl>
+                </div>
+                <figure class="app-device ab-device" data-reveal>
+                    <span class="app-device-screen"><img src="/apps/alba_pay/img/pay.webp" width="660" height="1434" alt="급여 화면. 오후의 카페 2026년 10월 예상 실수령액 1,545,802원 아래에 지급 내역으로 기본급 1,268,750원, 주휴수당 211,250원, 연장근로수당 12,500원, 야간근로수당 59,167원, 휴일근로수당 46,875원, 세전 합계 1,598,542원과 소득세·지방소득세 공제가 나열되어 있다." loading="lazy" decoding="async"></span>
+                </figure>
+            </div>
+        </section>
+
+        <section class="ab-sec ab-feature" aria-labelledby="f-slip">
+            <div class="ab-wrap ab-feature-grid">
+                <div class="ab-feature-copy" data-reveal>
+                    <p class="ab-tab" aria-hidden="true">급여명세서</p>
+                    <h2 id="f-slip">사장님과 맞춰 볼<br>급여명세서</h2>
+                    <p>정산기간마다 지급 항목과 공제 항목, 실수령액을 한 장에 정리한 급여명세서를 만들어요. 이미지로 저장하거나 메신저로 바로 보낼 수 있어요.</p>
+                    <p>근무 기록은 날짜별 근무시간과 금액이 담긴 엑셀(CSV) 파일로 내보낼 수 있어서, 사장님 기록과 하나씩 맞춰 보기 좋아요.</p>
+                    <p class="ab-aside">명세서 이미지 저장과 엑셀 내보내기는 광고를 보고 나면 열려요. 광고를 볼지는 먼저 물어보고, 불러올 광고가 없으면 바로 열려요.</p>
+                </div>
+                <figure class="app-device ab-device" data-reveal>
+                    <span class="app-device-screen"><img src="/apps/alba_pay/img/payslip.webp" width="660" height="1434" alt="급여명세서(예상) 화면. 오후의 카페 2026. 10. 1. ~ 10. 31., 근무 13일 101시간 30분. 지급 항목 합계 1,598,542원, 공제 항목 소득세 47,950원과 지방소득세 4,790원, 실수령액 1,545,802원이 형광펜으로 강조되어 있고 아래에 ‘이미지로 저장·공유’ 버튼이 있다." loading="lazy" decoding="async"></span>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ============ Two more tools ============ -->
+        <section class="ab-sec ab-tools" aria-labelledby="tools-title">
+            <div class="ab-wrap">
+                <header class="ab-head ab-head-center" data-reveal>
+                    <h2 id="tools-title">기록하기 전에도,<br>한 해가 끝날 때도</h2>
+                </header>
+                <div class="tools-grid">
+                    <article class="tool" aria-labelledby="t-calc" data-reveal>
+                        <figure class="app-device ab-device tool-device">
+                            <span class="app-device-screen"><img src="/apps/alba_pay/img/calculator.webp" width="660" height="1434" alt="계산기 탭의 주휴수당 계산기. 시급 10,320원, 1주 근무시간 20시간을 넣자 1주 주휴수당 41,280원, 주휴시간 4시간, 주급(근무분) 206,400원, 주급 합계 247,680원이 나온다." loading="lazy" decoding="async"></span>
+                        </figure>
+                        <div class="tool-copy">
+                            <p class="ab-tab" aria-hidden="true">계산기</p>
+                            <h3 id="t-calc">계산기만 따로 써도 돼요</h3>
+                            <p>근무를 기록하지 않아도 시급과 주 근무시간만 넣으면 주휴수당과 주급이 나와요. 월급 계산기, 월급 → 시급 환산, 연도별 최저임금표도 함께 들어 있어요.</p>
+                        </div>
+                    </article>
+                    <article class="tool" aria-labelledby="t-year" data-reveal>
+                        <figure class="app-device ab-device tool-device">
+                            <span class="app-device-screen"><img src="/apps/alba_pay/img/year.webp" width="660" height="1434" alt="연간 요약 화면. 2026년 올해 실수령액(예상) 17,061,463원, 세전 합계 17,561,043원, 그중 주휴수당 2,420,000원, 3.3% 원천징수 499,580원과 종합소득세 신고 안내, 그리고 1월부터 12월까지 월별 실수령액 막대가 보인다." loading="lazy" decoding="async"></span>
+                        </figure>
+                        <div class="tool-copy">
+                            <p class="ab-tab" aria-hidden="true">연간 요약</p>
+                            <h3 id="t-year">1년 치 알바비를 한 장에</h3>
+                            <p>월별 실수령액과 올해 받은 주휴수당, 3.3%로 떼인 세금을 모아 보여 줘요. 떼인 세금은 다음 해 5월 종합소득세 신고 때 정산된다는 안내도 함께 있어요.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ The rules ============ -->
+        <section class="ab-sec ab-rules" id="rules" aria-labelledby="rules-title">
+            <div class="ab-wrap ab-rules-grid">
+                <header class="ab-rules-head" data-reveal>
+                    <h2 id="rules-title">이렇게<br>계산해요</h2>
+                    <p>앱의 ‘계산 기준 안내’와 같은 내용이에요. 위의 계산기도 이 규칙 그대로 계산해요.</p>
+                </header>
+                <div class="ab-rules-body" data-reveal>
+                    <dl class="rules">
+                        <div><dt>기본급</dt><dd>실제 근무시간(휴게시간 제외) × 시급. 시급은 근무를 기록할 때의 값으로 저장돼서, 나중에 시급을 바꿔도 지난 기록은 그대로예요.</dd></div>
+                        <div><dt>주휴수당</dt><dd>1주 소정근로가 15시간 이상이면 (주 근무시간 ÷ 40) × 8시간 × 시급, 최대 8시간분. 연장·휴일근로는 빼고 계산하고, 그 주의 마지막 날이 속한 정산기간에 넣어요. 5인 미만 사업장도 받아요.</dd></div>
+                        <div><dt>연장근로 <span class="rule-tag">5인 이상</span></dt><dd>하루 8시간 또는 1주 40시간을 넘긴 시간에 50%를 더해요. 같은 날 나눠 일해도 합쳐서 봐요.</dd></div>
+                        <div><dt>야간근로 <span class="rule-tag">5인 이상</span></dt><dd>밤 10시 ~ 아침 6시 근무에 50%를 더해요. 휴게시간은 근무 비율대로 나눠 빼고, 연장·휴일근로와 겹치면 함께 가산해요.</dd></div>
+                        <div><dt>휴일근로 <span class="rule-tag">5인 이상</span></dt><dd>휴일근무로 표시한 날은 하루 8시간까지 50%, 넘는 시간은 100%를 더해요. 공휴일에 넣은 근무는 자동으로 휴일근무가 돼요.</dd></div>
+                        <div><dt>3.3%</dt><dd>소득세 3% + 지방소득세(소득세의 10%), 10원 미만은 버려요. 소득세가 1,000원 미만이면 떼지 않아요(소액부징수).</dd></div>
+                        <div><dt>4대보험</dt><dd>국민연금·건강보험·장기요양보험·고용보험 근로자 부담분을 그해 요율로 계산해요. 월 60시간 미만이면 국민연금·건강보험은 빼고, 근로소득세(간이세액표)는 넣지 않아요.</dd></div>
+                        <div><dt>최저임금</dt><dd>2026년 10,320원(월 209시간 2,156,880원), 2027년 10,700원(월 2,236,300원). 시급이 최저시급보다 낮으면 알려 주고, 연말에는 1월 인상도 미리 알려 줘요.</dd></div>
+                    </dl>
+                    <p class="rules-foot">알바수첩의 금액은 근로기준법을 바탕으로 한 예상치예요. 결근·지각, 공휴일 유급휴일, 수습 감액, 회사별 수당은 반영되지 않아요. 임금 문제는 고용노동부 고객상담센터(국번 없이 1350)에서 상담받을 수 있어요.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Start / data / permissions ============ -->
+        <section class="ab-sec ab-start" aria-labelledby="start-title">
+            <div class="ab-wrap">
+                <header class="ab-head" data-reveal>
+                    <h2 id="start-title">시작은 근무지 하나부터</h2>
+                </header>
+                <ol class="steps" data-reveal>
+                    <li><b>근무지를 등록해요</b><span>이름과 시급, 공제 방식, 5인 이상 사업장인지만 정하면 돼요. 정산 시작일과 급여일, 기본 휴게시간은 나중에 바꿔도 돼요.</span></li>
+                    <li><b>‘출근하기’를 눌러요</b><span>퇴근할 때 한 번 더 누르고 저장해요. 지난 근무는 달력에서 날짜를 눌러 넣어요.</span></li>
+                    <li><b>급여 탭을 열어요</b><span>이번 정산기간의 실수령액과 항목별 내역, 급여명세서가 바로 나와요.</span></li>
+                </ol>
+
+                <div class="ab-facts">
+                    <div class="ab-fact" data-reveal>
+                        <h3>기록은 내 폰에만</h3>
+                        <ul>
+                            <li>회원가입이나 로그인이 없어요.</li>
+                            <li>근무지와 근무 기록은 이 기기의 앱 저장 공간에만 저장되고, 급여 계산도 기기 안에서 해요. 개발자 서버로 보내지 않아요.</li>
+                            <li>폰을 바꿀 땐 설정에서 백업 파일을 내보내 새 폰에서 복원하면 그대로 옮겨져요. 백업과 복원은 광고를 보지 않아도 언제든 쓸 수 있어요.</li>
+                        </ul>
+                        <p><a class="ab-link" href="/apps/alba_pay/privacy-policy/">개인정보처리방침 전문 보기</a></p>
+                    </div>
+                    <div class="ab-fact" data-reveal>
+                        <h3>광고와 권한</h3>
+                        <ul>
+                            <li>무료 앱이고 Google AdMob 광고가 나와요. iPhone에서는 맞춤 광고를 위한 추적 허용 여부를 묻고, 허용하지 않아도 모든 기능을 쓸 수 있어요.</li>
+                            <li>앱을 고치고 개선하려고 Firebase 사용 통계와 오류 보고를 보내지만, 근무지 이름·메모·시급·근무 시각·급여 금액은 담기지 않아요.</li>
+                            <li>위치·카메라·마이크·연락처·알림 권한은 요청하지 않아요. iPhone에서 급여명세서를 사진 앱에 저장할 때만 사진 추가 권한을 물어요.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="ab-sec ab-faq" aria-labelledby="faq-title">
+            <div class="ab-wrap ab-faq-grid">
+                <h2 id="faq-title" data-reveal>자주 묻는<br>질문</h2>
+                <div class="faq" data-reveal>
+                    <details>
+                        <summary>정말 무료인가요?</summary>
+                        <p>네, 무료 앱이고 광고로 운영돼요. 화면 아래 배너, 급여명세서를 열 때 가끔 나오는 전면 광고, 그리고 명세서 이미지 저장·엑셀 내보내기 전에 볼지 고르는 보상형 광고가 있어요. 출퇴근 기록과 급여 계산, 백업·복원은 광고를 보지 않아도 바로 쓸 수 있어요.</p>
+                    </details>
+                    <details>
+                        <summary>계산된 금액이 실제 월급과 똑같나요?</summary>
+                        <p>근로기준법과 공개된 요율로 계산한 예상 금액이에요. 결근·지각, 공휴일 유급휴일 수당, 수습 감액, 회사별 수당, 근로소득세(간이세액)는 반영되지 않아서 실제 지급액과 다를 수 있어요. 차이가 크면 급여명세서와 근무 기록을 들고 사장님과 맞춰 보거나, 고용노동부 고객상담센터(1350)에 물어보세요.</p>
+                    </details>
+                    <details>
+                        <summary>5인 미만 사업장이면 어떻게 되나요?</summary>
+                        <p>연장·야간·휴일 가산수당 없이 계산해요. 주휴수당은 사업장 규모와 상관없이 주 15시간 이상이면 붙어요. 5인 기준은 사장님을 빼고 알바·단시간 근로자를 포함한 상시 근로자 수예요.</p>
+                    </details>
+                    <details>
+                        <summary>3.3%와 4대보험 중 무엇을 골라야 하나요?</summary>
+                        <p>급여명세서나 계약서에 적힌 대로 고르면 돼요. 프리랜서(사업소득)로 신고되면 3.3%, 4대보험에 가입되어 있으면 4대보험, 세금 없이 시급 그대로 받으면 공제 없음이에요. 명세서에 다른 공제율이 적혀 있다면 직접 입력할 수 있어요.</p>
+                    </details>
+                    <details>
+                        <summary>알바를 두 곳 이상 해도 되나요?</summary>
+                        <p>근무지를 여러 개 등록할 수 있고, 시급·공제 방식·정산일을 근무지마다 따로 정해요. 홈에서는 이번 정산기간 예상 수령액을 합계와 근무지별로 함께 보여 줘요.</p>
+                    </details>
+                    <details>
+                        <summary>시급이 오르면 지난 기록도 바뀌나요?</summary>
+                        <p>근무마다 그때의 시급이 저장돼서 지난 기록은 그대로예요. 근무지 시급을 바꿀 때 이번 정산기간 근무부터 새 시급으로 다시 계산할지 물어봐요.</p>
+                    </details>
+                    <details>
+                        <summary>폰을 바꾸면 기록이 사라지나요?</summary>
+                        <p>기록은 이 기기에만 있어서, 바꾸기 전에 설정에서 백업 파일을 내보내 카카오톡이나 드라이브 등에 저장해 두세요. 새 폰에서 그 파일로 복원하면 그대로 옮겨져요. 개발자는 기기 안의 기록에 접근할 수 없어 대신 복원해 드릴 수 없어요.</p>
+                    </details>
+                    <details>
+                        <summary>아이폰에서도 쓸 수 있나요?</summary>
+                        <p>네, Android와 iPhone(iOS 15 이상) 모두에서 쓸 수 있어요. 화면은 밝게, 어둡게, 시스템 설정 중에서 고를 수 있어요.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Closing CTA ============ -->
+        <section class="ab-sec ab-cta" aria-labelledby="cta-title">
+            <div class="ab-wrap">
+                <img class="ab-cta-icon" src="/apps/alba_pay/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
+                <h2 id="cta-title">이번 달 알바비,<br><span class="ab-mark">오늘부터</span> 적어 두세요</h2>
+                <p>근무지 하나만 등록하면 바로 출근 버튼을 누를 수 있어요.</p>
+                <div class="store-badges">
+                    <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.rexyrex.alba_pay" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg>
+                        <span><small>다운로드하기</small><b>Google Play</b></span>
+                    </a>
+                    <a class="store-badge" href="https://apps.apple.com/app/id6822588676" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                        <span><small>다운로드하기</small><b>App Store</b></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="앱 정보">
+            <a href="/apps/alba_pay/privacy-policy/">개인정보처리방침</a>
+            <a href="/support/">문의하기</a>
+            <a href="/#apps">Rexyrex의 다른 앱</a>
+        </nav>
+        <p>만든 사람 <a href="/">Rexyrex</a> · <code>/apps/alba_pay/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/apps/alba_pay/page.js" defer></script>
+</body>
+</html>
