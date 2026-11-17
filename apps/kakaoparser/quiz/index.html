@@ -21,7 +21,7 @@
     <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="preload" href="fonts/nsr-r.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/nsr-b.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="quiz.css?v=13">
+    <link rel="stylesheet" href="quiz.css?v=14">
 </head>
 <body>
 <header class="appbar">
@@ -77,12 +77,12 @@
         <div id="vIntro" class="view" hidden>
             <section class="card hero-card">
                 <div class="hero-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-trophy"/></svg></div>
+                <span class="quiz-badge">🧩 QUIZ</span>
                 <h1 class="hero-title" id="introTitle"></h1>
-                <p class="hero-sub">우리 방 대화로 만든 퀴즈예요.<br>누가 한 말인지, 다음에 뭐라고 했는지 맞혀보세요!</p>
-                <ul class="chips" id="introChips"></ul>
-                <ul class="type-list" id="introTypes"></ul>
-                <label class="field-label" for="nameInput">내 이름 <span class="muted">(순위표에 보여요)</span></label>
-                <input class="field" type="text" id="nameInput" maxlength="12" placeholder="이름 또는 별명" autocomplete="nickname" enterkeyhint="go">
+                <p class="hero-sub">우리 방 대화로 만든 퀴즈예요. 몇 점 나올지 도전해보세요!</p>
+                <label class="field-label field-label-lg" for="nameInput">닉네임</label>
+                <input class="field field-lg" type="text" id="nameInput" maxlength="12" placeholder="닉네임을 입력하세요" autocomplete="nickname" enterkeyhint="go">
+                <p class="field-help">순위표에 이 이름으로 보여요</p>
                 <button class="btn btn-primary btn-lg" id="startBtn">
                     <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg>퀴즈 시작
                 </button>
@@ -105,9 +105,9 @@
                 <div class="q-body" id="qBody"></div>
             </article>
             <div class="choices" id="qChoices" role="group" aria-label="보기"></div>
-            <p class="key-hint only-desktop">키보드: <kbd>1</kbd>–<kbd>5</kbd> 선택 · <kbd>Enter</kbd> 다음</p>
-            <div class="nextbar" id="nextBar" hidden>
-                <button class="btn btn-primary btn-lg" id="nextBtn">다음 문제 <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            <p class="key-hint only-desktop">키보드: <kbd>1</kbd>–<kbd>5</kbd> 선택 · <kbd>Enter</kbd> 확인</p>
+            <div class="nextbar" id="nextBar">
+                <button class="btn btn-primary btn-lg" id="nextBtn" disabled>다음 문제 <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></button>
             </div>
         </div>
 
@@ -215,6 +215,6 @@
     </div>
 </template>
 
-<script src="quiz.js?v=9"></script>
+<script src="quiz.js?v=10"></script>
 </body>
 </html>

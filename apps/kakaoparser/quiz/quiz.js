@@ -253,29 +253,6 @@
         document.title = title() + ' 퀴즈 — 카톡 정밀 분석기';
         $('introTitle').textContent = '「' + title() + '」 퀴즈';
 
-        var chips = $('introChips');
-        chips.textContent = '';
-        [['i-list', quiz.questions.length + '문제'], ['i-user', '만든 사람 ' + (quiz.creator || '익명')],
-         ['i-clock', daysLeft() + '일 남음']].forEach(function (c) {
-            var li = el('li', 'chip');
-            li.appendChild(icon(c[0]));
-            li.appendChild(el('span', null, c[1]));
-            chips.appendChild(li);
-        });
-
-        var counts = {};
-        quiz.questions.forEach(function (q) { counts[q.type] = (counts[q.type] || 0) + 1; });
-        var types = $('introTypes');
-        types.textContent = '';
-        Object.keys(TYPES).forEach(function (t) {
-            if (!counts[t]) return;
-            var li = el('li');
-            li.appendChild(el('span', 't-emoji', TYPES[t].emoji));
-            li.appendChild(el('span', null, TYPES[t].label));
-            li.appendChild(el('span', 't-count', counts[t] + '문제'));
-            types.appendChild(li);
-        });
-
         $('nameInput').value = store('sq_name') || '';
         var done = store('sq_done_' + quizId);
         var saved = savedResult();
@@ -404,10 +381,14 @@
             fillChoiceText(text, q, c.l);
             b.appendChild(text);
             b.appendChild(el('span', 'c-mark'));
-            b.addEventListener('click', function () { answer(i); });
+            b.addEventListener('click', function () { select(i); });
             box.appendChild(b);
         });
-        $('nextBar').hidden = true;
+        selected = -1;
+        clearTimeout(advanceTimer);
+        var next = $('nextBtn');
+        next.disabled = true;
+        next.firstChild.textContent = idx + 1 < n ? '다음 문제 ' : '결과 보기 ';
         updateDots();
         show('vQuestion', 'Q' + (idx + 1) + ' / ' + n);
     }
@@ -428,9 +409,23 @@
         }, 1300);
     }
 
+    // A tap only picks a choice; the next button confirms it. Guards against a stray tap counting.
+    var selected = -1, advanceTimer = null;
+    function select(choice) {
+        if (answered) return;
+        selected = choice;
+        var buttons = $('qChoices').children;
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.toggle('selected', i === choice);
+            buttons[i].setAttribute('aria-pressed', i === choice ? 'true' : 'false');
+        }
+        $('nextBtn').disabled = false;
+    }
+
     function answer(choice) {
         if (answered) return;
         answered = true;
+        $('qChoices').querySelectorAll('.selected').forEach(function (b) { b.classList.remove('selected'); });
         var q = quiz.questions[idx];
         var correctSet = q.correct || [];
         var correct = correctSet.indexOf(choice) >= 0;
@@ -459,19 +454,24 @@
         toast(correct, correct ? (correctSet.length > 1 ? '정답이 여러 개였어요: ' + answerLetters : '잘 아시네요 👏') : '정답은 ' + answerLetters);
         $('qScore').textContent = score;
         updateDots();
-        var next = $('nextBtn');
-        next.firstChild.textContent = idx + 1 < quiz.questions.length ? '다음 문제 ' : '결과 보기 ';
-        $('nextBar').hidden = false;
-        if (window.matchMedia('(min-width: 960px)').matches) next.focus({ preventScroll: true });
+        // Show the right answer briefly, then move on by itself (another press skips the wait).
+        advanceTimer = setTimeout(nextQuestion, 1200);
     }
 
     function nextQuestion() {
         if (!answered) return;
+        clearTimeout(advanceTimer);
         idx++;
         if (idx < quiz.questions.length) renderQuestion();
         else finish(true);
     }
-    $('nextBtn').addEventListener('click', nextQuestion);
+
+    // Next: first press confirms the picked choice, a press during the reveal skips ahead.
+    function confirmOrNext() {
+        if (answered) nextQuestion();
+        else if (selected >= 0) answer(selected);
+    }
+    $('nextBtn').addEventListener('click', confirmOrNext);
 
     document.addEventListener('keydown', function (e) {
         if ($('vQuestion').hidden || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -481,11 +481,11 @@
         if (pos < 0) pos = 'abcde'.indexOf(k);
         if (!answered && pos >= 0 && pos < $('qChoices').children.length) {
             e.preventDefault();
-            $('qChoices').children[pos].click();
-        } else if (answered && (k === 'enter' || k === ' ' || k === 'arrowright')) {
-            if (document.activeElement === $('nextBtn') && k !== 'arrowright') return; // the button handles it
+            select(pos);
+        } else if (k === 'enter' || k === 'arrowright') {
+            if (k === 'enter' && document.activeElement && document.activeElement.tagName === 'BUTTON') return; // the button handles it
             e.preventDefault();
-            nextQuestion();
+            confirmOrNext();
         }
     });
 

@@ -201,28 +201,24 @@ kbd {
 }
 .hero-icon svg, .info-icon svg { width: 32px; height: 32px; }
 .hero-title { font-size: 24px; font-weight: 800; margin: 14px 0 6px; word-break: keep-all; letter-spacing: .01em; }
-.hero-sub { color: var(--ink-2); margin: 0 0 16px; word-break: keep-all; }
-.chips { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.chip {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 13px; font-weight: 700;
-    padding: 6px 12px; border-radius: 999px;
-    background: var(--surface-2); border: 1px solid var(--line-2);
+.hero-sub { color: var(--ink-2); margin: 0 0 26px; word-break: keep-all; }
+.quiz-badge {
+    display: inline-block; margin-top: 14px;
+    font-size: 13px; font-weight: 800; letter-spacing: .12em;
+    padding: 5px 14px; border-radius: 999px;
+    background: var(--accent); color: var(--accent-ink);
+    box-shadow: inset 0 -2px 0 var(--accent-dark);
 }
-.chip svg { width: 15px; height: 15px; color: var(--ink-2); }
-.type-list {
-    list-style: none; padding: 0; margin: 0 0 20px;
-    display: grid; grid-template-columns: 1fr; gap: 8px;
+.quiz-badge + .hero-title { margin-top: 10px; }
+.field-label.field-label-lg { text-align: center; font-size: 15px; font-weight: 800; margin-bottom: 8px; }
+.field.field-lg {
+    font-size: 22px; font-weight: 700; text-align: center;
+    padding: 18px 16px; margin-bottom: 8px;
+    border: 2px solid var(--line); border-radius: 14px;
 }
-.type-list li {
-    display: flex; align-items: center; gap: 10px; text-align: left;
-    padding: 10px 12px; border-radius: 12px;
-    border: 1.5px dashed var(--line); background: var(--surface-2);
-    font-size: 13.5px; font-weight: 700;
-}
-.type-list .t-emoji { font-size: 20px; }
-.type-list .t-count { margin-left: auto; color: var(--ink-2); font-weight: 400; font-size: 12.5px; white-space: nowrap; }
-@media (min-width: 560px) { .type-list { grid-template-columns: 1fr 1fr; } }
+.field.field-lg:focus { border-color: var(--accent-dark); outline: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 35%, transparent); }
+.field.field-lg::placeholder { font-weight: 400; font-size: 18px; }
+.field-help { font-size: 12.5px; color: var(--ink-3); margin: 0 0 18px; }
 .field-label { display: block; text-align: left; font-size: 13px; font-weight: 700; margin: 0 0 6px; }
 .field {
     width: 100%; font: inherit; font-size: 16px;
@@ -335,6 +331,15 @@ kbd {
 .choice:hover:not(:disabled):not(.static) { border-color: var(--ink-2); background: var(--surface-2); }
 .choice:active:not(:disabled):not(.static) { transform: scale(.995); }
 .choice:disabled { cursor: default; }
+/* picked but not yet confirmed with the next button */
+.choice.selected, .choice.selected:hover:not(:disabled) {
+    border-color: var(--accent-dark); background: var(--hl);
+    box-shadow: 0 0 0 2px var(--accent-dark);
+}
+.choice.selected .c-letter {
+    background: var(--accent); color: var(--accent-ink); border-radius: 8px;
+}
+.btn:disabled { opacity: .45; cursor: default; filter: none; transform: none; }
 .c-letter { font-size: 20px; font-weight: 800; text-align: center; }
 .c-text { font-size: 15px; word-break: break-word; display: flex; align-items: center; gap: 8px; min-width: 0; }
 .c-text .c-name { font-weight: 700; flex: none; max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
