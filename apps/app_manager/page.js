@@ -1,17 +1,29 @@
 /* App Manager — /apps/app_manager/
-   Dependency-free. Four jobs:
-   1. Language: the EN / 한국어 toggle. <head> already picked the language
+   Dependency-free. Eight small jobs:
+   1. Language: the EN / 한국어 toggles. <head> already picked the language
       before first paint (?lang= → last choice → browser); this keeps the
       URL's ?lang= in step so the address bar is always shareable.
-   2. Downloads: the button for the visitor's OS becomes the primary one.
+   2. Downloads: the button for the visitor's OS becomes the primary one,
+      and the product bar's Download points at that installer.
    3. The drawn window: ARIA tabs, auto-cycling while on screen until the
       visitor touches it, and a fastlane log that streams on Deploy.
-   4. The agent session plays once when it scrolls into view. */
+   4. The agent session plays once when it scrolls into view.
+   5. The product bar slides in once the hero's download buttons have
+      scrolled away, and marks the section being read.
+   6. Cards marked data-spot get a soft light under a fine pointer.
+   7. Bento vignettes (data-live) play once, on arrival.
+   8. The "works with" row becomes a slow belt. */
 (function () {
     'use strict';
 
     var root = document.documentElement;
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var hasIO = 'IntersectionObserver' in window;
+    var each = function (list, fn) { Array.prototype.forEach.call(list, fn); };
+
+    // Styles that hide things for a later reveal are scoped to this class,
+    // so nothing stays hidden if the script never runs.
+    root.classList.add('am-js');
 
     /* ---------- 1. Language ------------------------------------- */
 
@@ -45,7 +57,7 @@
         document.title = TITLES[lang];
         var desc = document.querySelector('meta[name="description"]');
         if (desc) desc.setAttribute('content', DESCRIPTIONS[lang]);
-        Array.prototype.forEach.call(document.querySelectorAll('[data-set-lang]'), function (btn) {
+        each(document.querySelectorAll('[data-set-lang]'), function (btn) {
             btn.setAttribute('aria-pressed', String(btn.getAttribute('data-set-lang') === lang));
         });
         if (opts.remember) {
@@ -73,13 +85,18 @@
     var ua = navigator.userAgent || '';
     var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
     var os = /win/i.test(platform) || /Windows/i.test(ua) ? 'win' : 'mac';
-    Array.prototype.forEach.call(document.querySelectorAll('.am-dl[data-os]'), function (a) {
-        if (a.getAttribute('data-os') === os) {
-            a.classList.add('is-primary');
-            // the primary button comes first in its row
-            if (a.previousElementSibling) a.parentNode.insertBefore(a, a.parentNode.firstElementChild);
-        }
+    var osHref = null;
+    each(document.querySelectorAll('.am-dl[data-os]'), function (a) {
+        var mine = a.getAttribute('data-os') === os;
+        a.classList.toggle('is-primary', mine);
+        if (!mine) return;
+        osHref = osHref || a.getAttribute('href');
+        // the primary button comes first in its row
+        if (a.previousElementSibling) a.parentNode.insertBefore(a, a.parentNode.firstElementChild);
     });
+    if (osHref) {
+        each(document.querySelectorAll('[data-dl-auto]'), function (a) { a.setAttribute('href', osHref); });
+    }
 
     /* ---------- 3. The drawn window ----------------------------- */
 
@@ -149,7 +166,7 @@
         win.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') stopCycle(); });
         win.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && onScreen) startCycle(); });
 
-        if ('IntersectionObserver' in window) {
+        if (hasIO) {
             new IntersectionObserver(function (entries) {
                 onScreen = entries[0].isIntersecting;
                 if (onScreen) startCycle(); else stopCycle();
@@ -210,7 +227,7 @@
     /* ---------- 4. The agent session ---------------------------- */
 
     var chat = document.querySelector('[data-chat]');
-    if (chat && !reduced && 'IntersectionObserver' in window) {
+    if (chat && !reduced && hasIO) {
         var items = Array.prototype.slice.call(chat.querySelectorAll('.am-chat-log li'));
         var state = chat.querySelector('[data-chat-state]');
         chat.classList.add('is-playing');
@@ -247,5 +264,94 @@
             play();
         }, { threshold: 0.4 });
         io.observe(chat);
+    }
+
+    /* ---------- 5. The product bar ------------------------------ */
+
+    var bar = document.querySelector('[data-bar]');
+    var heroDl = document.getElementById('download');
+    if (bar && heroDl && hasIO) {
+        var setBar = function (on) {
+            bar.classList.toggle('is-on', on);
+            if (on) bar.removeAttribute('inert'); else bar.setAttribute('inert', '');
+        };
+
+        // On once the hero's buttons have left through the top of the viewport.
+        new IntersectionObserver(function (entries) {
+            var entry = entries[0];
+            setBar(!entry.isIntersecting && entry.boundingClientRect.bottom < 120);
+        }, { rootMargin: '-110px 0px 0px 0px' }).observe(heroDl);
+
+        var links = {};
+        each(bar.querySelectorAll('.am-bar-links a[href^="#"]'), function (a) {
+            links[a.getAttribute('href').slice(1)] = a;
+        });
+        var seen = {};
+        var mark = function () {
+            var current = null;
+            Object.keys(links).forEach(function (id) { if (seen[id]) current = current || id; });
+            Object.keys(links).forEach(function (id) {
+                if (id === current) links[id].setAttribute('aria-current', 'true');
+                else links[id].removeAttribute('aria-current');
+            });
+        };
+        // A section is "being read" while it crosses the middle of the viewport.
+        var spy = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) { seen[entry.target.id] = entry.isIntersecting; });
+            mark();
+        }, { rootMargin: '-45% 0px -50% 0px' });
+        Object.keys(links).forEach(function (id) {
+            var section = document.getElementById(id);
+            if (section) spy.observe(section);
+        });
+    }
+
+    /* ---------- 6. Pointer light on cards ----------------------- */
+
+    if (window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        var spotFrame = 0;
+        var spotEvent = null;
+        document.addEventListener('pointermove', function (e) {
+            spotEvent = e;
+            if (spotFrame) return;
+            spotFrame = requestAnimationFrame(function () {
+                spotFrame = 0;
+                var card = spotEvent.target.closest && spotEvent.target.closest('[data-spot]');
+                if (!card) return;
+                var r = card.getBoundingClientRect();
+                card.style.setProperty('--mx', (spotEvent.clientX - r.left) + 'px');
+                card.style.setProperty('--my', (spotEvent.clientY - r.top) + 'px');
+            });
+        }, { passive: true });
+    }
+
+    /* ---------- 7. Bento vignettes ------------------------------ */
+
+    var live = document.querySelectorAll('[data-live]');
+    if (hasIO && !reduced) {
+        var liveIO = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-live');
+                liveIO.unobserve(entry.target);
+            });
+        }, { threshold: 0.4 });
+        each(live, function (el) { liveIO.observe(el); });
+    } else {
+        each(live, function (el) { el.classList.add('is-live'); });
+    }
+
+    /* ---------- 8. The "works with" belt ------------------------ */
+
+    var belt = document.querySelector('[data-marquee]');
+    if (belt && !reduced) {
+        var track = belt.querySelector('.am-marquee-track');
+        // A second copy of the row, hidden from assistive tech, makes the loop seamless.
+        each(track.querySelectorAll('li'), function (li) {
+            var copy = li.cloneNode(true);
+            copy.setAttribute('aria-hidden', 'true');
+            track.appendChild(copy);
+        });
+        belt.classList.add('is-on');
     }
 })();

@@ -17,8 +17,8 @@
     <link rel="alternate" hreflang="x-default" href="https://rexyrex.github.io/apps/app_manager/">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="apple-touch-icon" href="/apps/app_manager/img/icon-180.png">
-    <meta name="theme-color" content="#0f110f" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#f2f2ea" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#090a08" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f7f7f1" media="(prefers-color-scheme: light)">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="rexyrex.github.io">
     <meta property="og:url" content="https://rexyrex.github.io/apps/app_manager/">
@@ -37,8 +37,8 @@
     <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- IBM Plex stays: the site chrome is set in it, and Plex Sans KR carries the Korean. Bricolage Grotesque is this page's own display face. -->
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+    <!-- IBM Plex stays: the site chrome is set in it, and Plex Sans KR carries the Korean where the system has no Apple SD Gothic Neo. Inter (with its display optical size) is this page's own face. -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Inter:opsz,wght@14..32,400..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/app-page.css">
@@ -67,16 +67,63 @@
 <body class="app-page app-app_manager">
     <div id="nav-placeholder"></div>
 
+    <!-- Icons used more than once -->
+    <svg class="am-sprite" aria-hidden="true" focusable="false" width="0" height="0">
+        <symbol id="i-apple" viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+        <symbol id="i-win" viewBox="0 0 24 24"><path d="M0 3.449 9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></symbol>
+        <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M3 8h9.2M8.6 4.2 12.4 8l-3.8 3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 2.5v8.2M4.4 7.4 8 11l3.6-3.6M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-check" viewBox="0 0 16 16"><path d="m3.5 8.4 3 3 6-6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    </svg>
+
+    <!-- Product bar: slides in once the hero's download buttons scroll away -->
+    <nav class="am-bar" data-bar aria-label="App Manager" inert>
+        <div class="am-bar-inner">
+            <a class="am-bar-id" href="#top">
+                <img src="/apps/app_manager/img/icon-64.png" width="64" height="64" alt="">
+                <b>App Manager</b>
+            </a>
+            <ul class="am-bar-links">
+                <li><a href="#features"><span lang="en">Features</span><span lang="ko">기능</span></a></li>
+                <li><a href="#agents"><span lang="en">Agents</span><span lang="ko">에이전트</span></a></li>
+                <li><a href="#privacy"><span lang="en">Privacy</span><span lang="ko">개인정보</span></a></li>
+                <li><a href="#platforms"><span lang="en">Platforms</span><span lang="ko">플랫폼</span></a></li>
+                <li><a href="#access"><span lang="en">Get started</span><span lang="ko">시작하기</span></a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <div class="am-lang" role="group" aria-label="Language · 언어">
+                <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+                <button type="button" data-set-lang="ko" aria-pressed="false">한국어</button>
+            </div>
+            <a class="am-bar-dl" href="/downloads/app-manager/AppManager-0.15.0.dmg" download data-dl-auto>
+                <svg aria-hidden="true"><use href="#i-down"/></svg>
+                <span lang="en">Download</span><span lang="ko">다운로드</span>
+            </a>
+        </div>
+    </nav>
+
     <main id="main">
 
         <!-- ============ Hero ============ -->
-        <section class="am-hero" aria-labelledby="am-title">
-            <div class="am-backdrop" aria-hidden="true"><span class="am-glow"></span><span class="am-grid"></span></div>
-            <div class="am-wrap am-hero-inner">
+        <section class="am-hero" id="top" aria-labelledby="am-title">
+            <div class="am-hero-bg" aria-hidden="true">
+                <span class="am-aurora a1"></span>
+                <span class="am-aurora a2"></span>
+                <span class="am-grid"></span>
+                <span class="am-noise"></span>
+            </div>
+
+            <div class="am-wrap">
                 <div class="am-topline">
                     <nav class="am-crumb" aria-label="Breadcrumb">
                         <a href="/apps/">/apps/</a><span aria-current="page">app_manager/</span>
                     </nav>
+                    <a class="am-chip" href="#access">
+                        <b>v0.15.0</b>
+                        <span lang="en">Early access is open</span><span lang="ko">얼리 액세스 진행 중</span>
+                        <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+                    </a>
                     <div class="am-lang" role="group" aria-label="Language · 언어">
                         <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
                         <button type="button" data-set-lang="ko" aria-pressed="false">한국어</button>
@@ -84,45 +131,48 @@
                 </div>
 
                 <div class="am-hero-copy">
-                    <div class="am-id">
+                    <span class="am-hero-icon">
                         <img class="am-icon" src="/apps/app_manager/img/icon.png" width="256" height="256" alt="App Manager icon">
-                        <span class="am-version"><b>v0.15.0</b>
-                            <span lang="en">macOS · Windows</span><span lang="ko">macOS · Windows</span>
-                        </span>
-                    </div>
-                    <h1 id="am-title">App Manager</h1>
-                    <p class="am-lede" lang="en">From Flutter folder to store listing,<br class="am-br"> <em>in one window.</em></p>
-                    <p class="am-lede" lang="ko">Flutter 프로젝트 폴더에서 스토어 출시까지,<br class="am-br"> <em>창 하나로.</em></p>
-                    <p class="am-intro" lang="en">A desktop app for building and publishing Flutter apps to Google Play and the App Store without living in the terminal. Point it at your apps folder and it shows every app with its store status, then walks you through listings, screenshots, questionnaires, signing, releases, reviews and analytics. Claude Code or Codex, built in, takes the fiddly parts.</p>
-                    <p class="am-intro" lang="ko">터미널에 매달리지 않고 Flutter 앱을 만들어 Google Play와 App Store에 출시하는 데스크톱 앱입니다. 앱 폴더를 지정하면 모든 앱의 스토어 상태를 한눈에 보여 주고, 등록정보·스크린샷·설문·서명·출시·리뷰·분석까지 차례로 안내합니다. 번거로운 작업은 내장된 Claude Code나 Codex가 맡습니다.</p>
+                    </span>
+
+                    <h1 id="am-title">
+                        <span class="am-name">App Manager</span>
+                        <span class="am-tagline" lang="en">From Flutter folder<br class="am-br"> to store listing,<br class="am-br"> <em>in one window.</em></span>
+                        <span class="am-tagline" lang="ko">Flutter 프로젝트 폴더에서<br class="am-br"> 스토어 출시까지,<br class="am-br"> <em>창 하나로.</em></span>
+                    </h1>
+
+                    <p class="am-intro" lang="en">Build and publish your Flutter apps to Google Play and the App Store from one desktop app, with Claude Code or Codex built in for the fiddly parts.</p>
+                    <p class="am-intro" lang="ko">Flutter 앱을 만들어 Google Play와 App Store에 출시하는 일을 데스크톱 앱 하나로. 번거로운 작업은 내장된 Claude Code나 Codex가 맡습니다.</p>
 
                     <div class="am-downloads" id="download">
-                        <a class="am-dl am-dl-mac" href="/downloads/app-manager/AppManager-0.15.0.dmg" download data-os="mac">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                        <a class="am-dl am-dl-mac is-primary" href="/downloads/app-manager/AppManager-0.15.0.dmg" download data-os="mac">
+                            <svg aria-hidden="true"><use href="#i-apple"/></svg>
                             <span class="am-dl-text">
                                 <b><span lang="en">Download for macOS</span><span lang="ko">macOS용 다운로드</span></b>
-                                <small>.dmg · 29 MB · <span lang="en">macOS 26+ · Apple silicon</span><span lang="ko">macOS 26 이상 · Apple 실리콘</span></small>
+                                <small>.dmg · 29 MB · <span lang="en">Apple silicon</span><span lang="ko">Apple 실리콘</span></small>
                             </span>
                         </a>
                         <a class="am-dl am-dl-win" href="/downloads/app-manager/AppManagerSetup-0.15.0.exe" download data-os="win">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M0 3.449 9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+                            <svg aria-hidden="true"><use href="#i-win"/></svg>
                             <span class="am-dl-text">
                                 <b><span lang="en">Download for Windows</span><span lang="ko">Windows용 다운로드</span></b>
-                                <small>.exe · 56 MB · <span lang="en">Windows 10 (1809)+ · Google Play</span><span lang="ko">Windows 10(1809) 이상 · Google Play</span></small>
+                                <small>.exe · 56 MB · <span lang="en">Google Play side</span><span lang="ko">Google Play 기능</span></small>
                             </span>
                         </a>
                     </div>
-                    <p class="am-fine" lang="en">Version 0.15.0. The Mac build is signed and notarized by Apple. An account is needed; see <a href="#access">early access</a>.</p>
-                    <p class="am-fine" lang="ko">버전 0.15.0. Mac 버전은 Apple의 서명과 공증을 받았습니다. 계정이 필요합니다. <a href="#access">얼리 액세스</a>를 참고하세요.</p>
+
+                    <ul class="am-assure">
+                        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">Signed and notarized by Apple</span><span lang="ko">Apple 서명·공증 완료</span></li>
+                        <li><span lang="en">macOS 26 or later</span><span lang="ko">macOS 26 이상</span></li>
+                        <li><span lang="en">Windows 10 (1809) or later</span><span lang="ko">Windows 10(1809) 이상</span></li>
+                    </ul>
+                    <p class="am-fine" lang="en">Version 0.15.0. An account is needed; see <a href="#access">early access</a>.</p>
+                    <p class="am-fine" lang="ko">버전 0.15.0. 계정이 필요합니다. <a href="#access">얼리 액세스</a>를 참고하세요.</p>
                 </div>
             </div>
 
             <!-- ============ The window (interactive tour) ============ -->
             <div class="am-wrap am-stage" id="tour">
-                <div class="am-tabs-hint">
-                    <span lang="en">Click a tab: a drawing of the real screens, with made-up apps.</span>
-                    <span lang="ko">탭을 눌러 보세요. 실제 화면을 옮겨 그린 그림이며, 앱은 예시입니다.</span>
-                </div>
                 <div class="am-window" data-demo>
                     <div class="am-win-bar" aria-hidden="true">
                         <span class="am-lights"><i></i><i></i><i></i></span>
@@ -258,205 +308,488 @@
                     </div>
                     <div class="am-win-status" aria-hidden="true"><span lang="en">3 apps</span><span lang="ko">앱 3개</span><span class="mono">API · Play 412/200,000 · ASC 38/3,600</span></div>
                 </div>
+                <p class="am-tabs-hint">
+                    <span lang="en">Click a tab. It's a drawing of the real screens, with made-up apps.</span>
+                    <span lang="ko">탭을 눌러 보세요. 실제 화면을 옮겨 그린 그림이며, 앱은 예시입니다.</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- ============ Works with ============ -->
+        <section class="am-works" aria-labelledby="h-works">
+            <h2 class="am-works-k" id="h-works"><span lang="en">Works with the toolchain you already have</span><span lang="ko">이미 쓰고 있는 도구와 함께</span></h2>
+            <div class="am-marquee" data-marquee>
+                <ul class="am-marquee-track">
+                    <li>Flutter</li>
+                    <li>Android Studio</li>
+                    <li>Xcode</li>
+                    <li>fastlane</li>
+                    <li>Google Play Console</li>
+                    <li>App Store Connect</li>
+                    <li>TestFlight</li>
+                    <li>Firebase</li>
+                    <li>Google Analytics</li>
+                    <li>AdMob</li>
+                    <li>Claude Code</li>
+                    <li>Codex</li>
+                    <li>GitHub Pages</li>
+                </ul>
             </div>
         </section>
 
         <!-- ============ The release, in order ============ -->
-        <section class="am-section" aria-labelledby="h-flow">
+        <section class="am-section" id="features" aria-labelledby="h-flow">
             <div class="am-wrap">
-                <header class="am-head" data-reveal>
-                    <span class="am-eyebrow">01 — <span lang="en">the whole release</span><span lang="ko">출시 전 과정</span></span>
+                <header class="am-head center" data-reveal>
+                    <span class="am-eyebrow"><span lang="en">The whole release</span><span lang="ko">출시 전 과정</span></span>
                     <h2 id="h-flow"><span lang="en">Every step between <code>flutter create</code> and five stars.</span><span lang="ko"><code>flutter create</code>부터 첫 리뷰까지, 모든 단계.</span></h2>
+                    <p lang="en">Point it at your apps folder and it shows every app with its store status, then walks you through the rest, in order.</p>
+                    <p lang="ko">앱 폴더를 지정하면 모든 앱의 스토어 상태를 한눈에 보여 주고, 나머지 단계를 차례로 안내합니다.</p>
                 </header>
-                <ol class="am-flow" data-reveal-group>
-                    <li>
-                        <span class="n">01</span>
-                        <h3><span lang="en">Point at a folder</span><span lang="ko">폴더 지정</span></h3>
-                        <p lang="en">Every Flutter app in it — and native Android projects — shows up with its live Google Play and App Store status.</p>
-                        <p lang="ko">폴더 안의 모든 Flutter 앱과 네이티브 Android 프로젝트가 Google Play·App Store의 현재 상태와 함께 나타납니다.</p>
+
+                <ol class="am-bento" data-reveal-group>
+                    <!-- 01 -->
+                    <li class="am-tile t-wide" data-spot data-live>
+                        <div class="am-tile-copy">
+                            <span class="n">01</span>
+                            <h3><span lang="en">Point at a folder</span><span lang="ko">폴더 지정</span></h3>
+                            <p lang="en">Every Flutter app in it — and native Android projects — shows up with its live Google Play and App Store status.</p>
+                            <p lang="ko">폴더 안의 모든 Flutter 앱과 네이티브 Android 프로젝트가 Google Play·App Store의 현재 상태와 함께 나타납니다.</p>
+                        </div>
+                        <div class="am-tile-art" aria-hidden="true">
+                            <div class="v-panel v-portfolio">
+                                <div class="v-path"><i class="v-folder"></i><code>~/dev/flutter_apps</code><em><span lang="en">3 apps</span><span lang="ko">앱 3개</span></em></div>
+                                <ul class="v-apps">
+                                    <li><i style="--c:#d7df8a">T</i><b>tempo_tap</b><span class="v-chip play"><span lang="en">Production</span><span lang="ko">프로덕션</span></span><span class="v-chip apple"><span lang="en">Ready for Sale</span><span lang="ko">판매 준비 완료</span></span><code>1.2.0</code></li>
+                                    <li><i style="--c:#8ab8ff">P</i><b>pocket_quiz</b><span class="v-chip beta"><span lang="en">Open testing</span><span lang="ko">공개 테스트</span></span><span class="v-chip tf">TestFlight</span><code>0.9.2</code></li>
+                                    <li><i style="--c:#ff9d7a">M</i><b>my_first_app</b><span class="v-chip none"><span lang="en">Not published</span><span lang="ko">미출시</span></span><span class="v-chip none"><span lang="en">Not published</span><span lang="ko">미출시</span></span><code>0.1.0</code></li>
+                                </ul>
+                            </div>
+                        </div>
                     </li>
-                    <li>
-                        <span class="n">02</span>
-                        <h3><span lang="en">Listing & screenshots</span><span lang="ko">등록정보와 스크린샷</span></h3>
-                        <p lang="en">Titles, descriptions and release notes per locale with live character counts. Screenshots and feature graphics rendered, ordered and uploaded.</p>
-                        <p lang="ko">언어별 제목·설명·출시 노트를 글자 수를 보며 관리합니다. 스크린샷과 그래픽 이미지를 만들고, 순서를 맞춰 업로드합니다.</p>
+
+                    <!-- 02 -->
+                    <li class="am-tile t-narrow" data-spot data-live>
+                        <div class="am-tile-copy">
+                            <span class="n">02</span>
+                            <h3><span lang="en">Listing & screenshots</span><span lang="ko">등록정보와 스크린샷</span></h3>
+                            <p lang="en">Titles, descriptions and release notes per locale with live character counts. Screenshots and feature graphics rendered, ordered and uploaded.</p>
+                            <p lang="ko">언어별 제목·설명·출시 노트를 글자 수를 보며 관리합니다. 스크린샷과 그래픽 이미지를 만들고, 순서를 맞춰 업로드합니다.</p>
+                        </div>
+                        <div class="am-tile-art" aria-hidden="true">
+                            <div class="v-panel v-listing">
+                                <div class="v-locales"><i class="on">en-US</i><i>ko-KR</i><i>ja-JP</i><i>de-DE</i><i>+</i></div>
+                                <div class="v-field">
+                                    <label><span lang="en">Title</span><span lang="ko">제목</span><em>20/30</em></label>
+                                    <div class="v-input">Tempo Tap: Metronome<u class="v-caret"></u></div>
+                                    <span class="v-meter"><i style="--p:67%"></i></span>
+                                </div>
+                                <div class="v-shots">
+                                    <span class="shot s1"><b>Tap the tempo</b><i class="ring"></i></span>
+                                    <span class="shot s2"><b>See the beat</b><i class="bars"><u></u><u></u><u></u><u></u></i></span>
+                                    <span class="shot s3"><b>Any meter</b><i class="grid4"><u></u><u></u><u></u><u></u><u></u><u></u></i></span>
+                                    <span class="shot s4"><b>Practice mode</b><i class="ring"></i></span>
+                                </div>
+                            </div>
+                        </div>
                     </li>
-                    <li>
-                        <span class="n">03</span>
-                        <h3><span lang="en">Questionnaires & policy</span><span lang="ko">설문과 개인정보처리방침</span></h3>
-                        <p lang="en">Content rating, Data safety, App privacy and export compliance answered once and submitted. A privacy policy generated from what the app really uses, published to GitHub Pages.</p>
-                        <p lang="ko">콘텐츠 등급·데이터 보안·앱 개인정보·수출 규정을 한 번 답하고 제출합니다. 앱이 실제로 쓰는 기능으로 개인정보처리방침을 만들어 GitHub Pages에 게시합니다.</p>
+
+                    <!-- 03 -->
+                    <li class="am-tile t-third" data-spot data-live>
+                        <div class="am-tile-copy">
+                            <span class="n">03</span>
+                            <h3><span lang="en">Questionnaires & policy</span><span lang="ko">설문과 개인정보처리방침</span></h3>
+                            <p lang="en">Content rating, Data safety, App privacy and export compliance answered once and submitted. A privacy policy generated from what the app really uses, published to GitHub Pages.</p>
+                            <p lang="ko">콘텐츠 등급·데이터 보안·앱 개인정보·수출 규정을 한 번 답하고 제출합니다. 앱이 실제로 쓰는 기능으로 개인정보처리방침을 만들어 GitHub Pages에 게시합니다.</p>
+                        </div>
+                        <div class="am-tile-art" aria-hidden="true">
+                            <div class="v-panel v-checks">
+                                <ul>
+                                    <li><i class="dot play"></i><span><span lang="en">Content rating</span><span lang="ko">콘텐츠 등급</span></span><em class="v-tick"></em></li>
+                                    <li><i class="dot play"></i><span><span lang="en">Data safety</span><span lang="ko">데이터 보안</span></span><em class="v-tick"></em></li>
+                                    <li><i class="dot apple"></i><span><span lang="en">App privacy</span><span lang="ko">앱 개인정보 보호</span></span><em class="v-tick"></em></li>
+                                    <li><i class="dot apple"></i><span><span lang="en">Export compliance</span><span lang="ko">수출 규정 준수</span></span><em class="v-tick"></em></li>
+                                </ul>
+                                <div class="v-policy"><code>/privacy-policy/</code><em class="am-pill ok"><span lang="en">Published</span><span lang="ko">게시됨</span></em></div>
+                            </div>
+                        </div>
                     </li>
-                    <li>
-                        <span class="n">04</span>
-                        <h3><span lang="en">Signing</span><span lang="ko">서명</span></h3>
-                        <p lang="en">Upload keystores, App Store Connect API keys, bundle IDs and fastlane wired into the project — no Gradle or Xcode spelunking.</p>
-                        <p lang="ko">업로드 키스토어, App Store Connect API 키, 번들 ID, fastlane을 프로젝트에 연결합니다. Gradle이나 Xcode 설정을 뒤질 필요가 없습니다.</p>
+
+                    <!-- 04 -->
+                    <li class="am-tile t-third" data-spot data-live>
+                        <div class="am-tile-copy">
+                            <span class="n">04</span>
+                            <h3><span lang="en">Signing</span><span lang="ko">서명</span></h3>
+                            <p lang="en">Upload keystores, App Store Connect API keys, bundle IDs and fastlane wired into the project — no Gradle or Xcode spelunking.</p>
+                            <p lang="ko">업로드 키스토어, App Store Connect API 키, 번들 ID, fastlane을 프로젝트에 연결합니다. Gradle이나 Xcode 설정을 뒤질 필요가 없습니다.</p>
+                        </div>
+                        <div class="am-tile-art" aria-hidden="true">
+                            <div class="v-panel v-signing">
+                                <ul class="v-keys">
+                                    <li><i class="v-key"></i><span><b><span lang="en">Upload keystore</span><span lang="ko">업로드 키스토어</span></b><code>upload-keystore.jks</code></span><em class="v-tick"></em></li>
+                                    <li><i class="v-key"></i><span><b><span lang="en">App Store Connect API key</span><span lang="ko">App Store Connect API 키</span></b><code>AuthKey_••••••.p8</code></span><em class="v-tick"></em></li>
+                                    <li><i class="v-key id"></i><span><b><span lang="en">Bundle ID</span><span lang="ko">번들 ID</span></b><code>com.example.tempo_tap</code></span><em class="v-tick"></em></li>
+                                </ul>
+                                <div class="v-wired"><i></i><span class="am-pill ok"><span lang="en">fastlane wired</span><span lang="ko">fastlane 연결됨</span></span></div>
+                            </div>
+                        </div>
                     </li>
-                    <li>
-                        <span class="n">05</span>
-                        <h3><span lang="en">Deploy</span><span lang="ko">배포</span></h3>
-                        <p lang="en">Internal, beta, TestFlight or production. A preflight check runs before anything uploads, and the fastlane log streams live.</p>
-                        <p lang="ko">내부 테스트, 베타, TestFlight, 프로덕션. 업로드 전에 사전 점검을 하고, fastlane 로그를 실시간으로 보여 줍니다.</p>
+
+                    <!-- 05 -->
+                    <li class="am-tile t-third" data-spot data-live>
+                        <div class="am-tile-copy">
+                            <span class="n">05</span>
+                            <h3><span lang="en">Deploy</span><span lang="ko">배포</span></h3>
+                            <p lang="en">Internal, beta, TestFlight or production. A preflight check runs before anything uploads, and the fastlane log streams live.</p>
+                            <p lang="ko">내부 테스트, 베타, TestFlight, 프로덕션. 업로드 전에 사전 점검을 하고, fastlane 로그를 실시간으로 보여 줍니다.</p>
+                        </div>
+                        <div class="am-tile-art" aria-hidden="true">
+                            <div class="v-panel v-deploy">
+                                <ol class="v-track">
+                                    <li class="done"><i></i><span lang="en">Internal</span><span lang="ko">내부</span></li>
+                                    <li class="on"><i></i><span lang="en">Beta</span><span lang="ko">베타</span></li>
+                                    <li><i></i><span lang="en">Production</span><span lang="ko">프로덕션</span></li>
+                                </ol>
+                                <div class="v-log">
+                                    <span class="ok">✓ Preflight: 1.2.1+15 &gt; live 1.2.0+14</span>
+                                    <span>✓ Built app-release.aab (18.4MB)</span>
+                                    <span class="dim">↑ Uploading AAB… 100%</span>
+                                    <span class="hi">✓ 1.2.1 (15) is live on beta</span>
+                                </div>
+                            </div>
+                        </div>
                     </li>
-                    <li>
-                        <span class="n">06</span>
-                        <h3><span lang="en">After launch</span><span lang="ko">출시 이후</span></h3>
-                        <p lang="en">One inbox for reviews from both stores, with replies. Installs, retention, crashes and AdMob revenue on the app's overview.</p>
-                        <p lang="ko">두 스토어의 리뷰를 한곳에서 읽고 답글을 답니다. 설치 수·리텐션·크래시·AdMob 수익을 앱 개요에서 확인합니다.</p>
+
+                    <!-- 06 -->
+                    <li class="am-tile t-full" data-spot data-live>
+                        <div class="am-tile-copy">
+                            <span class="n">06</span>
+                            <h3><span lang="en">After launch</span><span lang="ko">출시 이후</span></h3>
+                            <p lang="en">One inbox for reviews from both stores, with replies. Installs, retention, crashes and AdMob revenue on the app's overview.</p>
+                            <p lang="ko">두 스토어의 리뷰를 한곳에서 읽고 답글을 답니다. 설치 수·리텐션·크래시·AdMob 수익을 앱 개요에서 확인합니다.</p>
+                        </div>
+                        <div class="am-tile-art v-after" aria-hidden="true">
+                            <div class="v-panel v-reviews">
+                                <div class="v-review">
+                                    <div class="v-review-top"><span class="v-stars">★★★★★</span><span class="v-src"><i class="dot play"></i>Google Play · en-US</span></div>
+                                    <p>Finally a metronome I can read from across the room.</p>
+                                    <div class="v-reply"><span lang="en">Thank you! Practice mode gets a fix in 1.2.1.</span><span lang="ko">감사합니다! 연습 모드는 1.2.1에서 고쳐집니다.</span></div>
+                                </div>
+                                <div class="v-review">
+                                    <div class="v-review-top"><span class="v-stars">★★★★<s>★</s></span><span class="v-src"><i class="dot apple"></i>App Store · ko-KR</span></div>
+                                    <p>박자가 눈에 잘 보여서 좋아요. 위젯도 있으면 좋겠어요.</p>
+                                </div>
+                            </div>
+                            <div class="v-panel v-metrics">
+                                <div class="v-kpis">
+                                    <span><small><span lang="en">Installs</span><span lang="ko">설치</span></small><b>12.4k</b></span>
+                                    <span><small><span lang="en">Day-7 retention</span><span lang="ko">7일 리텐션</span></small><b>38%</b></span>
+                                    <span><small><span lang="en">Crash-free</span><span lang="ko">크래시 없음</span></small><b>99.6%</b></span>
+                                    <span><small>AdMob</small><b>$214</b></span>
+                                </div>
+                                <svg class="v-spark" viewBox="0 0 320 96" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="am-spark-fill" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="currentColor" stop-opacity="0.32"/>
+                                            <stop offset="1" stop-color="currentColor" stop-opacity="0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path class="v-spark-area" d="M0 78 C22 74 34 66 54 68 S88 52 108 54 S140 60 160 44 S196 38 214 30 S250 34 268 20 S300 16 320 8 V96 H0 Z" fill="url(#am-spark-fill)"/>
+                                    <path class="v-spark-line" pathLength="1" d="M0 78 C22 74 34 66 54 68 S88 52 108 54 S140 60 160 44 S196 38 214 30 S250 34 268 20 S300 16 320 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+                                </svg>
+                            </div>
+                        </div>
                     </li>
                 </ol>
+                <p class="am-bento-note"><span lang="en">The apps and numbers in these drawings are made up.</span><span lang="ko">그림 속 앱과 숫자는 예시입니다.</span></p>
             </div>
         </section>
 
         <!-- ============ Agents ============ -->
-        <section class="am-section am-agents" aria-labelledby="h-agent">
+        <section class="am-section am-agents" id="agents" aria-labelledby="h-agent">
+            <div class="am-agents-bg" aria-hidden="true"></div>
             <div class="am-wrap am-split">
                 <div class="am-split-copy">
                     <header class="am-head" data-reveal>
-                        <span class="am-eyebrow">02 — <span lang="en">built-in agents</span><span lang="ko">내장 에이전트</span></span>
+                        <span class="am-eyebrow"><span lang="en">Built-in agents</span><span lang="ko">내장 에이전트</span></span>
                         <h2 id="h-agent"><span lang="en">An agent that knows every button.</span><span lang="ko">모든 버튼을 아는 에이전트.</span></h2>
                     </header>
                     <p lang="en" data-reveal>Every action in App Manager is also a tool. Open a Claude Code or Codex session for any app with one click, and it can do whatever you can: write store copy in every language, render screenshots, wire signing, read a crash report and fix it. Each setup screen has an <b>Ask Your Agent</b> button that hands the step over with exact instructions.</p>
                     <p lang="ko" data-reveal>App Manager의 모든 기능은 에이전트가 쓰는 도구이기도 합니다. 앱마다 클릭 한 번으로 Claude Code나 Codex 세션을 열면, 여러 언어의 스토어 문구 작성, 스크린샷 제작, 서명 연결, 크래시 분석과 수정까지 사람이 할 수 있는 일은 에이전트도 할 수 있습니다. 설정 화면마다 있는 <b>에이전트에게 묻기</b> 버튼은 그 단계를 정확한 안내와 함께 넘겨 줍니다.</p>
                     <ul class="am-ticks" data-reveal-group>
-                        <li><b lang="en">Its own device, every session.</b><b lang="ko">세션마다 전용 기기.</b>
+                        <li>
+                            <i class="am-tick-ic ic-device" aria-hidden="true"></i>
+                            <div><b lang="en">Its own device, every session.</b><b lang="ko">세션마다 전용 기기.</b>
                             <span lang="en">A device pool hands each session an emulator of its own (and an iOS simulator on the Mac), so two agents never fight over one.</span>
-                            <span lang="ko">디바이스 풀이 세션마다 전용 에뮬레이터(Mac에서는 iOS 시뮬레이터도)를 배정해, 두 에이전트가 한 기기를 두고 다투지 않습니다.</span></li>
-                        <li><b lang="en">Guardrails on.</b><b lang="ko">안전장치 기본 탑재.</b>
+                            <span lang="ko">디바이스 풀이 세션마다 전용 에뮬레이터(Mac에서는 iOS 시뮬레이터도)를 배정해, 두 에이전트가 한 기기를 두고 다투지 않습니다.</span></div>
+                        </li>
+                        <li>
+                            <i class="am-tick-ic ic-guard" aria-hidden="true"></i>
+                            <div><b lang="en">Guardrails on.</b><b lang="ko">안전장치 기본 탑재.</b>
                             <span lang="en">Anything destructive shows a preview and waits for a confirm; dry runs are the default.</span>
-                            <span lang="ko">되돌릴 수 없는 작업은 미리 보기를 보여 주고 확인을 기다립니다. 기본은 시험 실행입니다.</span></li>
-                        <li><b lang="en">Bring your own client.</b><b lang="ko">원하는 클라이언트로.</b>
+                            <span lang="ko">되돌릴 수 없는 작업은 미리 보기를 보여 주고 확인을 기다립니다. 기본은 시험 실행입니다.</span></div>
+                        </li>
+                        <li>
+                            <i class="am-tick-ic ic-plug" aria-hidden="true"></i>
+                            <div><b lang="en">Bring your own client.</b><b lang="ko">원하는 클라이언트로.</b>
                             <span lang="en">The same tools are an MCP server and a CLI (<code>am</code>), for Claude Desktop or a terminal.</span>
-                            <span lang="ko">같은 도구를 MCP 서버와 CLI(<code>am</code>)로도 제공해 Claude Desktop이나 터미널에서 쓸 수 있습니다.</span></li>
+                            <span lang="ko">같은 도구를 MCP 서버와 CLI(<code>am</code>)로도 제공해 Claude Desktop이나 터미널에서 쓸 수 있습니다.</span></div>
+                        </li>
                     </ul>
                 </div>
 
-                <figure class="am-chat" data-chat aria-label="Example agent session">
-                    <div class="am-chat-bar"><i class="tool-claude">Claude</i><b>tempo_tap</b><span class="am-pill ok" data-chat-state><span lang="en">working</span><span lang="ko">작업 중</span></span></div>
-                    <ol class="am-chat-log">
-                        <li class="you"><span lang="en">Write the Korean and Japanese listings for 1.2.1 and render new screenshots in both.</span><span lang="ko">1.2.1 버전 한국어·일본어 등록정보를 쓰고, 두 언어로 스크린샷도 새로 만들어 줘.</span></li>
-                        <li class="tool"><code>metadata_get</code><span class="mono">en-US · 3 fields</span></li>
-                        <li class="tool"><code>metadata_set</code><span class="mono">ko-KR · title 15/30 · short 58/80</span></li>
-                        <li class="tool"><code>metadata_set</code><span class="mono">ja-JP · title 14/30 · short 44/80</span></li>
-                        <li class="tool"><code>device_acquire</code><span class="mono">emulator-5556 · Pixel 9</span></li>
-                        <li class="tool"><code>assets_render</code><span class="mono">ko-KR, ja-JP · 10 shots</span></li>
-                        <li class="tool"><code>assets_order_verify</code><span class="mono">ok</span></li>
-                        <li class="bot"><span lang="en">Done — both listings fit every limit, and 10 screenshots are ready in Assets. Push them to the stores?</span><span lang="ko">완료했어요. 두 언어 모두 글자 수 제한을 지켰고, 스크린샷 10장이 에셋에 준비됐어요. 스토어에 반영할까요?</span></li>
-                    </ol>
-                </figure>
+                <div class="am-agent-stage" data-reveal>
+                    <figure class="am-chat" data-chat aria-label="Example agent session">
+                        <div class="am-chat-bar"><i class="tool-claude">Claude</i><b>tempo_tap</b><span class="am-pill ok" data-chat-state><span lang="en">working</span><span lang="ko">작업 중</span></span></div>
+                        <ol class="am-chat-log">
+                            <li class="you"><span lang="en">Write the Korean and Japanese listings for 1.2.1 and render new screenshots in both.</span><span lang="ko">1.2.1 버전 한국어·일본어 등록정보를 쓰고, 두 언어로 스크린샷도 새로 만들어 줘.</span></li>
+                            <li class="tool"><code>metadata_get</code><span class="mono">en-US · 3 fields</span></li>
+                            <li class="tool"><code>metadata_set</code><span class="mono">ko-KR · title 15/30 · short 58/80</span></li>
+                            <li class="tool"><code>metadata_set</code><span class="mono">ja-JP · title 14/30 · short 44/80</span></li>
+                            <li class="tool"><code>device_acquire</code><span class="mono">emulator-5556 · Pixel 9</span></li>
+                            <li class="tool"><code>assets_render</code><span class="mono">ko-KR, ja-JP · 10 shots</span></li>
+                            <li class="tool"><code>assets_order_verify</code><span class="mono">ok</span></li>
+                            <li class="bot"><span lang="en">Done — both listings fit every limit, and 10 screenshots are ready in Assets. Push them to the stores?</span><span lang="ko">완료했어요. 두 언어 모두 글자 수 제한을 지켰고, 스크린샷 10장이 에셋에 준비됐어요. 스토어에 반영할까요?</span></li>
+                        </ol>
+                    </figure>
+                    <figure class="am-term" aria-label="The am command line">
+                        <div class="am-term-bar" aria-hidden="true"><span class="am-lights"><i></i><i></i><i></i></span><b>am — zsh</b></div>
+                        <pre><code><span class="c"><span lang="en"># the same tools, from a terminal</span><span lang="ko"># 같은 도구를 터미널에서</span></span>
+<span class="p">$</span> am portfolio list
+<span class="p">$</span> am deploy preflight tempo_tap
+<span class="c"><span lang="en"># or as an MCP server for your own agent</span><span lang="ko"># 또는 내 에이전트용 MCP 서버로</span></span>
+<span class="p">$</span> am mcp</code></pre>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Privacy ============ -->
+        <section class="am-section am-privacy" id="privacy" aria-labelledby="h-privacy">
+            <div class="am-wrap">
+                <div class="am-privacy-card" data-spot data-reveal>
+                    <div class="am-shield" aria-hidden="true">
+                        <svg viewBox="0 0 48 48"><path d="M24 5 9 10.5v11.2c0 9.5 6.2 17.6 15 21.3 8.8-3.7 15-11.8 15-21.3V10.5L24 5Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="m17.5 24.2 4.6 4.6 8.6-9.4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="am-eyebrow"><span lang="en">Your data</span><span lang="ko">데이터</span></span>
+                    <h2 id="h-privacy"><span lang="en">Stays on your computer.</span><span lang="ko">내 컴퓨터에 그대로.</span></h2>
+                    <p class="am-privacy-lead" lang="en">App Manager talks only to the services you connect:</p>
+                    <p class="am-privacy-lead" lang="ko">App Manager는 직접 연결한 서비스와만 통신합니다.</p>
+                    <ul class="am-services" aria-label="Services it can talk to">
+                        <li>Google Play</li><li>App Store Connect</li><li>Firebase</li><li>Google Analytics</li><li>AdMob</li><li>GitHub Pages</li>
+                    </ul>
+                    <ul class="am-facts">
+                        <li>
+                            <b><span lang="en">No telemetry</span><span lang="ko">사용 데이터 수집 없음</span></b>
+                            <span lang="en">There is none. App Manager talks only to the services you connect.</span>
+                            <span lang="ko">전혀 없습니다. 직접 연결한 서비스와만 통신합니다.</span>
+                        </li>
+                        <li>
+                            <b><span lang="en">Your keys stay put</span><span lang="ko">키 파일은 제자리에</span></b>
+                            <span lang="en">Key files stay where you keep them. App Manager only remembers where.</span>
+                            <span lang="ko">키 파일은 원래 위치에 두고, 그 위치만 기억합니다.</span>
+                        </li>
+                        <li>
+                            <b><span lang="en">Offline for 7 days</span><span lang="ko">오프라인 7일</span></b>
+                            <span lang="en">Once signed in, it keeps working offline for at least 7 days.</span>
+                            <span lang="ko">한 번 로그인하면 오프라인에서도 최소 7일 동안 그대로 쓸 수 있습니다.</span>
+                        </li>
+                    </ul>
+                    <p class="am-fine" lang="en">The sign-in check sends your email, the computer's name and the app and OS versions every few minutes.</p>
+                    <p class="am-fine" lang="ko">로그인 확인 때는 이메일, 컴퓨터 이름, 앱·OS 버전을 몇 분마다 보냅니다.</p>
+                </div>
             </div>
         </section>
 
         <!-- ============ Platforms ============ -->
-        <section class="am-section" aria-labelledby="h-plat">
+        <section class="am-section" id="platforms" aria-labelledby="h-plat">
             <div class="am-wrap">
-                <header class="am-head" data-reveal>
-                    <span class="am-eyebrow">03 — <span lang="en">two front ends, one core</span><span lang="ko">두 개의 화면, 하나의 엔진</span></span>
+                <header class="am-head center" data-reveal>
+                    <span class="am-eyebrow"><span lang="en">Two front ends, one core</span><span lang="ko">두 개의 화면, 하나의 엔진</span></span>
                     <h2 id="h-plat"><span lang="en">On a Mac or a PC.</span><span lang="ko">Mac에서도, PC에서도.</span></h2>
                 </header>
                 <div class="am-plats" data-reveal-group>
-                    <article class="am-plat">
+                    <article class="am-plat is-mac" data-spot>
                         <div class="am-plat-top">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                            <span class="am-plat-os"><svg aria-hidden="true"><use href="#i-apple"/></svg></span>
                             <h3>macOS</h3>
                             <span class="am-pill ok"><span lang="en">Everything</span><span lang="ko">전체 기능</span></span>
                         </div>
-                        <p lang="en">Google Play <em>and</em> the App Store: iOS signing, TestFlight, App Store Connect questionnaires, iOS simulators in the device pool.</p>
-                        <p lang="ko">Google Play<em>와</em> App Store 모두: iOS 서명, TestFlight, App Store Connect 설문, 디바이스 풀의 iOS 시뮬레이터까지.</p>
+                        <p lang="en">Google Play <em>and</em> the App Store, with everything iOS needs.</p>
+                        <p lang="ko">Google Play<em>와</em> App Store 모두, iOS에 필요한 것까지 전부.</p>
+                        <ul class="am-plat-list">
+                            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">The whole Google Play side</span><span lang="ko">Google Play 쪽 전부</span></li>
+                            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">iOS signing and TestFlight</span><span lang="ko">iOS 서명과 TestFlight</span></li>
+                            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">App Store Connect questionnaires</span><span lang="ko">App Store Connect 설문</span></li>
+                            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">iOS simulators in the device pool</span><span lang="ko">디바이스 풀의 iOS 시뮬레이터</span></li>
+                        </ul>
                         <dl>
                             <dt lang="en">Needs</dt><dt lang="ko">요구 사항</dt>
                             <dd lang="en">macOS 26 or later, Apple silicon</dd><dd lang="ko">macOS 26 이상, Apple 실리콘</dd>
                             <dt lang="en">Install</dt><dt lang="ko">설치</dt>
                             <dd lang="en">Open the .dmg, drag App Manager to Applications.</dd><dd lang="ko">.dmg를 열고 App Manager를 응용 프로그램 폴더로 드래그.</dd>
                         </dl>
-                        <a class="am-dl am-dl-mac small" href="/downloads/app-manager/AppManager-0.15.0.dmg" download><span lang="en">Download .dmg</span><span lang="ko">.dmg 다운로드</span><small>29 MB</small></a>
+                        <a class="am-dl small is-primary" href="/downloads/app-manager/AppManager-0.15.0.dmg" download><svg aria-hidden="true"><use href="#i-down"/></svg><span lang="en">Download .dmg</span><span lang="ko">.dmg 다운로드</span><small>29 MB</small></a>
                     </article>
-                    <article class="am-plat">
+                    <article class="am-plat is-win" data-spot>
                         <div class="am-plat-top">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M0 3.449 9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+                            <span class="am-plat-os"><svg aria-hidden="true"><use href="#i-win"/></svg></span>
                             <h3>Windows</h3>
                             <span class="am-pill"><span lang="en">Google Play side</span><span lang="ko">Google Play 기능</span></span>
                         </div>
-                        <p lang="en">The same core, the whole Android side: listings, screenshots, Play questionnaires, signing, deploys, reviews, analytics, agent sessions and emulators. Building for iOS needs a Mac.</p>
-                        <p lang="ko">같은 엔진으로 Android 쪽 전부를: 등록정보, 스크린샷, Play 설문, 서명, 배포, 리뷰, 분석, 에이전트 세션, 에뮬레이터. iOS 빌드에는 Mac이 필요합니다.</p>
+                        <p lang="en">The same core, <em>the whole Android side</em>.</p>
+                        <p lang="ko">같은 엔진으로 <em>Android 쪽 전부</em>를.</p>
+                        <ul class="am-plat-list">
+                            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">Listings, screenshots and Play questionnaires</span><span lang="ko">등록정보, 스크린샷, Play 설문</span></li>
+                            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">Signing, deploys, reviews and analytics</span><span lang="ko">서명, 배포, 리뷰, 분석</span></li>
+                            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">Agent sessions and emulators</span><span lang="ko">에이전트 세션과 에뮬레이터</span></li>
+                            <li class="no"><svg aria-hidden="true"><use href="#i-minus"/></svg><span lang="en">Building for iOS needs a Mac</span><span lang="ko">iOS 빌드에는 Mac이 필요합니다</span></li>
+                        </ul>
                         <dl>
                             <dt lang="en">Needs</dt><dt lang="ko">요구 사항</dt>
                             <dd lang="en">Windows 10 (version 1809) or later</dd><dd lang="ko">Windows 10(버전 1809) 이상</dd>
                             <dt lang="en">Install</dt><dt lang="ko">설치</dt>
                             <dd lang="en">Run the setup. It installs for your user only — no admin rights.</dd><dd lang="ko">설치 파일을 실행하세요. 현재 사용자에게만 설치되며 관리자 권한이 필요 없습니다.</dd>
                         </dl>
-                        <a class="am-dl am-dl-win small" href="/downloads/app-manager/AppManagerSetup-0.15.0.exe" download><span lang="en">Download .exe</span><span lang="ko">.exe 다운로드</span><small>56 MB</small></a>
+                        <a class="am-dl small" href="/downloads/app-manager/AppManagerSetup-0.15.0.exe" download><svg aria-hidden="true"><use href="#i-down"/></svg><span lang="en">Download .exe</span><span lang="ko">.exe 다운로드</span><small>56 MB</small></a>
                     </article>
                 </div>
             </div>
         </section>
 
-        <!-- ============ Before you start ============ -->
-        <section class="am-section" aria-labelledby="h-need">
+        <!-- ============ Get started: early access + what it drives ============ -->
+        <section class="am-section" id="access" aria-labelledby="h-access">
             <div class="am-wrap">
-                <header class="am-head" data-reveal>
-                    <span class="am-eyebrow">04 — <span lang="en">before you start</span><span lang="ko">시작하기 전에</span></span>
-                    <h2 id="h-need"><span lang="en">It drives the tools you already use.</span><span lang="ko">이미 쓰는 도구를 그대로 움직입니다.</span></h2>
-                    <p lang="en">App Manager runs the standard Flutter toolchain. The first launch checks what's installed, and <b>Doctor</b> shows anything missing with a link to fix it.</p>
-                    <p lang="ko">App Manager는 표준 Flutter 도구를 그대로 사용합니다. 첫 실행 때 설치된 도구를 확인하고, <b>진단</b> 화면이 빠진 것을 해결 링크와 함께 보여 줍니다.</p>
+                <header class="am-head center" data-reveal>
+                    <span class="am-eyebrow"><span lang="en">Early access</span><span lang="ko">얼리 액세스</span></span>
+                    <h2 id="h-access"><span lang="en">Sign up in the app.</span><span lang="ko">앱에서 가입하세요.</span></h2>
                 </header>
-                <div class="am-reqs" data-reveal-group>
-                    <div class="am-req"><b>Flutter SDK</b><span lang="en">everything</span><span lang="ko">모든 기능</span></div>
-                    <div class="am-req"><b>Android Studio</b><span lang="en">Android builds and emulators</span><span lang="ko">Android 빌드와 에뮬레이터</span></div>
-                    <div class="am-req"><b>Xcode</b><span lang="en">iOS apps (Mac)</span><span lang="ko">iOS 앱 (Mac)</span></div>
-                    <div class="am-req"><b>Claude Code <i>/</i> Codex</b><span lang="en">the agent actions</span><span lang="ko">에이전트 기능</span></div>
-                    <div class="am-req"><b>Google Play Console</b><span lang="en">a developer account to publish</span><span lang="ko">출시용 개발자 계정</span></div>
-                    <div class="am-req"><b>Apple Developer Program</b><span lang="en">to publish on the App Store</span><span lang="ko">App Store 출시용</span></div>
+                <ol class="am-start" data-reveal-group>
+                    <li>
+                        <span class="n">1</span>
+                        <h3><span lang="en">Install and sign up</span><span lang="ko">설치하고 가입하기</span></h3>
+                        <p lang="en">Install and open App Manager, then create an account.</p>
+                        <p lang="ko">App Manager를 설치해 열고 계정을 만드세요.</p>
+                    </li>
+                    <li>
+                        <span class="n">2</span>
+                        <h3><span lang="en">Get switched on</span><span lang="ko">승인 받기</span></h3>
+                        <p lang="en">During early access, each new account is switched on by hand. The app unlocks by itself as soon as it is — no restart.</p>
+                        <p lang="ko">얼리 액세스 기간에는 새 계정을 개발자가 직접 승인합니다. 승인되면 다시 시작하지 않아도 앱이 저절로 열립니다.</p>
+                    </li>
+                    <li>
+                        <span class="n">3</span>
+                        <h3><span lang="en">Stay current</span><span lang="ko">최신 상태 유지</span></h3>
+                        <p lang="en">New versions announce themselves in the app, with an Update button.</p>
+                        <p lang="ko">새 버전이 나오면 앱 안에 알림과 업데이트 버튼이 나타납니다.</p>
+                    </li>
+                </ol>
+                <p class="am-fine center" lang="en">Waiting a while? <a href="/support/">Get in touch</a>.</p>
+                <p class="am-fine center" lang="ko">승인이 늦어지나요? <a href="/support/">문의하기</a></p>
+
+                <div class="am-need" data-reveal>
+                    <div class="am-need-copy">
+                        <span class="am-eyebrow"><span lang="en">Before you start</span><span lang="ko">시작하기 전에</span></span>
+                        <h3 id="h-need"><span lang="en">It drives the tools you already use.</span><span lang="ko">이미 쓰는 도구를 그대로 움직입니다.</span></h3>
+                        <p lang="en">App Manager runs the standard Flutter toolchain. The first launch checks what's installed, and <b>Doctor</b> shows anything missing with a link to fix it.</p>
+                        <p lang="ko">App Manager는 표준 Flutter 도구를 그대로 사용합니다. 첫 실행 때 설치된 도구를 확인하고, <b>진단</b> 화면이 빠진 것을 해결 링크와 함께 보여 줍니다.</p>
+                    </div>
+                    <dl class="am-reqs">
+                        <div class="am-req"><dt>Flutter SDK</dt><dd lang="en">everything</dd><dd lang="ko">모든 기능</dd></div>
+                        <div class="am-req"><dt>Android Studio</dt><dd lang="en">Android builds and emulators</dd><dd lang="ko">Android 빌드와 에뮬레이터</dd></div>
+                        <div class="am-req"><dt>Xcode</dt><dd lang="en">iOS apps (Mac)</dd><dd lang="ko">iOS 앱 (Mac)</dd></div>
+                        <div class="am-req"><dt>Claude Code <i>/</i> Codex</dt><dd lang="en">the agent actions</dd><dd lang="ko">에이전트 기능</dd></div>
+                        <div class="am-req"><dt>Google Play Console</dt><dd lang="en">a developer account to publish</dd><dd lang="ko">출시용 개발자 계정</dd></div>
+                        <div class="am-req"><dt>Apple Developer Program</dt><dd lang="en">to publish on the App Store</dd><dd lang="ko">App Store 출시용</dd></div>
+                    </dl>
                 </div>
             </div>
         </section>
 
-        <!-- ============ Access + privacy ============ -->
-        <section class="am-section" id="access" aria-labelledby="h-access">
-            <div class="am-wrap am-two">
-                <div class="am-note" data-reveal>
-                    <span class="am-eyebrow">05 — <span lang="en">early access</span><span lang="ko">얼리 액세스</span></span>
-                    <h2 id="h-access"><span lang="en">Sign up in the app.</span><span lang="ko">앱에서 가입하세요.</span></h2>
-                    <ol class="am-steps-plain">
-                        <li lang="en">Install and open App Manager, then create an account.</li>
-                        <li lang="ko">App Manager를 설치해 열고 계정을 만드세요.</li>
-                        <li lang="en">During early access, each new account is switched on by hand. The app unlocks by itself as soon as it is — no restart.</li>
-                        <li lang="ko">얼리 액세스 기간에는 새 계정을 개발자가 직접 승인합니다. 승인되면 다시 시작하지 않아도 앱이 저절로 열립니다.</li>
-                        <li lang="en">New versions announce themselves in the app, with an Update button.</li>
-                        <li lang="ko">새 버전이 나오면 앱 안에 알림과 업데이트 버튼이 나타납니다.</li>
-                    </ol>
-                    <p class="am-fine" lang="en">Waiting a while? <a href="/support/">Get in touch</a>.</p>
-                    <p class="am-fine" lang="ko">승인이 늦어지나요? <a href="/support/">문의하기</a></p>
-                </div>
-                <div class="am-note" data-reveal>
-                    <span class="am-eyebrow">06 — <span lang="en">your data</span><span lang="ko">데이터</span></span>
-                    <h2><span lang="en">Stays on your computer.</span><span lang="ko">내 컴퓨터에 그대로.</span></h2>
-                    <p lang="en">App Manager talks only to the services you connect: Google Play, App Store Connect, Firebase and Google Analytics, AdMob, GitHub Pages. Key files stay where you keep them; it only remembers where. There is no telemetry.</p>
-                    <p lang="ko">App Manager는 직접 연결한 서비스(Google Play, App Store Connect, Firebase·Google Analytics, AdMob, GitHub Pages)와만 통신합니다. 키 파일은 원래 위치에 두고, 그 위치만 기억합니다. 사용 데이터 수집은 없습니다.</p>
-                    <p lang="en">The sign-in check sends your email, the computer's name and the app and OS versions every few minutes. Once signed in, it keeps working offline for at least 7 days.</p>
-                    <p lang="ko">로그인 확인 때는 이메일, 컴퓨터 이름, 앱·OS 버전을 몇 분마다 보냅니다. 한 번 로그인하면 오프라인에서도 최소 7일 동안 그대로 쓸 수 있습니다.</p>
+        <!-- ============ FAQ ============ -->
+        <section class="am-section" id="faq" aria-labelledby="h-faq">
+            <div class="am-wrap am-faq-wrap">
+                <header class="am-head" data-reveal>
+                    <span class="am-eyebrow">FAQ</span>
+                    <h2 id="h-faq"><span lang="en">Questions, answered.</span><span lang="ko">자주 묻는 질문.</span></h2>
+                    <p lang="en">Something else? <a href="/support/">Ask here</a>.</p>
+                    <p lang="ko">다른 질문이 있나요? <a href="/support/">문의하기</a></p>
+                </header>
+                <div class="am-faq" data-reveal-group>
+                    <details name="am-faq" open>
+                        <summary><span lang="en">Do I need a Mac?</span><span lang="ko">Mac이 꼭 필요한가요?</span></summary>
+                        <div class="am-faq-a">
+                            <p lang="en">Only for iOS. The Windows version covers the whole Google Play side: listings, screenshots, Play questionnaires, signing, deploys, reviews, analytics, agent sessions and emulators. Building for iOS and publishing to the App Store need the Mac version.</p>
+                            <p lang="ko">iOS에만 필요합니다. Windows 버전은 등록정보, 스크린샷, Play 설문, 서명, 배포, 리뷰, 분석, 에이전트 세션, 에뮬레이터까지 Google Play 쪽 전부를 다룹니다. iOS 빌드와 App Store 출시에는 Mac 버전이 필요합니다.</p>
+                        </div>
+                    </details>
+                    <details name="am-faq">
+                        <summary><span lang="en">Which projects does it work with?</span><span lang="ko">어떤 프로젝트를 지원하나요?</span></summary>
+                        <div class="am-faq-a">
+                            <p lang="en">Flutter apps, and native Android projects. Point App Manager at the folder that holds them and each one shows up with its live Google Play and App Store status.</p>
+                            <p lang="ko">Flutter 앱과 네이티브 Android 프로젝트입니다. 프로젝트가 들어 있는 폴더를 지정하면 각 앱이 Google Play·App Store의 현재 상태와 함께 나타납니다.</p>
+                        </div>
+                    </details>
+                    <details name="am-faq">
+                        <summary><span lang="en">Do I need Claude Code or Codex?</span><span lang="ko">Claude Code나 Codex가 있어야 하나요?</span></summary>
+                        <div class="am-faq-a">
+                            <p lang="en">Only for the agent actions. They are on the list of tools App Manager drives, next to Flutter, Android Studio and Xcode. The first launch checks what's installed, and Doctor shows anything missing with a link to fix it.</p>
+                            <p lang="ko">에이전트 기능에만 필요합니다. Flutter, Android Studio, Xcode처럼 App Manager가 움직이는 도구 중 하나입니다. 첫 실행 때 설치된 도구를 확인하고, 진단 화면이 빠진 것을 해결 링크와 함께 보여 줍니다.</p>
+                        </div>
+                    </details>
+                    <details name="am-faq">
+                        <summary><span lang="en">Why does it need an account?</span><span lang="ko">왜 계정이 필요한가요?</span></summary>
+                        <div class="am-faq-a">
+                            <p lang="en">App Manager is in early access, and each new account is switched on by hand. Create one in the app; it unlocks by itself as soon as it's approved, with no restart. Once signed in, it keeps working offline for at least 7 days.</p>
+                            <p lang="ko">App Manager는 얼리 액세스 중이며, 새 계정은 개발자가 직접 승인합니다. 앱에서 계정을 만들면 승인되는 즉시 다시 시작하지 않아도 저절로 열립니다. 한 번 로그인하면 오프라인에서도 최소 7일 동안 그대로 쓸 수 있습니다.</p>
+                        </div>
+                    </details>
+                    <details name="am-faq">
+                        <summary><span lang="en">What leaves my computer?</span><span lang="ko">어떤 정보가 컴퓨터 밖으로 나가나요?</span></summary>
+                        <div class="am-faq-a">
+                            <p lang="en">Only what the services you connect need: Google Play, App Store Connect, Firebase and Google Analytics, AdMob, GitHub Pages. There is no telemetry, and key files stay where you keep them. The sign-in check sends your email, the computer's name and the app and OS versions every few minutes.</p>
+                            <p lang="ko">직접 연결한 서비스(Google Play, App Store Connect, Firebase·Google Analytics, AdMob, GitHub Pages)에 필요한 것만 나갑니다. 사용 데이터 수집은 없고, 키 파일은 원래 위치에 그대로 둡니다. 로그인 확인 때는 이메일, 컴퓨터 이름, 앱·OS 버전을 몇 분마다 보냅니다.</p>
+                        </div>
+                    </details>
+                    <details name="am-faq">
+                        <summary><span lang="en">Is the download safe to open?</span><span lang="ko">다운로드한 파일은 안전한가요?</span></summary>
+                        <div class="am-faq-a">
+                            <p lang="en">The Mac build is signed and notarized by Apple. The Windows setup installs for your user only, with no admin rights. SHA-256 checksums for both files are at the <a href="#checksums">bottom of this page</a>.</p>
+                            <p lang="ko">Mac 버전은 Apple의 서명과 공증을 받았습니다. Windows 설치 파일은 현재 사용자에게만 설치되며 관리자 권한이 필요 없습니다. 두 파일의 SHA-256 체크섬은 <a href="#checksums">이 페이지 맨 아래</a>에 있습니다.</p>
+                        </div>
+                    </details>
+                    <details name="am-faq">
+                        <summary><span lang="en">How do updates work?</span><span lang="ko">업데이트는 어떻게 하나요?</span></summary>
+                        <div class="am-faq-a">
+                            <p lang="en">New versions announce themselves in the app, with an Update button.</p>
+                            <p lang="ko">새 버전이 나오면 앱 안에 알림과 업데이트 버튼이 나타납니다.</p>
+                        </div>
+                    </details>
                 </div>
             </div>
         </section>
 
         <!-- ============ Closing CTA ============ -->
         <section class="am-cta" aria-labelledby="h-cta">
-            <div class="am-backdrop" aria-hidden="true"><span class="am-glow"></span></div>
+            <div class="am-cta-bg" aria-hidden="true"><span class="am-aurora a1"></span><span class="am-rings"></span><span class="am-noise"></span></div>
             <div class="am-wrap am-cta-inner" data-reveal>
-                <img class="am-icon" src="/apps/app_manager/img/icon.png" width="256" height="256" alt="" loading="lazy" decoding="async">
+                <span class="am-hero-icon">
+                    <img class="am-icon" src="/apps/app_manager/img/icon.png" width="256" height="256" alt="" loading="lazy" decoding="async">
+                </span>
                 <h2 id="h-cta"><span lang="en">Ship the next one from here.</span><span lang="ko">다음 앱은 여기서 출시하세요.</span></h2>
+                <p class="am-cta-sub" lang="en">Version 0.15.0 for macOS and Windows.</p>
+                <p class="am-cta-sub" lang="ko">버전 0.15.0 · macOS와 Windows용.</p>
                 <div class="am-downloads center">
-                    <a class="am-dl am-dl-mac" href="/downloads/app-manager/AppManager-0.15.0.dmg" download data-os="mac">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+                    <a class="am-dl am-dl-mac is-primary" href="/downloads/app-manager/AppManager-0.15.0.dmg" download data-os="mac">
+                        <svg aria-hidden="true"><use href="#i-apple"/></svg>
                         <span class="am-dl-text"><b><span lang="en">Download for macOS</span><span lang="ko">macOS용 다운로드</span></b><small>AppManager-0.15.0.dmg</small></span>
                     </a>
                     <a class="am-dl am-dl-win" href="/downloads/app-manager/AppManagerSetup-0.15.0.exe" download data-os="win">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M0 3.449 9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+                        <svg aria-hidden="true"><use href="#i-win"/></svg>
                         <span class="am-dl-text"><b><span lang="en">Download for Windows</span><span lang="ko">Windows용 다운로드</span></b><small>AppManagerSetup-0.15.0.exe</small></span>
                     </a>
                 </div>
-                <details class="am-sums">
+                <details class="am-sums" id="checksums">
                     <summary><span lang="en">SHA-256 checksums</span><span lang="ko">SHA-256 체크섬</span></summary>
                     <dl>
                         <dt>AppManager-0.15.0.dmg</dt><dd class="mono">4029d88b7b76313e95606a7c93d3251cb5166619c3733010332124091d0cdf0c</dd>
