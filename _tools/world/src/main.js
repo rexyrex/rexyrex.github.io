@@ -127,7 +127,8 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     // Holds the frame rate by trading resolution: below 45 fps the picture gets
     // smaller, above 57 it grows back. `perf.struggling` tells the page when even
     // the smallest picture cannot keep up.
-    const perf = { fps: 60, scale: 1, struggling: false, frames: 0, failed: null };
+    const perf = { fps: 60, scale: 1, struggling: false, frames: 0, failed: null, warm: false };
+    let quick = 0;
     // A graphics error after start-up (a browser whose WebGPU differs from the ones this was built on)
     // must not leave a broken picture over the page: flag it, stop, and let the page fall back.
     const fail = (e) => { if (perf.failed) return; perf.failed = String((e && (e.message || e.reason)) || e); perf.struggling = true; try { renderer.setAnimationLoop(null); } catch (x) { /* already stopped */ } };
@@ -168,12 +169,24 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
             const sh = 0.4 * terrain.shadeAt(camera.position.x, camera.position.z) + 0.6 * terrain.shadeAt(camera.position.x + _dir.x * 140, camera.position.z + _dir.z * 140);
             post.update(sunDir, sh); post.render();
         } else renderer.render(scene, camera);
-        if (running) tune(dt);
+        if (running) {
+            tune(dt);
+            // warm once a run of frames has come in on time
+            if (!perf.warm) { quick = dt < 0.05 ? quick + 1 : 0; if (quick >= 24) perf.warm = true; }
+        }
     };
 
-    await say('First light', 0.95);
+    await say('First light', 0.92);
     resize();
     frame();
+    // Visit every stop once, unseen, so each one's shaders are compiled before anyone flies there,
+    // and let the GPU finish that work: the first thing a visitor sees should already be smooth.
+    for (let i = 0; i < places.length; i++) {
+        director.jumpTo(i); frame();
+        await say('Walking the island', 0.92 + 0.07 * ((i + 1) / places.length));
+    }
+    director.jumpTo(0); frame();
+    try { const dev = renderer.backend && renderer.backend.device; if (dev && dev.queue && dev.queue.onSubmittedWorkDone) await dev.queue.onSubmittedWorkDone(); } catch (e) { /* not WebGPU */ }
     await say('Ready', 1);
 
     const world = {

@@ -234,11 +234,20 @@
     }
 
     function wire() {
-        root.classList.add('world-on');
         world.jumpTo(progress());
         world.setMotion(reduce ? 0 : 1);
         world.start();
-        onScroll();
+        // the stills stay up until the world is running smoothly (or has had long enough to try)
+        var began = Date.now(), mine = world;
+        (function reveal() {
+            if (world !== mine) return;
+            if (!world.perf.warm && Date.now() - began < 9000) { setTimeout(reveal, 120); return; }
+            world.jumpTo(progress());
+            root.classList.add('world-on');
+            say('');
+            onScroll();
+        })();
+        say('warming up…');
         if (gamesUp !== null) world.setActivity(gamesUp ? 1 : 0.12);
         if (!feedFire()) setTimeout(feedFire, 3500);
         watchWorld();
@@ -327,7 +336,6 @@
             world = w;
             window.rexWorld = w;
             store('rex-island-loading', null);
-            say('');
             wire();
             d.dispatchEvent(new CustomEvent('rex:world', { detail: { tier: w.quality.name, backend: w.backend } }));
         }).catch(function (err) {
