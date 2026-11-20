@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://rexyrex.github.io/apps/rex_shorts_uploader/">
+<link rel="stylesheet" href="/css/index.css">
+<title>Rex Shorts Uploader — about</title>
+<meta name="description" content="A private tool that sends Rexyrex's own short videos to Rexyrex's own TikTok accounts as drafts.">
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<main class="privacy-article">
+<h1>Rex Shorts Uploader</h1>
+<p>Rex Shorts Uploader (“the tool”) is a small command-line tool by Rexyrex. It sends the short videos made for Rexyrex’s own channels to those channels’ own TikTok accounts, <strong>as drafts</strong>:</p>
+<ul>
+<li><p><strong>Rexy’s AI Daily</strong>: daily AI news in under a minute, in English and Korean, hosted by Rexy the T-rex.</p></li>
+<li><p><strong>One More Split</strong>: satisfying 3D physics simulations.</p></li>
+</ul>
+<p>The account owner then opens each draft in the TikTok app, writes the caption, chooses who can see it, and decides whether to post it. The tool never posts anything publicly on its own.</p>
+<h2>What it does</h2>
+<ul>
+<li><p><strong>Sign-in.</strong> The account owner signs in with TikTok (Login Kit) and grants the <code>user.info.basic</code> and <code>video.upload</code> permissions.</p></li>
+<li><p><strong>Upload as a draft.</strong> The tool uploads a video file from the owner’s computer to the TikTok inbox of the signed-in account (Content Posting API, upload to inbox). TikTok notifies the owner, who finishes the post in the app.</p></li>
+<li><p><strong>Account check.</strong> It reads the signed-in account’s display name and ID to confirm it is uploading to the right account.</p></li>
+</ul>
+<h2>Who can use it</h2>
+<p>The tool runs only on its developer’s own computer, for the developer’s own accounts. It is not offered to the public and has no other users.</p>
+<h2>Policies</h2>
+<ul>
+<li><p><a href="/apps/rex_shorts_uploader/terms/">Terms of Service</a></p></li>
+<li><p><a href="/apps/rex_shorts_uploader/privacy-policy/">Privacy Policy</a></p></li>
+</ul>
+<h2>Contact</h2>
+<p><strong>Rexyrex</strong>
+Email: <a href="mailto:rexyrex.dev@gmail.com" rel="noopener nofollow">rexyrex.dev@gmail.com</a></p>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/js/common.js"></script>
+</body>
+</html>
