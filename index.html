@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/navbar.css">
-    <link rel="stylesheet" href="/css/island.css?v=2">
+    <link rel="stylesheet" href="/css/island.css?v=3">
     <link rel="stylesheet" href="/css/easter-egg.css">
     <link rel="preload" as="image" href="/assets/island/top.webp" fetchpriority="high">
 </head>
@@ -74,6 +74,9 @@
     <!-- The island. /js/island.js decides whether this device gets the live world (js/world.js, WebGPU or
          WebGL 2) or the stills that every stop already carries. Decorative: all content is in <main>. -->
     <div class="world" id="world" aria-hidden="true"><canvas id="worldCanvas"></canvas></div>
+    <!-- What dims the view behind the hero's words. Fixed to the screen and faded by how near the overlook is,
+         so nothing dark ever slides up the page. Only with the live world; a still carries its own shade. -->
+    <div class="scrim" aria-hidden="true"></div>
 
     <main class="tour" id="main">
 
@@ -85,7 +88,7 @@
                     <button type="button" id="rexLogo" class="hero-logo" aria-label="Rex, the green dinosaur mascot"><img src="/assets/rexGreenSmall.png" alt="" width="256" height="256" decoding="async" draggable="false"></button>
                     Apps, games, and music,<br>built by one person.
                 </h1>
-                <p class="hero-lede"><strong>Rexyrex</strong>, building from Korea: mobile apps on both stores, native macOS apps, multiplayer browser games, a typing game with live leaderboards, and the occasional track. Everything here is designed, built and maintained by one developer &mdash; and it all lives somewhere on this island.</p>
+                <p class="hero-lede"><strong>Rexyrex</strong>, building from Korea: mobile apps on both stores, native macOS apps, multiplayer browser games, a typing game with live leaderboards, and the occasional track. <span class="wide-only">Everything here is designed, built and maintained by one developer &mdash; and it all lives somewhere on this island.</span></p>
                 <div class="hero-actions">
                     <a class="btn btn-primary" href="#typing" data-go="1">Explore the island <span class="arrow">→</span></a>
                     <a class="btn btn-ghost" href="/typing/index.html">Play the typing game</a>
@@ -103,11 +106,11 @@
         <section class="stop stop-right" id="typing" data-stop="1" data-place="Stone keyboard" aria-labelledby="typing-title">
             <img class="stop-poster" src="/assets/island/typing.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>01</b>Stone keyboard</p>
+                <figure class="panel-media"><img src="/assets/island/shots/typing.webp" alt="The typing game: its title above a keyboard that is typing a Korean sentence by itself" width="960" height="540" loading="lazy" decoding="async"></figure>
                 <span class="eyebrow">/typing/</span>
                 <h2 id="typing-title">Type faster, in Korean or English.</h2>
                 <p>Four modes &mdash; 한타, 영타, a company mode and a developer mode &mdash; with daily and all-time leaderboards on Firebase. The stones out here are only warming up; the real thing keeps score.</p>
-                <p class="panel-hint" data-needs-world><kbd>A</kbd>&ndash;<kbd>Z</kbd> light the stones. Try it.</p>
+                <p class="panel-hint only-keys" data-needs-world><kbd>A</kbd>&ndash;<kbd>Z</kbd> light the stones. Try it.</p>
                 <div class="panel-actions">
                     <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
                 </div>
@@ -117,11 +120,11 @@
         <section class="stop stop-left" id="balloons" data-stop="2" data-place="Pterosaur cliffs" aria-labelledby="balloons-title">
             <img class="stop-poster" src="/assets/island/balloons.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>02</b>Pterosaur cliffs</p>
+                <figure class="panel-media"><img src="/assets/island/shots/balloons.webp" alt="Deadly Balloons 2 in play: yellow balloons, numbered turrets and missile trails on a purple field" width="960" height="540" loading="lazy" decoding="async"></figure>
                 <span class="eyebrow">/deadlyBalloons/</span>
                 <h2 id="balloons-title">Pop everything. Don't get popped.</h2>
                 <p>Deadly Balloons 2 is a desktop game for the hardcore balloon poppers. Watch the trailer, download it, or read the source.</p>
-                <p class="panel-hint sky-hud" data-needs-world>score <b id="skyScore">0</b> &middot; popped <b id="skyPopped">0</b> &middot; <span>click a balloon out there</span></p>
+                <p class="panel-hint sky-hud" data-needs-world>score <b id="skyScore">0</b> &middot; popped <b id="skyPopped">0</b> &middot; <span>pop a balloon out there</span></p>
                 <div class="panel-actions">
                     <a class="btn btn-primary" href="/deadlyBalloons/index.html">See the game <span class="arrow">→</span></a>
                     <a class="link-mono" href="/apps/deadly_balloons/">also on mobile</a>
@@ -129,14 +132,13 @@
             </div>
         </section>
 
-        <!-- 04 · /apps/ — the standing stones: one per published app, its icon in the rock; every chip opens the app's page -->
+        <!-- /apps/ — the standing stones: one per published app, its icon in the rock; every chip opens the app's page -->
         <section class="stop stop-right stop-wide" id="apps" data-stop="3" data-place="Standing stones" aria-labelledby="apps-title">
             <img class="stop-poster" src="/assets/island/apps.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>03</b>Standing stones</p>
                 <span class="eyebrow">/apps/</span>
                 <h2 id="apps-title">Published on Google Play and the App Store.</h2>
-                <p>Mostly Flutter, some native Android, all built and published solo. One standing stone for every app, and a rex that keeps knocking them over: point at a name and it goes for that one. Every name opens that app's own page &mdash; with a demo you can try right there.</p>
+                <p>Mostly Flutter, some native Android, all built and published solo. <span class="wide-only">One standing stone for every app, and a rex that keeps knocking them over: point at a name and it goes for that one.</span> Every name opens that app's own page &mdash; with a demo you can try right there.</p>
                 <ul class="app-list" id="appsBento">
                     <li><a class="app-chip" href="/apps/kakaoparser/" data-app="kakaoparser" style="--t-dark: #fb9a4b; --t-light: #c2410c"><img src="/apps/kakaoparser/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b lang="ko">카톡 정밀 분석기</b><i>Google Play · App Store</i></span></a></li>
                     <li><a class="app-chip" href="/apps/age_calculator/" data-app="age_calculator" style="--t-dark: #ff8a7a; --t-light: #c93838"><img src="/apps/age_calculator/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b>How Old Are You? Age Test</b><i>Google Play · App Store</i></span></a></li>
@@ -157,21 +159,20 @@
             </div>
         </section>
 
-        <!-- 05 · games.rexy.win — the volcano: smokes while the games portal answers -->
+        <!-- games.rexy.win — the volcano: smokes while the games portal answers -->
         <section class="stop stop-left stop-wide" id="games" data-stop="4" data-place="Volcano" aria-labelledby="games-title">
             <img class="stop-poster" src="/assets/island/games.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>04</b>Volcano</p>
                 <span class="eyebrow">games.rexy.win</span>
                 <h2 id="games-title">Multiplayer games that run in a browser tab.</h2>
-                <p>A dino party brawler, a 3D arena shooter, a circuit-board RTS, a cute-horror house, a draw-and-guess party and 3D chess. Multiplayer over WebSockets, no installs, one link each. The mountain smokes while the portal is awake, and up in the crater the pterosaurs are settling something with water guns.</p>
+                <p>Multiplayer over WebSockets, no installs, one link each. <span class="wide-only">The mountain smokes while the portal is awake, and the pterosaurs ride the heat over the crater.</span></p>
                 <ul class="row-list">
-                    <li><a class="row-link" href="https://crazy.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff9b2f"><i class="row-dot" aria-hidden="true"></i><span><b>Rexy Arcade</b><i>Bomberman-style dino party mayhem.</i></span><em>Party · 1–8 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
-                    <li><a class="row-link" href="https://fps.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff4d4d"><i class="row-dot" aria-hidden="true"></i><span><b>FRONTLINE</b><i>3D multiplayer arena shooter.</i></span><em>FPS · Three.js</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
-                    <li><a class="row-link" href="https://overclock.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #34e2ff"><i class="row-dot" aria-hidden="true"></i><span><b>OVERCLOCK</b><i>Circuit-board real-time strategy.</i></span><em>RTS · 1v1 · 2v2 · FFA</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
-                    <li><a class="row-link" href="https://spooky.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #b9a8ff"><i class="row-dot" aria-hidden="true"></i><span><b>SPOOKY FRIENDS</b><i lang="ko">무섭지만… 귀여운 반전 호러.</i></span><em>Horror(?) · Solo</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
-                    <li><a class="row-link" href="https://draw.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff8fbb"><i class="row-dot" aria-hidden="true"></i><span><b>DOODLINGS</b><i>Draw something silly. Guess even sillier.</i></span><em>Party · 2–12 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
-                    <li><a class="row-link" href="https://chess.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #83c6a2"><i class="row-dot" aria-hidden="true"></i><span><b>CHESSLINGS</b><i>Tiny champions. Grand strategy.</i></span><em>Chess · Solo · 2 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://crazy.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff9b2f"><img class="row-thumb" src="/assets/island/shots/game-arcade.webp" alt="" width="640" height="360" loading="lazy" decoding="async"><span><b>Rexy Arcade</b><i>Bomberman-style dino party mayhem.</i></span><em>Party · 1–8 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://fps.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff4d4d"><img class="row-thumb" src="/assets/island/shots/game-frontline.webp" alt="" width="640" height="360" loading="lazy" decoding="async"><span><b>FRONTLINE</b><i>3D multiplayer arena shooter.</i></span><em>FPS · Three.js</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://overclock.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #34e2ff"><img class="row-thumb" src="/assets/island/shots/game-overclock.webp" alt="" width="640" height="360" loading="lazy" decoding="async"><span><b>OVERCLOCK</b><i>Circuit-board real-time strategy.</i></span><em>RTS · 1v1 · 2v2 · FFA</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://spooky.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #b9a8ff"><img class="row-thumb" src="/assets/island/shots/game-spooky.webp" alt="" width="640" height="360" loading="lazy" decoding="async"><span><b>SPOOKY FRIENDS</b><i lang="ko">무섭지만… 귀여운 반전 호러.</i></span><em>Horror(?) · Solo</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://draw.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff8fbb"><img class="row-thumb" src="/assets/island/shots/game-doodlings.webp" alt="" width="640" height="360" loading="lazy" decoding="async"><span><b>DOODLINGS</b><i>Draw something silly. Guess even sillier.</i></span><em>Party · 2–12 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://chess.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #83c6a2"><img class="row-thumb" src="/assets/island/shots/game-chesslings.webp" alt="" width="640" height="360" loading="lazy" decoding="async"><span><b>CHESSLINGS</b><i>Tiny champions. Grand strategy.</i></span><em>Chess · Solo · 2 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
                 </ul>
                 <div class="panel-actions">
                     <a class="btn btn-primary" href="https://games.rexy.win" target="_blank" rel="noopener noreferrer">Pick a game</a>
@@ -183,15 +184,14 @@
         <section class="stop stop-left stop-wide" id="mac" data-stop="5" data-place="Ranger outpost" aria-labelledby="mac-title">
             <img class="stop-poster" src="/assets/island/mac.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>05</b>Ranger outpost</p>
                 <span class="eyebrow">/Applications/</span>
                 <h2 id="mac-title">Native on the Mac, menu bar first.</h2>
-                <p>All Swift and SwiftUI. Rex Boing is open source; the others are in-house tools. The laptop on the stump runs through all four.</p>
+                <p>All Swift and SwiftUI. Rex Boing is open source; the others are in-house tools. <span class="wide-only">The laptop on the stump runs through all four.</span></p>
                 <ul class="row-list row-list-tall">
-                    <li><a class="row-link" href="https://github.com/rexyrex/Rex-Boing" target="_blank" rel="noopener noreferrer" style="--c: var(--accent)"><i class="row-dot" aria-hidden="true"></i><span><b>Rex Boing</b><i>A tiny tyrannosaur in the menu bar that quickens as the Mac gets busier. Behind it, a dashboard: processor, GPU, memory, thermals, power, network, storage, and which process is to blame.</i></span><em>macOS 14+ · MIT</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
-                    <li><a class="row-link" href="/apps/app_manager/" style="--c: var(--tok-num)"><i class="row-dot" aria-hidden="true"></i><span><b>App Manager</b><i>One window for the whole app portfolio: store metadata and screenshots, fastlane deploys with live logs, store questionnaires, release state, revenue and health, and embedded agent sessions.</i></span><em>macOS · Windows</em><span class="row-arrow" aria-hidden="true">→</span></a></li>
-                    <li><div class="row-link" style="--c: var(--tok-kw)"><i class="row-dot" aria-hidden="true"></i><span><b>Project Manager</b><i>Watches every project folder, counts what is running, flags the duplicate dev servers an agent spawned and forgot, and builds or installs a Mac app in one click. Git status at a glance.</i></span><em>In-house · Swift 6</em></div></li>
-                    <li><div class="row-link" style="--c: #5fc9b5"><i class="row-dot" aria-hidden="true"></i><span><b>AI Usage Tracker</b><i>How much Claude and Codex are left, from the menu bar: every usage window the signed-in accounts expose, a ring that shades toward red, and the slice used since the last refresh in amber.</i></span><em>In-house · SwiftUI</em></div></li>
+                    <li><a class="row-link" href="https://github.com/rexyrex/Rex-Boing" target="_blank" rel="noopener noreferrer" style="--c: var(--accent)"><img class="row-icon" src="/assets/island/shots/rexboing-icon.webp" alt="" width="160" height="160" loading="lazy" decoding="async"><span><b>Rex Boing</b><i>A tiny tyrannosaur in the menu bar that quickens as the Mac gets busier. Behind it, a dashboard: processor, GPU, memory, thermals, power, network, storage, and which process is to blame.</i></span><em>macOS 14+ · MIT</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="/apps/app_manager/" style="--c: var(--tok-num)"><img class="row-icon" src="/apps/app_manager/img/icon-180.png" alt="" width="180" height="180" loading="lazy" decoding="async"><span><b>App Manager</b><i>One window for the whole app portfolio: store metadata and screenshots, fastlane deploys with live logs, store questionnaires, release state, revenue and health, and embedded agent sessions.</i></span><em>macOS · Windows</em><span class="row-arrow" aria-hidden="true">→</span></a></li>
+                    <li><div class="row-link" style="--c: var(--tok-kw)"><i class="row-glyph" aria-hidden="true">PM</i><span><b>Project Manager</b><i>Watches every project folder, counts what is running, flags the duplicate dev servers an agent spawned and forgot, and builds or installs a Mac app in one click. Git status at a glance.</i></span><em>In-house · Swift 6</em></div></li>
+                    <li><div class="row-link" style="--c: #5fc9b5"><i class="row-glyph" aria-hidden="true">AI</i><span><b>AI Usage Tracker</b><i>How much Claude and Codex are left, from the menu bar: every usage window the signed-in accounts expose, a ring that shades toward red, and the slice used since the last refresh in amber.</i></span><em>In-house · SwiftUI</em></div></li>
                 </ul>
                 <div class="panel-actions">
                     <a class="btn btn-primary" href="https://github.com/rexyrex/Rex-Boing/releases" target="_blank" rel="noopener noreferrer">Get Rex Boing</a>
@@ -203,11 +203,11 @@
         <section class="stop stop-left" id="tesla" data-stop="6" data-place="Migration trail" aria-labelledby="tesla-title">
             <img class="stop-poster" src="/assets/island/tesla.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>06</b>Migration trail</p>
+                <figure class="panel-media"><img src="/assets/island/shots/tesla.webp" alt="Illustration: a car's centre screen at dusk showing a dark map with a red dot on a winding road and three gauges; a small green toy rex stands on the dashboard" width="960" height="540" loading="lazy" decoding="async"></figure>
                 <span class="eyebrow">~/teslamate-dashboard/</span>
                 <h2 id="tesla-title">A dashboard for the car.</h2>
-                <p>Live telemetry from TeslaMate over MQTT on a dark map with glass cards: speed, power, battery, climate, tire pressure, drive recaps and rolling charts. Plus full-screen visualizer scenes, an AI co-pilot that comments on the drive, and a few tiny games. Built to run in the car's own browser.</p>
-                <p class="panel-hint">The red roadster flying the trail is the dot on that map. The dashboard itself is private.</p>
+                <p>Live telemetry from TeslaMate over MQTT on a dark map with glass cards: speed, power, battery, climate, tire pressure, drive recaps and rolling charts. <span class="wide-only">Plus full-screen visualizer scenes, an AI co-pilot that comments on the drive, and a few tiny games.</span> Built to run in the car's own browser.</p>
+                <p class="panel-hint"><span class="wide-only">The red roadster flying the trail is the dot on that map.</span> The dashboard itself is private; the picture is an illustration.</p>
                 <div class="panel-actions">
                     <a class="link-mono" href="https://github.com/teslamate-org/teslamate" target="_blank" rel="noopener noreferrer">built on TeslaMate</a>
                 </div>
@@ -217,10 +217,10 @@
         <section class="stop stop-right" id="music" data-stop="7" data-place="Singing lagoon" aria-labelledby="music-title">
             <img class="stop-poster" src="/assets/island/music.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>07</b>Singing lagoon</p>
+                <figure class="panel-media"><img src="/assets/island/shots/music.webp" alt="Illustration: a keyboard, two studio monitors and a laptop full of waveforms on a desk at night; a small green toy rex stands by one speaker" width="960" height="540" loading="lazy" decoding="async"></figure>
                 <span class="eyebrow">/music/</span>
                 <h2 id="music-title">And a few tracks.</h2>
-                <p>SuperPose streams from SoundCloud. The rest of the audio is on SoundCloud and Newgrounds. The stack on the rock is ours, and it rings the water. The crested ones in the shallows had their own instrument: that hollow crest is thought to have been a resonator.</p>
+                <p>SuperPose streams from SoundCloud. The rest of the audio is on SoundCloud and Newgrounds. <span class="wide-only">The stack on the rock is ours, and it rings the water. The crested ones in the shallows had their own instrument: that hollow crest is thought to have been a resonator.</span></p>
                 <div class="panel-actions">
                     <a class="btn btn-ghost" href="/music/showcase.html">Listen on /music/ <span class="arrow">→</span></a>
                 </div>
@@ -230,11 +230,10 @@
         <section class="stop stop-right" id="log" data-stop="8" data-place="Strata cliff" aria-labelledby="log-title">
             <img class="stop-poster" src="/assets/island/log.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>08</b>Strata cliff</p>
                 <span class="eyebrow">/log/</span>
                 <h2 id="log-title">Notes on how things here are built.</h2>
                 <p>A devlog in hand-written HTML, newest on top &mdash; the way the rock out here keeps its own record.</p>
-                <ul class="row-list">
+                <ul class="row-list row-stack">
                     <li><a class="row-link" href="/log/particle-rex.html" style="--c: var(--accent)"><i class="row-dot" aria-hidden="true"></i><span><b>The particle rex</b><i>How the old hero drew the mascot out of seven thousand points.</i></span><span class="row-arrow" aria-hidden="true">→</span></a></li>
                     <li><a class="row-link" href="/log/2026-09-renewal.html" style="--c: var(--tok-str)"><i class="row-dot" aria-hidden="true"></i><span><b>The September renewal</b><i>A command palette, social cards, page transitions.</i></span><span class="row-arrow" aria-hidden="true">→</span></a></li>
                 </ul>
@@ -247,7 +246,6 @@
         <section class="stop stop-center stop-wide" id="index" data-stop="9" data-place="The whole island" aria-labelledby="index-title">
             <img class="stop-poster" src="/assets/island/index.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>09</b>The whole island</p>
                 <span class="eyebrow">/</span>
                 <h2 id="index-title">What's here</h2>
                 <div class="index">
@@ -360,37 +358,11 @@
             </div>
         </section>
 
-        <section class="stop stop-left stop-wide" id="contact" data-stop="10" data-place="Base camp" aria-labelledby="contact-title">
+        <section class="stop stop-left" id="contact" data-stop="10" data-place="Base camp" aria-labelledby="contact-title">
             <img class="stop-poster" src="/assets/island/contact.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
-            <div class="panel">
-                <p class="place"><b>10</b>Base camp</p>
-                <span class="eyebrow">/support/</span>
+            <div class="panel panel-contact">
                 <h2 id="contact-title">Contact</h2>
-                <div class="contact-grid">
-                    <div>
-                        <a class="contact-email" href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a>
-                        <p class="muted">For app support, include the app name, your device model and the app version. I usually reply within a day or two.</p>
-                        <dl class="facts contact-facts">
-                            <div><dt>handle</dt><dd>rexyrex</dd></div>
-                            <div><dt>stores</dt><dd>Google Play · App Store</dd></div>
-                            <div><dt>base</dt><dd>Korea</dd></div>
-                            <div><dt>mail</dt><dd><a href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a></dd></div>
-                        </dl>
-                        <p class="panel-hint" id="campNote" data-needs-world hidden></p>
-                    </div>
-                    <aside class="now" aria-labelledby="now-title">
-                        <span class="eyebrow">now</span>
-                        <h3 id="now-title">What's moving</h3>
-                        <ul class="now-list">
-                            <li><i class="now-dot is-live" aria-hidden="true"></i><span>This page is now an island: a place for everything on the site, and a rex who gets there first.</span></li>
-                            <li><i class="now-dot is-live" aria-hidden="true"></i><span><b>Rex Boing</b> 1.0 is out: a tyrannosaur for the Mac menu bar, <a href="https://github.com/rexyrex/Rex-Boing/releases" target="_blank" rel="noopener noreferrer">on GitHub</a>.</span></li>
-                            <li><i class="now-dot is-live" aria-hidden="true"></i><span><b>DOODLINGS</b> just joined the games portal.</span></li>
-                            <li><i class="now-dot is-live" aria-hidden="true"></i><span>Every app has its own page: pick any name in <a href="#apps" data-go="3">/apps/</a>.</span></li>
-                            <li><i class="now-dot" aria-hidden="true"></i><span>A handful of unreleased apps are in the lab.</span></li>
-                        </ul>
-                        <span class="now-stamp">updated 2026-11-20</span>
-                    </aside>
-                </div>
+                <a class="contact-email" href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a>
                 <footer class="site-footer">
                     <span>© <span id="footer-year">2026</span> Rexyrex</span>
                     <span>
@@ -407,17 +379,17 @@
     <!-- The places, as buttons: press one and the camera glides there. Plain anchors without the script. -->
     <nav class="dock" id="dock" aria-label="Places on the island">
         <div class="dock-rail">
-            <a class="dock-item" href="#top" data-go="0"><b>00</b><span>Overlook</span></a>
-            <a class="dock-item" href="#typing" data-go="1"><b>01</b><span>Typing</span></a>
-            <a class="dock-item" href="#balloons" data-go="2"><b>02</b><span>Balloons</span></a>
-            <a class="dock-item" href="#apps" data-go="3"><b>03</b><span>Apps</span></a>
-            <a class="dock-item" href="#games" data-go="4"><b>04</b><span>Games</span></a>
-            <a class="dock-item" href="#mac" data-go="5"><b>05</b><span>Mac</span></a>
-            <a class="dock-item" href="#tesla" data-go="6"><b>06</b><span>Car</span></a>
-            <a class="dock-item" href="#music" data-go="7"><b>07</b><span>Music</span></a>
-            <a class="dock-item" href="#log" data-go="8"><b>08</b><span>Log</span></a>
-            <a class="dock-item" href="#index" data-go="9"><b>09</b><span>Map</span></a>
-            <a class="dock-item" href="#contact" data-go="10"><b>10</b><span>Camp</span></a>
+            <a class="dock-item" href="#top" data-go="0"><span>Overlook</span></a>
+            <a class="dock-item" href="#typing" data-go="1"><span>Typing</span></a>
+            <a class="dock-item" href="#balloons" data-go="2"><span>Balloons</span></a>
+            <a class="dock-item" href="#apps" data-go="3"><span>Apps</span></a>
+            <a class="dock-item" href="#games" data-go="4"><span>Games</span></a>
+            <a class="dock-item" href="#mac" data-go="5"><span>Mac</span></a>
+            <a class="dock-item" href="#tesla" data-go="6"><span>Car</span></a>
+            <a class="dock-item" href="#music" data-go="7"><span>Music</span></a>
+            <a class="dock-item" href="#log" data-go="8"><span>Log</span></a>
+            <a class="dock-item" href="#index" data-go="9"><span>Map</span></a>
+            <a class="dock-item" href="#contact" data-go="10"><span>Camp</span></a>
         </div>
         <div class="dock-meta">
             <span class="dock-status" id="worldStatus" role="status" aria-live="polite"></span>
@@ -528,6 +500,6 @@
 
     <script src="/js/common.js"></script>
     <script src="/js/index.js"></script>
-    <script src="/js/island.js?v=2"></script>
+    <script src="/js/island.js?v=3"></script>
 </body>
 </html>

@@ -67,7 +67,22 @@
     /* ---------- where we are ----------------------------------------- */
 
     var tops = [], vh = window.innerHeight;
-    function measure() { vh = window.innerHeight; tops = stops.map(function (s) { return s.offsetTop; }); }
+    var narrow = window.matchMedia ? window.matchMedia('(max-width: 860px)') : { matches: false };
+    var frames = [];
+    function measure() {
+        vh = window.innerHeight;
+        tops = stops.map(function (s) { return s.offsetTop; });
+        // On a phone the content rises from the bottom of the screen and the place keeps the top of it.
+        // How much is left open differs from stop to stop (a short panel leaves more), so each stop has its
+        // own answer to where the camera should put its subject: a little above the middle of the open part.
+        var nav = parseFloat(getComputedStyle(root).getPropertyValue('--nav-h')) || 56;
+        frames = stops.map(function (s) {
+            var box = narrow.matches && s.querySelector('.panel');
+            if (narrow.matches && !box) return 0.27;         // the hero's words lie straight on the view: it only needs to sit high
+            return box ? clamp((nav + box.offsetTop * 0.46) / Math.max(1, vh), 0.2, 0.5) : 0.5;
+        });
+    }
+    function frameAt(s) { var i = clamp(Math.floor(s), 0, stops.length - 1), j = Math.min(i + 1, stops.length - 1), a = frames[i], b = frames[j]; return a === undefined ? 0.5 : a + (b - a) * (s - i); }
 
     // scroll position as a fractional stop index: hold at a stop while its
     // section is on screen, cross to the next during the last screenful
@@ -98,9 +113,12 @@
         requestAnimationFrame(function () {
             ticking = false;
             var s = progress();
-            if (world && !flying) world.setProgress(s);
+            if (world && !flying) { world.setProgress(s); world.setFrame(frameAt(s)); }
             if (!flying) setHere(Math.round(s));
             if (world) for (var i = 0; i < stops.length; i++) stops[i].style.setProperty('--near', clamp(1.9 - Math.abs(s - i) * 3.4, 0, 1).toFixed(3));
+            // the shade behind the hero's words goes with the overlook, not with the page
+            // (and outlasts them a little, so they are never left fading against bare daylight)
+            root.style.setProperty('--hero', clamp(2.4 - s * 3.4, 0, 1).toFixed(3));
         });
     }
 
@@ -112,6 +130,7 @@
             flying = true;
             root.classList.add('world-flying');
             var dur = world.flyTo(i);
+            world.setFrame(frames[i] === undefined ? 0.5 : frames[i]);
             window.scrollTo({ top: tops[i], behavior: 'instant' });
             setHere(i);
             clearTimeout(flyTimer);
@@ -177,16 +196,11 @@
         try { var c = JSON.parse(sessionStorage.getItem('rex-deploy') || 'null'); if (c && c.date) return (Date.now() - new Date(c.date).getTime()) / 36e5; } catch (e) { /* no cache */ }
         return null;
     }
+    // the campfire burns by how recently the site was committed to
     function feedFire() {
-        var h = commitAge(), note = d.getElementById('campNote');
+        var h = commitAge();
         if (h === null) return false;
-        var fire = h < 24 ? 1 : h < 24 * 7 ? 0.7 : h < 24 * 30 ? 0.45 : 0.25;
-        if (world) world.setFire(fire);
-        if (note) {
-            var ago = h < 1 ? 'under an hour ago' : h < 24 ? Math.round(h) + ' h ago' : Math.round(h / 24) + ' d ago';
-            note.textContent = 'The fire burns by how recently this site was committed to: ' + ago + '.';
-            note.hidden = false;
-        }
+        if (world) world.setFire(h < 24 ? 1 : h < 24 * 7 ? 0.7 : h < 24 * 30 ? 0.45 : 0.25);
         return true;
     }
 
@@ -263,6 +277,8 @@
     }
 
     function wire() {
+        measure();
+        world.setFrame(frameAt(progress()), true);
         world.jumpTo(progress());
         world.setMotion(reduce ? 0 : 1);
         world.start();
@@ -360,7 +376,7 @@
         window.addEventListener('pagehide', function () { if (!world) store('rex-island-loading', null); });
         say('waking the island…');
         loadProgress('fetching the island', 0.04);
-        import('/js/world.js?v=2').then(function (m) {
+        import('/js/world.js?v=3').then(function (m) {
             return m.createWorld({
                 canvas: canvas, tier: choice.tier, apps: apps, flags: { salt: +q.get('salt') || 0, syncwarm: q.get('syncwarm') === '1' }, forceWebGL: (usedGL = forceGL || q.get('webgl') === '1' || read('rex-island-gl') === '1'),
                 onProgress: function (label, p) { say(label.toLowerCase() + ' · ' + Math.round(p * 100) + '%'); loadProgress(label.toLowerCase(), 0.06 + 0.92 * p); }
