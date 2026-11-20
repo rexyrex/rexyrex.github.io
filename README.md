@@ -6,7 +6,7 @@ Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) — an inde
 
 | Path | What it is |
 |---|---|
-| `/` | Landing page: a scroll story — particle rex hero, word-by-word statement, pinned chapters for typing / balloons / apps, the games chapter, the macOS apps, the car dashboard, music, then the site index, a "now" card and contact (GSAP + Three.js, see below) |
+| `/` | Home page: **the island**. Eleven stops, one per part of the site; scrolling or pressing a place glides a camera across a live Late Cretaceous island to it, with that section's content in a panel. Stills of every stop stand in where the live world cannot run — see [The island](#the-island-indexhtml) |
 | `/typing/` | Typing speed game — Korean / English / programmer modes, Firebase leaderboards (jQuery + Bootstrap 4.6 + Firebase compat 8) |
 | `/deadlyBalloons/` | Landing page for the Deadly Balloons 2 desktop game (dependency-free) |
 | `/music/showcase.html` | Music page with a SoundCloud embed and links out |
@@ -33,28 +33,99 @@ Everything is styled from `/css/index.css`:
 
 The typing game has its own stylesheet (`typing/css/typespeed2.css`) layered on top of Bootstrap 4 and `index.css`; the animation lab keeps its effect CSS inline and only its page chrome uses the tokens.
 
-## Landing page motion (`/index.html`)
+## The island (`/index.html`)
 
-The landing page is an Apple-style scroll story. Files: `css/landing.css` (hero, chapters, mockups, motion gating), `js/landing.js` (GSAP orchestration), `js/hero-particles.js` (Three.js, ES module).
+The home page is a map you travel. Each `<section class="stop">` in `index.html` is a place on an island and one part of the site:
 
-- **Hero** — the rex mascot rendered as ~7k particles sampled from `assets/rexGreenSmall.png` (colours included) on a fixed canvas, over a slow aurora. Assembles from a cloud on load, turns and drifts to the screen centre as you scroll, collapses into a single dot while the statement lights up "…by one developer". Long-pressing the rex still opens the easter egg (`js/index.js`) and makes the particles buzz. A `uTint` uniform darkens the cloud a little on the light theme (follows the toggle live). Written up in `/log/particle-rex.html`.
-- **Statement** — SplitText words scrubbed from faint to full, then the section pins for ~130% of the viewport while the dot charges, flashes and bursts across the screen (`window.rexHero.burst`). Rendering pauses once the burst is over.
-- **/typing/** — a plain section; the editor mockup types generic Korean, English and code sentences on its own (time-based, human-ish rhythm) while it is on screen, cycling through the tabs.
-- **/deadlyBalloons/** — pinned sky with thirty generated balloons at random depths (nearer = bigger, faster, on top; far = small and soft). A dozen pop on their own along the ride — ring flash, shards, "+100" — and every other balloon pops when clicked. A HUD keeps score.
-- **/apps/** — a bento grid (not pinned): one card per public app in its own tint (`--t-dark` / `--t-light` on the card), built around a real screen capture from the app's page; wide cards fan two screens. Cards rise in with the generic reveal, lift on hover (the `translate` property, so it composes with the reveal's inline transform) and carry a soft light in their tint that follows a fine pointer (`--mx` / `--my`, plain JS outside GSAP). Under 680px the grid becomes a swipe carousel. An "All apps" button leads to `/apps/`. The cards are generated with the directory page — see [App directory](#app-directory-apps).
-- **games.rexy.win** — a plain reveal section (not pinned): one "browser window" per game, each drawn in CSS in the game's two accent colours from the portal's registry (tile maze + fire eggs, crosshair over a perspective floor, circuit traces, flashlight beam + blinking eyes, a self-drawing scribble, a chessboard). The "dino network" pill turns green when `rexChrome.pingGames()` resolves. The cards are static HTML — when the portal adds a game, add a card here, a row in the index and an entry in `js/palette.js`. Keep the copy count-free: the public pages describe the portal with adjectives ("multiplayer browser games"), never a tally, and never say where it is hosted.
-- **/Applications/** — a plain reveal section: one little macOS desktop per native app — a menu bar with the app's own status item, and a window or a popover hanging from it, all drawn in CSS. Bars fill, the pixel rex in Rex Boing's menu bar gallops and the usage ring lights once a card is on screen (`.is-live`, the same observer as the phones). Rex Boing links to its GitHub repo and releases, App Manager to its download page (`/apps/app_manager/`); Project Manager and AI Usage Tracker are in-house tools and their cards are static.
-- **~/teslamate-dashboard/** — the car's own screen: a dark map with a route that draws itself and a dot that follows it (SMIL `animateMotion`, removed under reduced motion), glass cards and four rolling charts. The speed counts up once on screen. The dashboard itself is private: nothing here links to it, and the copy never says where it runs.
-- **/music/** — waveform bars that grow in on scroll and rise under the pointer.
-- **Index + now + contact** — the directory listing, then a two-column contact section with a dated "now" card (`.now`, hand-edited; keep the stamp honest).
-- **Headlines** slide up out of line masks, the e-mail rises letter by letter, index rows get a light sweep on hover.
+| # | id | Place | What it is about |
+|---|---|---|---|
+| 00 | `#top` | Overlook | hero |
+| 01 | `#typing` | Stone keyboard | `/typing/` |
+| 02 | `#balloons` | Pterosaur cliffs | `/deadlyBalloons/` |
+| 03 | `#apps` | Nesting ground | `/apps/` (generated, see [App directory](#app-directory-apps)) |
+| 04 | `#games` | Volcano | games.rexy.win |
+| 05 | `#mac` | Ranger outpost | the macOS apps |
+| 06 | `#tesla` | Migration trail | the car dashboard |
+| 07 | `#music` | Singing lagoon | `/music/` |
+| 08 | `#log` | Strata cliff | `/log/` |
+| 09 | `#index` | The whole island | the site's directory listing |
+| 10 | `#contact` | Base camp | contact, "now", footer |
+
+Three layers, each working without the one above it:
+
+1. **The page** — `index.html` + `css/island.css`. Every stop is a full-height section with a still of its place (`/assets/island/<id>.webp`) behind a glass panel of real content. No script is needed to read or navigate it: the dock at the bottom and the minimap are plain anchors.
+2. **Travel** — `js/island.js` (classic script, no dependencies). Scroll position *is* position on the tour: a fractional stop index (2.5 = halfway between stops 2 and 3). The dock, the minimap pins, `[data-go]` links and any same-page hash link (the top bar's `/#apps`, the palette's `/#mac`) call `go(i)`.
+3. **The live world** — `js/world.js`, an ES module that `island.js` imports only when the device qualifies. A fixed `<canvas>` behind `<main>`; when it is ready `html.world-on` fades the stills out. `go(i)` then becomes a camera flight (`world.flyTo`), and scrolling drives `world.setProgress`.
 
 Rules that keep it working:
 
-- Every ScrollTrigger is created inside one `gsap.matchMedia()` callback, top to bottom in page order. Pinned sections must be created in DOM order or ScrollTrigger measures the ones below them wrongly. The games chapter is not pinned, so it only relies on the generic `[data-reveal]` / `[data-reveal-group]` / `[data-lines]` passes at the end of the callback.
-- Reveal targets start hidden only under `html.js:not(.motion-off)` and `prefers-reduced-motion: no-preference`. If GSAP fails to load or the visitor prefers reduced motion, `landing.js` adds `html.motion-off` and the page is fully static (PNG rex, no pinning).
-- `window.rexHero` is the only contract between `landing.js` (writes `t`, the 0–1 scroll progress, and `excite`) and `hero-particles.js` (reads them, reports `rexhero:ready` / `rexhero:failed`). If the module never reports in, the PNG rex is shown.
-- Three.js resolves through the import map in `index.html`; the map's `integrity` block pins both module files.
+- **The anchors are a contract.** `#apps` and `#mac` are linked from other pages; the ids in the table above are checked by `_tools/paths/check.py`.
+- **Content lives in the HTML, never in the world.** The world is `aria-hidden` decoration. Anything a visitor must be able to read, select, translate or click is in a panel.
+- **Stills must match the world.** They are frames of the same cameras (`_tools/world/posters.mjs`), so the swap from still to live is invisible. Regenerate them whenever the island or a camera changes.
+- **Nothing in the world is only decoration.** One egg per app in `APPS` (read from the `[data-app]` chips and their `--t-dark`), a stone per letter that lights when you type it, balloons you can pop, a volcano that smokes while `rexChrome.pingGames()` resolves, a campfire fed by the age of the last commit (the status bar's `rex-deploy` cache). Keep new set-dressing tied to something real.
+- **Copy rules from before still apply:** describe the games portal without a count and never say where it is hosted; the car dashboard is private, nothing links to it.
+- The easter egg is unchanged: hold the mascot beside the title for two seconds (`js/index.js`, `css/easter-egg.css`).
+
+### Who gets the live world
+
+`island.js` picks a detail tier, the visitor can overrule it (the `detail` menu under the dock, stored in `localStorage` as `rex-island`), and `?island=<tier>` forces one for a single load.
+
+| Tier | Picked for | What changes |
+|---|---|---|
+| `ultra` | NVIDIA, recent Radeon RX, Apple M-series Max/Ultra, with WebGPU | everything |
+| `high` | other desktop GPUs, or any of the above on the WebGL 2 fallback | coarser terrain rings, 60% of the plants, lighter shadows |
+| `medium` | integrated Intel graphics, 4-core or 4 GB desktops, phones with 8 GB | no water reflections or light shafts, a third of the plants, 720p-class |
+| `low` | other recent phones | no post-processing, one shadow cascade, 540p-class |
+| `off` (stills) | `prefers-reduced-motion`, Save-Data, no WebGL 2, small or old devices | no canvas at all |
+
+Then the world looks after itself: it trades render resolution to hold about 45–57 fps, and if even half resolution cannot reach 22 fps it stops, shows the stills, and remembers a lower ceiling (`rex-island-cap`). `rex-island-loading` is set while the world is being built; finding it still set on the next visit means that load crashed the tab, so that visit starts one tier lower. A graphics error after start-up (a browser whose WebGPU behaves differently from the ones this was tested on) tears the world down and builds it once more on the WebGL 2 path, remembered as `rex-island-gl`; choosing a tier in the `detail` menu clears both that and the ceiling.
+
+### How the world is built (`_tools/world/`)
+
+Nothing is loaded: no images, models or sounds. Everything is generated in the browser at load (two to eight seconds, behind the stills) by the modules in `_tools/world/src/`, which `build.mjs` bundles with three.js into `/js/world.js`:
+
+```bash
+cd _tools/world && npm install      # esbuild and three, once
+npm run build                       # writes /js/world.js (commit it)
+npm run dev                         # unminified, with a source map: do not commit this one
+```
+
+| File | What it makes |
+|---|---|
+| `island.js` | The island as data: where each site is and the height of the ground (`shapeHeight`), baked into a grid with normals, vegetation, moisture and occlusion maps. Pure JS; `relief.mjs` renders it without a GPU. **Start here to reshape the land.** |
+| `places.js` | The eleven stops: where the camera stands, what it looks at, where the rex waits. Offsets from a site, resolved against the terrain. |
+| `terrain.js` | The ground: a geometry clipmap (nested rings centred on the camera, each twice as coarse), heights read from the grid in the vertex shader, materials blended from slope, height, moisture and noise. Also bakes the island-scale sun shadow. |
+| `atmosphere.js` | The sky, computed once on the CPU by marching sunlight through a model atmosphere; the same table colours the dome, the distance haze and the ambient light. Clouds and their shadows. |
+| `water.js` | One sheet of water for sea, lake and river: Fresnel sky, screen-space reflections of the land, sun glitter, depth tint, foam at the tide line. |
+| `flora.js` | Plants: foliage sprites painted with the 2D canvas into one atlas, plants built from cards and tubes, instanced with three levels of detail, wind in the vertex shader. Trees island-wide; understorey only around the stops. |
+| `fauna.js` | Animals: each species is a skeleton plus rounded cones; the cones are blended into an implicit surface, meshed (surface nets), bound to the skeleton by distance, and walked by a few sine waves. Teeth and claws are separate little cones. |
+| `props.js` | What each place is about: eggs, stone keys, balloons, lava and smoke, the tower, the trail light, the camp. |
+| `director.js` | The camera: scroll-bound hops between stops, flights on demand, a little hand-held sway. |
+| `post.js` | Bloom, light shafts when the sun is in view, the grade and film curve, vignette and grain. |
+| `quality.js` | The tiers. |
+
+It renders with three.js's `WebGPURenderer` and TSL shaders, which fall back to WebGL 2 on their own. Compute shaders are deliberately not used, so both backends run the same code.
+
+Tools in the same folder (Node 22+, a Chrome started with `--remote-debugging-port`, the repo on `localhost`):
+
+- `dev.html` — the world alone, no page: `/_tools/world/dev.html?tier=ultra&webgl=1&bare=1&post=0`.
+- `shot.mjs` — renders views in that Chrome and reports console errors and, with `--fps`, frame rates.
+- `critic-set.mjs` — the image set for a visual review: every stop at 2560×1440, frames from flights, a frame pair 0.2 s apart. The island was built against an independent critic that saw only these images, never the code.
+- `posters.mjs` + `posters.py` — the stills and the minimap, into `/assets/island/`.
+- `relief.mjs` — a shaded-relief PNG of the island from `island.js` alone.
+
+### What the old landing page left behind
+
+`css/landing.css`, `js/landing.js` and `js/hero-particles.js` (the scroll story with the particle rex, written up in `/log/particle-rex.html`) are no longer loaded by any page. They stay in the repository because nothing published here is deleted (see below).
+
+## Published paths never disappear
+
+Store listings, review forms and other people's links point into this site, so a path that was published stays published. `_tools/paths/manifest.txt` lists every file the site served on 2026-11-20; `_tools/paths/check.py` fails if any is missing, if the home page loses one of its anchors, or if any same-site link in any page does not resolve.
+
+```bash
+python3 _tools/paths/check.py            # before every commit that moves or renames anything
+python3 _tools/paths/check.py --update   # after adding pages: appends them to the manifest
+```
 
 ### Sub-page motion
 
@@ -132,7 +203,7 @@ These pages sit beside the generated policies but App Manager never touches them
 
 App Manager does check for them: each app's Overview shows a **Landing page** tile (At a glance) and card — not created / not committed / not pushed / published — read from `apps/<slug>/index.html` here and the pushed branch. The slug is the App Manager id, else the folder of the app's privacy policy URL, else the folder its App Store marketing URL points at (that is how the iOS twin of KakaoParser finds `/apps/kakaoparser/`). A missing page has a **Build Page** button that runs App Manager's `rex-app-landing-page` skill in the app's agent session; the skill reads this README, the skeleton and the existing pages first, so the rules here stay the source of truth. Its `scripts/images.mjs` converts captures to WebP through headless Chrome when `cwebp` isn't installed. Every App Store listing's *Marketing URL* points at its app's page (keep it that way when an app gains a page or an iOS version).
 
-To add an app when it goes public: build the page from the skeleton, add it to `APPS` in `_tools/app-page/apps.py` and run it (the home page card and the `/apps/` card and policy row), then an entry in `js/palette.js` (`INDEX.apps`), a row in `sitemap.xml`, its policy on `/support/`, and a row in the table above. Check it with the screenshot tool:
+To add an app when it goes public: build the page from the skeleton, add it to `APPS` in `_tools/app-page/apps.py` and run it (the home page chip, and with it the app's egg on the island, plus the `/apps/` card and policy row), then an entry in `js/palette.js` (`INDEX.apps`), a row in `sitemap.xml`, its policy on `/support/`, and a row in the table above. Check it with the screenshot tool:
 
 ```
 node _tools/shot/shot.mjs http://localhost:8123/apps/<id>/ --out /tmp/<id> --theme dark --at 0,0.5,1
@@ -144,7 +215,7 @@ It drives headless Chrome over the DevTools protocol (Node 22, no npm) and print
 
 ## App directory (`/apps/`)
 
-`apps/index.html` is hand-made, generated together with the home page's app cards by `_tools/app-page/apps.py` (one `APPS` list: name, English one-liner, stores, language, tint pair, which captures, privacy URL; plus the policies of apps still in testing). It has a hero with every app's icon, a search box and filter chips (App Store / Google Play / 한국어 / Global; `?q=` and `?show=` make a filtered view shareable — `/js/apps-index.js`), a card per app built around a real capture, App Manager, and every privacy policy on the site ("On the stores" / "In testing"), so `/apps/` still works as the policy index the frozen URL contract promises. Styles: `/css/apps-index.css`.
+`apps/index.html` is hand-made, generated together with the home page's app chips (the nesting ground) by `_tools/app-page/apps.py` (one `APPS` list: name, English one-liner, stores, language, tint pair, which captures, privacy URL; plus the policies of apps still in testing). It has a hero with every app's icon, a search box and filter chips (App Store / Google Play / 한국어 / Global; `?q=` and `?show=` make a filtered view shareable — `/js/apps-index.js`), a card per app built around a real capture, App Manager, and every privacy policy on the site ("On the stores" / "In testing"), so `/apps/` still works as the policy index the frozen URL contract promises. Styles: `/css/apps-index.css`.
 
 It carries `<meta name="appmanager-apps-index" content="manual">`. App Manager used to rewrite `apps/index.html` as a bare list on every privacy publish; with that marker (App Manager from 2026-11-17 on) it writes only the policy page, and refuses to publish while the directory page has uncommitted edits instead of resetting them. Remove the marker and the next publish replaces the page with the generated list.
 
@@ -162,10 +233,9 @@ Every `apps/<app_id>/privacy-policy/index.html` is generated by the external **A
 
 ## Dependencies (CDN, pinned + SRI)
 
-- GSAP 3.15.0 + ScrollTrigger + SplitText (landing page; both plugins are free since 3.13)
-- Three.js 0.185.1 as an ES module via import map (landing page hero)
+- Three.js 0.187.0, bundled into `/js/world.js` by `_tools/world/build.mjs` (the home page's island; not a CDN dependency)
 - Google Fonts: IBM Plex Mono, IBM Plex Sans KR
-- Font Awesome 6.7.2 (landing page easter egg, typing game, animation lab)
+- Font Awesome 6.7.2 (home page easter egg, typing game, animation lab)
 - Bootstrap 4.6.2 + Popper 1.16.1 + jQuery 3.7.1 (typing game only)
 - Bootstrap 5.3.8 (animation lab grid, parser admin tools)
 - Vue 3.5 (animation lab)

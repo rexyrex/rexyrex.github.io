@@ -32,681 +32,394 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/navbar.css">
-    <link rel="stylesheet" href="/css/landing.css">
+    <link rel="stylesheet" href="/css/island.css">
     <link rel="stylesheet" href="/css/easter-egg.css">
-    <!-- Three.js for the particle rex in the hero (loaded as an ES module by /js/hero-particles.js).
-         The import map pins the version; the integrity block is honoured by browsers that support it. -->
-    <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js"
-      },
-      "integrity": {
-        "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js": "sha384-QHQk1LzjJlJYNdthXjKCmffpDRZL3EqJ7LfqBzyKyvGgjAYM2ZVuYtFGg42NcAJ/",
-        "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.core.min.js": "sha384-rx+KIp/9ptjArhnFAcpVoOc/ynktDsRtRJKIbC7YVKylEvFu8sgmzk9RmQ+CIV48"
-      }
-    }
-    </script>
+    <link rel="preload" as="image" href="/assets/island/top.webp" fetchpriority="high">
 </head>
 
-<body class="landing">
+<body class="island">
     <div id="nav-placeholder"></div>
 
-    <!-- Fixed layers behind the page: soft aurora, the particle rex, the burst flash. Decorative. -->
-    <div class="aurora" id="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
-    <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
-    <div class="hero-flash" id="heroFlash" aria-hidden="true"></div>
+    <!-- The island. /js/island.js decides whether this device gets the live world (js/world.js, WebGPU or
+         WebGL 2) or the stills that every stop already carries. Decorative: all content is in <main>. -->
+    <div class="world" id="world" aria-hidden="true"><canvas id="worldCanvas"></canvas></div>
 
-    <main class="landing-main">
+    <main class="tour" id="main">
 
-        <!-- 00 · Hero -->
-        <section class="hero" aria-labelledby="hero-title">
-            <div class="wrap hero-inner">
-                <div class="hero-visual" id="heroVisual">
-                    <img class="hero-rex-fallback" id="heroRexFallback" src="/assets/rexGreenSmall.png" alt="" width="256" height="256" decoding="async" draggable="false">
-                    <button type="button" id="rexLogo" class="hero-logo" aria-label="Rex, the green dinosaur mascot"></button>
+        <section class="stop stop-left stop-hero" id="top" data-stop="0" data-place="Overlook" aria-labelledby="top-title">
+            <img class="stop-poster" src="/assets/island/top.webp" alt="" width="1600" height="900" decoding="async" fetchpriority="high">
+            <div class="hero-copy">
+                <p class="eyebrow">rexyrex.github.io</p>
+                <h1 class="hero-title" id="top-title">
+                    <button type="button" id="rexLogo" class="hero-logo" aria-label="Rex, the green dinosaur mascot"><img src="/assets/rexGreenSmall.png" alt="" width="256" height="256" decoding="async" draggable="false"></button>
+                    Apps, games, and music,<br>built by one person.
+                </h1>
+                <p class="hero-lede"><strong>Rexyrex</strong>, building from Korea: mobile apps on both stores, native macOS apps, multiplayer browser games, a typing game with live leaderboards, and the occasional track. Everything here is designed, built and maintained by one developer &mdash; and it all lives somewhere on this island.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#typing" data-go="1">Explore the island <span class="arrow">→</span></a>
+                    <a class="btn btn-ghost" href="/typing/index.html">Play the typing game</a>
                 </div>
-                <div class="hero-copy">
-                    <p class="eyebrow hero-eyebrow" id="heroEyebrow" data-hero>rexyrex.github.io</p>
-                    <h1 class="hero-title" id="hero-title">Apps, games, and music,<br>built by one person.</h1>
-                    <p class="hero-lede" data-hero>
-                        <strong>Rexyrex</strong>, building from Korea: mobile apps on both stores, native macOS apps,
-                        multiplayer browser games, a typing game with live leaderboards, and the occasional track.
-                    </p>
-                    <div class="hero-actions" data-hero>
-                        <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
-                        <a class="link-mono" href="https://github.com/rexyrex" target="_blank" rel="noopener noreferrer">GitHub</a>
-                        <a class="link-mono" href="https://www.youtube.com/channel/UCq3yY-SCoglG8xm6Z1_udaw" target="_blank" rel="noopener noreferrer">YouTube</a>
-                        <a class="link-mono" href="https://soundcloud.com/rexyrex-1" target="_blank" rel="noopener noreferrer">SoundCloud</a>
-                        <a class="link-mono" href="https://rexyrex.newgrounds.com/" target="_blank" rel="noopener noreferrer">Newgrounds</a>
-                    </div>
-                    <p class="hero-cue" data-hero aria-hidden="true"><span class="hero-cue-line"></span><span>scroll</span></p>
+                <p class="hero-links">
+                    <a class="link-mono" href="https://github.com/rexyrex" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a class="link-mono" href="https://www.youtube.com/channel/UCq3yY-SCoglG8xm6Z1_udaw" target="_blank" rel="noopener noreferrer">YouTube</a>
+                    <a class="link-mono" href="https://soundcloud.com/rexyrex-1" target="_blank" rel="noopener noreferrer">SoundCloud</a>
+                    <a class="link-mono" href="https://rexyrex.newgrounds.com/" target="_blank" rel="noopener noreferrer">Newgrounds</a>
+                </p>
+                <p class="hero-cue" aria-hidden="true"><span class="hero-cue-line"></span><span>scroll, or pick a place below</span></p>
+            </div>
+        </section>
+
+        <section class="stop stop-right" id="typing" data-stop="1" data-place="Stone keyboard" aria-labelledby="typing-title">
+            <img class="stop-poster" src="/assets/island/typing.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>01</b>Stone keyboard</p>
+                <span class="eyebrow">/typing/</span>
+                <h2 id="typing-title">Type faster, in Korean or English.</h2>
+                <p>Four modes &mdash; 한타, 영타, a company mode and a developer mode &mdash; with daily and all-time leaderboards on Firebase. The stones out here are only warming up; the real thing keeps score.</p>
+                <p class="panel-hint" data-needs-world><kbd>A</kbd>&ndash;<kbd>Z</kbd> light the stones. Try it.</p>
+                <div class="panel-actions">
+                    <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
                 </div>
             </div>
         </section>
 
-        <!-- 01 · Statement: lights up word by word, then holds while the rex bursts -->
-        <section class="statement" id="statement" aria-label="About this site">
-            <div class="wrap">
-                <p class="statement-text" id="statementText">Apps on Google Play and the App Store. A handful of multiplayer browser games. A few native apps for the Mac. A typing game in Korean and English. A balloon-popping game for the desktop. A live dashboard for a car. A few tracks. Everything here is designed, built and maintained by one developer in Korea.</p>
-            </div>
-        </section>
-
-        <!-- 02 · /typing/ — the editor types on its own while it is on screen -->
-        <section class="chapter chapter-typing" id="typing" aria-labelledby="typing-title">
-            <div class="wrap chapter-grid">
-                <div class="chapter-copy" data-reveal-group>
-                    <span class="eyebrow">/typing/</span>
-                    <h2 id="typing-title" data-lines>Type faster, in Korean or English.</h2>
-                    <p>Four modes — 한타, 영타, a company mode and a developer mode — with daily and all-time leaderboards on Firebase. The editor here is only warming up; the real thing keeps score.</p>
-                    <div class="chapter-actions">
-                        <a class="btn btn-primary" href="/typing/index.html">Play the typing game <span class="arrow">→</span></a>
-                    </div>
-                </div>
-                <div class="editor" id="typingEditor" data-reveal aria-hidden="true">
-                    <div class="editor-bar">
-                        <span class="editor-tab is-active" data-tab="0"><b>한타</b><i>korean.txt</i></span>
-                        <span class="editor-tab" data-tab="1"><b>영타</b><i>english.txt</i></span>
-                        <span class="editor-tab" data-tab="2"><b>개발자</b><i>Main.java</i></span>
-                        <span class="editor-bar-spacer"></span>
-                        <span class="editor-bar-meta">UTF-8</span>
-                    </div>
-                    <pre class="editor-body" id="typingBody"><code><span class="editor-typed" id="typingTyped"></span><span class="editor-caret" id="typingCaret"></span><span class="editor-rest" id="typingRest">가는 말이 고와야 오는 말이 곱다.</span></code></pre>
-                    <div class="editor-status">
-                        <span>Ln <b id="typingLn">1</b>, Col <b id="typingCol">1</b></span>
-                        <span class="editor-status-spacer"></span>
-                        <span>점수 <b id="typingScore">0</b></span>
-                        <span>정확도 <b>100%</b></span>
-                        <span class="editor-status-mode" id="typingMode">한타</span>
-                    </div>
+        <section class="stop stop-left" id="balloons" data-stop="2" data-place="Pterosaur cliffs" aria-labelledby="balloons-title">
+            <img class="stop-poster" src="/assets/island/balloons.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>02</b>Pterosaur cliffs</p>
+                <span class="eyebrow">/deadlyBalloons/</span>
+                <h2 id="balloons-title">Pop everything. Don't get popped.</h2>
+                <p>Deadly Balloons 2 is a desktop game for the hardcore balloon poppers. Watch the trailer, download it, or read the source.</p>
+                <p class="panel-hint sky-hud" data-needs-world>score <b id="skyScore">0</b> &middot; popped <b id="skyPopped">0</b> &middot; <span>click a balloon out there</span></p>
+                <div class="panel-actions">
+                    <a class="btn btn-primary" href="/deadlyBalloons/index.html">See the game <span class="arrow">→</span></a>
+                    <a class="link-mono" href="/apps/deadly_balloons/">also on mobile</a>
                 </div>
             </div>
         </section>
 
-        <!-- 03 · /deadlyBalloons/ — a sky full of the game's balloon art; scripted pops, and you can pop the rest -->
-        <section class="chapter chapter-balloons" id="balloons" aria-labelledby="balloons-title">
-            <div class="stage stage-sky" id="balloonStage">
-                <div class="sky" id="sky" aria-hidden="true">
-                    <!-- balloons are generated by /js/landing.js -->
-                    <img class="sky-rex sky-rex-green" src="/assets/rexGreenSmall.png" alt="" width="256" height="256" loading="lazy" decoding="async">
-                    <img class="sky-rex sky-rex-red" src="/assets/img/rexRedSmall.png" alt="" width="256" height="256" loading="lazy" decoding="async">
-                </div>
-                <div class="sky-hud" aria-hidden="true">
-                    <span>score <b id="skyScore">0</b></span>
-                    <span>popped <b id="skyPopped">0</b></span>
-                    <span class="sky-hud-hint">click a balloon</span>
-                </div>
-                <div class="wrap">
-                    <div class="chapter-copy chapter-copy-glass" data-reveal-group>
-                        <span class="eyebrow">/deadlyBalloons/</span>
-                        <h2 id="balloons-title" data-lines>Pop everything. Don't get popped.</h2>
-                        <p>Deadly Balloons 2 is a desktop game for the hardcore balloon poppers. Watch the trailer, download it, or read the source.</p>
-                        <div class="chapter-actions">
-                            <a class="btn btn-primary" href="/deadlyBalloons/index.html">See the game <span class="arrow">→</span></a>
-                            <a class="link-mono" href="/apps/deadly_balloons/">also on mobile</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 04 · /apps/ — a bento of the apps, each card a real screen; every card opens the app's page -->
-        <section class="chapter chapter-apps" id="apps" aria-labelledby="apps-title">
-            <div class="wrap">
-                <div class="apps-head">
-                    <div class="chapter-copy chapter-copy-wide" data-reveal-group>
-                        <span class="eyebrow">/apps/</span>
-                        <h2 id="apps-title" data-lines>Published on Google Play and the App Store.</h2>
-                        <p>Mostly Flutter, some native Android, all built and published solo. Every card opens that app's own page — with a demo you can try right there.</p>
-                    </div>
-                    <a class="btn btn-ghost apps-all" href="/apps/">All apps <span class="arrow">→</span></a>
-                </div>
-                <div class="bento" id="appsBento" data-reveal-group>
-                    <a class="app-tile is-wide" href="/apps/kakaoparser/" style="--t-dark: #fb9a4b; --t-light: #c2410c">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/kakaoparser/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
-                            <b class="tile-name" lang="ko">카톡 정밀 분석기</b>
-                            <span class="tile-line">Rankings, hourly charts and signature words from an exported KakaoTalk chat.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/kakaoparser/img/android-03-rankings.webp" width="540" height="1200" alt="" loading="lazy" decoding="async"></span><span class="tile-phone tile-phone-back"><img src="/apps/kakaoparser/img/android-02-time.webp" width="540" height="1200" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile" href="/apps/age_calculator/" style="--t-dark: #ff8a7a; --t-light: #c93838">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/age_calculator/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
-                            <b class="tile-name">How Old Are You? Age Test</b>
-                            <span class="tile-line">Five quick tests of your senses, each with a playful age guess.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/age_calculator/img/result.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile" href="/apps/deadly_balloons/" style="--t-dark: #ff5d6c; --t-light: #b0152e">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/deadly_balloons/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
-                            <b class="tile-name">Deadly Balloons: Bullet Hell</b>
-                            <span class="tile-line">A one-thumb bullet-hell shooter: dodge balloon fire, topple huge bosses.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/deadly_balloons/img/boss-battle.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile" href="/apps/alba_pay/" style="--t-dark: #d8f35b; --t-light: #5c7400">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/alba_pay/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
-                            <b class="tile-name" lang="ko">알바수첩</b>
-                            <span class="tile-line">Clock in, clock out — holiday pay, night and overtime rates down to take-home pay.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/alba_pay/img/home.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile" href="/apps/visual_metronome/" style="--t-dark: #e4b96a; --t-light: #7a5512">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/visual_metronome/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
-                            <b class="tile-name">Visual Metronome</b>
-                            <span class="tile-line">A metronome you can watch: 19 visualizers that move with the click.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/visual_metronome/img/main.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile is-wide" href="/apps/line_chat_analyzer/" style="--t-dark: #a99dff; --t-light: #5b4bdb">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/line_chat_analyzer/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
-                            <b class="tile-name">TalkScope</b>
-                            <span class="tile-line">Reply speed, habit words and chemistry from an exported LINE chat — in English, 日本語 and 한국어.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/line_chat_analyzer/img/overview-en.webp" width="660" height="1277" alt="" loading="lazy" decoding="async"></span><span class="tile-phone tile-phone-back"><img src="/apps/line_chat_analyzer/img/words-en.webp" width="660" height="1277" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile is-wide" href="/apps/kakao_love_analyzer/" style="--t-dark: #f48fb1; --t-light: #c2185b">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/kakao_love_analyzer/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
-                            <b class="tile-name" lang="ko">카카오톡 연애 분석기</b>
-                            <span class="tile-line">Balance, interest and chemistry, read from a KakaoTalk conversation.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/kakao_love_analyzer/img/hub.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span><span class="tile-phone tile-phone-back"><img src="/apps/kakao_love_analyzer/img/chemistry.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile is-wide" href="/apps/reverse_image_search/" style="--t-dark: #818cf8; --t-light: #4f46e5">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/reverse_image_search/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play · App Store</span></span>
-                            <b class="tile-name">Reverse Image Search</b>
-                            <span class="tile-line">One photo, four engines: Google Lens, TinEye, Yandex and Bing side by side.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/reverse_image_search/img/result-google-lens.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span><span class="tile-phone tile-phone-back"><img src="/apps/reverse_image_search/img/result-tineye.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile" href="/apps/qr_scanner/" style="--t-dark: #aba3ff; --t-light: #4e3ee6">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/qr_scanner/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
-                            <b class="tile-name">QR Scanner: Scan &amp; Create</b>
-                            <span class="tile-line">Scan from the camera or a photo, keep a searchable history, make your own codes.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/qr_scanner/img/show-qr.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile" href="/apps/exif/" style="--t-dark: #b6c3f7; --t-light: #4a5268">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/exif/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
-                            <b class="tile-name">Photo Exif Metadata Editor</b>
-                            <span class="tile-line">View, edit and wipe the EXIF and GPS data in your photos.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/exif/img/editor.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile" href="/apps/saju/" style="--t-dark: #8cc3d3; --t-light: #1c5a6e">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/saju/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
-                            <b class="tile-name" lang="ko">사주 분석기</b>
-                            <span class="tile-line">Four pillars, daily fortune, compatibility and tarot, explained in plain words.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/saju/img/pillars.webp" width="660" height="1434" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
-                    <a class="app-tile" href="/apps/katalk_keeper/" style="--t-dark: #fde524; --t-light: #8f6f00">
-                        <span class="tile-copy">
-                            <span class="tile-meta"><img class="tile-icon" src="/apps/katalk_keeper/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">Google Play</span></span>
-                            <b class="tile-name" lang="ko">슬쩍</b>
-                            <span class="tile-line">Read KakaoTalk messages without marking them read, and keep the ones that get deleted.</span>
-                            <span class="tile-go" aria-hidden="true">Open page <i>→</i></span>
-                        </span>
-                        <span class="tile-shots" aria-hidden="true"><span class="tile-phone"><img src="/apps/katalk_keeper/img/chat-dark.webp" width="600" height="1067" alt="" loading="lazy" decoding="async"></span></span>
-                    </a>
+        <!-- 04 · /apps/ — the nesting ground: one egg per published app; every chip opens the app's page -->
+        <section class="stop stop-right stop-wide" id="apps" data-stop="3" data-place="Nesting ground" aria-labelledby="apps-title">
+            <img class="stop-poster" src="/assets/island/apps.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>03</b>Nesting ground</p>
+                <span class="eyebrow">/apps/</span>
+                <h2 id="apps-title">Published on Google Play and the App Store.</h2>
+                <p>Mostly Flutter, some native Android, all built and published solo. One egg in the nests for every app; every name opens that app's own page &mdash; with a demo you can try right there.</p>
+                <ul class="app-list" id="appsBento">
+                    <li><a class="app-chip" href="/apps/kakaoparser/" data-app="kakaoparser" style="--t-dark: #fb9a4b; --t-light: #c2410c"><img src="/apps/kakaoparser/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b lang="ko">카톡 정밀 분석기</b><i>Google Play · App Store</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/age_calculator/" data-app="age_calculator" style="--t-dark: #ff8a7a; --t-light: #c93838"><img src="/apps/age_calculator/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b>How Old Are You? Age Test</b><i>Google Play · App Store</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/deadly_balloons/" data-app="deadly_balloons" style="--t-dark: #ff5d6c; --t-light: #b0152e"><img src="/apps/deadly_balloons/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b>Deadly Balloons: Bullet Hell</b><i>Google Play · App Store</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/alba_pay/" data-app="alba_pay" style="--t-dark: #d8f35b; --t-light: #5c7400"><img src="/apps/alba_pay/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b lang="ko">알바수첩</b><i>Google Play · App Store</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/visual_metronome/" data-app="visual_metronome" style="--t-dark: #e4b96a; --t-light: #7a5512"><img src="/apps/visual_metronome/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b>Visual Metronome</b><i>Google Play · App Store</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/line_chat_analyzer/" data-app="line_chat_analyzer" style="--t-dark: #a99dff; --t-light: #5b4bdb"><img src="/apps/line_chat_analyzer/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b>TalkScope</b><i>Google Play</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/kakao_love_analyzer/" data-app="kakao_love_analyzer" style="--t-dark: #f48fb1; --t-light: #c2185b"><img src="/apps/kakao_love_analyzer/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b lang="ko">카카오톡 연애 분석기</b><i>Google Play · App Store</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/reverse_image_search/" data-app="reverse_image_search" style="--t-dark: #818cf8; --t-light: #4f46e5"><img src="/apps/reverse_image_search/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b>Reverse Image Search</b><i>Google Play · App Store</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/qr_scanner/" data-app="qr_scanner" style="--t-dark: #aba3ff; --t-light: #4e3ee6"><img src="/apps/qr_scanner/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b>QR Scanner: Scan &amp; Create</b><i>Google Play</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/exif/" data-app="exif" style="--t-dark: #b6c3f7; --t-light: #4a5268"><img src="/apps/exif/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b>Photo Exif Metadata Editor</b><i>Google Play</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/saju/" data-app="saju" style="--t-dark: #8cc3d3; --t-light: #1c5a6e"><img src="/apps/saju/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b lang="ko">사주 분석기</b><i>Google Play</i></span></a></li>
+                    <li><a class="app-chip" href="/apps/katalk_keeper/" data-app="katalk_keeper" style="--t-dark: #fde524; --t-light: #8f6f00"><img src="/apps/katalk_keeper/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b lang="ko">슬쩍</b><i>Google Play</i></span></a></li>
+                </ul>
+                <div class="panel-actions">
+                    <a class="btn btn-ghost apps-all" href="/apps/">All apps and privacy policies <span class="arrow">→</span></a>
                 </div>
             </div>
         </section>
 
-        <!-- 05 · games.rexy.win — multiplayer browser games -->
-        <section class="chapter chapter-games" id="games" aria-labelledby="games-title">
-            <div class="wrap">
-                <div class="chapter-copy chapter-copy-wide games-copy" data-reveal-group>
-                    <span class="eyebrow">games.rexy.win</span>
-                    <h2 id="games-title" data-lines>Multiplayer games that run in a browser tab.</h2>
-                    <p>A dino party brawler, a 3D arena shooter, a circuit-board RTS, a cute-horror house, a draw-and-guess party and 3D chess. Multiplayer over WebSockets, no installs, one link each.</p>
-                    <div class="chapter-actions">
-                        <a class="btn btn-primary" href="https://games.rexy.win" target="_blank" rel="noopener noreferrer">Pick a game</a>
-                        <span class="net-pill" id="gamesNet" data-state="idle"><i class="net-dot" aria-hidden="true"></i><span>dino network</span><b id="gamesNetLabel">games</b></span>
-                    </div>
-                </div>
-                <div class="games-grid" data-reveal-group>
-
-                    <a class="game" href="https://crazy.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #ff9b2f; --c2: #ff5e7d">
-                        <span class="game-window" aria-hidden="true">
-                            <span class="game-titlebar"><i></i><i></i><i></i><b>crazy.rexy.win</b></span>
-                            <span class="game-art art-party"><i class="art-egg e1"></i><i class="art-egg e2"></i><i class="art-egg e3"></i><i class="art-blast"></i><span class="game-emoji">🦕</span></span>
-                        </span>
-                        <span class="game-meta">
-                            <b>Rexy Arcade</b>
-                            <span class="game-tagline">Bomberman-style dino party mayhem.</span>
-                            <span class="game-tags"><i>Party · Action</i><i>1–8 players</i><i>Canvas 2D</i></span>
-                        </span>
-                    </a>
-
-                    <a class="game" href="https://fps.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #ff4d4d; --c2: #2f81f7">
-                        <span class="game-window" aria-hidden="true">
-                            <span class="game-titlebar"><i></i><i></i><i></i><b>fps.rexy.win</b></span>
-                            <span class="game-art art-shooter"><i class="art-floor"></i><i class="art-cross"></i><i class="art-hit h1"></i><i class="art-hit h2"></i><span class="game-emoji">🎯</span></span>
-                        </span>
-                        <span class="game-meta">
-                            <b>FRONTLINE</b>
-                            <span class="game-tagline">3D multiplayer arena shooter.</span>
-                            <span class="game-tags"><i>FPS · Arena</i><i>Multiplayer</i><i>Three.js</i></span>
-                        </span>
-                    </a>
-
-                    <a class="game" href="https://overclock.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #ff8de0; --c2: #34e2ff">
-                        <span class="game-window" aria-hidden="true">
-                            <span class="game-titlebar"><i></i><i></i><i></i><b>overclock.rexy.win</b></span>
-                            <span class="game-art art-strategy"><i class="art-trace t1"></i><i class="art-trace t2"></i><i class="art-trace t3"></i><i class="art-node n1"></i><i class="art-node n2"></i><i class="art-node n3"></i><i class="art-core"></i><span class="game-emoji">⚡</span></span>
-                        </span>
-                        <span class="game-meta">
-                            <b>OVERCLOCK</b>
-                            <span class="game-tagline">Circuit-board real-time strategy.</span>
-                            <span class="game-tags"><i>RTS · Strategy</i><i>1v1 · 2v2 · FFA</i><i>PixiJS</i></span>
-                        </span>
-                    </a>
-
-                    <a class="game" href="https://spooky.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #b9a8ff; --c2: #ff9bb8">
-                        <span class="game-window" aria-hidden="true">
-                            <span class="game-titlebar"><i></i><i></i><i></i><b>spooky.rexy.win</b></span>
-                            <span class="game-art art-spooky"><i class="art-beam"></i><i class="art-eye l"></i><i class="art-eye r"></i><span class="game-emoji">👻</span></span>
-                        </span>
-                        <span class="game-meta">
-                            <b>SPOOKY FRIENDS</b>
-                            <span class="game-tagline">무섭지만… 귀여운 반전 호러.</span>
-                            <span class="game-tags"><i>Horror(?) · Adventure</i><i>Solo</i><i>Three.js</i></span>
-                        </span>
-                    </a>
-
-                    <a class="game" href="https://draw.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #ff8fbb; --c2: #7fe0c4">
-                        <span class="game-window" aria-hidden="true">
-                            <span class="game-titlebar"><i></i><i></i><i></i><b>draw.rexy.win</b></span>
-                            <span class="game-art art-doodle"><svg viewBox="0 0 200 120" preserveAspectRatio="none"><path class="doodle-1" d="M14 88 C 40 20, 70 20, 92 70 S 140 110, 150 46 S 178 30, 190 60"/><path class="doodle-2" d="M30 100 C 60 60, 110 118, 170 92"/></svg><i class="art-guess">cat?</i><span class="game-emoji">🎨</span></span>
-                        </span>
-                        <span class="game-meta">
-                            <b>DOODLINGS</b>
-                            <span class="game-tagline">Draw something silly. Guess even sillier.</span>
-                            <span class="game-tags"><i>Party · Drawing</i><i>2–12 players</i><i>WebSockets</i></span>
-                        </span>
-                    </a>
-
-                    <a class="game" href="https://chess.rexy.win" target="_blank" rel="noopener noreferrer" style="--c1: #f07da2; --c2: #83c6a2">
-                        <span class="game-window" aria-hidden="true">
-                            <span class="game-titlebar"><i></i><i></i><i></i><b>chess.rexy.win</b></span>
-                            <span class="game-art art-chess"><i class="art-board"></i><i class="art-piece p1">♞</i><i class="art-piece p2">♛</i><i class="art-piece p3">♟</i><span class="game-emoji">♛</span></span>
-                        </span>
-                        <span class="game-meta">
-                            <b>CHESSLINGS</b>
-                            <span class="game-tagline">Tiny champions. Grand strategy.</span>
-                            <span class="game-tags"><i>Chess · Strategy</i><i>Solo · 2 players</i><i>Three.js</i></span>
-                        </span>
-                    </a>
-
+        <!-- 05 · games.rexy.win — the volcano: smokes while the games portal answers -->
+        <section class="stop stop-left stop-wide" id="games" data-stop="4" data-place="Volcano" aria-labelledby="games-title">
+            <img class="stop-poster" src="/assets/island/games.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>04</b>Volcano</p>
+                <span class="eyebrow">games.rexy.win</span>
+                <h2 id="games-title">Multiplayer games that run in a browser tab.</h2>
+                <p>A dino party brawler, a 3D arena shooter, a circuit-board RTS, a cute-horror house, a draw-and-guess party and 3D chess. Multiplayer over WebSockets, no installs, one link each. The mountain smokes while the portal is awake.</p>
+                <ul class="row-list">
+                    <li><a class="row-link" href="https://crazy.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff9b2f"><i class="row-dot" aria-hidden="true"></i><span><b>Rexy Arcade</b><i>Bomberman-style dino party mayhem.</i></span><em>Party · 1–8 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://fps.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff4d4d"><i class="row-dot" aria-hidden="true"></i><span><b>FRONTLINE</b><i>3D multiplayer arena shooter.</i></span><em>FPS · Three.js</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://overclock.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #34e2ff"><i class="row-dot" aria-hidden="true"></i><span><b>OVERCLOCK</b><i>Circuit-board real-time strategy.</i></span><em>RTS · 1v1 · 2v2 · FFA</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://spooky.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #b9a8ff"><i class="row-dot" aria-hidden="true"></i><span><b>SPOOKY FRIENDS</b><i lang="ko">무섭지만… 귀여운 반전 호러.</i></span><em>Horror(?) · Solo</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://draw.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff8fbb"><i class="row-dot" aria-hidden="true"></i><span><b>DOODLINGS</b><i>Draw something silly. Guess even sillier.</i></span><em>Party · 2–12 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="https://chess.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #83c6a2"><i class="row-dot" aria-hidden="true"></i><span><b>CHESSLINGS</b><i>Tiny champions. Grand strategy.</i></span><em>Chess · Solo · 2 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                </ul>
+                <div class="panel-actions">
+                    <a class="btn btn-primary" href="https://games.rexy.win" target="_blank" rel="noopener noreferrer">Pick a game</a>
+                    <span class="net-pill" id="gamesNet" data-state="idle"><i class="net-dot" aria-hidden="true"></i><span>dino network</span><b id="gamesNetLabel">games</b></span>
                 </div>
             </div>
         </section>
 
-        <!-- 06 · /Applications/ — native macOS apps, each on its own little desktop -->
-        <section class="chapter chapter-mac" id="mac" aria-labelledby="mac-title">
-            <div class="wrap">
-                <div class="chapter-copy chapter-copy-wide mac-copy" data-reveal-group>
-                    <span class="eyebrow">/Applications/</span>
-                    <h2 id="mac-title" data-lines>Native on the Mac, menu bar first.</h2>
-                    <p>All Swift and SwiftUI. A tyrannosaur that runs faster when the Mac is busy, a dashboard for the store apps, a keeper of stray dev servers, and a gauge for how much Claude and Codex are left. Rex Boing is open source; the others are in-house tools.</p>
-                    <div class="chapter-actions">
-                        <a class="btn btn-primary" href="https://github.com/rexyrex/Rex-Boing/releases" target="_blank" rel="noopener noreferrer">Get Rex Boing</a>
-                        <a class="link-mono" href="https://github.com/rexyrex/Rex-Boing" target="_blank" rel="noopener noreferrer">source on GitHub</a>
-                    </div>
-                </div>
-                <div class="mac-grid" data-reveal-group>
-
-                    <a class="mac" href="https://github.com/rexyrex/Rex-Boing" target="_blank" rel="noopener noreferrer" style="--tint: var(--accent)">
-                        <span class="mac-desktop" aria-hidden="true">
-                            <span class="mac-menubar">
-                                <i class="mac-apple"></i><b>Rex Boing</b><i class="mac-menu">Dashboard</i><i class="mac-menu">Gallery</i>
-                                <span class="mac-menubar-right">
-                                    <span class="mac-item mac-item-on"><svg class="rex-run" viewBox="0 0 13 12" shape-rendering="crispEdges"><path d="M8 0h5v1h-5zM8 1h1v1h-1zM10 1h3v1h-3zM8 2h5v1h-5zM8 3h4v1h-4zM8 4h2v1h-2zM0 5h1v1h-1zM7 5h4v1h-4zM0 6h1v1h-1zM6 6h5v1h-5zM0 7h2v1h-2zM5 7h5v1h-5zM1 8h8v1h-8zM2 9h7v1h-7zM3 10h2v1h-2zM6 10h2v1h-2zM3 11h1v1h-1zM7 11h1v1h-1z"/></svg><b>37%</b></span>
-                                    <i class="ui-wifi"></i><i class="ui-bat"></i><i class="mac-clock">12:30</i>
-                                </span>
-                            </span>
-                            <span class="mac-window mac-popover">
-                                <span class="mac-body">
-                                    <span class="ui-card-head"><span class="ui-kicker">processor</span><b class="ui-fine">load 3.1 · die 48°C</b></span>
-                                    <span class="rb-hero"><b class="ui-big">37<small>%</small></b><span class="core-bars"><i style="--h: 22%"></i><i style="--h: 30%"></i><i style="--h: 18%"></i><i style="--h: 26%"></i><i class="p" style="--h: 64%"></i><i class="p" style="--h: 48%"></i><i class="p" style="--h: 82%"></i><i class="p" style="--h: 40%"></i><i class="p" style="--h: 55%"></i><i class="p" style="--h: 71%"></i></span></span>
-                                    <span class="ui-test"><i>GPU</i><span class="ui-bar"><span style="--p: 12%"></span></span><b>12%</b></span>
-                                    <span class="ui-test"><i>Memory</i><span class="ui-bar"><span style="--p: 57%"></span></span><b>18.2 GB</b></span>
-                                    <span class="ui-test"><i>Power</i><span class="ui-bar"><span style="--p: 34%"></span></span><b>11.4 W</b></span>
-                                    <span class="ui-test"><i>Fans</i><span class="ui-bar"><span style="--p: 20%"></span></span><b>1480 rpm</b></span>
-                                    <span class="ui-kicker">top · cpu</span>
-                                    <span class="ui-rows"><span><i class="ui-tag">app</i>Xcode<b>41%</b></span><span><i class="ui-tag">app</i>Google Chrome<b>13%</b></span></span>
-                                </span>
-                            </span>
-                        </span>
-                        <span class="mac-meta">
-                            <b>Rex Boing</b>
-                            <span class="mac-tagline">A tiny tyrannosaur in the menu bar that quickens as the Mac gets busier. Behind it, a dashboard: processor, GPU, memory, thermals, power, network, storage, and which process is to blame.</span>
-                            <span class="mac-tags"><i>Menu bar · Telemetry</i><i>macOS 14+</i><i>Open source · MIT</i></span>
-                        </span>
-                    </a>
-
-                    <a class="mac" href="/apps/app_manager/" style="--tint: var(--tok-num)">
-                        <span class="mac-desktop" aria-hidden="true">
-                            <span class="mac-menubar">
-                                <i class="mac-apple"></i><b>App Manager</b><i class="mac-menu">Apps</i><i class="mac-menu">Deploy</i><i class="mac-menu">Window</i>
-                                <span class="mac-menubar-right"><i class="ui-wifi"></i><i class="ui-bat"></i><i class="mac-clock">12:30</i></span>
-                            </span>
-                            <span class="mac-window">
-                                <span class="mac-titlebar"><i></i><i></i><i></i><b>App Manager</b><em>release train</em></span>
-                                <span class="mac-split">
-                                    <span class="mac-sidebar">
-                                        <span class="ui-kicker">apps</span>
-                                        <i class="on" style="--dot: var(--tok-num)">Age Calculator</i>
-                                        <i style="--dot: var(--accent)">QR Scanner</i>
-                                        <i style="--dot: var(--tok-kw)">Reverse Image Search</i>
-                                        <i style="--dot: #5fc9b5">Exif Editor</i>
-                                        <i style="--dot: var(--tok-str)">KakaoParser</i>
-                                        <i style="--dot: #e8895a">Saju</i>
-                                    </span>
-                                    <span class="mac-main">
-                                        <span class="ui-card-head"><span class="ui-kicker">deploy · ios_testflight</span><b class="ui-badge">running</b></span>
-                                        <span class="am-console"><i>$ fastlane ios_testflight</i><i>[12:30:04] flutter build ipa --release</i><i>[12:31:52] uploading 1.4.2 (39) to TestFlight…</i><i class="ok">[12:33:10] ✓ processing complete</i></span>
-                                        <span class="ui-card-head"><span class="ui-kicker">installs · 14 days</span><b class="ui-fine">↑ 8%</b></span>
-                                        <span class="am-chart"><i style="--h: 40%"></i><i style="--h: 52%"></i><i style="--h: 38%"></i><i style="--h: 60%"></i><i style="--h: 46%"></i><i style="--h: 71%"></i><i style="--h: 58%"></i><i style="--h: 64%"></i><i style="--h: 80%"></i><i style="--h: 62%"></i><i style="--h: 74%"></i><i style="--h: 88%"></i><i style="--h: 70%"></i><i style="--h: 96%"></i></span>
-                                        <span class="ui-card-head"><span class="ui-kicker">listing · en-US</span><b class="ui-fine">title 24/30 · short 71/80</b></span>
-                                    </span>
-                                </span>
-                            </span>
-                        </span>
-                        <span class="mac-meta">
-                            <b>App Manager</b>
-                            <span class="mac-tagline">One window for the whole app portfolio: store metadata and screenshots, fastlane deploys with live logs, store questionnaires, release state, revenue and health, and embedded agent sessions.</span>
-                            <span class="mac-tags"><i>Portfolio · Stores</i><i>macOS · Windows</i><i>Download</i></span>
-                        </span>
-                    </a>
-
-                    <div class="mac" style="--tint: var(--tok-kw)">
-                        <span class="mac-desktop" aria-hidden="true">
-                            <span class="mac-menubar">
-                                <i class="mac-apple"></i><b>Project Manager</b><i class="mac-menu">Projects</i><i class="mac-menu">Tools</i>
-                                <span class="mac-menubar-right">
-                                    <span class="mac-item mac-item-on"><i class="pm-glyph"></i><b>3 running</b></span>
-                                    <i class="ui-wifi"></i><i class="ui-bat"></i><i class="mac-clock">12:30</i>
-                                </span>
-                            </span>
-                            <span class="mac-window">
-                                <span class="mac-titlebar"><i></i><i></i><i></i><b>Project Manager</b><em>~/projects</em></span>
-                                <span class="mac-body">
-                                    <span class="pm-row"><span class="pm-name"><b>teslamate-dashboard</b><i>node · :8088</i></span><span class="pm-inst"><b>2</b> running <em class="pm-dup">duplicate</em></span><span class="pm-who">Claude Code</span><span class="pm-btn">Stop</span></span>
-                                    <span class="pm-row"><span class="pm-name"><b>AppManager</b><i>xcode · mac app</i></span><span class="pm-inst"><b>1</b> running</span><span class="pm-who">Mac app</span><span class="pm-btn">Stop</span></span>
-                                    <span class="pm-row is-idle"><span class="pm-name"><b>rexyrex.github.io</b><i>python · :8123</i></span><span class="pm-inst"><b>0</b> running</span><span class="pm-who">—</span><span class="pm-btn pm-btn-go">Start</span></span>
-                                    <span class="pm-row is-idle"><span class="pm-name"><b>Rex-Boing</b><i>xcodegen · mac app</i></span><span class="pm-inst"><b>0</b> running</span><span class="pm-who">—</span><span class="pm-btn pm-btn-go">Install</span></span>
-                                    <span class="pm-git"><i class="ui-tag">git</i>main · ↑2 · 3 changed<b>commit · push · pull</b></span>
-                                </span>
-                            </span>
-                        </span>
-                        <span class="mac-meta">
-                            <b>Project Manager</b>
-                            <span class="mac-tagline">Watches every project folder, counts what is running, flags the duplicate dev servers an agent spawned and forgot, and builds or installs a Mac app in one click. Git status at a glance.</span>
-                            <span class="mac-tags"><i>Processes · Git</i><i>In-house</i><i>Swift 6</i></span>
-                        </span>
-                    </div>
-
-                    <div class="mac" style="--tint: #5fc9b5">
-                        <span class="mac-desktop" aria-hidden="true">
-                            <span class="mac-menubar">
-                                <i class="mac-apple"></i><b>AI Usage Tracker</b><i class="mac-menu">Refresh</i><i class="mac-menu">Settings</i>
-                                <span class="mac-menubar-right">
-                                    <span class="mac-item mac-item-on"><i class="ai-ring" style="--p: 62"></i><b>62%</b></span>
-                                    <i class="ui-wifi"></i><i class="ui-bat"></i><i class="mac-clock">12:30</i>
-                                </span>
-                            </span>
-                            <span class="mac-window mac-popover">
-                                <span class="mac-body">
-                                    <span class="ui-card-head"><span class="ui-kicker">claude</span><b class="ui-fine">resets in 2h 14m</b></span>
-                                    <span class="ai-row"><i>5-hour</i><span class="ai-bar"><span class="ai-new" style="--p: 62%"></span><span class="ai-old" style="--p: 55%"></span></span><b>62%</b><em>▲ +7%</em></span>
-                                    <span class="ai-row"><i>7-day</i><span class="ai-bar"><span class="ai-new" style="--p: 41%"></span><span class="ai-old" style="--p: 39%"></span></span><b>41%</b><em>▲ +2%</em></span>
-                                    <span class="ui-card-head"><span class="ui-kicker">codex</span><b class="ui-fine">resets in 4h 02m</b></span>
-                                    <span class="ai-row"><i>5-hour</i><span class="ai-bar"><span class="ai-new" style="--p: 18%"></span><span class="ai-old" style="--p: 18%"></span></span><b>18%</b><em></em></span>
-                                    <span class="ai-row"><i>weekly</i><span class="ai-bar"><span class="ai-new" style="--p: 33%"></span><span class="ai-old" style="--p: 30%"></span></span><b>33%</b><em>▲ +3%</em></span>
-                                    <span class="ui-fine">refreshed 40 s ago · every 5 min · ⌘R</span>
-                                </span>
-                            </span>
-                        </span>
-                        <span class="mac-meta">
-                            <b>AI Usage Tracker</b>
-                            <span class="mac-tagline">How much Claude and Codex are left, from the menu bar: every usage window the signed-in accounts expose, a ring that shades toward red, and the slice used since the last refresh in amber.</span>
-                            <span class="mac-tags"><i>Menu bar · Gauges</i><i>In-house</i><i>SwiftUI</i></span>
-                        </span>
-                    </div>
-
+        <section class="stop stop-left stop-wide" id="mac" data-stop="5" data-place="Ranger outpost" aria-labelledby="mac-title">
+            <img class="stop-poster" src="/assets/island/mac.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>05</b>Ranger outpost</p>
+                <span class="eyebrow">/Applications/</span>
+                <h2 id="mac-title">Native on the Mac, menu bar first.</h2>
+                <p>All Swift and SwiftUI. Rex Boing is open source; the others are in-house tools.</p>
+                <ul class="row-list row-list-tall">
+                    <li><a class="row-link" href="https://github.com/rexyrex/Rex-Boing" target="_blank" rel="noopener noreferrer" style="--c: var(--accent)"><i class="row-dot" aria-hidden="true"></i><span><b>Rex Boing</b><i>A tiny tyrannosaur in the menu bar that quickens as the Mac gets busier. Behind it, a dashboard: processor, GPU, memory, thermals, power, network, storage, and which process is to blame.</i></span><em>macOS 14+ · MIT</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
+                    <li><a class="row-link" href="/apps/app_manager/" style="--c: var(--tok-num)"><i class="row-dot" aria-hidden="true"></i><span><b>App Manager</b><i>One window for the whole app portfolio: store metadata and screenshots, fastlane deploys with live logs, store questionnaires, release state, revenue and health, and embedded agent sessions.</i></span><em>macOS · Windows</em><span class="row-arrow" aria-hidden="true">→</span></a></li>
+                    <li><div class="row-link" style="--c: var(--tok-kw)"><i class="row-dot" aria-hidden="true"></i><span><b>Project Manager</b><i>Watches every project folder, counts what is running, flags the duplicate dev servers an agent spawned and forgot, and builds or installs a Mac app in one click. Git status at a glance.</i></span><em>In-house · Swift 6</em></div></li>
+                    <li><div class="row-link" style="--c: #5fc9b5"><i class="row-dot" aria-hidden="true"></i><span><b>AI Usage Tracker</b><i>How much Claude and Codex are left, from the menu bar: every usage window the signed-in accounts expose, a ring that shades toward red, and the slice used since the last refresh in amber.</i></span><em>In-house · SwiftUI</em></div></li>
+                </ul>
+                <div class="panel-actions">
+                    <a class="btn btn-primary" href="https://github.com/rexyrex/Rex-Boing/releases" target="_blank" rel="noopener noreferrer">Get Rex Boing</a>
+                    <a class="link-mono" href="https://github.com/rexyrex/Rex-Boing" target="_blank" rel="noopener noreferrer">source on GitHub</a>
                 </div>
             </div>
         </section>
 
-        <!-- 07 · ~/teslamate-dashboard/ — live car telemetry, drawn as the car's own screen -->
-        <section class="chapter chapter-tesla" id="tesla" aria-labelledby="tesla-title">
-            <div class="wrap chapter-grid tesla-grid">
-                <div class="chapter-copy" data-reveal-group>
-                    <span class="eyebrow">~/teslamate-dashboard/</span>
-                    <h2 id="tesla-title" data-lines>A dashboard for the car.</h2>
-                    <p>Live telemetry from TeslaMate over MQTT on a dark map with glass cards: speed, power, battery, climate, tire pressure, drive recaps and rolling charts. Plus full-screen visualizer scenes, an AI co-pilot that comments on the drive, and a few tiny games. Built to run in the car's own browser.</p>
-                    <div class="chapter-actions">
-                        <a class="link-mono" href="https://github.com/teslamate-org/teslamate" target="_blank" rel="noopener noreferrer">built on TeslaMate</a>
-                    </div>
-                </div>
-                <div class="car" id="carScreen" data-reveal aria-hidden="true">
-                    <span class="car-screen">
-                        <span class="car-map">
-                            <svg class="car-route" viewBox="0 0 320 200" preserveAspectRatio="none">
-                                <path id="carRoutePath" class="car-route-line" pathLength="1" d="M-12 156 C 38 148, 58 92, 110 98 S 172 154, 212 120 S 250 40, 300 62 L 340 48"/>
-                                <g class="car-dot" transform="translate(212 120)">
-                                    <circle class="car-dot-pulse" r="6"/>
-                                    <circle class="car-dot-core" r="3"/>
-                                    <animateMotion dur="16s" repeatCount="indefinite" rotate="auto"><mpath href="#carRoutePath"/></animateMotion>
-                                </g>
-                            </svg>
-                        </span>
-                        <span class="car-card car-speed"><i class="car-kicker">speed</i><b><span id="carSpeed" data-to="87">0</span><small>km/h</small></b><em class="car-pill">driving</em></span>
-                        <span class="car-card car-battery"><i class="car-kicker">battery</i><b>74<small>%</small></b><span class="car-batbar"><span style="--p: 74%"></span></span><em>est 312 km · rated 338 km</em></span>
-                        <span class="car-card car-climate"><i class="car-kicker">climate</i><b>21<small>°</small></b><em>outside 9°</em></span>
-                        <span class="car-card car-drive"><i class="car-kicker">current drive</i><span class="car-stats"><span><b>24.6</b>km</span><span><b>31</b>min</span><span><b>−12</b>kW</span><span><b>142</b>m ↑</span></span></span>
-                        <span class="car-charts">
-                            <span class="car-chart" style="--c: #3b82f6"><i>speed</i><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,24 8,20 16,22 24,14 32,16 40,9 48,12 56,7 64,10 72,5 80,8 88,4 100,6" vector-effect="non-scaling-stroke"/></svg></span>
-                            <span class="car-chart" style="--c: #10b981"><i>power</i><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,15 8,12 16,18 24,8 32,20 40,10 48,16 56,6 64,22 72,12 80,17 88,9 100,14" vector-effect="non-scaling-stroke"/></svg></span>
-                            <span class="car-chart" style="--c: #f59e0b"><i>elevation</i><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,26 12,24 24,22 36,18 48,17 60,12 72,10 84,7 100,4" vector-effect="non-scaling-stroke"/></svg></span>
-                            <span class="car-chart" style="--c: #a78bfa"><i>tires · psi</i><svg viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,12 50,11 100,12" vector-effect="non-scaling-stroke"/><polyline points="0,14 50,15 100,14" vector-effect="non-scaling-stroke"/><polyline points="0,17 50,16 100,17" vector-effect="non-scaling-stroke"/><polyline points="0,19 50,20 100,19" vector-effect="non-scaling-stroke"/></svg></span>
-                        </span>
-                    </span>
+        <section class="stop stop-left" id="tesla" data-stop="6" data-place="Migration trail" aria-labelledby="tesla-title">
+            <img class="stop-poster" src="/assets/island/tesla.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>06</b>Migration trail</p>
+                <span class="eyebrow">~/teslamate-dashboard/</span>
+                <h2 id="tesla-title">A dashboard for the car.</h2>
+                <p>Live telemetry from TeslaMate over MQTT on a dark map with glass cards: speed, power, battery, climate, tire pressure, drive recaps and rolling charts. Plus full-screen visualizer scenes, an AI co-pilot that comments on the drive, and a few tiny games. Built to run in the car's own browser.</p>
+                <p class="panel-hint">The light on the trail is the dot on that map. The dashboard itself is private.</p>
+                <div class="panel-actions">
+                    <a class="link-mono" href="https://github.com/teslamate-org/teslamate" target="_blank" rel="noopener noreferrer">built on TeslaMate</a>
                 </div>
             </div>
         </section>
 
-        <!-- 08 · /music/ -->
-        <section class="chapter chapter-music" id="music" aria-labelledby="music-title">
-            <div class="wrap music-grid">
-                <div class="chapter-copy" data-reveal-group>
-                    <span class="eyebrow">/music/</span>
-                    <h2 id="music-title" data-lines>And a few tracks.</h2>
-                    <p>SuperPose streams from SoundCloud. The rest of the audio is on SoundCloud and Newgrounds. Run your pointer across the bars.</p>
-                    <div class="chapter-actions">
-                        <a class="btn btn-ghost" href="/music/showcase.html">Listen on /music/ <span class="arrow">→</span></a>
-                    </div>
-                </div>
-                <div class="wave" id="wave" data-reveal aria-hidden="true">
-                    <div class="wave-bars" id="waveBars"></div>
-                    <div class="wave-meta"><span class="wave-title">SuperPose</span><span class="tag">SoundCloud</span></div>
+        <section class="stop stop-right" id="music" data-stop="7" data-place="Singing lagoon" aria-labelledby="music-title">
+            <img class="stop-poster" src="/assets/island/music.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>07</b>Singing lagoon</p>
+                <span class="eyebrow">/music/</span>
+                <h2 id="music-title">And a few tracks.</h2>
+                <p>SuperPose streams from SoundCloud. The rest of the audio is on SoundCloud and Newgrounds. The crested ones in the shallows had their own instrument: that hollow crest is thought to have been a resonator.</p>
+                <div class="panel-actions">
+                    <a class="btn btn-ghost" href="/music/showcase.html">Listen on /music/ <span class="arrow">→</span></a>
                 </div>
             </div>
         </section>
 
-        <!-- 09 · Index: the site's own directory listing -->
-        <section class="section wrap" id="index">
-            <div class="section-head" data-reveal>
+        <section class="stop stop-right" id="log" data-stop="8" data-place="Strata cliff" aria-labelledby="log-title">
+            <img class="stop-poster" src="/assets/island/log.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>08</b>Strata cliff</p>
+                <span class="eyebrow">/log/</span>
+                <h2 id="log-title">Notes on how things here are built.</h2>
+                <p>A devlog in hand-written HTML, newest on top &mdash; the way the rock out here keeps its own record.</p>
+                <ul class="row-list">
+                    <li><a class="row-link" href="/log/particle-rex.html" style="--c: var(--accent)"><i class="row-dot" aria-hidden="true"></i><span><b>The particle rex</b><i>How the old hero drew the mascot out of seven thousand points.</i></span><span class="row-arrow" aria-hidden="true">→</span></a></li>
+                    <li><a class="row-link" href="/log/2026-09-renewal.html" style="--c: var(--tok-str)"><i class="row-dot" aria-hidden="true"></i><span><b>The September renewal</b><i>A command palette, social cards, page transitions.</i></span><span class="row-arrow" aria-hidden="true">→</span></a></li>
+                </ul>
+                <div class="panel-actions">
+                    <a class="btn btn-ghost" href="/log/">Read the devlog <span class="arrow">→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="stop stop-center stop-wide" id="index" data-stop="9" data-place="The whole island" aria-labelledby="index-title">
+            <img class="stop-poster" src="/assets/island/index.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>09</b>The whole island</p>
                 <span class="eyebrow">/</span>
-                <h2>What's here</h2>
-            </div>
-            <div class="index" data-reveal-group>
-                <div class="index-head" aria-hidden="true">
-                    <span>path</span>
-                    <span>what it is</span>
-                    <span>built with</span>
-                    <span></span>
+                <h2 id="index-title">What's here</h2>
+                <div class="index">
+                    <div class="index-head" aria-hidden="true">
+                        <span>path</span>
+                        <span>what it is</span>
+                        <span>built with</span>
+                        <span></span>
+                    </div>
+                    <a class="index-row" href="/typing/index.html">
+                        <span class="index-path">/typing/</span>
+                        <span class="index-body">
+                            <span class="index-name">Typing speed test</span>
+                            <span class="index-desc">Korean, English and programmer modes, with daily and all-time leaderboards.</span>
+                        </span>
+                        <span class="index-meta">JavaScript · Firebase</span>
+                        <span class="index-arrow" aria-hidden="true">→</span>
+                    </a>
+                    <a class="index-row" href="/deadlyBalloons/index.html">
+                        <span class="index-path">/deadlyBalloons/</span>
+                        <span class="index-body">
+                            <span class="index-name">Deadly Balloons 2</span>
+                            <span class="index-desc">Desktop balloon-popping game. Trailer, download and source.</span>
+                        </span>
+                        <span class="index-meta">desktop</span>
+                        <span class="index-arrow" aria-hidden="true">→</span>
+                    </a>
+                    <a class="index-row" href="#apps" data-go="3">
+                        <span class="index-path">/apps/</span>
+                        <span class="index-body">
+                            <span class="index-name">Published apps</span>
+                            <span class="index-desc">Apps on Google Play and the App Store, each with its own page and privacy policy.</span>
+                        </span>
+                        <span class="index-meta">Flutter · Android · iOS</span>
+                        <span class="index-arrow" aria-hidden="true">↑</span>
+                    </a>
+                    <a class="index-row" href="https://games.rexy.win" target="_blank" rel="noopener noreferrer">
+                        <span class="index-path">games.rexy.win</span>
+                        <span class="index-body">
+                            <span class="index-name">Browser games</span>
+                            <span class="index-desc">Multiplayer browser games: Rexy Arcade, FRONTLINE, OVERCLOCK, SPOOKY FRIENDS, DOODLINGS and CHESSLINGS.</span>
+                        </span>
+                        <span class="index-meta">Node · WebSockets · Three.js</span>
+                        <span class="index-arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <a class="index-row" href="#mac" data-go="5">
+                        <span class="index-path">/Applications/</span>
+                        <span class="index-body">
+                            <span class="index-name">macOS apps</span>
+                            <span class="index-desc">Rex Boing, App Manager, Project Manager and AI Usage Tracker. Menu bar first; Rex Boing is open source.</span>
+                        </span>
+                        <span class="index-meta">Swift · SwiftUI</span>
+                        <span class="index-arrow" aria-hidden="true">↑</span>
+                    </a>
+                    <a class="index-row" href="#tesla" data-go="6">
+                        <span class="index-path">~/teslamate-dashboard/</span>
+                        <span class="index-body">
+                            <span class="index-name">TeslaMate dashboard</span>
+                            <span class="index-desc">Live car telemetry on a dark map, built for the car's own browser.</span>
+                        </span>
+                        <span class="index-meta">MQTT · Leaflet · Three.js</span>
+                        <span class="index-arrow" aria-hidden="true">↑</span>
+                    </a>
+                    <a class="index-row" href="/music/showcase.html">
+                        <span class="index-path">/music/</span>
+                        <span class="index-body">
+                            <span class="index-name">Music</span>
+                            <span class="index-desc">Tracks on SoundCloud and Newgrounds.</span>
+                        </span>
+                        <span class="index-meta">SoundCloud</span>
+                        <span class="index-arrow" aria-hidden="true">→</span>
+                    </a>
+                    <a class="index-row" href="/animation.html">
+                        <span class="index-path">/animation.html</span>
+                        <span class="index-body">
+                            <span class="index-name">Animation lab</span>
+                            <span class="index-desc">A scratchpad of CSS text effects. Pick one or let it shuffle.</span>
+                        </span>
+                        <span class="index-meta">Vue 3</span>
+                        <span class="index-arrow" aria-hidden="true">→</span>
+                    </a>
+                    <a class="index-row" href="/log/">
+                        <span class="index-path">/log/</span>
+                        <span class="index-body">
+                            <span class="index-name">Devlog</span>
+                            <span class="index-desc">Notes on how the things here are built.</span>
+                        </span>
+                        <span class="index-meta">writing</span>
+                        <span class="index-arrow" aria-hidden="true">→</span>
+                    </a>
+                    <a class="index-row" href="/apps/">
+                        <span class="index-path">/apps/…/privacy-policy/</span>
+                        <span class="index-body">
+                            <span class="index-name">Privacy policies</span>
+                            <span class="index-desc">Every app&rsquo;s policy and terms, in one directory.</span>
+                        </span>
+                        <span class="index-meta">plain HTML</span>
+                        <span class="index-arrow" aria-hidden="true">→</span>
+                    </a>
+                    <a class="index-row" href="/support/">
+                        <span class="index-path">/support/</span>
+                        <span class="index-body">
+                            <span class="index-name">Support</span>
+                            <span class="index-desc">How to reach me about any of the apps.</span>
+                        </span>
+                        <span class="index-meta">email</span>
+                        <span class="index-arrow" aria-hidden="true">→</span>
+                    </a>
                 </div>
-                <a class="index-row" href="/typing/index.html">
-                    <span class="index-path">/typing/</span>
-                    <span class="index-body">
-                        <span class="index-name">Typing speed test</span>
-                        <span class="index-desc">Korean, English and programmer modes, with daily and all-time leaderboards.</span>
-                    </span>
-                    <span class="index-meta">JavaScript · Firebase</span>
-                    <span class="index-arrow" aria-hidden="true">→</span>
-                </a>
-                <a class="index-row" href="/deadlyBalloons/index.html">
-                    <span class="index-path">/deadlyBalloons/</span>
-                    <span class="index-body">
-                        <span class="index-name">Deadly Balloons 2</span>
-                        <span class="index-desc">Desktop balloon-popping game. Trailer, download and source.</span>
-                    </span>
-                    <span class="index-meta">desktop</span>
-                    <span class="index-arrow" aria-hidden="true">→</span>
-                </a>
-                <a class="index-row" href="#apps">
-                    <span class="index-path">/apps/</span>
-                    <span class="index-body">
-                        <span class="index-name">Published apps</span>
-                        <span class="index-desc">Apps on Google Play and the App Store, each with its own page and privacy policy.</span>
-                    </span>
-                    <span class="index-meta">Flutter · Android · iOS</span>
-                    <span class="index-arrow" aria-hidden="true">↑</span>
-                </a>
-                <a class="index-row" href="https://games.rexy.win" target="_blank" rel="noopener noreferrer">
-                    <span class="index-path">games.rexy.win</span>
-                    <span class="index-body">
-                        <span class="index-name">Browser games</span>
-                        <span class="index-desc">Multiplayer browser games: Rexy Arcade, FRONTLINE, OVERCLOCK, SPOOKY FRIENDS, DOODLINGS and CHESSLINGS.</span>
-                    </span>
-                    <span class="index-meta">Node · WebSockets · Three.js</span>
-                    <span class="index-arrow" aria-hidden="true">↗</span>
-                </a>
-                <a class="index-row" href="#mac">
-                    <span class="index-path">/Applications/</span>
-                    <span class="index-body">
-                        <span class="index-name">macOS apps</span>
-                        <span class="index-desc">Rex Boing, App Manager, Project Manager and AI Usage Tracker. Menu bar first; Rex Boing is open source.</span>
-                    </span>
-                    <span class="index-meta">Swift · SwiftUI</span>
-                    <span class="index-arrow" aria-hidden="true">↑</span>
-                </a>
-                <a class="index-row" href="#tesla">
-                    <span class="index-path">~/teslamate-dashboard/</span>
-                    <span class="index-body">
-                        <span class="index-name">TeslaMate dashboard</span>
-                        <span class="index-desc">Live car telemetry on a dark map, built for the car's own browser.</span>
-                    </span>
-                    <span class="index-meta">MQTT · Leaflet · Three.js</span>
-                    <span class="index-arrow" aria-hidden="true">↑</span>
-                </a>
-                <a class="index-row" href="/music/showcase.html">
-                    <span class="index-path">/music/</span>
-                    <span class="index-body">
-                        <span class="index-name">Music</span>
-                        <span class="index-desc">Tracks on SoundCloud and Newgrounds.</span>
-                    </span>
-                    <span class="index-meta">SoundCloud</span>
-                    <span class="index-arrow" aria-hidden="true">→</span>
-                </a>
-                <a class="index-row" href="/animation.html">
-                    <span class="index-path">/animation.html</span>
-                    <span class="index-body">
-                        <span class="index-name">Animation lab</span>
-                        <span class="index-desc">A scratchpad of CSS text effects. Pick one or let it shuffle.</span>
-                    </span>
-                    <span class="index-meta">Vue 3</span>
-                    <span class="index-arrow" aria-hidden="true">→</span>
-                </a>
-                <a class="index-row" href="/log/">
-                    <span class="index-path">/log/</span>
-                    <span class="index-body">
-                        <span class="index-name">Devlog</span>
-                        <span class="index-desc">Notes on how the things here are built. First up: the particle rex.</span>
-                    </span>
-                    <span class="index-meta">writing</span>
-                    <span class="index-arrow" aria-hidden="true">→</span>
-                </a>
-                <a class="index-row" href="/support/">
-                    <span class="index-path">/support/</span>
-                    <span class="index-body">
-                        <span class="index-name">Support</span>
-                        <span class="index-desc">How to reach me about any of the apps.</span>
-                    </span>
-                    <span class="index-meta">email</span>
-                    <span class="index-arrow" aria-hidden="true">→</span>
-                </a>
             </div>
         </section>
 
-        <!-- 10 · Contact -->
-        <section class="section wrap contact" id="contact">
-            <div class="section-head" data-reveal>
+        <section class="stop stop-left stop-wide" id="contact" data-stop="10" data-place="Base camp" aria-labelledby="contact-title">
+            <img class="stop-poster" src="/assets/island/contact.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
+            <div class="panel">
+                <p class="place"><b>10</b>Base camp</p>
                 <span class="eyebrow">/support/</span>
-                <h2>Contact</h2>
-            </div>
-            <div class="contact-grid">
-                <div data-reveal-group>
-                    <a class="contact-email" href="mailto:rexyrex.dev@gmail.com" data-chars>rexyrex.dev@gmail.com</a>
-                    <p class="muted" style="max-width: 58ch;">For app support, include the app name, your device model and the app version. I usually reply within a day or two.</p>
-                    <dl class="facts contact-facts">
-                        <div><dt>handle</dt><dd>rexyrex</dd></div>
-                        <div><dt>stores</dt><dd>Google Play · App Store</dd></div>
-                        <div><dt>base</dt><dd>Korea</dd></div>
-                        <div><dt>mail</dt><dd><a href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a></dd></div>
-                    </dl>
+                <h2 id="contact-title">Contact</h2>
+                <div class="contact-grid">
+                    <div>
+                        <a class="contact-email" href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a>
+                        <p class="muted">For app support, include the app name, your device model and the app version. I usually reply within a day or two.</p>
+                        <dl class="facts contact-facts">
+                            <div><dt>handle</dt><dd>rexyrex</dd></div>
+                            <div><dt>stores</dt><dd>Google Play · App Store</dd></div>
+                            <div><dt>base</dt><dd>Korea</dd></div>
+                            <div><dt>mail</dt><dd><a href="mailto:rexyrex.dev@gmail.com">rexyrex.dev@gmail.com</a></dd></div>
+                        </dl>
+                        <p class="panel-hint" id="campNote" data-needs-world hidden></p>
+                    </div>
+                    <aside class="now" aria-labelledby="now-title">
+                        <span class="eyebrow">now</span>
+                        <h3 id="now-title">What's moving</h3>
+                        <ul class="now-list">
+                            <li><i class="now-dot is-live" aria-hidden="true"></i><span>This page is now an island: a place for everything on the site, and a rex who gets there first.</span></li>
+                            <li><i class="now-dot is-live" aria-hidden="true"></i><span><b>Rex Boing</b> 1.0 is out: a tyrannosaur for the Mac menu bar, <a href="https://github.com/rexyrex/Rex-Boing/releases" target="_blank" rel="noopener noreferrer">on GitHub</a>.</span></li>
+                            <li><i class="now-dot is-live" aria-hidden="true"></i><span><b>DOODLINGS</b> just joined the games portal.</span></li>
+                            <li><i class="now-dot is-live" aria-hidden="true"></i><span>Every app has its own page: pick any name in <a href="#apps" data-go="3">/apps/</a>.</span></li>
+                            <li><i class="now-dot" aria-hidden="true"></i><span>A handful of unreleased apps are in the lab.</span></li>
+                        </ul>
+                        <span class="now-stamp">updated 2026-11-20</span>
+                    </aside>
                 </div>
-                <aside class="now" data-reveal-group aria-labelledby="now-title">
-                    <span class="eyebrow">now</span>
-                    <h3 id="now-title">What's moving</h3>
-                    <ul class="now-list">
-                        <li><i class="now-dot is-live" aria-hidden="true"></i><span><b>Rex Boing</b> 1.0 is out: a tyrannosaur for the Mac menu bar, <a href="https://github.com/rexyrex/Rex-Boing/releases" target="_blank" rel="noopener noreferrer">on GitHub</a>.</span></li>
-                        <li><i class="now-dot is-live" aria-hidden="true"></i><span><b>DOODLINGS</b> just joined the games portal.</span></li>
-                        <li><i class="now-dot is-live" aria-hidden="true"></i><span>Every app now has its own page: tap any phone in <a href="#apps">/apps/</a>.</span></li>
-                        <li><i class="now-dot" aria-hidden="true"></i><span>A handful of unreleased apps are in the lab.</span></li>
-                        <li><i class="now-dot" aria-hidden="true"></i><span>This site: a command palette (<kbd data-palette-kbd>⌘K</kbd>), a <a href="/log/">devlog</a>, social cards, page transitions.</span></li>
-                    </ul>
-                    <span class="now-stamp">updated 2026-10-08</span>
-                </aside>
+                <footer class="site-footer">
+                    <span>© <span id="footer-year">2026</span> Rexyrex</span>
+                    <span>
+                        <a href="https://github.com/rexyrex/rexyrex.github.io" target="_blank" rel="noopener noreferrer">source</a>
+                        · <a href="/log/">devlog</a>
+                        · <a href="/apps/">privacy policies</a>
+                        · <a href="/support/">support</a>
+                    </span>
+                </footer>
             </div>
         </section>
     </main>
 
-    <footer class="site-footer wrap">
-        <span>© <span id="footer-year">2026</span> Rexyrex</span>
-        <span>
-            <a href="https://github.com/rexyrex/rexyrex.github.io" target="_blank" rel="noopener noreferrer">source</a>
-            · <a href="/log/">devlog</a>
-            · <a href="/apps/">privacy policies</a>
-            · <a href="/support/">support</a>
-        </span>
-    </footer>
+    <!-- The places, as buttons: press one and the camera glides there. Plain anchors without the script. -->
+    <nav class="dock" id="dock" aria-label="Places on the island">
+        <div class="dock-rail">
+            <a class="dock-item" href="#top" data-go="0"><b>00</b><span>Overlook</span></a>
+            <a class="dock-item" href="#typing" data-go="1"><b>01</b><span>Typing</span></a>
+            <a class="dock-item" href="#balloons" data-go="2"><b>02</b><span>Balloons</span></a>
+            <a class="dock-item" href="#apps" data-go="3"><b>03</b><span>Apps</span></a>
+            <a class="dock-item" href="#games" data-go="4"><b>04</b><span>Games</span></a>
+            <a class="dock-item" href="#mac" data-go="5"><b>05</b><span>Mac</span></a>
+            <a class="dock-item" href="#tesla" data-go="6"><b>06</b><span>Car</span></a>
+            <a class="dock-item" href="#music" data-go="7"><b>07</b><span>Music</span></a>
+            <a class="dock-item" href="#log" data-go="8"><b>08</b><span>Log</span></a>
+            <a class="dock-item" href="#index" data-go="9"><b>09</b><span>Map</span></a>
+            <a class="dock-item" href="#contact" data-go="10"><b>10</b><span>Camp</span></a>
+        </div>
+        <div class="dock-meta">
+            <span class="dock-status" id="worldStatus" role="status" aria-live="polite"></span>
+            <label class="dock-detail" id="detailCtl" hidden>
+                <span>detail</span>
+                <select id="detailSel" aria-label="Detail of the live island">
+                    <option value="auto">auto</option>
+                    <option value="ultra">ultra</option>
+                    <option value="high">high</option>
+                    <option value="medium">medium</option>
+                    <option value="low">low</option>
+                    <option value="off">stills</option>
+                </select>
+            </label>
+        </div>
+    </nav>
 
-    <!-- Easter egg: long-press the rex in the hero -->
+    <aside class="minimap" id="minimap" aria-label="Map of the island">
+        <img src="/assets/island/map.webp" alt="" width="512" height="512" loading="lazy" decoding="async">
+            <a class="map-pin" href="#top" data-go="0" style="--x: 24.6%; --y: 65.9%" aria-label="Overlook"><i></i></a>
+            <a class="map-pin" href="#typing" data-go="1" style="--x: 33.4%; --y: 45.8%" aria-label="Typing"><i></i></a>
+            <a class="map-pin" href="#balloons" data-go="2" style="--x: 19.8%; --y: 32.4%" aria-label="Balloons"><i></i></a>
+            <a class="map-pin" href="#apps" data-go="3" style="--x: 42.4%; --y: 63.1%" aria-label="Apps"><i></i></a>
+            <a class="map-pin" href="#games" data-go="4" style="--x: 53.5%; --y: 31.0%" aria-label="Games"><i></i></a>
+            <a class="map-pin" href="#mac" data-go="5" style="--x: 63.1%; --y: 44.4%" aria-label="Mac"><i></i></a>
+            <a class="map-pin" href="#tesla" data-go="6" style="--x: 50.5%; --y: 58.8%" aria-label="Car"><i></i></a>
+            <a class="map-pin" href="#music" data-go="7" style="--x: 68.6%; --y: 63.4%" aria-label="Music"><i></i></a>
+            <a class="map-pin" href="#log" data-go="8" style="--x: 74.5%; --y: 73.5%" aria-label="Log"><i></i></a>
+            <a class="map-pin" href="#contact" data-go="10" style="--x: 57.5%; --y: 88.0%" aria-label="Camp"><i></i></a>
+        <i class="map-you" id="mapYou" aria-hidden="true"></i>
+    </aside>
+
+    <!-- Easter egg: long-press the rex mascot beside the title -->
     <dialog id="romanticModal" class="romantic-modal" aria-label="A surprise">
         <div class="romantic-content">
             <div class="romantic-body">
@@ -782,13 +495,8 @@
         </div>
     </dialog>
 
-    <!-- GSAP 3.15 (ScrollTrigger and SplitText are free plugins as of 3.13) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" integrity="sha384-wl5TeDVvOWt30Pbf8aSo2ZrzsOjddu3avOBvHe+p+OhJt9gP6w9YXmDkN5DK2/dF" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js" integrity="sha384-SWJ0lLVRoipvHh59xj0pL7uC7Ih51F+5smaFtrG+2nr+TlDZU5SYJHmxfolbeNTr" crossorigin="anonymous"></script>
     <script src="/js/common.js"></script>
     <script src="/js/index.js"></script>
-    <script src="/js/landing.js"></script>
-    <script type="module" src="/js/hero-particles.js"></script>
+    <script src="/js/island.js"></script>
 </body>
 </html>

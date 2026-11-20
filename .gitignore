@@ -1,3 +1,6 @@
 rex_start.bat
 .DS_Store
 .claude/
+
+# island build tooling
+_tools/world/node_modules/

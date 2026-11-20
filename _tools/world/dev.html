@@ -1,0 +1,22 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>island dev</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}canvas{position:fixed;inset:0;width:100vw;height:100vh;display:block}#log{position:fixed;left:8px;bottom:8px;font:12px ui-monospace,monospace;color:#9f9;background:#0008;padding:4px 8px;white-space:pre}</style>
+<canvas id="c"></canvas><div id="log">loading…</div>
+<script type="module">
+// Bare page for looking at the world without the site around it.
+//   /_tools/world/dev.html?tier=ultra&view=x,y,z,tx,ty,tz&webgl=1&hud=0
+const q = new URLSearchParams(location.search);
+const log = document.getElementById('log');
+if (q.get('hud') === '0') log.style.display = 'none';
+window.__world = null; window.__error = null;
+try {
+    const { createWorld } = await import('/js/world.js?' + Date.now());
+    const world = await createWorld({ canvas: document.getElementById('c'), tier: q.get('tier') || 'ultra', forceWebGL: q.get('webgl') === '1', flags: { bare: q.get('bare') === '1', nopost: q.get('post') === '0', fixed: true }, apps: ['#fb9a4b','#ff8a7a','#ff5d6c','#d8f35b','#e4b96a','#a99dff','#f48fb1','#818cf8','#aba3ff','#b6c3f7','#8cc3d3','#fde524'].map((t, i) => ({ id: 'app' + i, tint: t })), onProgress: (l, p) => { log.textContent = `${l} ${(p * 100) | 0}%`; } });
+    if (q.get('view')) world.setView(...q.get('view').split(',').map(Number));
+    world.start();
+    window.__world = world;
+    log.textContent = `${world.backend} · ${world.quality.name}`;
+} catch (e) { window.__error = String(e && e.stack || e); log.textContent = window.__error; console.error(e); }
+</script>

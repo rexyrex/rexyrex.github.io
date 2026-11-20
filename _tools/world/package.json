@@ -1,0 +1,14 @@
+{
+  "name": "rex-island",
+  "private": true,
+  "description": "The island behind the home page: a procedural Cretaceous world on three.js (WebGPU, WebGL 2 fallback), bundled into /js/world.js",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --dev"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "three": "0.187.0"
+  }
+}

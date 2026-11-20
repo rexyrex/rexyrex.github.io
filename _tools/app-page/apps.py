@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
-"""The home page's /apps/ chapter (the bento of app cards) and the /apps/
-directory page, from one list. Python 3, no packages.
+"""The home page's /apps/ stop (the nesting ground: one chip and one egg per
+app) and the /apps/ directory page, from one list. Python 3, no packages.
 
     python3 _tools/app-page/apps.py
 
 Rewrites apps/index.html and, in index.html, everything from the
 `<!-- 04 · /apps/` comment to the `<!-- 05 · games.rexy.win` comment.
-To add an app: an entry in APPS (wide=True spans two columns on the home
-page and fans two screens; keep the wide cards pairing up into full rows),
-its captures already in apps/<id>/img/, then run this.
+To add an app: an entry in APPS (wide and shots only matter to the /apps/
+directory now), its captures already in apps/<id>/img/, then run this.
 """
 import html
 from pathlib import Path
@@ -115,43 +114,33 @@ def img(app, shot, cls='', lazy=True):
     return f'<img{c} src="/apps/{app["id"]}/img/{f}" width="{w}" height="{h}" alt=""{attrs}>'
 
 
-# ---------- home page chapter ----------
+# ---------- home page: the nesting ground ----------
+# One chip per app. /js/island.js reads data-app and --t-dark from these to lay
+# one egg per app in the nests, so adding an app here adds an egg.
 I = ' ' * 4
 tiles = []
 for app in APPS:
-    wide = app.get('wide')
     lang = f' lang="{app["lang"]}"' if app['lang'] != 'en' else ''
-    shots = app['shots'][:2] if wide else app['shots'][:1]
-    shot_html = ''.join(
-        f'<span class="tile-phone{" tile-phone-back" if i else ""}">{img(app, s)}</span>'
-        for i, s in enumerate(shots)
-    )
     tiles.append(
-        f'{I*5}<a class="app-tile{" is-wide" if wide else ""}" href="/apps/{app["id"]}/" style="{style(app)}">\n'
-        f'{I*6}<span class="tile-copy">\n'
-        f'{I*7}<span class="tile-meta"><img class="tile-icon" src="/apps/{app["id"]}/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span class="tile-stores">{e(stores_text(app))}</span></span>\n'
-        f'{I*7}<b class="tile-name"{lang}>{e(app["name"])}</b>\n'
-        f'{I*7}<span class="tile-line">{e(app["line"])}</span>\n'
-        f'{I*7}<span class="tile-go" aria-hidden="true">Open page <i>→</i></span>\n'
-        f'{I*6}</span>\n'
-        f'{I*6}<span class="tile-shots" aria-hidden="true">{shot_html}</span>\n'
-        f'{I*5}</a>\n'
+        f'{I*5}<li><a class="app-chip" href="/apps/{app["id"]}/" data-app="{app["id"]}" style="{style(app)}">'
+        f'<img src="/apps/{app["id"]}/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async">'
+        f'<span><b{lang}>{e(app["name"])}</b><i>{e(stores_text(app))}</i></span></a></li>\n'
     )
 
 chapter = (
-    f'{I*2}<!-- 04 · /apps/ — a bento of the apps, each card a real screen; every card opens the app\'s page -->\n'
-    f'{I*2}<section class="chapter chapter-apps" id="apps" aria-labelledby="apps-title">\n'
-    f'{I*3}<div class="wrap">\n'
-    f'{I*4}<div class="apps-head">\n'
-    f'{I*5}<div class="chapter-copy chapter-copy-wide" data-reveal-group>\n'
-    f'{I*6}<span class="eyebrow">/apps/</span>\n'
-    f'{I*6}<h2 id="apps-title" data-lines>Published on Google Play and the App Store.</h2>\n'
-    f'{I*6}<p>Mostly Flutter, some native Android, all built and published solo. Every card opens that app\'s own page — with a demo you can try right there.</p>\n'
-    f'{I*5}</div>\n'
-    f'{I*5}<a class="btn btn-ghost apps-all" href="/apps/">All apps <span class="arrow">→</span></a>\n'
-    f'{I*4}</div>\n'
-    f'{I*4}<div class="bento" id="appsBento" data-reveal-group>\n'
+    f'{I*2}<!-- 04 · /apps/ — the nesting ground: one egg per published app; every chip opens the app\'s page -->\n'
+    f'{I*2}<section class="stop stop-right stop-wide" id="apps" data-stop="3" data-place="Nesting ground" aria-labelledby="apps-title">\n'
+    f'{I*3}<img class="stop-poster" src="/assets/island/apps.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">\n'
+    f'{I*3}<div class="panel">\n'
+    f'{I*4}<p class="place"><b>03</b>Nesting ground</p>\n'
+    f'{I*4}<span class="eyebrow">/apps/</span>\n'
+    f'{I*4}<h2 id="apps-title">Published on Google Play and the App Store.</h2>\n'
+    f'{I*4}<p>Mostly Flutter, some native Android, all built and published solo. One egg in the nests for every app; every name opens that app\'s own page &mdash; with a demo you can try right there.</p>\n'
+    f'{I*4}<ul class="app-list" id="appsBento">\n'
     + ''.join(tiles) +
+    f'{I*4}</ul>\n'
+    f'{I*4}<div class="panel-actions">\n'
+    f'{I*5}<a class="btn btn-ghost apps-all" href="/apps/">All apps and privacy policies <span class="arrow">→</span></a>\n'
     f'{I*4}</div>\n'
     f'{I*3}</div>\n'
     f'{I*2}</section>\n'
