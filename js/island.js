@@ -35,6 +35,35 @@
     function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
     function say(t) { if (statusEl) statusEl.textContent = t || ''; }
 
+    /* ---------- the loading screen ------------------------------------ */
+    // Up from first paint on devices that will get the live world (the <head> script decides). Its bar
+    // glides on the compositor toward each new target, so it keeps moving while this thread is busy.
+    var loader = d.getElementById('loader'), loaderFill = d.getElementById('loaderFill');
+    var loaderStage = d.getElementById('loaderStage'), loaderPct = d.getElementById('loaderPct'), loaderSkip = d.getElementById('loaderSkip');
+    var loading = root.classList.contains('world-loading');
+    function loadProgress(label, p) {
+        if (!loading) return;
+        if (label && loaderStage) loaderStage.textContent = label;
+        if (loaderPct) loaderPct.textContent = Math.round(p * 100) + '%';
+        if (loaderFill) loaderFill.style.transform = 'scaleX(' + Math.max(0.02, Math.min(1, p)).toFixed(3) + ')';
+    }
+    function endLoading(quick) {
+        if (!loading) return;
+        loading = false;
+        clearTimeout(window.rexLoadGiveUp);
+        if (loader && !quick) {
+            loader.classList.add('is-leaving');
+            setTimeout(function () { loader.classList.remove('is-leaving'); }, 1300);
+        }
+        root.classList.remove('world-loading');
+        onScroll();
+    }
+    if (loading) {
+        setTimeout(function () { if (loading && loaderSkip) loaderSkip.hidden = false; }, 7000);
+        if (loaderSkip) loaderSkip.addEventListener('click', function () { endLoading(); });
+        setTimeout(function () { endLoading(); }, 75000);      // whatever happens, the page is not held hostage
+    }
+
     /* ---------- where we are ----------------------------------------- */
 
     var tops = [], vh = window.innerHeight;
@@ -245,9 +274,11 @@
             world.jumpTo(progress());
             root.classList.add('world-on');
             say('');
+            endLoading();
             onScroll();
         })();
         say('warming up…');
+        loadProgress('first light', 1);
         if (gamesUp !== null) world.setActivity(gamesUp ? 1 : 0.12);
         if (!feedFire()) setTimeout(feedFire, 3500);
         watchWorld();
@@ -279,7 +310,7 @@
             }
         });
 
-        // an app's egg stirs while its name is pointed at
+        // point at an app's name and the rex goes for that app's stone
         var list = d.getElementById('appsBento');
         if (list) {
             var over = function (e) { var a = e.target.closest && e.target.closest('[data-app]'); if (world) world.hoverApp(a ? a.getAttribute('data-app') : null); };
@@ -310,6 +341,7 @@
             }
             store('rex-island-cap', ORDER[Math.max(0, ORDER.indexOf(tier) - 1)]);
             say('stills on this device');
+            endLoading();
         }
         timer = setTimeout(check, 500);
     }
@@ -318,19 +350,20 @@
 
     var usedGL = false, wired = false;
     function start(choice, forceGL) {
-        if (choice.tier === 'off') return;
+        if (choice.tier === 'off') { endLoading(true); return; }
         var canvas = d.getElementById('worldCanvas');
-        if (!canvas) return;
-        var apps = Array.prototype.map.call(d.querySelectorAll('#appsBento [data-app]'), function (a) { return { id: a.getAttribute('data-app'), tint: (a.style.getPropertyValue('--t-dark') || '#cfc6ad').trim() }; });
+        if (!canvas) { endLoading(true); return; }
+        var apps = Array.prototype.map.call(d.querySelectorAll('#appsBento [data-app]'), function (a) { var im = a.querySelector('img'); return { id: a.getAttribute('data-app'), tint: (a.style.getPropertyValue('--t-dark') || '#cfc6ad').trim(), icon: im ? im.getAttribute('src') : '' }; });
         var q = new URLSearchParams(location.search);
         store('rex-island-loading', choice.tier);
         // leaving while it loads is not a crash: only a tab that died never gets to say goodbye
         window.addEventListener('pagehide', function () { if (!world) store('rex-island-loading', null); });
         say('waking the island…');
-        import('/js/world.js').then(function (m) {
+        loadProgress('fetching the island', 0.04);
+        import('/js/world.js?v=2').then(function (m) {
             return m.createWorld({
-                canvas: canvas, tier: choice.tier, apps: apps, forceWebGL: (usedGL = forceGL || q.get('webgl') === '1' || read('rex-island-gl') === '1'),
-                onProgress: function (label, p) { say(label.toLowerCase() + ' · ' + Math.round(p * 100) + '%'); }
+                canvas: canvas, tier: choice.tier, apps: apps, flags: { salt: +q.get('salt') || 0, syncwarm: q.get('syncwarm') === '1' }, forceWebGL: (usedGL = forceGL || q.get('webgl') === '1' || read('rex-island-gl') === '1'),
+                onProgress: function (label, p) { say(label.toLowerCase() + ' · ' + Math.round(p * 100) + '%'); loadProgress(label.toLowerCase(), 0.06 + 0.92 * p); }
             });
         }).then(function (w) {
             world = w;
@@ -343,6 +376,7 @@
             store('rex-island-loading', null);
             store('rex-island-cap', ORDER[Math.max(0, ORDER.indexOf(choice.tier) - 1)]);
             say('');
+            endLoading();
             window.rexWorldError = String(err && (err.stack || err));
             if (window.console) console.warn('island: live world unavailable, showing stills.', err);
         });

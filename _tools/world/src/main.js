@@ -17,19 +17,25 @@ import { definePlaces } from './places.js';
 import { createFlora } from './flora.js';
 import { createFauna } from './fauna.js';
 import { createProps } from './props.js';
+import { createScenes } from './scenes.js';
 import { createDirector } from './director.js';
 import { createPost } from './post.js';
+import { loadPhotos } from './photos.js';
 
 const nextFrame = () => new Promise((r) => (typeof requestAnimationFrame === 'function' ? requestAnimationFrame(() => r()) : setTimeout(r, 0)));
 
-export async function createWorld({ canvas, tier = 'high', forceWebGL = false, onProgress = () => {}, apps = [], flags = {}, onStop = () => {} } = {}) {
+export async function createWorld({ canvas, tier = 'high', forceWebGL = false, onProgress = () => {}, apps = [], flags = {}, onStop = () => {}, assets = '/assets/island/tex/' } = {}) {
     const q = TIERS[tier] || TIERS.high;
     const say = async (label, p) => { onProgress(label, p); await nextFrame(); };
 
     await say('Waking the renderer', 0.02);
+    // the photographs come down while the island is being raised
+    const photosP = loadPhotos({ base: assets, size: flags.nophoto ? 0 : q.photo }).catch(() => ({ flora: null, ground: null, skin: null }));
     const usePost = q.post > 0 && !flags.nopost;
     const renderer = new THREE.WebGPURenderer({ canvas, antialias: !usePost && q.msaa > 1, samples: !usePost && q.msaa > 1 ? q.msaa : 0, forceWebGL, powerPreference: 'high-performance' });
     await renderer.init();
+    const pipes = { sync: 0, async: 0, labels: {} };
+    if (flags.trace && renderer.backend.device) { const dv = renderer.backend.device, s0 = dv.createRenderPipeline.bind(dv), a0 = dv.createRenderPipelineAsync.bind(dv); dv.createRenderPipeline = (d) => { pipes.sync++; const k = String(d.label || '?').replace(/_?\d+$/, ''); pipes.labels[k] = (pipes.labels[k] || 0) + 1; return s0(d); }; dv.createRenderPipelineAsync = (d) => { pipes.async++; return a0(d); }; }
     renderer.toneMapping = THREE.AgXToneMapping;
     renderer.toneMappingExposure = 0.36;
     renderer.shadowMap.enabled = true;
@@ -60,7 +66,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     // ---- light
     await say('Lighting the sky', 0.66);
     const sunDir = new THREE.Vector3(-0.86, 0.3, -0.36).normalize();
-    const atmosphere = createAtmosphere({ sunDir, noiseTex, quality: q });
+    const atmosphere = createAtmosphere({ sunDir, noiseTex, quality: q, salt: +flags.salt || 0 });
     scene.add(atmosphere.dome);
     scene.fogNode = atmosphere.fogNode;
     scene.environment = atmosphere.env.tex;
@@ -74,7 +80,9 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
         scene.add(hemi);
     }
 
-    const terrain = createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere, quality: q, sunDir });
+    await say('Developing the photographs', 0.68);
+    const photos = await photosP;
+    const terrain = createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere, quality: q, sunDir, photo: photos.ground });
     scene.add(terrain.group);
 
     const sun = new THREE.DirectionalLight(0xffffff, 1);
@@ -84,7 +92,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     sun.castShadow = true;
     sun.shadow.mapSize.set(q.shadowSize, q.shadowSize);
     sun.shadow.bias = -0.00035;
-    sun.shadow.normalBias = 0.35;
+    sun.shadow.normalBias = +flags.nbias || 0.35;
     sun.shadow.camera.near = 1; sun.shadow.camera.far = 3000;
     const csm = new CSMShadowNode(sun, { cascades: q.cascades, maxFar: q.shadowFar, mode: 'practical', lightMargin: 600 });
     csm.fade = true;
@@ -96,14 +104,19 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
 
     const places = definePlaces(island);
     await say('Setting the scene', 0.72);
-    const props = createProps({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, apps });
+    const props = createProps({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex });
     scene.add(props.group);
+    const scenes = createScenes({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, water, apps });
+    scene.add(scenes.group);
     await say('Planting the forest', 0.78);
-    const flora = createFlora({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, keepClear: props.clear, bare: !!flags.bare });
+    const flora = createFlora({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, keepClear: props.clear.concat(scenes.clear), bare: !!flags.bare, photo: photos.flora });
     scene.add(flora.group);
     await say('Waking the animals', 0.88);
-    const fauna = createFauna({ island, places, quality: q, noiseTex, groundTex, sites: SITES });
+    const fauna = createFauna({ island, places, quality: q, noiseTex, groundTex, sites: SITES, skin: photos.skin });
     scene.add(fauna.group);
+    scenes.attach(fauna);
+    await say('Carving the stones', 0.89);
+    await scenes.ready;
 
     const director = createDirector({ camera, places, island, onStop: (i, instant) => { fauna.setRex(i); onStop(i, places[i].id, instant); } });
     const post = usePost ? createPost({ renderer, scene, camera, quality: q, atmosphere }) : null;
@@ -159,6 +172,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
         terrain.update(camera);
         water.update(camera);
         flora.update(camera);
+        scenes.update(clockT, frozen ? 0 : dt, camera);
         fauna.update(clockT, frozen ? 0 : dt, camera);
         props.update(clockT, frozen ? 0 : dt, camera);
         sun.target.position.copy(camera.position);
@@ -176,21 +190,50 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
         }
     };
 
-    await say('First light', 0.92);
+    await say('First light', 0.9);
     resize();
-    frame();
-    // Visit every stop once, unseen, so each one's shaders are compiled before anyone flies there,
-    // and let the GPU finish that work: the first thing a visitor sees should already be smooth.
-    for (let i = 0; i < places.length; i++) {
-        director.jumpTo(i); frame();
-        await say('Walking the island', 0.92 + 0.07 * ((i + 1) / places.length));
+    // Every stop's shaders are compiled before anyone sees the world: first off the main thread where the
+    // renderer can do that (so the loading screen stays alive), then by drawing each stop once, unseen,
+    // which also warms shadows and the post chain. Then the GPU is given time to finish.
+    const pose = (i) => {
+        director.jumpTo(i); director.update(0, clockT); camera.updateMatrixWorld();
+        atmosphere.dome.position.copy(camera.position); atmosphere.dome.scale.setScalar(camera.far * 0.9);
+        terrain.update(camera); water.update(camera); flora.update(camera); scenes.update(clockT, 0, camera); fauna.update(clockT, 0, camera); props.update(clockT, 0, camera);
+    };
+    if (post && post.compile && !flags.syncwarm) {
+        // First everything at once, hidden or not, in view or not: anything left out here would be
+        // compiled the moment it first shows, and that stalls the whole browser, loading screen included.
+        {
+            const hidden = [], culled = [];
+            // (only what is drawn: showing a hidden light would change the lighting every shader is built for)
+            for (const g of [flora.group, fauna.group, props.group, scenes.group]) g.traverse((o) => { if (o.isLight) return; if (!o.visible) { hidden.push(o); o.visible = true; } if (o.frustumCulled) { culled.push(o); o.frustumCulled = false; } });
+            const t0 = performance.now();
+            try { await post.compile(); } catch (e) { /* the stops below still get their turn */ }
+            for (const o of hidden) o.visible = false; for (const o of culled) o.frustumCulled = true;
+            if (flags.trace) console.warn('warm everything', Math.round(performance.now() - t0), 'async', pipes.async);
+            await say('Walking the island', 0.9);
+        }
+        for (let i = 0; i < places.length; i++) {
+            pose(i);
+            const t0 = performance.now();
+            try { await post.compile(); } catch (e) { break; }
+            if (flags.trace) console.warn('warm async', places[i].id, Math.round(performance.now() - t0));
+            await say('Walking the island', 0.9 + 0.05 * ((i + 1) / places.length));
+        }
     }
-    director.jumpTo(0); frame();
-    try { const dev = renderer.backend && renderer.backend.device; if (dev && dev.queue && dev.queue.onSubmittedWorkDone) await dev.queue.onSubmittedWorkDone(); } catch (e) { /* not WebGPU */ }
+    for (let i = 0; i < places.length; i++) {
+        const t0 = performance.now();
+        director.jumpTo(i); frame();
+        if (flags.trace) { console.warn('warm frame', places[i].id, Math.round(performance.now() - t0), 'sync', pipes.sync, 'async', pipes.async, JSON.stringify(pipes.labels)); pipes.labels = {}; }
+        await say('Walking the island', 0.95 + 0.04 * ((i + 1) / places.length));
+    }
+    { const t0 = performance.now(); director.jumpTo(0); frame(); if (flags.trace) console.warn('warm last', Math.round(performance.now() - t0)); }
+    try { const t0 = performance.now(); const dev = renderer.backend && renderer.backend.device; if (dev && dev.queue && dev.queue.onSubmittedWorkDone) await dev.queue.onSubmittedWorkDone(); if (flags.trace) console.warn('warm gpu', Math.round(performance.now() - t0)); } catch (e) { /* not WebGPU */ }
+    if (flags.trace) console.warn('pipelines', JSON.stringify(pipes));
     await say('Ready', 1);
 
     const world = {
-        renderer, scene, camera, island, atmosphere, terrain, water, sun, quality: q, SITES, places, flora, fauna, props, director, perf,
+        renderer, scene, camera, island, atmosphere, terrain, water, sun, quality: q, SITES, places, flora, fauna, props, scenes, director, perf, photos: { flora: !!photos.flora, ground: !!photos.ground, skin: !!photos.skin },
         backend: renderer.backend && renderer.backend.isWebGPUBackend ? 'webgpu' : 'webgl2',
         frame,
         start() { if (running || perf.failed) return; running = true; last = performance.now(); renderer.setAnimationLoop(() => { try { frame(); } catch (e) { fail(e); } }); },
@@ -206,13 +249,16 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
         pressKey: (ch) => props.pressKey(ch),
         pop: (x, y) => props.pop(x, y, camera),
         balloonsLeft: () => props.balloonsLeft(),
-        hoverApp: (id) => props.hoverEgg(id),
+        hoverApp: (id) => scenes.hoverApp(id),
         setActivity: (v) => props.setActivity(v),
         setFire: (v) => props.setFire(v),
         // development and stills
         setView(px, py, pz, tx, ty, tz) { manual = { pos: new THREE.Vector3(px, py, pz), look: new THREE.Vector3(tx, ty, tz) }; },
         setPlace(i) { manual = null; director.setMotion(0); director.jumpTo(i); return places[i].id; },
         freeze(t) { frozen = true; if (t !== undefined) clockT = t; },
+        thaw() { frozen = false; },
+        // for stills: let the clock run from one moment to another (so what is thrown, knocked or sprayed is in flight), then hold it
+        play(from, to) { clockT = from; frozen = false; return new Promise((done) => { const tick = () => { if (clockT >= to) { frozen = true; clockT = to; done(to); } else setTimeout(tick, 16); }; tick(); }); },
         setJourney(i, j, u) { const v = director.preview(i, j, u); manual = v; },
         specimens(x, z, dx, dz) { return flora.specimens(x, z, dx, dz); },
         info() { const r = renderer.info.render; return { calls: r.drawCalls, tris: r.triangles, fps: +perf.fps.toFixed(1), scale: +perf.scale.toFixed(2), flora: flora.stats, fauna: fauna.stats }; },

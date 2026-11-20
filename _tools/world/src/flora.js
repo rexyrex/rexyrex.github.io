@@ -21,9 +21,16 @@ const SPR = {
     tuft: [0, 1024, 512, 512], reed: [512, 1024, 256, 1024], bark: [768, 1024, 256, 1024], big: [1024, 1024, 512, 512], crown: [1024, 1536, 512, 512],
     pine: [1536, 1024, 512, 1024], cone: [1280, 768, 768, 256], moss: [0, 1536, 512, 512],
 };
-const rectUV = (name) => { const [x, y, w, h] = SPR[name]; return [x / AT, y / AT, w / AT, h / AT]; };
+// Cards read a little inside their sprite's rectangle, and the rim of every rectangle is empty: far off, where
+// the atlas is read many mips down, a sprite's neighbour would otherwise show as a dash along a card's edge
+// (the litter above the far pines used to float over every treetop).
+const INSET = 14, RIM = 10;
+const rectUV = (name) => { const [x, y, w, h] = SPR[name]; const k = name === 'bark' ? 0 : INSET; return [(x + k) / AT, (y + k) / AT, (w - 2 * k) / AT, (h - 2 * k) / AT]; };
 
-function paintAtlas() {
+// sprites that photographs can replace (the same rectangles; see textures.py)
+const PHOTO = ['fern', 'palm', 'needle', 'leaf', 'tuft', 'big', 'crown', 'pine', 'bark'];
+
+function paintAtlas(photo) {
     const mk = () => { const c = document.createElement('canvas'); c.width = c.height = AT; return c; };
     const colC = mk(), maskC = mk();
     const c = colC.getContext('2d'), m = maskC.getContext('2d');
@@ -248,6 +255,17 @@ function paintAtlas() {
     const cd = c.getImageData(0, 0, AT, AT), md = m.getImageData(0, 0, AT, AT);
     const out = cd.data, mk2 = md.data;
     for (let i = 0; i < out.length; i += 4) out[i + 3] = mk2[i];
+    if (photo && photo.size === AT) {
+        for (const name of PHOTO) {
+            const [x0, y0, w, h] = SPR[name];
+            for (let y = y0; y < y0 + h; y++) for (let x = x0, i = (y * AT + x0) * 4; x < x0 + w; x++, i += 4) { out[i] = photo.rgb[i]; out[i + 1] = photo.rgb[i + 1]; out[i + 2] = photo.rgb[i + 2]; out[i + 3] = photo.mask[i]; }
+        }
+    }
+    for (const name of Object.keys(SPR)) {
+        if (name === 'bark') continue;
+        const [x0, y0, w, h] = SPR[name];
+        for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) if (x - x0 < RIM || x0 + w - 1 - x < RIM || y - y0 < RIM || y0 + h - 1 - y < RIM) out[(y * AT + x) * 4 + 3] = 0;
+    }
     const tex = new THREE.DataTexture(out, AT, AT, THREE.RGBAFormat, THREE.UnsignedByteType);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.magFilter = THREE.LinearFilter; tex.minFilter = THREE.LinearMipmapLinearFilter; tex.generateMipmaps = true;
@@ -556,9 +574,9 @@ function rockGeometry(seed, detail = 3) {
 }
 
 // ---- the system ----------------------------------------------------------------
-export function createFlora({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, keepClear = [], bare = false }) {
+export function createFlora({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, keepClear = [], bare = false, photo = null }) {
     const group = new THREE.Group(); group.name = 'flora';
-    const atlas = paintAtlas();
+    const atlas = paintAtlas(photo);
     const species = buildSpecies(4242);
     const density = quality.flora;
 

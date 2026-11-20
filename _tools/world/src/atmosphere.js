@@ -161,7 +161,7 @@ export function bakeEnvPanorama(model, table, ground = [0.05, 0.055, 0.03], W = 
 }
 
 // ---- GPU side ------------------------------------------------------------------
-export function createAtmosphere({ sunDir, noiseTex, quality }) {
+export function createAtmosphere({ sunDir, noiseTex, quality, salt = 0 }) {
     const model = createSkyModel({ sunDir });
     const table = bakeSkyTable(model, quality.skyW, quality.skyH);
     const env = bakeEnvPanorama(model, table);
@@ -261,7 +261,9 @@ export function createAtmosphere({ sunDir, noiseTex, quality }) {
         const b = positionWorld.y.div(uFogHeight).negate();
         // integral of exp(-y/H) along the ray
         const slab = select(abs(dy).greaterThan(0.01), exp(a).sub(exp(b)).mul(uFogHeight).div(dy), exp(a)).mul(d);
-        const tau = d.mul(uFogBase).add(max(slab, 0.0).mul(uFogLow)).mul(uHaze);
+        // `salt` changes nothing visible; a different value makes every shader text new, which is how a
+        // cold shader cache is reproduced when measuring load times (?salt=n)
+        const tau = d.mul(uFogBase).add(max(slab, 0.0).mul(uFogLow)).mul(uHaze).add(float(salt * 1e-9).mul(1e-9));
         return float(1).sub(exp(tau.negate()));
     });
     const hazeColor = Fn(() => {

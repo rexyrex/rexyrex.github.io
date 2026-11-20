@@ -7,7 +7,7 @@
 import * as THREE from 'three/webgpu';
 import {
     Fn, uniform, texture, textureLoad, vec2, vec3, vec4, float, ivec2, floor, fract, mix, smoothstep, max, min, abs, clamp, normalize, dot, pow, sqrt,
-    positionLocal, positionWorld, modelWorldMatrix, modelScale, cameraPosition, cameraViewMatrix, saturate, length, sin, varying, uniformArray, int, log2, atan,
+    positionLocal, positionWorld, modelWorldMatrix, modelScale, cameraPosition, cameraViewMatrix, saturate, length, sin, varying, uniformArray, int, log2, atan, step,
 } from 'three/tsl';
 import { WORLD, VOLCANO } from './island.js';
 import { dataTexture, sampleWrap } from './textures.js';
@@ -19,7 +19,7 @@ const C = (hex) => { const c = new THREE.Color(hex); return vec3(c.r, c.g, c.b);
 const DETAIL_NEAR = 110, DETAIL_FAR = 320;
 const D1 = 1 / 23.0, D2 = 1 / 6.1, A1 = 0.55, A2 = 0.16;
 
-export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere, quality, sunDir }) {
+export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere, quality, sunDir, photo = null }) {
     const N = island.N, half = WORLD / 2, cell = island.cell;
 
     // ---- textures from the baked island
@@ -125,7 +125,7 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
         const y = h.add(nBroad.mul(6.0)).add(rockH.mul(1.2));
         const u = y.div(11.0).add(sin(y.div(31.0)).mul(0.55));
         const band = fract(u);
-        const beds = mix(mix(C('#a58a6c'), C('#7c6252'), smoothstep(0.2, 0.26, band)), mix(C('#bfae93'), C('#6a584c'), smoothstep(0.7, 0.76, band)), smoothstep(0.44, 0.5, band));
+        const beds = mix(mix(C('#a08a70'), C('#8a7260'), smoothstep(0.14, 0.32, band)), mix(C('#ae9d86'), C('#7e6b5c'), smoothstep(0.62, 0.84, band)), smoothstep(0.38, 0.56, band));
         const lam = sin(y.mul(3.7)).mul(0.5).add(0.5).mul(sin(y.mul(9.1).add(1.7)).mul(0.5).add(0.5));
         const ledge = smoothstep(0.0, 0.05, band).mul(smoothstep(0.26, 0.2, band).mul(0.25).add(0.75));
         return beds.mul(mix(0.82, 1.06, lam)).mul(mix(0.55, 1.0, ledge)).mul(mix(0.8, 1.1, nMid));
@@ -168,10 +168,28 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
         // the line the last tide left: darker, with weed
         col.assign(mix(col, C('#5d5440'), beachW.mul(smoothstep(0.12, 0.0, abs(h.sub(1.15).add(nMid.sub(0.5).mul(0.5))))).mul(0.55)));
         col.assign(mix(col, C('#8f7f61'), trail.mul(0.85)));
+        // Photographs give the painted colour its texture: each is divided by its own average, so it
+        // changes what the ground is made of and not how light or dark the island is painted.
+        const PH = (layer, at) => texture(photo.tex, at).depth(int(layer)).rgb.div(vec3(...photo.mean[layer]));
+        if (photo) {
+            const near = smoothstep(900.0, 120.0, dist);
+            const d = PH(0, xz.mul(1 / 3.3)).toVar();
+            d.assign(mix(d, PH(1, xz.mul(1 / 2.9)), cover.mul(float(1).sub(volcanic.mul(0.7))).mul(float(1).sub(trail))));
+            d.assign(mix(d, PH(2, xz.mul(1 / 3.7)), forest.mul(0.92)));
+            d.assign(mix(d, PH(3, xz.mul(1 / 2.4)), beachW));
+            col.mulAssign(mix(vec3(1.0), d, near.mul(0.9)));
+        }
         // rock
         const stone = mix(C('#3d3935'), C('#77706a'), rockH.mul(0.75).add(rkFar.b.mul(0.25)));
         const rock = mix(mix(stone, volcanoRock(), smoothstep(0.2, 0.7, volcanic)), strataColor(), strata).toVar();
         rock.mulAssign(mix(0.74, 1.12, nBroad));
+        if (photo) {
+            // cliffs get rock, the volcano gets lava; laid on from three sides so it never smears down a face
+            const layer = int(step(0.45, volcanic).add(4.0)), k = 1 / 5.3, m = vec3(1.0).div(mix(vec3(...photo.mean[4]), vec3(...photo.mean[5]), step(0.45, volcanic)));
+            const R3 = (at) => texture(photo.tex, at).depth(layer).rgb;
+            const d = R3(xz.mul(k)).mul(tw.y).add(R3(P.zy.mul(k)).mul(tw.x)).add(R3(P.xy.mul(k)).mul(tw.z)).mul(m);
+            rock.mulAssign(mix(vec3(1.0), d, smoothstep(900.0, 120.0, dist).mul(0.85)));
+        }
         // a cliff is built of beds: a shaded ledge under each, every bed its own tone; cut by joints
         // that run down the face, and stained where water follows them
         const face = float(1).sub(tw.y);

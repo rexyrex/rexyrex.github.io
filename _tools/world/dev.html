@@ -13,7 +13,7 @@ if (q.get('hud') === '0') log.style.display = 'none';
 window.__world = null; window.__error = null;
 try {
     const { createWorld } = await import('/js/world.js?' + Date.now());
-    const world = await createWorld({ canvas: document.getElementById('c'), tier: q.get('tier') || 'ultra', forceWebGL: q.get('webgl') === '1', flags: { bare: q.get('bare') === '1', nopost: q.get('post') === '0', fixed: true }, apps: ['#fb9a4b','#ff8a7a','#ff5d6c','#d8f35b','#e4b96a','#a99dff','#f48fb1','#818cf8','#aba3ff','#b6c3f7','#8cc3d3','#fde524'].map((t, i) => ({ id: 'app' + i, tint: t })), onProgress: (l, p) => { log.textContent = `${l} ${(p * 100) | 0}%`; } });
+    const world = await createWorld({ canvas: document.getElementById('c'), tier: q.get('tier') || 'ultra', forceWebGL: q.get('webgl') === '1', flags: { bare: q.get('bare') === '1', nopost: q.get('post') === '0', nophoto: q.get('photo') === '0', fixed: true, salt: +q.get('salt') || 0, trace: q.get('trace') === '1', nbias: +q.get('nbias') || 0 }, apps: [['kakaoparser','#fb9a4b'],['age_calculator','#ff8a7a'],['deadly_balloons','#ff5d6c'],['alba_pay','#d8f35b'],['visual_metronome','#e4b96a'],['line_chat_analyzer','#a99dff'],['kakao_love_analyzer','#f48fb1'],['reverse_image_search','#818cf8'],['qr_scanner','#aba3ff'],['exif','#b6c3f7'],['saju','#8cc3d3'],['katalk_keeper','#fde524']].map(([id, tint]) => ({ id, tint, icon: '/apps/' + id + '/img/icon.webp' })), onProgress: (l, p) => { log.textContent = `${l} ${(p * 100) | 0}%`; } });
     if (q.get('view')) world.setView(...q.get('view').split(',').map(Number));
     world.start();
     window.__world = world;

@@ -42,7 +42,7 @@ The home page is a map you travel. Each `<section class="stop">` in `index.html`
 | 00 | `#top` | Overlook | hero |
 | 01 | `#typing` | Stone keyboard | `/typing/` |
 | 02 | `#balloons` | Pterosaur cliffs | `/deadlyBalloons/` |
-| 03 | `#apps` | Nesting ground | `/apps/` (generated, see [App directory](#app-directory-apps)) |
+| 03 | `#apps` | Standing stones | `/apps/` (generated, see [App directory](#app-directory-apps)) |
 | 04 | `#games` | Volcano | games.rexy.win |
 | 05 | `#mac` | Ranger outpost | the macOS apps |
 | 06 | `#tesla` | Migration trail | the car dashboard |
@@ -62,7 +62,7 @@ Rules that keep it working:
 - **The anchors are a contract.** `#apps` and `#mac` are linked from other pages; the ids in the table above are checked by `_tools/paths/check.py`.
 - **Content lives in the HTML, never in the world.** The world is `aria-hidden` decoration. Anything a visitor must be able to read, select, translate or click is in a panel.
 - **Stills must match the world.** They are frames of the same cameras (`_tools/world/posters.mjs`), so the swap from still to live is invisible. Regenerate them whenever the island or a camera changes.
-- **Nothing in the world is only decoration.** One egg per app in `APPS` (read from the `[data-app]` chips and their `--t-dark`), a stone per letter that lights when you type it, balloons you can pop, a volcano that smokes while `rexChrome.pingGames()` resolves, a campfire fed by the age of the last commit (the status bar's `rex-deploy` cache). Keep new set-dressing tied to something real.
+- **Every stop shows what its page is about.** At the apps stop there is one standing stone per app in `APPS`, its icon set into the rock (read from the `[data-app]` chips: `--t-dark` and the chip's `<img>`); the rex turns from stone to stone and knocks them over, and pointing at a chip sends it to that app's stone. At the outpost the rex types at a laptop whose screen runs through the four Mac apps (drawn in `screens.js`, not screenshots). A red roadster flies the migration trail, a speaker stack on a rock in the lagoon rings the water, and in the crater the pterosaurs have a water fight. Beyond that: a stone per letter that lights when you type it, balloons you can pop, a volcano that smokes while `rexChrome.pingGames()` resolves, a campfire fed by the age of the last commit (the status bar's `git log`).
 - **Copy rules from before still apply:** describe the games portal without a count and never say where it is hosted; the car dashboard is private, nothing links to it.
 - The easter egg is unchanged: hold the mascot beside the title for two seconds (`js/index.js`, `css/easter-egg.css`).
 
@@ -78,11 +78,13 @@ Rules that keep it working:
 | `low` | other recent phones | no post-processing, one shadow cascade, 540p-class |
 | `off` (stills) | `prefers-reduced-motion`, Save-Data, no WebGL 2, small or old devices | no canvas at all |
 
-The world is revealed only once it runs smoothly: while it is built it draws every stop once, unseen, so that each one's shaders are compiled, and the stills stay up until a run of frames has come in on time. On a first visit with a cold shader cache that can take twenty seconds on the top tier; the page is complete and usable throughout, and later visits take a few seconds. Then the world looks after itself: it trades render resolution to hold about 45–57 fps, and if even half resolution cannot reach 22 fps it stops, shows the stills, and remembers a lower ceiling (`rex-island-cap`). `rex-island-loading` is set while the world is being built; finding it still set on the next visit means that load crashed the tab, so that visit starts one tier lower. A graphics error after start-up (a browser whose WebGPU behaves differently from the ones this was tested on) tears the world down and builds it once more on the WebGL 2 path, remembered as `rex-island-gl`; choosing a tier in the `detail` menu clears both that and the ceiling.
+While the world is being built a loading screen covers the page (`#loader` in `index.html`, styles at the end of `css/island.css`): a dusk silhouette of the island with a pixel rex running along it, a bar and the name of the stage. It is drawn only with `transform` and `opacity` animations, so it keeps moving on the compositor while the main thread is busy raising the island. An inline script in `<head>` sets `html.world-loading` before first paint whenever a live world is going to be tried, so the stills page is never seen half-ready; devices that get stills only never see the loader. It offers "skip to the stills" after seven seconds and gives up by itself after 75.
+
+Behind it the world compiles every shader before anyone sees it: once for everything at once, shown or hidden, off the main thread (`scenePass.compileAsync`), then by drawing each stop once. On the Mac Studio that is about six seconds on a cold shader cache and under five on a warm one; a flight between stops then never hitches. **Do not give a prop its own light that is shown and hidden with it:** a light that comes and goes changes the lighting every shader in view was compiled for, and each one is then recompiled on the spot (this cost six seconds of frozen loading screen before it was found). `?salt=<n>` changes the shader text and so reproduces a cold cache; `dev.html?trace=1` logs what the warm-up compiled.
 
 ### How the world is built (`_tools/world/`)
 
-Nothing is loaded: no images, models or sounds. Everything is generated in the browser at load (two to eight seconds, behind the stills) by the modules in `_tools/world/src/`, which `build.mjs` bundles with three.js into `/js/world.js`:
+Almost everything is generated in the browser at load by the modules in `_tools/world/src/`, which `build.mjs` bundles with three.js into `/js/world.js`. The exceptions are three image files of photographic detail in `/assets/island/tex/` (plant cutouts, six kinds of ground, reptile scales: about 2 MB, fetched while the island is raised) and the app icons on the stones. The photographs are an improvement, never a requirement: without them (the `low` tier, a failed download) the plants, ground and skin are painted procedurally as before.
 
 ```bash
 cd _tools/world && npm install      # esbuild and three, once
@@ -96,10 +98,13 @@ npm run dev                         # unminified, with a source map: do not comm
 | `places.js` | The eleven stops: where the camera stands, what it looks at, where the rex waits. Offsets from a site, resolved against the terrain. |
 | `terrain.js` | The ground: a geometry clipmap (nested rings centred on the camera, each twice as coarse), heights read from the grid in the vertex shader, materials blended from slope, height, moisture and noise. Also bakes the island-scale sun shadow. |
 | `atmosphere.js` | The sky, computed once on the CPU by marching sunlight through a model atmosphere; the same table colours the dome, the distance haze and the ambient light. Clouds and their shadows. |
-| `water.js` | One sheet of water for sea, lake and river: Fresnel sky, screen-space reflections of the land, sun glitter, depth tint, foam at the tide line. |
-| `flora.js` | Plants: foliage sprites painted with the 2D canvas into one atlas, plants built from cards and tubes, instanced with three levels of detail, wind in the vertex shader. Trees island-wide; understorey only around the stops. |
-| `fauna.js` | Animals: each species is a skeleton plus rounded cones; the cones are blended into an implicit surface, meshed (surface nets), bound to the skeleton by distance, and walked by a few sine waves. Teeth and claws are separate little cones. |
-| `props.js` | What each place is about: eggs, stone keys, balloons, lava and smoke, the tower, the trail light, the camp. |
+| `water.js` | One sheet of water for sea, lake and river: Fresnel sky, screen-space reflections of the land, sun glitter, depth tint, foam at the tide line, and rings spreading from the speaker in the lagoon. |
+| `flora.js` | Plants: foliage sprites in one atlas (photographic cutouts where `photos.js` has them, otherwise painted with the 2D canvas), plants built from cards and tubes, instanced with three levels of detail, wind in the vertex shader. Trees island-wide; understorey only around the stops. |
+| `fauna.js` | Animals: each species is a skeleton plus rounded cones; the cones are blended into an implicit surface, meshed (surface nets), bound to the skeleton by distance, and walked by a few sine waves. Teeth and claws are separate little cones. The rex has poses the set pieces drive (`act`: stepping, a shove, typing, a gaze). Scales come from a photograph and stay in the colour: lit as relief through screen-space gradients they broke up into speckle. Also the pterosaurs (`createFlock`). |
+| `props.js` | The fixed furniture: stone keys, balloons, lava and smoke, the tower, the camp. |
+| `scenes.js` | The set pieces, one per themed stop: the icon stones and the rex's routine, the laptop on the stump (seated under the rex's own hands), the roadster and its loop, the speaker stack and its beat, the water fight. Everything here is a function of the island's clock, so a still can be replayed. Thrown things (dust, spray, water jets) are sprites with a start, a velocity and a birth time; the shader does the rest. |
+| `screens.js` | The four screens the laptop shows, and its keyboard, drawn with the 2D canvas. |
+| `photos.js` | Loads the three photograph files and hands them to the plants, the terrain (as a texture array, each layer divided by its own average so it adds texture without repainting the island) and the animals. |
 | `director.js` | The camera: scroll-bound hops between stops, flights on demand, a little hand-held sway. |
 | `post.js` | Bloom, light shafts when the sun is in view, the grade and film curve, vignette and grain. |
 | `quality.js` | The tiers. |
@@ -111,7 +116,8 @@ Tools in the same folder (Node 22+, a Chrome started with `--remote-debugging-po
 - `dev.html` — the world alone, no page: `/_tools/world/dev.html?tier=ultra&webgl=1&bare=1&post=0`.
 - `shot.mjs` — renders views in that Chrome and reports console errors and, with `--fps`, frame rates.
 - `critic-set.mjs` — the image set for a visual review: every stop at 2560×1440, frames from flights, a frame pair 0.2 s apart. The island was built against an independent critic that saw only these images, never the code.
-- `posters.mjs` + `posters.py` — the stills and the minimap, into `/assets/island/`.
+- `posters.mjs` + `posters.py` — the stills and the minimap, into `/assets/island/`. Each still lets the island's clock run for six seconds first (`world.play`), so the stones, jets and ripples are caught in the act.
+- `textures.py` — makes `/assets/island/tex/` from source photographs (keys the cutouts off magenta, makes the ground squares seamless). The sources are not in the repository; the script's header says what they were.
 - `relief.mjs` — a shaded-relief PNG of the island from `island.js` alone.
 
 ### What the old landing page left behind
@@ -203,7 +209,7 @@ These pages sit beside the generated policies but App Manager never touches them
 
 App Manager does check for them: each app's Overview shows a **Landing page** tile (At a glance) and card — not created / not committed / not pushed / published — read from `apps/<slug>/index.html` here and the pushed branch. The slug is the App Manager id, else the folder of the app's privacy policy URL, else the folder its App Store marketing URL points at (that is how the iOS twin of KakaoParser finds `/apps/kakaoparser/`). A missing page has a **Build Page** button that runs App Manager's `rex-app-landing-page` skill in the app's agent session; the skill reads this README, the skeleton and the existing pages first, so the rules here stay the source of truth. Its `scripts/images.mjs` converts captures to WebP through headless Chrome when `cwebp` isn't installed. Every App Store listing's *Marketing URL* points at its app's page (keep it that way when an app gains a page or an iOS version).
 
-To add an app when it goes public: build the page from the skeleton, add it to `APPS` in `_tools/app-page/apps.py` and run it (the home page chip, and with it the app's egg on the island, plus the `/apps/` card and policy row), then an entry in `js/palette.js` (`INDEX.apps`), a row in `sitemap.xml`, its policy on `/support/`, and a row in the table above. Check it with the screenshot tool:
+To add an app when it goes public: build the page from the skeleton, add it to `APPS` in `_tools/app-page/apps.py` and run it (the home page chip, and with it the app's standing stone on the island, plus the `/apps/` card and policy row), then an entry in `js/palette.js` (`INDEX.apps`), a row in `sitemap.xml`, its policy on `/support/`, and a row in the table above. Check it with the screenshot tool:
 
 ```
 node _tools/shot/shot.mjs http://localhost:8123/apps/<id>/ --out /tmp/<id> --theme dark --at 0,0.5,1
@@ -215,7 +221,7 @@ It drives headless Chrome over the DevTools protocol (Node 22, no npm) and print
 
 ## App directory (`/apps/`)
 
-`apps/index.html` is hand-made, generated together with the home page's app chips (the nesting ground) by `_tools/app-page/apps.py` (one `APPS` list: name, English one-liner, stores, language, tint pair, which captures, privacy URL; plus the policies of apps still in testing). It has a hero with every app's icon, a search box and filter chips (App Store / Google Play / 한국어 / Global; `?q=` and `?show=` make a filtered view shareable — `/js/apps-index.js`), a card per app built around a real capture, App Manager, and every privacy policy on the site ("On the stores" / "In testing"), so `/apps/` still works as the policy index the frozen URL contract promises. Styles: `/css/apps-index.css`.
+`apps/index.html` is hand-made, generated together with the home page's app chips (the standing stones) by `_tools/app-page/apps.py` (one `APPS` list: name, English one-liner, stores, language, tint pair, which captures, privacy URL; plus the policies of apps still in testing). It has a hero with every app's icon, a search box and filter chips (App Store / Google Play / 한국어 / Global; `?q=` and `?show=` make a filtered view shareable — `/js/apps-index.js`), a card per app built around a real capture, App Manager, and every privacy policy on the site ("On the stores" / "In testing"), so `/apps/` still works as the policy index the frozen URL contract promises. Styles: `/css/apps-index.css`.
 
 It carries `<meta name="appmanager-apps-index" content="manual">`. App Manager used to rewrite `apps/index.html` as a bare list on every privacy publish; with that marker (App Manager from 2026-11-17 on) it writes only the policy page, and refuses to publish while the directory page has uncommitted edits instead of resetting them. Remove the marker and the next publish replaces the page with the generated list.
 

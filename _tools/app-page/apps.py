@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The home page's /apps/ stop (the nesting ground: one chip and one egg per
+"""The home page's /apps/ stop (the standing stones: one chip and one stone per
 app) and the /apps/ directory page, from one list. Python 3, no packages.
 
     python3 _tools/app-page/apps.py
@@ -114,9 +114,9 @@ def img(app, shot, cls='', lazy=True):
     return f'<img{c} src="/apps/{app["id"]}/img/{f}" width="{w}" height="{h}" alt=""{attrs}>'
 
 
-# ---------- home page: the nesting ground ----------
+# ---------- home page: the standing stones ----------
 # One chip per app. /js/island.js reads data-app and --t-dark from these to lay
-# one egg per app in the nests, so adding an app here adds an egg.
+# one standing stone per app, its icon set into the rock, so adding an app here adds a stone.
 I = ' ' * 4
 tiles = []
 for app in APPS:
@@ -128,14 +128,14 @@ for app in APPS:
     )
 
 chapter = (
-    f'{I*2}<!-- 04 · /apps/ — the nesting ground: one egg per published app; every chip opens the app\'s page -->\n'
-    f'{I*2}<section class="stop stop-right stop-wide" id="apps" data-stop="3" data-place="Nesting ground" aria-labelledby="apps-title">\n'
+    f'{I*2}<!-- 04 · /apps/ — the standing stones: one per published app, its icon in the rock; every chip opens the app\'s page -->\n'
+    f'{I*2}<section class="stop stop-right stop-wide" id="apps" data-stop="3" data-place="Standing stones" aria-labelledby="apps-title">\n'
     f'{I*3}<img class="stop-poster" src="/assets/island/apps.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">\n'
     f'{I*3}<div class="panel">\n'
-    f'{I*4}<p class="place"><b>03</b>Nesting ground</p>\n'
+    f'{I*4}<p class="place"><b>03</b>Standing stones</p>\n'
     f'{I*4}<span class="eyebrow">/apps/</span>\n'
     f'{I*4}<h2 id="apps-title">Published on Google Play and the App Store.</h2>\n'
-    f'{I*4}<p>Mostly Flutter, some native Android, all built and published solo. One egg in the nests for every app; every name opens that app\'s own page &mdash; with a demo you can try right there.</p>\n'
+    f'{I*4}<p>Mostly Flutter, some native Android, all built and published solo. One standing stone for every app, and a rex that keeps knocking them over: point at a name and it goes for that one. Every name opens that app\'s own page &mdash; with a demo you can try right there.</p>\n'
     f'{I*4}<ul class="app-list" id="appsBento">\n'
     + ''.join(tiles) +
     f'{I*4}</ul>\n'

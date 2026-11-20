@@ -17,8 +17,9 @@ const port = opt('port', '9666'), base = opt('base', 'http://localhost:8123'), t
 const out = resolve(here, 'out'); mkdirSync(out, { recursive: true });
 const ids = ['top', 'typing', 'balloons', 'apps', 'games', 'mac', 'tesla', 'music', 'log', 'index', 'contact'];
 const only = opt('only', '') ? opt('only').split(',') : ids;
-const T = 7.5;      // a fixed moment, so stills are reproducible
-const jobs = ids.map((id, i) => ({ id, i })).filter((j) => only.includes(j.id)).map((j) => `${j.id}=(()=>{const w=window.__world;w.freeze(${T});return w.setPlace(${j.i})})()`).join(';;');
+const T = 7.0;      // every still is taken at this moment of the island's clock, after it has run for six seconds
+const AT = { tesla: 5.55, games: 12.0 };      // the roadster is out from behind the panel then
+const jobs = ids.map((id, i) => ({ id, i })).filter((j) => only.includes(j.id)).map((j) => `${j.id}=(async()=>{const w=window.__world;w.setPlace(${j.i});await w.play(${(AT[j.id] || T) - 6},${AT[j.id] || T});return 1})()`).join(';;');
 const run = (args) => { const r = execFileSync('node', [resolve(here, 'shot.mjs'), ...args], { encoding: 'utf8', maxBuffer: 1 << 26 }); const j = JSON.parse(r); if (j.exceptions.length || j.error) { console.error(r); process.exit(1); } return j; };
 if (jobs) { const r = run(['--port', port, '--url', `${base}/_tools/world/dev.html?tier=${tier}&hud=0`, '--out', resolve(out, 'still'), '--w', '1600', '--h', '900', '--dpr', '1', '--settle', '1800', '--format', 'png', '--eval', jobs]); console.log(r.backend, r.shots.length, 'stills'); }
 if (!opt('only') || only.includes('map')) {

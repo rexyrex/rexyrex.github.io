@@ -83,5 +83,7 @@ export function createPost({ renderer, scene, camera, quality, atmosphere }) {
         const want = (1 - 0.34 * Math.min(1, Math.max(0, (facing - 0.35) / 0.55)) * onScreen) * (1 + 1.0 * (1 - shade));
         uExposure.value += (want - uExposure.value) * 0.06;
     };
-    return { pipeline, update, uExposure, uWarm, render: () => pipeline.render() };
+    // compiles the scene's pipelines for this pass without blocking the thread
+    const compile = () => scenePass.compileAsync(renderer);
+    return { pipeline, update, uExposure, uWarm, compile, render: () => pipeline.render() };
 }

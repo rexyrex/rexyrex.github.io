@@ -23,6 +23,14 @@ export function createWater({ waterTex, terrain, atmosphere, quality }) {
     const bed = terrain.gridHeight(xz);
     const depth = max(bed.negate(), 0.0).toVar('wDepth');
 
+    // rings spreading from the speaker in the lagoon: where it is (x, z) and how hard it plays
+    const uRipple = uniform(new THREE.Vector4(0, 0, 0, 0));
+    const rv = xz.sub(uRipple.xy), rr = length(rv).add(1e-3);
+    const rph = rr.mul(2.1).sub(time.mul(5.6));
+    const renv = smoothstep(2.6, 5.0, rr).mul(exp(rr.mul(-1 / 24))).mul(uRipple.z).mul(float(1).sub(open));
+    const rslope = sin(rph).mul(0.8).add(sin(rph.mul(0.41).add(1.3)).mul(0.3)).mul(renv);
+    const rdir = rv.div(rr);
+
     const wind = vec2(1.0, 0.28);
     const t = time;
     const s1 = texture(waterTex, xz.mul(1 / 6.3).add(wind.mul(t.mul(0.075))));
@@ -40,7 +48,7 @@ export function createWater({ waterTex, terrain, atmosphere, quality }) {
             .add(s3.rg.mul(2).sub(1).mul(0.2))
             .add(s4.rg.mul(2).sub(1).mul(0.3).mul(near));
         const k = calm.mul(mix(0.4, 1.0, shallow)).mul(0.36).mul(mix(1.0, mix(0.3, 1.0, open), smoothstep(50.0, 300.0, cameraPosition.y)));
-        return normalize(vec3(n.x.mul(k), 1.0, n.y.mul(k)));
+        return normalize(vec3(n.x.mul(k).add(rdir.x.mul(rslope)), 1.0, n.y.mul(k).add(rdir.y.mul(rslope))));
     })().toVar('wN');
 
     // Reflections of the land: follow the mirrored view ray across the screen until it passes
@@ -143,5 +151,5 @@ export function createWater({ waterTex, terrain, atmosphere, quality }) {
     mesh.renderOrder = 10;
     mesh.name = 'water';
     const update = (camera) => { mesh.position.set(camera.position.x, 0, camera.position.z); };
-    return { mesh, update, material: mat };
+    return { mesh, update, material: mat, uRipple };
 }

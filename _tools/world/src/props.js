@@ -1,20 +1,20 @@
-// What each place is about: the eggs, the stone keyboard, the balloons, the
-// crater's lava and smoke, the outpost tower, the light on the trail, the camp.
-// Several of them are readouts of something real (see README): one egg per
-// published app, smoke only while the games portal answers, a fire that burns
-// by how recently the site was committed to.
+// The fixed furniture of the places: the stone keyboard, the balloons, the
+// crater's lava and smoke, the outpost tower, the camp. Two of them are readouts
+// of something real (see README): smoke only while the games portal answers, a
+// fire that burns by how recently the site was committed to. What moves and
+// acts at each stop lives in scenes.js.
 import * as THREE from 'three/webgpu';
 import {
     Fn, attribute, uniform, texture, vec2, vec3, vec4, float, mix, smoothstep, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, fract, floor,
     positionLocal, normalLocal, positionGeometry, normalGeometry, positionWorld, cameraPosition, time, uv, saturate, instanceIndex, hash,
 } from 'three/tsl';
-import { mulberry32, lerp, clamp as cl, catmull } from './noise.js';
+import { mulberry32, lerp } from './noise.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { SITES, VOLCANO, TRAIL } from './island.js';
+import { SITES, VOLCANO } from './island.js';
 
 const col = (h) => { const c = new THREE.Color(h); return vec3(c.r, c.g, c.b); };
 
-export function createProps({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, apps = [] }) {
+export function createProps({ island, places, quality, atmosphere, terrain, noiseTex, rockTex }) {
     const group = new THREE.Group(); group.name = 'props';
     const rnd = mulberry32(31337);
     const updates = [];
@@ -93,56 +93,6 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         group.add(mesh);
         return mesh;
     };
-
-    // ==== nesting ground: one egg per app ==========================================
-    const eggs = [];
-    {
-        const s = SITES.apps, n = Math.max(apps.length, 1);
-        const nests = Math.max(3, Math.ceil(n / 3));
-        const eggGeo = new THREE.SphereGeometry(1, 28, 20);
-        { const p = eggGeo.attributes.position; for (let i = 0; i < p.count; i++) { const y = p.getY(i); const k = 1 - 0.16 * y; p.setXYZ(i, p.getX(i) * 0.24 * k, y * 0.37, p.getZ(i) * 0.24 * k); } eggGeo.computeVertexNormals(); }
-        const stickGeo = new THREE.CylinderGeometry(0.03, 0.045, 1, 5); stickGeo.rotateZ(Math.PI / 2);
-        const nestMat = woodMat('#8a7350');
-        const moundGeo = new THREE.SphereGeometry(1.5, 20, 8, 0, 6.283, 0, 1.25); moundGeo.scale(1, 0.2, 1);
-        const moundMat = stoneMat('#5a4a39');
-        const sticks = [];
-        let nestTop = 0;
-        const buildNest = (nx, ny, nz) => {
-            const my = Math.min(ny, ground(nx + 1.2, nz), ground(nx - 1.2, nz), ground(nx, nz + 1.2), ground(nx, nz - 1.2)) - 0.16;
-            const mound = add(new THREE.Mesh(moundGeo, moundMat)); mound.position.set(nx, my, nz);
-            nestTop = my + 0.3;
-            for (let i = 0; i < 90; i++) {
-                const a = rnd() * 6.283, r = 1.0 + rnd() * 0.5, tilt = (rnd() - 0.5) * 0.7;
-                const qx = nx + Math.cos(a) * r, qz = nz + Math.sin(a) * r; sticks.push({ x: qx, y: ground(qx, qz) + 0.04 + rnd() * 0.34 * (1.5 - r) * 2 + rnd() * 0.1, z: qz, ry: -a + Math.PI / 2 + (rnd() - 0.5) * 0.9, rz: tilt, len: 0.7 + rnd() * 1.1 });
-            }
-        };
-        let k = 0;
-        for (let ni = 0; ni < nests; ni++) {
-            const a = -0.9 + (ni / Math.max(1, nests - 1)) * 2.2 + 3.6, r = 6.5 + (ni % 2) * 2.6;
-            const nx = s.x + Math.cos(a) * r, nz = s.z + Math.sin(a) * r, ny = ground(nx, nz);
-            buildNest(nx, ny, nz);
-            clear.push([nx, nz, 2.3]);
-            for (let e = 0; e < 3 && k < n; e++, k++) {
-                const app = apps[k] || { id: 'egg' + k, tint: '#cfc6ad' };
-                const ea = (e / 3) * 6.283 + ni, ex = nx + Math.cos(ea) * 0.36, ez = nz + Math.sin(ea) * 0.36;
-                const m = new THREE.MeshStandardNodeMaterial();
-                const uGlow = uniform(0);
-                const speck = texture(noiseTex, positionLocal.xy.mul(2.4).add(positionLocal.z.mul(1.7)).add(k * 0.37)).a;
-                const fine = texture(noiseTex, positionLocal.xy.mul(7.0).add(positionLocal.z.mul(5.0)).add(k * 0.21)).g;
-                // a chalky shell, blotched in the app's own colour and freckled brown
-                const shell = mix(mix(col('#9a8d72'), col('#857960'), fine), mix(col(app.tint), col('#5a4532'), 0.55), smoothstep(0.58, 0.76, speck).mul(0.5)).mul(mix(1.0, 0.68, smoothstep(0.68, 0.82, fine)));
-                m.colorNode = shell;
-                m.roughnessNode = float(0.8);
-                m.emissiveNode = col(app.tint).mul(uGlow).mul(0.9);
-                const egg = add(new THREE.Mesh(eggGeo, m));
-                egg.position.set(ex, nestTop + 0.1, ez); egg.rotation.set(0, -ea, -(0.85 + rnd() * 0.3), 'YZX');
-                eggs.push({ id: app.id, mesh: egg, uGlow, tilt: egg.rotation.z, base: egg.position.clone(), target: 0, glow: 0, seed: rnd() });
-            }
-        }
-        clear.push([s.x, s.z, 3]);
-        { const im = new THREE.InstancedMesh(stickGeo, nestMat, sticks.length); const o = new THREE.Object3D(); sticks.forEach((q, i) => { o.position.set(q.x, q.y, q.z); o.rotation.set(0, q.ry, q.rz); o.scale.set(q.len, 1, 1); o.updateMatrix(); im.setMatrixAt(i, o.matrix); }); im.frustumCulled = false; add(im); }
-        updates.push((t, dt) => { for (const e of eggs) { e.glow += (e.target - e.glow) * Math.min(1, dt * 6); e.uGlow.value = e.glow; e.mesh.rotation.z = e.tilt + Math.sin(t * 9 + e.seed * 30) * 0.09 * e.glow; e.mesh.position.y = e.base.y + 0.04 * e.glow; } });
-    }
 
     // ==== stone keyboard ===========================================================
     const keys = [];
@@ -275,8 +225,8 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         const plate = texture(noiseTex, p1).a, small = texture(noiseTex, p2).a;        // bright at a cell's middle
         const fissure = smoothstep(0.17, 0.02, plate), hair = smoothstep(0.12, 0.01, small).mul(0.35);
         const pool = smoothstep(0.7, 0.9, texture(noiseTex, q.mul(0.008).add(vec2(time.mul(0.002), 0))).r);
-        const rimLine = smoothstep(0.25, 0.5, cover).mul(smoothstep(1.3, 0.6, cover)).mul(0.22);
-        const heat = saturate(fissure.add(hair).add(pool.mul(0.85)).mul(mix(0.6, 1.0, shore)).add(rimLine));
+        // toward the walls the crust has cooled: the glow dies away and the lake ends in dark rock, not in a line
+        const heat = saturate(fissure.add(hair).add(pool.mul(0.85)).mul(smoothstep(0.3, 3.2, cover)));
         const pulse = sin(time.mul(0.6).add(plate.mul(6.0))).mul(0.14).add(1.0);
         m.colorNode = mix(col('#070606'), col('#1a110e'), small.mul(0.6).add(plate.mul(0.4)));
         m.roughnessNode = mix(float(0.92), float(0.4), heat);
@@ -338,26 +288,6 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         clear.push([s.x, s.z, 6]);
     }
 
-    // ==== the light on the trail ===================================================
-    {
-        const m = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false });
-        const r = length(uv().sub(0.5)).mul(2.0);
-        const ringT = fract(time.mul(0.55));
-        const core = smoothstep(0.28, 0.0, r), ring = smoothstep(0.08, 0.0, abs(r.sub(ringT))).mul(float(1).sub(ringT));
-        m.colorNode = col('#bfe3ff').mul(core.mul(9).add(ring.mul(3)));
-        m.opacityNode = saturate(core.add(ring));
-        const g = new THREE.PlaneGeometry(1, 1); g.rotateX(-Math.PI / 2);
-        const dot = new THREE.Mesh(g, m); dot.scale.setScalar(7); dot.renderOrder = 15; group.add(dot);
-        const orb = new THREE.Mesh(new THREE.SphereGeometry(0.34, 14, 10), new THREE.MeshBasicNodeMaterial()); orb.material.colorNode = col('#d9efff').mul(14); group.add(orb);
-        const pts = TRAIL.map((p) => [p[0], p[1]]), o = [0, 0];
-        updates.push((t) => {
-            const u = (t * 0.045) % 2, k = u < 1 ? u : 2 - u;      // there and back
-            catmull(pts, k * (pts.length - 1), o);
-            const y = ground(o[0], o[1]);
-            dot.position.set(o[0], y + 0.25, o[1]); orb.position.set(o[0], y + 1.1, o[1]);
-        });
-    }
-
     // ==== base camp ================================================================
     const uFire = uniform(0.7);              // 0.25 embers .. 1 freshly fed
     {
@@ -373,7 +303,8 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
             g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(v), 3));
             g.setIndex([0, 1, 6, 0, 6, 5, 1, 2, 7, 1, 7, 6, 2, 3, 8, 2, 8, 7, 3, 4, 9, 3, 9, 8, 0, 2, 1, 0, 4, 2, 2, 4, 3]);
             g.computeVertexNormals();
-            const y0 = ground(x, z);
+            const cr = Math.cos(ry), sr = Math.sin(ry);
+            let y0 = ground(x, z); for (const [lx, lz] of [[-w, -l], [w, -l], [-w, l], [w, l], [0, -l], [0, l]]) y0 = Math.min(y0, ground(x + (lx * cr + lz * sr) * sc, z + (-lx * sr + lz * cr) * sc));
             const m = add(new THREE.Mesh(g, canvas)); m.position.set(x, y0 - 0.03, z); m.rotation.y = ry; m.scale.setScalar(sc);
             const c = Math.cos(ry), sn = Math.sin(ry);
             const P = (lx, ly, lz) => [x + (lx * c + lz * sn) * sc, y0 + ly * sc, z + (-lx * sn + lz * c) * sc];
@@ -387,13 +318,13 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         const stone = stoneMat('#5d5852');
         for (let i = 0; i < 9; i++) { const a = (i / 9) * 6.283, m = add(new THREE.Mesh(new THREE.IcosahedronGeometry(0.2 + rnd() * 0.1, 1), stone)); m.position.set(s.x + Math.cos(a) * 0.75, y + 0.08, s.z + Math.sin(a) * 0.75); m.scale.y = 0.7; }
         for (let i = 0; i < 4; i++) { const m = add(new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 1.1, 7), woodMat('#3a2c20'))); m.position.set(s.x, y + 0.28, s.z); m.rotation.set(1.05, (i / 4) * 6.283, 0); }
-        puffs({ count: 40, origin: [s.x, y + 0.2, s.z], height: 1.7, spread: 0.3, drift: [0.35, 0.12], size0: 0.5, size1: 0.12, life: 0.75, colorA: '#ffb54a', colorB: '#d93a06', glow: 1.15, opacity: 1, amount: uFire, flame: true });
+        puffs({ count: 64, origin: [s.x, y + 0.2, s.z], height: 2.3, spread: 0.36, drift: [0.4, 0.14], size0: 0.72, size1: 0.14, life: 0.8, colorA: '#ffb54a', colorB: '#d93a06', glow: 1.15, opacity: 1, amount: uFire, flame: true });
         puffs({ count: 18, origin: [s.x, y + 1.6, s.z], height: 22, spread: 0.6, drift: [16, 6], size0: 0.4, size1: 2.6, life: 9, colorA: '#55524e', colorB: '#7d7a75', glow: 0, opacity: 0.07, amount: uFire });
         const light = new THREE.PointLight(0xff9040, 0, 26, 1.6); light.position.set(s.x, y + 0.9, s.z); group.add(light);
         updates.push((t) => { light.intensity = (26 + 9 * Math.sin(t * 9.1) * Math.sin(t * 13.7)) * uFire.value; });
         // crates and a log to sit on
         const crate = new THREE.BoxGeometry(0.8, 0.6, 0.6);
-        for (const [dx, dz, ry] of [[2.6, -1.6, 0.4], [3.2, -2.4, 1.1]]) { const m = add(new THREE.Mesh(crate, plankMat('#7b6243', 'x', 0.15))); m.position.set(s.x + dx, ground(s.x + dx, s.z + dz) + 0.3, s.z + dz); m.rotation.y = ry; }
+        for (const [dx, dz, ry] of [[-2.4, -3.3, 0.4], [-3.3, -2.9, 1.1]]) { const m = add(new THREE.Mesh(crate, plankMat('#7b6243', 'x', 0.15))); m.position.set(s.x + dx, ground(s.x + dx, s.z + dz) + 0.3, s.z + dz); m.rotation.y = ry; }
         clear.push([s.x, s.z, 3.4]);
     }
 
@@ -405,8 +336,7 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
     };
 
     return {
-        group, update, clear, eggs, balloons, pressKey, pop, uActivity, uFire,
-        hoverEgg(id) { for (const e of eggs) e.target = e.id === id ? 1 : 0; },
+        group, update, clear, balloons, pressKey, pop, uActivity, uFire,
         setActivity(v) { uActivity.value = v; }, setFire(v) { uFire.value = v; },
         balloonsLeft() { return balloons.filter((b) => b.alive).length; },
     };

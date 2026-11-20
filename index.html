@@ -26,19 +26,50 @@
     <meta name="twitter:description" content="Apps on Google Play and the App Store, native macOS apps, multiplayer browser games, a Korean and English typing game, Deadly Balloons, and a few tracks.">
     <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/home.png">
     <script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <script>(function(){var d=document.documentElement,w=window;try{var q=/[?&]island=([a-z]+)/.exec(location.search),s=localStorage,pick=(q&&q[1])||s.getItem('rex-island')||'auto',cap=s.getItem('rex-island-cap'),off=pick==='off'||(!q&&cap==='off'),mm=w.matchMedia;if(pick==='auto'&&mm){if(mm('(prefers-reduced-motion: reduce)').matches)off=true;var c=navigator.connection;if(c&&c.saveData)off=true;if(mm('(pointer: coarse)').matches){var m=navigator.deviceMemory||4,k=navigator.hardwareConcurrency||4;if(!(m>=4&&k>=6))off=true;}}if(!off&&(navigator.gpu||w.WebGL2RenderingContext)){d.classList.add('world-loading');w.rexLoadGiveUp=setTimeout(function(){d.classList.remove('world-loading');},90000);}}catch(e){}})();</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha384-nRgPTkuX86pH8yjPJUAFuASXQSSl2/bBUiNV47vSYpKFxHJhbcrGnmlYpYJMeD7a" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/navbar.css">
-    <link rel="stylesheet" href="/css/island.css">
+    <link rel="stylesheet" href="/css/island.css?v=2">
     <link rel="stylesheet" href="/css/easter-egg.css">
     <link rel="preload" as="image" href="/assets/island/top.webp" fetchpriority="high">
 </head>
 
 <body class="island">
     <div id="nav-placeholder"></div>
+
+    <!-- Shown while the live island is built (html.world-loading, set before first paint by the script in
+         <head>). Everything that moves here is a transform or an opacity, so it stays smooth while the
+         main thread is busy making the world. Devices that get the stills never see it. -->
+    <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading the island">
+        <div class="ld-sky" aria-hidden="true">
+            <i class="ld-stars"></i>
+            <i class="ld-sun"></i>
+            <i class="ld-ptero"></i><i class="ld-ptero p2"></i><i class="ld-ptero p3"></i>
+            <i class="ld-layer ld-hills-far"></i>
+            <svg class="ld-volcano" viewBox="0 0 600 240" preserveAspectRatio="xMidYMax meet"><path fill="#0f262d" d="M0 240 L70 214 Q150 150 196 92 Q208 76 222 76 L248 82 L272 74 Q286 74 300 92 Q360 164 470 212 L600 240 Z"/><path fill="#0a1c22" d="M222 76 L248 82 L272 74 Q282 96 262 132 Q250 104 236 124 Q226 100 222 76Z"/></svg>
+            <i class="ld-ember"></i>
+            <i class="ld-smoke"></i><i class="ld-smoke s2"></i><i class="ld-smoke s3"></i><i class="ld-smoke s4"></i><i class="ld-smoke s5"></i><i class="ld-smoke s6"></i>
+            <i class="ld-layer ld-hills-mid"></i>
+            <i class="ld-layer ld-trees"></i>
+            <i class="ld-layer ld-near"></i>
+        </div>
+        <div class="ld-ground" aria-hidden="true"><i class="ld-dashes"></i></div>
+        <div class="ld-rex" aria-hidden="true"><span>
+            <svg viewBox="0 0 13 12" shape-rendering="crispEdges"><path d="M8 0h5v1h-5zM8 1h1v1h-1zM10 1h3v1h-3zM8 2h5v1h-5zM8 3h4v1h-4zM8 4h2v1h-2zM0 5h1v1h-1zM7 5h4v1h-4zM0 6h1v1h-1zM6 6h5v1h-5zM0 7h2v1h-2zM5 7h5v1h-5zM1 8h8v1h-8zM2 9h7v1h-7zM3 10h2v1h-2zM6 10h2v1h-2zM3 11h1v1h-1zM7 11h1v1h-1z"/></svg>
+            <svg viewBox="0 0 13 12" shape-rendering="crispEdges"><path d="M8 0h5v1h-5zM8 1h1v1h-1zM10 1h3v1h-3zM8 2h5v1h-5zM8 3h4v1h-4zM8 4h2v1h-2zM0 5h1v1h-1zM7 5h4v1h-4zM0 6h1v1h-1zM6 6h5v1h-5zM0 7h2v1h-2zM5 7h5v1h-5zM1 8h8v1h-8zM2 9h7v1h-7zM3 10h2v1h-2zM6 10h2v1h-2zM4 11h1v1h-1zM6 11h1v1h-1z"/></svg>
+        </span></div>
+        <div class="ld-text">
+            <p class="ld-eyebrow">rexyrex.github.io</p>
+            <p class="ld-title">Waking the island</p>
+            <div class="ld-bar" aria-hidden="true"><i id="loaderFill"></i></div>
+            <p class="ld-stage"><span id="loaderStage">finding the island</span><b id="loaderPct">0%</b></p>
+            <button type="button" class="ld-skip" id="loaderSkip" hidden>Skip to the page <span aria-hidden="true">→</span></button>
+        </div>
+    </div>
 
     <!-- The island. /js/island.js decides whether this device gets the live world (js/world.js, WebGPU or
          WebGL 2) or the stills that every stop already carries. Decorative: all content is in <main>. -->
@@ -98,14 +129,14 @@
             </div>
         </section>
 
-        <!-- 04 · /apps/ — the nesting ground: one egg per published app; every chip opens the app's page -->
-        <section class="stop stop-right stop-wide" id="apps" data-stop="3" data-place="Nesting ground" aria-labelledby="apps-title">
+        <!-- 04 · /apps/ — the standing stones: one per published app, its icon in the rock; every chip opens the app's page -->
+        <section class="stop stop-right stop-wide" id="apps" data-stop="3" data-place="Standing stones" aria-labelledby="apps-title">
             <img class="stop-poster" src="/assets/island/apps.webp" alt="" width="1600" height="900" decoding="async" loading="lazy">
             <div class="panel">
-                <p class="place"><b>03</b>Nesting ground</p>
+                <p class="place"><b>03</b>Standing stones</p>
                 <span class="eyebrow">/apps/</span>
                 <h2 id="apps-title">Published on Google Play and the App Store.</h2>
-                <p>Mostly Flutter, some native Android, all built and published solo. One egg in the nests for every app; every name opens that app's own page &mdash; with a demo you can try right there.</p>
+                <p>Mostly Flutter, some native Android, all built and published solo. One standing stone for every app, and a rex that keeps knocking them over: point at a name and it goes for that one. Every name opens that app's own page &mdash; with a demo you can try right there.</p>
                 <ul class="app-list" id="appsBento">
                     <li><a class="app-chip" href="/apps/kakaoparser/" data-app="kakaoparser" style="--t-dark: #fb9a4b; --t-light: #c2410c"><img src="/apps/kakaoparser/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b lang="ko">카톡 정밀 분석기</b><i>Google Play · App Store</i></span></a></li>
                     <li><a class="app-chip" href="/apps/age_calculator/" data-app="age_calculator" style="--t-dark: #ff8a7a; --t-light: #c93838"><img src="/apps/age_calculator/img/icon.webp" width="256" height="256" alt="" loading="lazy" decoding="async"><span><b>How Old Are You? Age Test</b><i>Google Play · App Store</i></span></a></li>
@@ -133,7 +164,7 @@
                 <p class="place"><b>04</b>Volcano</p>
                 <span class="eyebrow">games.rexy.win</span>
                 <h2 id="games-title">Multiplayer games that run in a browser tab.</h2>
-                <p>A dino party brawler, a 3D arena shooter, a circuit-board RTS, a cute-horror house, a draw-and-guess party and 3D chess. Multiplayer over WebSockets, no installs, one link each. The mountain smokes while the portal is awake.</p>
+                <p>A dino party brawler, a 3D arena shooter, a circuit-board RTS, a cute-horror house, a draw-and-guess party and 3D chess. Multiplayer over WebSockets, no installs, one link each. The mountain smokes while the portal is awake, and up in the crater the pterosaurs are settling something with water guns.</p>
                 <ul class="row-list">
                     <li><a class="row-link" href="https://crazy.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff9b2f"><i class="row-dot" aria-hidden="true"></i><span><b>Rexy Arcade</b><i>Bomberman-style dino party mayhem.</i></span><em>Party · 1–8 players</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
                     <li><a class="row-link" href="https://fps.rexy.win" target="_blank" rel="noopener noreferrer" style="--c: #ff4d4d"><i class="row-dot" aria-hidden="true"></i><span><b>FRONTLINE</b><i>3D multiplayer arena shooter.</i></span><em>FPS · Three.js</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
@@ -155,7 +186,7 @@
                 <p class="place"><b>05</b>Ranger outpost</p>
                 <span class="eyebrow">/Applications/</span>
                 <h2 id="mac-title">Native on the Mac, menu bar first.</h2>
-                <p>All Swift and SwiftUI. Rex Boing is open source; the others are in-house tools.</p>
+                <p>All Swift and SwiftUI. Rex Boing is open source; the others are in-house tools. The laptop on the stump runs through all four.</p>
                 <ul class="row-list row-list-tall">
                     <li><a class="row-link" href="https://github.com/rexyrex/Rex-Boing" target="_blank" rel="noopener noreferrer" style="--c: var(--accent)"><i class="row-dot" aria-hidden="true"></i><span><b>Rex Boing</b><i>A tiny tyrannosaur in the menu bar that quickens as the Mac gets busier. Behind it, a dashboard: processor, GPU, memory, thermals, power, network, storage, and which process is to blame.</i></span><em>macOS 14+ · MIT</em><span class="row-arrow" aria-hidden="true">↗</span></a></li>
                     <li><a class="row-link" href="/apps/app_manager/" style="--c: var(--tok-num)"><i class="row-dot" aria-hidden="true"></i><span><b>App Manager</b><i>One window for the whole app portfolio: store metadata and screenshots, fastlane deploys with live logs, store questionnaires, release state, revenue and health, and embedded agent sessions.</i></span><em>macOS · Windows</em><span class="row-arrow" aria-hidden="true">→</span></a></li>
@@ -176,7 +207,7 @@
                 <span class="eyebrow">~/teslamate-dashboard/</span>
                 <h2 id="tesla-title">A dashboard for the car.</h2>
                 <p>Live telemetry from TeslaMate over MQTT on a dark map with glass cards: speed, power, battery, climate, tire pressure, drive recaps and rolling charts. Plus full-screen visualizer scenes, an AI co-pilot that comments on the drive, and a few tiny games. Built to run in the car's own browser.</p>
-                <p class="panel-hint">The light on the trail is the dot on that map. The dashboard itself is private.</p>
+                <p class="panel-hint">The red roadster flying the trail is the dot on that map. The dashboard itself is private.</p>
                 <div class="panel-actions">
                     <a class="link-mono" href="https://github.com/teslamate-org/teslamate" target="_blank" rel="noopener noreferrer">built on TeslaMate</a>
                 </div>
@@ -189,7 +220,7 @@
                 <p class="place"><b>07</b>Singing lagoon</p>
                 <span class="eyebrow">/music/</span>
                 <h2 id="music-title">And a few tracks.</h2>
-                <p>SuperPose streams from SoundCloud. The rest of the audio is on SoundCloud and Newgrounds. The crested ones in the shallows had their own instrument: that hollow crest is thought to have been a resonator.</p>
+                <p>SuperPose streams from SoundCloud. The rest of the audio is on SoundCloud and Newgrounds. The stack on the rock is ours, and it rings the water. The crested ones in the shallows had their own instrument: that hollow crest is thought to have been a resonator.</p>
                 <div class="panel-actions">
                     <a class="btn btn-ghost" href="/music/showcase.html">Listen on /music/ <span class="arrow">→</span></a>
                 </div>
@@ -497,6 +528,6 @@
 
     <script src="/js/common.js"></script>
     <script src="/js/index.js"></script>
-    <script src="/js/island.js"></script>
+    <script src="/js/island.js?v=2"></script>
 </body>
 </html>
