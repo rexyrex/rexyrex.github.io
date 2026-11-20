@@ -73,10 +73,11 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     scene.environmentIntensity = 0.9;
     // What reaches ground the sun does not: blue from the whole sky above, warm green-brown
     // bounced off the land below. Without it a shadow is a hole.
+    let hemi;
     {
         const si = atmosphere.env.skyIrradiance, ti = atmosphere.env.irradiance;
         const sky = new THREE.Color(si[0], si[1], si[2]), bounce = new THREE.Color(ti[0] * 0.2, ti[1] * 0.19, ti[2] * 0.12);
-        const hemi = new THREE.HemisphereLight(sky, bounce, 0.85);
+        hemi = new THREE.HemisphereLight(sky, bounce, 0.85);
         scene.add(hemi);
     }
 
@@ -106,7 +107,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     await say('Setting the scene', 0.72);
     const props = createProps({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex });
     scene.add(props.group);
-    const scenes = createScenes({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, water, apps });
+    const scenes = createScenes({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, water, apps, skyLights: [sun, hemi], lava: props.lava });
     scene.add(scenes.group);
     await say('Planting the forest', 0.78);
     const flora = createFlora({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, keepClear: props.clear.concat(scenes.clear), bare: !!flags.bare, photo: photos.flora });
@@ -245,6 +246,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
         jumpTo(i) { manual = null; director.jumpTo(i); },
         setMotion(m) { director.setMotion(m); },
         setPointer(x, y) { director.setPointer(x, y); },
+        setFrame(y, now) { director.setFrame(y, now); },
         // the places' own controls
         pressKey: (ch) => props.pressKey(ch),
         pop: (x, y) => props.pop(x, y, camera),

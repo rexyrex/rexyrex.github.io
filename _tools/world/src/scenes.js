@@ -2,16 +2,15 @@
 // says there. Standing stones that carry the app icons (the rex knocks them
 // over), a laptop on a stump that the rex types at, a red roadster that flies
 // the migration trail, a speaker stack in the lagoon that rings the water, and
-// pterosaurs having a water fight in the crater.
+// pterosaurs wheeling on the heat over the crater.
 import * as THREE from 'three/webgpu';
 import {
     attribute, uniform, texture, vec2, vec3, float, mix, smoothstep, max, min, abs, sign, step, normalize, pow, sin, atan, length, floor, cross,
     positionLocal, positionGeometry, normalGeometry, cameraPosition, uv, saturate,
 } from 'three/tsl';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { mulberry32, lerp, clamp as cl, catmull, smoothstep as ss } from './noise.js';
-import { createFlock } from './fauna.js';
+import { createFlock, wingStroke } from './pterosaur.js';
 import { paintScreens, paintKeys, SCREEN } from './screens.js';
 
 const col = (h) => { const c = new THREE.Color(h); return vec3(c.r, c.g, c.b); };
@@ -23,16 +22,15 @@ const loopAt = (pts, u, out) => {
     for (let k = 0; k < p1.length; k++) { const a = p0[k], b = p1[k], c = p2[k], d = p3[k]; out[k] = 0.5 * (2 * b + (c - a) * f + (2 * a - 5 * b + 4 * c - d) * f * f + (3 * b - a - 3 * c + d) * f * f * f); }
     return out;
 };
-const tinted = (geo, hex) => { const c = new THREE.Color(hex), n = geo.attributes.position.count, a = new Float32Array(n * 3); for (let i = 0; i < n; i++) { a[i * 3] = c.r; a[i * 3 + 1] = c.g; a[i * 3 + 2] = c.b; } geo.setAttribute('color', new THREE.BufferAttribute(a, 3)); return geo; };
 
-export function createScenes({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, water, apps = [] }) {
+export function createScenes({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, water, apps = [], skyLights = null, lava = null }) {
     const group = new THREE.Group(); group.name = 'scenes';
     const rnd = mulberry32(90210);
     const clear = [];            // [x, z, r] kept free of plants
     const sets = [];             // { x, z, range, show(near), run(t, dt, camera) }
     const systems = [];
     const uT = uniform(0), uCamRight = uniform(new THREE.Vector3(1, 0, 0)), uCamUp = uniform(new THREE.Vector3(0, 1, 0));
-    let now = 0, fauna = null;
+    let now = 0, fauna = null, kettle = null;
     const ground = (x, z) => island.heightAt(x, z);
     const add = (mesh, parent = group, cast = true) => { mesh.castShadow = cast; mesh.receiveShadow = true; parent.add(mesh); return mesh; };
     const P = (id) => places.find((p) => p.id === id);
@@ -546,85 +544,56 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
         });
     }
 
-    // ==== the water fight over the crater =============================================
+    // ==== the kettle over the crater ===================================================
+    // Pterosaurs on the heat that comes off the lava: three wheeling the same way round on the rising
+    // air, a pair chasing each other through them, and one that drops across the lake and climbs out.
     {
         const pl = P('games');
         const fx = pl.fwd[0], fz = pl.fwd[1], rx = -fz, rz = fx;
-        const C = [pl.cam[0] + fx * 40 + rx * 12, pl.cam[1] - 12, pl.cam[2] + fz * 40 + rz * 12];
-        const NB = 5, SC = 2.5;
-        const flock = createFlock(NB, { shadows: true }); group.add(flock.mesh);
-        // toy water guns, in the colours such things come in
-        const parts = [
-            tinted(new THREE.BoxGeometry(0.7, 0.2, 0.13).translate(0.1, 0, 0), '#ff6a13'),
-            tinted(new THREE.CylinderGeometry(0.115, 0.115, 0.42, 14).rotateZ(Math.PI / 2).translate(-0.04, 0.2, 0), '#a8ec2f'),
-            tinted(new THREE.CylinderGeometry(0.04, 0.05, 0.52, 10).rotateZ(Math.PI / 2).translate(0.7, 0.03, 0), '#2a86ff'),
-            tinted(new THREE.CylinderGeometry(0.06, 0.06, 0.07, 10).rotateZ(Math.PI / 2).translate(0.97, 0.03, 0), '#ffd23a'),
-            tinted(new THREE.BoxGeometry(0.22, 0.09, 0.15).translate(0.5, -0.1, 0), '#ffd23a'),
-            tinted(new THREE.BoxGeometry(0.11, 0.26, 0.1).rotateZ(0.3).translate(-0.14, -0.2, 0), '#ff6a13'),
-        ];
-        const gunM = new THREE.MeshStandardNodeMaterial({ vertexColors: true, roughness: 0.32 });
-        const guns = new THREE.InstancedMesh(mergeGeometries(parts), gunM, NB); guns.frustumCulled = false; guns.instanceMatrix.setUsage(THREE.DynamicDrawUsage); guns.castShadow = true; group.add(guns);
-        const water2 = sprites({ count: 1500, life: 1.35, accel: [0, -9.8, 0], size0: 0.17, size1: 0.3, stretch: 7.0, tint: '#9fd0ff', gain: 1.3, opacity: 0.62, carried: true });
-        const splash = sprites({ count: 260, life: 0.55, accel: [0, -9.8, 0], size0: 0.45, size1: 1.3, tint: '#cfe8ff', gain: 1.3, opacity: 0.4 });
-        // where each one is at a given moment: all of it a function of time, so the fight can be replayed
-        const path = (i, t, out) => {
+        const C = [pl.cam[0] + fx * 36, pl.cam[1] - 11, pl.cam[2] + fz * 36];
+        const NB = quality.fauna >= 1 ? 6 : 4, SC = 2.0;
+        // (lit by the sky alone, plus the lake's glow worked out for them: the lamp that lights the crater's walls is a
+        // single point, and would burn out anything that flew close to it)
+        const flock = createFlock(NB, { shadows: true, noiseTex, detail: quality.fauna >= 1 ? 1.25 : 0.8, lights: skyLights, glow: lava ? { x: lava.x, y: lava.y, z: lava.z, radius: 62, strength: 4 } : null }); group.add(flock.mesh);
+        const KETTLE = [[19, 9.5, 0.4], [26, 3.5, 2.6], [31, 14, 4.6]];      // radius, height, where on the circle it starts
+        // where each one is at a given moment (right, forward, up of the lake's middle): all of it a
+        // function of time, so a still can be replayed
+        // `wide` is 1 on a wide screen, where the page's panel takes the left of the view and the kettle stands
+        // off to the right, and 0 on an upright one, where it draws in to stay inside a narrow frame
+        const path = (i, t, out, wide = 1) => {
             let r, f, u;
-            if (i < 2) { const q = t - i * 1.05; r = 23 * Math.sin(0.6 * q); f = 18 * Math.sin(1.2 * q + 0.6) + 2; u = 7 * Math.sin(0.9 * q + 1.0) - 2; }             // one chases the other through a figure of eight
-            else if (i < 4) { const a = (i === 2 ? 0.52 : -0.52) * t + (i === 2 ? 0.4 : 2.0); r = 25 * Math.cos(a); f = 17 * Math.sin(a) + 7; u = (i === 2 ? 1 : -1) * 2.6 + 5 * Math.sin(a * 2 + i) + 3; }   // two that keep meeting head on
-            else { const a = 0.4 * t + 1.0; r = 29 * Math.cos(a) + 2; f = 19 * Math.sin(a) + 2; u = 6 + 5 * Math.sin(0.8 * t); }                                     // and one that circles wide and joins in
+            if (i < 3) { const k = KETTLE[i], a = (7.2 / k[0]) * t + k[2]; r = k[0] * Math.cos(a) + 2; f = k[0] * 0.72 * Math.sin(a) + 4; u = k[1] + 2.4 * Math.sin(0.23 * t + i * 2.1); }
+            else if (i === 3) { const a = 0.4 * t + 2.2; r = 30 * Math.cos(a) + 1; f = 20 * Math.sin(a) + 2; u = 1.5 - 7.5 * Math.cos(a - 0.5) + 2.5 * Math.sin(2 * a); }            // the stoop: low over the lava on the near side
+            else { const q = t - (i - 4) * 1.25; r = 22 * Math.sin(0.5 * q); f = 15 * Math.sin(1.0 * q + 0.6) + 4; u = 6 * Math.sin(0.75 * q + 1.0) + 1; }                       // tag, through a figure of eight
+            r = r * lerp(0.5, 1, wide) + 11 * wide; f = f * lerp(0.8, 1, wide) - 9 * (1 - wide);
             out[0] = C[0] + rx * r + fx * f; out[1] = C[1] + u; out[2] = C[2] + rz * r + fz * f;
             return out;
         };
-        const foe = [1, 0, 3, 2, 0];
-        const st = []; for (let i = 0; i < NB; i++) st.push({ p: [0, 0, 0], v: [0, 0, 0], yaw: 0, bank: 0, emit: 0 });
-        const a0 = [0, 0, 0], a1 = [0, 0, 0], a2 = [0, 0, 0], e = new THREE.Euler(0, 0, 0, 'YXZ'), mm = new THREE.Matrix4(), q4 = new THREE.Quaternion(), v3 = new THREE.Vector3(), s3 = new THREE.Vector3();
+        const a0 = [0, 0, 0], a1 = [0, 0, 0], a2 = [0, 0, 0], stroke = {};
+        let wideNow = 1;
+        kettle = { count: NB, at: (i, t) => path(i, t, [0, 0, 0], wideNow) };
         sets.push({
             x: C[0], z: C[2], range: 520,
-            show(near) { flock.mesh.visible = near; guns.visible = near; },
-            run(t, dt) {
-                const D = 0.06;
+            show(near) { flock.mesh.visible = near; },
+            run(t, dt, camera) {
+                const D = 0.06, wide = cl((camera.aspect - 0.6) / 0.8, 0, 1);
+                wideNow = wide;
                 for (let i = 0; i < NB; i++) {
-                    const b = st[i]; path(i, t, a0); path(i, t + D, a1); path(i, t + 2 * D, a2);
-                    b.p[0] = a0[0]; b.p[1] = a0[1]; b.p[2] = a0[2];
-                    b.v[0] = (a1[0] - a0[0]) / D; b.v[1] = (a1[1] - a0[1]) / D; b.v[2] = (a1[2] - a0[2]) / D;
-                    const sp = Math.hypot(b.v[0], b.v[2]) || 1;
-                    b.yaw = Math.atan2(-b.v[2], b.v[0]);
-                    const rate = wrap(Math.atan2(-(a2[2] - a1[2]), a2[0] - a1[0]) - b.yaw) / D;
-                    b.bank = cl(-Math.atan(sp * rate / 9.8) * 0.85, -1.15, 1.15);
-                    b.pitch = Math.atan2(b.v[1], sp) * 0.9;
-                    // it beats harder on the way up
-                    const effort = cl(0.45 + b.v[1] * 0.12, 0.2, 1);
-                    flock.set(i, b.p[0], b.p[1], b.p[2], SC, b.yaw, b.bank, Math.sin(t * 4.4 + i * 1.9) * 0.5 * effort + 0.1, b.pitch);
-                    e.set(b.bank, b.yaw, b.pitch); q4.setFromEuler(e);
-                    v3.set(0.72, -0.34, 0).multiplyScalar(SC).applyQuaternion(q4);
-                    mm.compose(v3.add(s3.set(b.p[0], b.p[1], b.p[2])), q4, s3.set(SC * 1.1, SC * 1.1, SC * 1.1)); guns.setMatrixAt(i, mm);
-                    b.q = b.q || new THREE.Quaternion(); b.q.copy(q4);
+                    path(i, t, a0, wide); path(i, t + D, a1, wide); path(i, t + 2 * D, a2, wide);
+                    const vx = (a1[0] - a0[0]) / D, vy = (a1[1] - a0[1]) / D, vz = (a1[2] - a0[2]) / D, sp = Math.hypot(vx, vz) || 1;
+                    const yaw = Math.atan2(-vz, vx);
+                    const rate = wrap(Math.atan2(-(a2[2] - a1[2]), a2[0] - a1[0]) - yaw) / D;
+                    const bank = cl(-Math.atan(sp * rate / 9.8) * 0.9, -1.1, 1.1);
+                    const pitch = Math.atan2(vy, sp) * 0.9;
+                    // they flap to climb and to keep up, and hold their wings out the rest of the time
+                    const climb = cl(0.1 + vy * 0.24, 0, 1), now_and_then = Math.pow(Math.max(0, Math.sin(t * 0.37 + i * 2.3)), 6) * 0.7;
+                    const power = i < 3 ? Math.max(now_and_then, climb * 0.5) : Math.max(climb, now_and_then * 0.6);
+                    wingStroke(t * 3.3 + i * 1.9, power, stroke);
+                    // dropping fast, the wings come in
+                    const tuck = cl(-vy * 0.06 - 0.1, 0, 0.45);
+                    flock.set(i, a0[0], a0[1], a0[2], SC * (0.9 + 0.2 * ((i * 0.37) % 1)), yaw, bank, stroke.flap - tuck * 0.25, pitch, stroke.curl, stroke.fold + tuck, (i * 0.31) % 1);
                 }
-                flock.commit(); guns.instanceMatrix.needsUpdate = true;
-                if (!dt) return;
-                for (let i = 0; i < NB; i++) {
-                    // whoever is most squarely in front, within range, gets it
-                    const b = st[i], sp = Math.hypot(b.v[0], b.v[1], b.v[2]) || 1;
-                    let o = null, best = 0.62, d = 0, tx = 0, ty = 0, tz = 0;
-                    for (let k = 0; k < NB; k++) {
-                        if (k === i) continue;
-                        const q = st[k], qx = q.p[0] - b.p[0], qy = q.p[1] - b.p[1], qz = q.p[2] - b.p[2], qd = Math.hypot(qx, qy, qz) || 1;
-                        if (qd < 7 || qd > 72) continue;
-                        const ah = (qx * b.v[0] + qy * b.v[1] + qz * b.v[2]) / (qd * sp) - qd * 0.0015 + (k === foe[i] ? 0.08 : 0);
-                        if (ah > best) { best = ah; o = q; d = qd; tx = qx; ty = qy; tz = qz; }
-                    }
-                    const burst = Math.sin(t * 1.3 + i * 2.4) > -0.55;
-                    if (!o || !burst) { b.emit = 0; continue; }
-                    // lead the target a little, and aim up for the drop on the way
-                    const V0 = 34, T = d / V0;
-                    let ax = tx + o.v[0] * T * 0.6, ay = ty + o.v[1] * T * 0.6 + 4.9 * T * T, az = tz + o.v[2] * T * 0.6; const al = Math.hypot(ax, ay, az) || 1; ax /= al; ay /= al; az /= al;
-                    v3.set(0.72 + 1.0 * 1.1, -0.3, 0).multiplyScalar(SC).applyQuaternion(b.q);
-                    b.emit += dt * 120;
-                    while (b.emit >= 1) { b.emit -= 1; const j = 0.3; water2.spawn(b.p[0] + v3.x, b.p[1] + v3.y, b.p[2] + v3.z, ax * V0 + b.v[0] * 0.35 + (rnd() - 0.5) * j, ay * V0 + b.v[1] * 0.35 + (rnd() - 0.5) * j, az * V0 + b.v[2] * 0.35 + (rnd() - 0.5) * j, lerp(0.75, 1.1, rnd()), b.v[0], b.v[1], b.v[2]); }
-                    // and where it lands, on the one it was meant for, it bursts
-                    b.hit = (b.hit || 0) + dt * 26;
-                    while (b.hit >= 1) { b.hit -= 1; splash.spawn(o.p[0] + (rnd() - 0.5) * 2, o.p[1] + (rnd() - 0.5) * 1.2, o.p[2] + (rnd() - 0.5) * 2, o.v[0] * 0.6 + (rnd() - 0.5) * 7, o.v[1] * 0.6 + rnd() * 4, o.v[2] * 0.6 + (rnd() - 0.5) * 7, lerp(0.7, 1.1, rnd())); }
-                }
+                flock.commit();
             },
         });
     }
@@ -639,7 +608,7 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
     };
 
     return {
-        group, update, clear, ready, stones, car,
+        group, update, clear, ready, stones, car, get kettle() { return kettle; },
         attach(f) { fauna = f; laptopReady(); },
         hoverApp(id) { henge.hover(id); },
     };

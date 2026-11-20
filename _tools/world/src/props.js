@@ -20,6 +20,7 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
     const updates = [];
     const uCamRight = uniform(new THREE.Vector3(1, 0, 0)), uCamUp = uniform(new THREE.Vector3(0, 1, 0));
     const clear = [];       // [x, z, r] kept free of plants
+    let lavaAt = null;      // the middle of the lava lake, for whatever flies over it
 
     // ---- shared looks
     const stoneMat = (tint = '#6d675f') => {
@@ -232,6 +233,7 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         m.roughnessNode = mix(float(0.92), float(0.4), heat);
         m.emissiveNode = mix(col('#b81802'), col('#ffb646'), pow(heat, 2.2)).mul(pow(heat, 1.5)).mul(uActivity.mul(22).add(7)).mul(pulse);
         const lava = new THREE.Mesh(g, m); lava.position.set(VOLCANO.x, y, VOLCANO.z); lava.receiveShadow = false; group.add(lava);
+        lavaAt = { x: VOLCANO.x, y, z: VOLCANO.z };
         const glowLight = new THREE.PointLight(0xff7a2a, 0, 170, 2); glowLight.position.set(VOLCANO.x, y + 14, VOLCANO.z); group.add(glowLight);
         updates.push((t) => { glowLight.intensity = (30000 + 3500 * Math.sin(t * 0.6)) * (0.3 + 0.7 * uActivity.value); });
         clear.push([VOLCANO.x, VOLCANO.z, 56]);
@@ -336,7 +338,7 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
     };
 
     return {
-        group, update, clear, balloons, pressKey, pop, uActivity, uFire,
+        group, update, clear, balloons, pressKey, pop, uActivity, uFire, lava: lavaAt,
         setActivity(v) { uActivity.value = v; }, setFire(v) { uFire.value = v; },
         balloonsLeft() { return balloons.filter((b) => b.alive).length; },
     };

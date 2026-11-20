@@ -11,6 +11,7 @@ import {
     positionGeometry, normalGeometry, positionView, normalView, saturate, attribute, uv,
 } from 'three/tsl';
 import { mulberry32, clamp as cl, lerp, smoothstep as sstep, catmull } from './noise.js';
+import { createFlock, wingStroke } from './pterosaur.js';
 
 // ---- implicit surface ----------------------------------------------------------
 // flesh: { a:[x,y,z], b:[x,y,z], ra, rb, sq (lateral squash, 1 = round), k (blend width) }
@@ -520,106 +521,6 @@ class Animal {
     }
 }
 
-// ---- pterosaurs: simple enough to model directly -------------------------------
-function pterosaurGeometry() {
-    // Model space: +x forward, +y up, +z right; half span about 3.9 m. aux = (how much this vertex flaps,
-    // colour key: 0-0.3 body, 0.3-0.8 wing from root to tip, 0.9 crest, 1.2 beak, 1.5 eye).
-    const pos = [], aux = [], idx = [];
-    const v = (x, y, z, flap, key) => { pos.push(x, y, z); aux.push(flap, key); return pos.length / 3 - 1; };
-    // wing: a membrane between the arm and wing finger (the leading edge, swept forward to the wrist and
-    // back to a point) and a trailing edge that runs in to the ankle, concave the way the real ones were
-    const leadC = [[0.42, 0.1, 0.22], [0.96, 0.2, 0.95], [1.16, 0.22, 1.55], [0.84, 0.18, 2.2], [0.3, 0.1, 3.0], [-0.58, 0.0, 3.92]];
-    const trailC = [[-1.0, 0.0, 0.2], [-0.58, 0.02, 0.82], [-0.14, 0.04, 1.42], [0.0, 0.04, 2.05], [-0.27, 0.03, 2.9], [-0.64, 0.0, 3.9]];
-    const NSP = 14, CH = 5, lead = [], trail = [];
-    for (let i = 0; i < NSP; i++) { const t = (i / (NSP - 1)) * (leadC.length - 1); lead.push(catmull(leadC, t, [0, 0, 0]).slice()); trail.push(catmull(trailC, t, [0, 0, 0]).slice()); }
-    for (const side of [1, -1]) {
-        const base = pos.length / 3;
-        for (let i = 0; i < NSP; i++) {
-            const f = i / (NSP - 1);
-            for (let c = 0; c <= CH; c++) {
-                const u = c / CH, sag = Math.sin(Math.PI * Math.pow(u, 0.8)) * 0.08 * (1 - f * 0.6);
-                v(lead[i][0] + (trail[i][0] - lead[i][0]) * u, lead[i][1] + (trail[i][1] - lead[i][1]) * u - sag, (lead[i][2] + (trail[i][2] - lead[i][2]) * u) * side, f, 0.34 + 0.44 * f + 0.06 * u);
-            }
-        }
-        for (let i = 0; i < NSP - 1; i++) for (let c = 0; c < CH; c++) { const p0 = base + i * (CH + 1) + c, p1 = p0 + CH + 1; if (side > 0) idx.push(p0, p1, p0 + 1, p0 + 1, p1, p1 + 1); else idx.push(p0, p0 + 1, p1, p0 + 1, p1 + 1, p1); }
-        // the arm itself: a spar along the leading edge, thick at the shoulder and thin as a whip at the tip
-        const sb = pos.length / 3, SR = 5;
-        for (let i = 0; i < NSP; i++) { const f = i / (NSP - 1), r = 0.085 * (1 - 0.8 * f) + 0.012; for (let k = 0; k < SR; k++) { const a = (k / SR) * 6.283; v(lead[i][0] + Math.cos(a) * r * 0.9 + r * 0.5, lead[i][1] + Math.sin(a) * r, lead[i][2] * side, f, 0.16); } }
-        for (let i = 0; i < NSP - 1; i++) for (let k = 0; k < SR; k++) { const a0 = sb + i * SR + k, b0 = sb + i * SR + (k + 1) % SR, c0 = a0 + SR, d0 = b0 + SR; if (side > 0) idx.push(a0, c0, b0, b0, c0, d0); else idx.push(a0, b0, c0, b0, d0, c0); }
-        // three small fingers at the wrist
-        for (let k = 0; k < 3; k++) { const w = lead[Math.round((NSP - 1) * 0.4)], f = 0.4; const q0 = v(w[0] + 0.05, w[1] + 0.02, (w[2] - 0.05 + k * 0.05) * side, f, 0.16), q1 = v(w[0] + 0.05, w[1] - 0.05, (w[2] + k * 0.05) * side, f, 0.16), q2 = v(w[0] + 0.36, w[1] - 0.04, (w[2] - 0.12 + k * 0.13) * side, f, 1.2); idx.push(q0, q1, q2, q0, q2, q1); }
-    }
-    // body, neck and head: rings of eight, lofted
-    const ring = (x, y, ry, rz, key) => { const r = []; for (let k = 0; k < 8; k++) { const a = (k / 8) * 6.283; r.push(v(x, y + Math.cos(a) * ry, Math.sin(a) * rz, 0, key + (Math.cos(a) < -0.3 ? -0.05 : 0.08))); } return r; };
-    const R = [ring(-1.35, 0.0, 0.02, 0.02, 0.2), ring(-0.95, 0.0, 0.14, 0.13, 0.15), ring(-0.3, 0.02, 0.26, 0.24, 0.12), ring(0.35, 0.06, 0.24, 0.22, 0.12), ring(0.75, 0.2, 0.15, 0.13, 0.12), ring(1.15, 0.5, 0.11, 0.1, 0.12),
-        ring(1.42, 0.72, 0.13, 0.11, 0.14), ring(1.72, 0.74, 0.15, 0.1, 0.14), ring(2.1, 0.66, 0.1, 0.07, 1.2), ring(2.9, 0.48, 0.035, 0.03, 1.2), ring(3.5, 0.36, 0.008, 0.008, 1.2)];
-    for (let i = 0; i < R.length - 1; i++) for (let k = 0; k < 8; k++) { const a0 = R[i][k], b0 = R[i][(k + 1) % 8], c0 = R[i + 1][k], d0 = R[i + 1][(k + 1) % 8]; idx.push(a0, c0, b0, b0, c0, d0); }
-    // the crest sweeps back from the skull; a plate, seen from both sides
-    { const c0 = v(1.8, 0.86, 0, 0, 0.9), c1 = v(1.45, 0.84, 0, 0, 0.9), c2 = v(0.55, 1.42, 0, 0, 0.92), c3 = v(1.1, 0.98, 0, 0, 0.9); idx.push(c0, c2, c3, c0, c3, c2, c1, c3, c2, c1, c2, c3); }
-    // eyes
-    for (const sd of [1, -1]) { const e0 = v(1.66, 0.8, 0.11 * sd, 0, 1.5), e1 = v(1.74, 0.82, 0.11 * sd, 0, 1.5), e2 = v(1.7, 0.74, 0.115 * sd, 0, 1.5); if (sd > 0) idx.push(e0, e2, e1); else idx.push(e0, e1, e2); }
-    // legs trail behind, feet together
-    for (const sd of [1, -1]) { const l0 = v(-0.8, -0.05, 0.16 * sd, 0, 0.18), l1 = v(-0.9, -0.1, 0.24 * sd, 0, 0.18), l2 = v(-1.9, -0.08, 0.12 * sd, 0, 0.22); idx.push(l0, l1, l2, l0, l2, l1); }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
-    g.setAttribute('aux', new THREE.BufferAttribute(new Float32Array(aux), 2));
-    g.setIndex(idx);
-    g.computeVertexNormals();
-    { const n = g.attributes.normal, P = g.attributes.position, A = g.attributes.aux; for (let i = 0; i < n.count; i++) if ((A.getX(i) > 0.001 && A.getY(i) > 0.3 && A.getY(i) < 0.9) || Math.abs(P.getY(i)) < 1e-6) { if (n.getY(i) < 0) n.setXYZ(i, -n.getX(i), -n.getY(i), -n.getZ(i)); } }
-    return g;
-}
-
-// A set of instanced pterosaurs whose places are written by the caller each frame:
-// A = (x, y, z, scale), B = (yaw, bank, flap, pitch).
-export function createFlock(count, { shadows = false } = {}) {
-    const pgeo = createFlock.geo || (createFlock.geo = pterosaurGeometry());
-    const A = new Float32Array(count * 4), B = new Float32Array(count * 4);
-    const g = new THREE.InstancedBufferGeometry();
-    g.index = pgeo.index; for (const k of Object.keys(pgeo.attributes)) g.setAttribute(k, pgeo.attributes[k]);
-    const aA = new THREE.InstancedBufferAttribute(A, 4), aB = new THREE.InstancedBufferAttribute(B, 4);
-    aA.setUsage(THREE.DynamicDrawUsage); aB.setUsage(THREE.DynamicDrawUsage);
-    g.setAttribute('iA', aA); g.setAttribute('iB', aB); g.instanceCount = count;
-    g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 1e5);
-    if (!createFlock.mat) {
-        const { positionLocal, normalLocal, cameraViewMatrix } = TSL;
-        const iA = attribute('iA', 'vec4'), iB = attribute('iB', 'vec4'), ax = attribute('aux', 'vec2');
-        const yaw = iB.x, bank = iB.y, flap = iB.z, pitch = iB.w;
-        const tf = (p) => {
-            // flap: the wing hinges at the shoulder and bends more toward the tip
-            const lift = ax.x.mul(flap).mul(1.5);
-            const up = abs(p.z).mul(lift).mul(mix(0.35, 0.75, ax.x));
-            const p0 = vec3(p.x, p.y.add(up), p.z.mul(float(1).sub(abs(lift).mul(0.16).mul(ax.x))));
-            const cp = cos(pitch), sp2 = sin(pitch);                          // nose up or down
-            const p05 = vec3(p0.x.mul(cp).sub(p0.y.mul(sp2)), p0.x.mul(sp2).add(p0.y.mul(cp)), p0.z);
-            const cb = cos(bank), sb = sin(bank);                             // roll about the body
-            const p1 = vec3(p05.x, p05.y.mul(cb).sub(p05.z.mul(sb)), p05.y.mul(sb).add(p05.z.mul(cb)));
-            const cy = cos(yaw), sy = sin(yaw);
-            return vec3(p1.x.mul(cy).add(p1.z.mul(sy)), p1.y, p1.z.mul(cy).sub(p1.x.mul(sy)));
-        };
-        const m = new THREE.MeshStandardNodeMaterial({ side: THREE.DoubleSide });
-        m.positionNode = tf(positionLocal.mul(iA.w)).add(iA.xyz);
-        m.normalNode = normalize(tf(normalLocal)).transformDirection(cameraViewMatrix);
-        const C = (h) => { const c = new THREE.Color(h); return vec3(c.r, c.g, c.b); };
-        const k = ax.y;
-        let c = mix(C('#b3a98f'), C('#6f6657'), smoothstep(0.1, 0.22, k));                      // pale belly, dun back
-        c = mix(c, mix(C('#b39a78'), C('#6b5743'), smoothstep(0.34, 0.84, k)), smoothstep(0.26, 0.34, k));   // the membrane: skin stretched thin, darker to the tip
-        // fibres run across the membrane from arm to trailing edge, and it darkens where it is stretched over the fingers
-        { const P0 = TSL.positionGeometry, wing = smoothstep(0.3, 0.34, k).mul(smoothstep(0.86, 0.82, k));
-            const fibre = sin(abs(P0.z).mul(9.0).add(P0.x.mul(5.0))).mul(0.5).add(0.5), vein = smoothstep(0.75, 1.0, sin(abs(P0.z).mul(3.4).sub(P0.x.mul(1.9)).add(0.6)));
-            c = mix(c, c.mul(mix(0.95, 1.04, fibre)).mul(mix(1.0, 0.7, vein)), wing); }
-        c = mix(c, C('#b23a22'), smoothstep(0.86, 0.9, k));
-        c = mix(c, C('#d9a441'), smoothstep(1.1, 1.2, k));
-        c = mix(c, C('#0b0a09'), smoothstep(1.4, 1.5, k));
-        m.colorNode = c;
-        m.roughnessNode = float(0.72);
-        createFlock.mat = m;
-    }
-    const mesh = new THREE.Mesh(g, createFlock.mat); mesh.castShadow = shadows; mesh.frustumCulled = false; mesh.name = 'pterosaurs';
-    const set = (i, x, y, z, scale, yaw, bank, flap, pitch = 0) => { A[i * 4] = x; A[i * 4 + 1] = y; A[i * 4 + 2] = z; A[i * 4 + 3] = scale; B[i * 4] = yaw; B[i * 4 + 1] = bank; B[i * 4 + 2] = flap; B[i * 4 + 3] = pitch; };
-    const commit = () => { aA.needsUpdate = true; aB.needsUpdate = true; };
-    return { mesh, set, commit, count };
-}
-
 // ---- the menagerie -------------------------------------------------------------
 export function createFauna({ island, places, quality, noiseTex, groundTex, sites, skin = null }) {
     const group = new THREE.Group(); group.name = 'fauna';
@@ -690,7 +591,8 @@ export function createFauna({ island, places, quality, noiseTex, groundTex, site
 
     // ---- pterosaurs gliding round the sea cliffs and drifting over the island
     const NP = Math.round(22 * Math.min(1, quality.fauna + 0.2));
-    const birds = createFlock(NP);
+    const birds = createFlock(NP, { noiseTex, detail: quality.fauna >= 1 ? 1 : 0.7 });
+    const stroke = {};
     group.add(birds.mesh);
     const flock = [];
     for (let i = 0; i < NP; i++) {
@@ -722,8 +624,9 @@ export function createFauna({ island, places, quality, noiseTex, groundTex, site
             const dirx = -Math.sin(a) * Math.sign(f.w), dirz = Math.cos(a) * 0.8 * Math.sign(f.w);
             // mostly gliding; a few slow beats now and then
             const beat = Math.max(0, Math.sin(t * 0.33 + f.ph * 5));
+            wingStroke(t * 3.6 + f.ph * 7, beat * beat * 0.8, stroke);
             // too far off they are only specks of dirt in the sky
-            birds.set(i, x, f.h + 6 * Math.sin(t * 0.21 + f.ph * 3), z, Math.hypot(x - cx, z - cz) > 560 ? 0 : f.s, Math.atan2(-dirz, dirx), Math.sign(f.w) * 0.38, Math.sin(t * 5.2 + f.ph * 7) * 0.5 * beat * beat + 0.12);
+            birds.set(i, x, f.h + 6 * Math.sin(t * 0.21 + f.ph * 3), z, Math.hypot(x - cx, z - cz) > 560 ? 0 : f.s, Math.atan2(-dirz, dirx), Math.sign(f.w) * 0.38, stroke.flap, 0.03 * Math.cos(t * 0.21 + f.ph * 3), stroke.curl, stroke.fold, (f.ph * 0.159) % 1);
         }
         birds.commit();
     };
@@ -732,5 +635,4 @@ export function createFauna({ island, places, quality, noiseTex, groundTex, site
     return { group, update, setRex, rex, animals, stats: { animals: animals.length, pterosaurs: NP, meshTris: tris, species: Object.fromEntries(Object.keys(sp).map((k) => [k, sp[k].tris])) }, get rexPlace() { return rexPlace; } };
 }
 
-import * as TSL from 'three/tsl';
 const _v = new THREE.Vector3(), _nv = new THREE.Vector3(), _up = new THREE.Vector3(0, 1, 0), _q = new THREE.Quaternion(), _n3 = [0, 1, 0];

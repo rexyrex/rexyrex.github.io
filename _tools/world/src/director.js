@@ -10,8 +10,9 @@ export function createDirector({ camera, places, island, onStop = () => {} }) {
     const N = places.length;
     const pos = new THREE.Vector3(), look = new THREE.Vector3();
     const A = { pos: new THREE.Vector3(), look: new THREE.Vector3(), fov: 40 }, B = { pos: new THREE.Vector3(), look: new THREE.Vector3(), fov: 40 };
-    const poseOf = (i, out) => { const p = places[clamp(i, 0, N - 1)]; out.pos.set(...p.cam); out.look.set(...p.look); out.fov = p.fov; return out; };
-    let sTarget = 0, s = 0, flight = null, stop = 0, motion = 1, aspect = 1.6;
+    let sTarget = 0, s = 0, flight = null, stop = 0, motion = 1, aspect = 1.6, frameY = 0.5, frameWant = 0.5;
+    // (an upright screen sees a narrower slice of each place: some places turn the lens a little for it)
+    const poseOf = (i, out) => { const p = places[clamp(i, 0, N - 1)], k = clamp((1.25 - aspect) / 0.5, 0, 1), a = p.look, b = p.lookTall || a, c = p.cam, e = p.camTall || c; out.pos.set(lerp(c[0], e[0], k), lerp(c[1], e[1], k), lerp(c[2], e[2], k)); out.look.set(lerp(a[0], b[0], k), lerp(a[1], b[1], k), lerp(a[2], b[2], k)); out.fov = p.fov; return out; };
     let pointerX = 0, pointerY = 0, px = 0, py = 0;
     const out = { fov: 40 };
 
@@ -49,6 +50,9 @@ export function createDirector({ camera, places, island, onStop = () => {} }) {
         // for stills of a journey: the view a fraction `u` of the way from stop i to stop j
         preview(i, j, u) { flight = null; poseOf(i, A); poseOf(j, B); hop(A, B, u, true); return { pos: pos.clone(), look: look.clone() }; },
         setAspect(a) { aspect = a; },
+        // Where on the screen the subject belongs, as a fraction of its height from the top. On a phone
+        // the page's content takes the lower half, so the page asks for the middle of what is left.
+        setFrame(y, now = false) { frameWant = clamp(y, 0.12, 0.5); if (now) frameY = frameWant; },
         setMotion(m) { motion = m; },
         setPointer(x, y) { pointerX = x; pointerY = y; },
         get flying() { return !!flight; },
@@ -73,8 +77,6 @@ export function createDirector({ camera, places, island, onStop = () => {} }) {
             // a held camera is never perfectly still; and it leans a little toward the pointer
             px += (pointerX - px) * Math.min(1, dt * 2.5); py += (pointerY - py) * Math.min(1, dt * 2.5);
             const sway = motion * (flight ? 0.3 : 1);
-            // on an upright screen the panel takes the lower half: tip the lens down so the subject sits above it
-            if (aspect < 1 && !flight) look.y -= pos.distanceTo(look) * 0.5 * (1 - aspect);
             const dir = look.clone().sub(pos); const dist = dir.length(); dir.normalize();
             const right = new THREE.Vector3().crossVectors(dir, THREE.Object3D.DEFAULT_UP).normalize();
             const k = Math.min(dist, 60) * 0.012 * sway;
@@ -83,9 +85,16 @@ export function createDirector({ camera, places, island, onStop = () => {} }) {
             camera.position.copy(pos);
             // keep the horizontal view on narrow screens by opening the lens
             const hf = 2 * Math.atan(Math.tan((out.fov * Math.PI) / 360) * 1.6);
-            const vf = aspect >= 1.6 ? out.fov : clamp((2 * Math.atan(Math.tan(hf / 2) / Math.max(aspect, 0.42)) * 180) / Math.PI, out.fov, 74);
+            const vf = aspect >= 1.6 ? out.fov : clamp((2 * Math.atan(Math.tan(hf / 2) / Math.max(aspect, 0.42)) * 180) / Math.PI, out.fov, aspect < 1 ? 86 : 74);
             if (Math.abs(camera.fov - vf) > 0.01) { camera.fov = vf; camera.updateProjectionMatrix(); }
+            // Tip the lens down until the subject sits where the page has room for it. This is the last thing
+            // done and it is kept out of `look`, so it is the same in a flight as at rest: nothing snaps when
+            // a flight ends.
+            // It turns about the camera's own right-hand axis, so it works the same looking across a clearing as
+            // looking straight down at the whole island.
+            frameY += (frameWant - frameY) * (1 - Math.exp(-dt * 4));
             camera.lookAt(look);
+            if (frameY < 0.499) camera.rotateX(-Math.atan((0.5 - frameY) * 2 * Math.tan((vf * Math.PI) / 360)));
         },
     };
     api.jumpTo(0);

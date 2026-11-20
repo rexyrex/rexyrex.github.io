@@ -8,7 +8,7 @@
 import * as THREE from 'three/webgpu';
 import {
     Fn, attribute, uniform, texture, vec2, vec3, vec4, float, mix, smoothstep, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, fract, log2,
-    positionLocal, normalLocal, positionWorld, cameraPosition, cameraViewMatrix, time, uv, saturate, fwidth,
+    positionLocal, normalLocal, positionWorld, cameraPosition, cameraViewMatrix, time, uv, saturate, fwidth, screenCoordinate, varying, step,
 } from 'three/tsl';
 import { mulberry32, hash2, clamp as cl, lerp, smoothstep as sstep, fbm2, perlin2 } from './noise.js';
 import { WORLD } from './island.js';
@@ -582,14 +582,36 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
 
     // ---- material shared by every plant
     const uWind = uniform(1.0);
+    const uEye = uniform(new THREE.Vector3());
     const windDir = vec2(0.92, 0.39);
     const iA = attribute('iA', 'vec4'), iB = attribute('iB', 'vec4'), aux = attribute('aux', 'vec3');
     const ca = cos(iB.x), sa = sin(iB.x);
     const rotY = (v) => vec3(v.x.mul(ca).add(v.z.mul(sa)), v.y, v.z.mul(ca).sub(v.x.mul(sa)));
 
-    const makeMaterial = ({ windK = 1, shadowCut = 0.4, twoSided = true, from = 0, to = 0 } = {}) => {
+    // One level of detail hands over to the next by dissolving, pixel by pixel, never by changing size:
+    // a tree that shrank to nothing while its stand-in grew out of the ground beside it read as the
+    // forest warping every time the camera travelled. `uEye` is the visitor's camera, in every pass
+    // (the shadow pass has a camera of its own, a kilometre up the sunbeam).
+    const lodFade = (base, from, to) => {
+        if (!(from > 0 || to > 0)) return null;
+        const d = length(base.xz.sub(uEye.xz)).add(max(uEye.y.sub(base.y).sub(60), 0).mul(0.8));
+        const kIn = from > 0 ? varying(smoothstep(from * 0.94, from * 1.06, d)) : null;
+        const kOut = to > 0 ? varying(float(1).sub(smoothstep(to * 0.94, to * 1.06, d))) : null;
+        // interleaved gradient noise: the same threshold for both levels at a pixel, so where one has
+        // gone the other has arrived, with no hole and nothing drawn twice
+        const n = fract(float(52.9829189).mul(fract(dot(screenCoordinate.xy, vec2(0.06711056, 0.00583715)))));
+        let show = null;
+        if (kIn) show = kIn.greaterThan(float(1).sub(n));
+        if (kOut) show = show ? show.and(kOut.greaterThan(n)) : kOut.greaterThan(n);
+        return { on: kIn && kOut ? kIn.mul(kOut) : kIn || kOut, show, n };
+    };
+
+    // `lens`: a tree the camera flies through thins away in front of the lens instead of filling it with one
+    // enormous frond (a flight between two stops goes at about the height of the canopy)
+    const makeMaterial = ({ windK = 1, shadowCut = 0.4, twoSided = true, from = 0, to = 0, lens = false } = {}) => {
         const mat = new THREE.MeshSSSNodeMaterial({ side: twoSided ? THREE.DoubleSide : THREE.FrontSide });
         const base = iA.xyz;
+        const fade = lodFade(base, from, to);
         mat.positionNode = Fn(() => {
             const lp = rotY(positionLocal.mul(iA.w));
             const gust = texture(noiseTex, base.xz.mul(1 / 140).add(windDir.mul(time.mul(0.02)))).level(0).r;
@@ -598,13 +620,9 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
             const lean = sin(ph).mul(0.5).add(0.6).mul(bend).mul(0.22);
             const flutter = vec3(sin(ph.mul(2.7).add(lp.x.mul(3.1))), cos(ph.mul(2.1).add(lp.z.mul(2.3))).mul(0.5), sin(ph.mul(3.3).add(lp.y.mul(2.7)))).mul(aux.x).mul(bend).mul(0.016);
             const p = lp.add(vec3(windDir.x, -0.15, windDir.y).mul(lean).mul(iA.w.mul(0.35).add(0.65))).add(flutter);
-            if (from > 0 || to > 0) {
-                const d = length(base.xz.sub(cameraPosition.xz)).add(max(cameraPosition.y.sub(base.y).sub(60), 0).mul(0.8));
-                let k = float(1);
-                if (from > 0) k = k.mul(smoothstep(from - from * 0.06, from + from * 0.06, d));
-                if (to > 0) k = k.mul(float(1).sub(smoothstep(to - to * 0.06, to + to * 0.06, d)));
-                return p.mul(k).add(base);
-            }
+            // outside its range a plant is not drawn at all (folded to a point: no fragments); inside it, and
+            // all through the hand-over to the next level of detail, it stands at its full size
+            if (fade) return p.mul(step(0.0005, fade.on)).add(base);
             return p.add(base);
         })();
         const tx = texture(atlas, uv());
@@ -626,8 +644,11 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
         const occl = mix(0.52, 1.0, aux.y);
         mat.colorNode = vec4(tint.mul(mix(occl, 1.0, 0.25)), 1);
         mat.opacityNode = alpha;
-        if (quality.msaa > 1) { mat.alphaToCoverage = true; mat.maskNode = alpha.greaterThan(0.02); } else mat.maskNode = araw.greaterThan(0.4);
-        mat.maskShadowNode = araw.greaterThan(shadowCut);
+        const cut = quality.msaa > 1 ? alpha.greaterThan(0.02) : araw.greaterThan(0.4), cutShadow = araw.greaterThan(shadowCut);
+        if (quality.msaa > 1) mat.alphaToCoverage = true;
+        const seen = fade ? cut.and(fade.show) : cut;
+        mat.maskNode = lens && fade ? seen.and(smoothstep(2.5, 9.0, length(positionWorld.sub(uEye))).greaterThan(fade.n)) : seen;
+        mat.maskShadowNode = fade ? cutShadow.and(fade.show) : cutShadow;
         mat.roughnessNode = mix(float(0.78), float(0.92), wood);
         mat.specularIntensity = 0.35;
         mat.metalnessNode = float(0);
@@ -645,13 +666,14 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
     };
     const NEAR = 100, MID = 400;
     const leafMat = makeMaterial();                                   // shrubs, cycads, specimens: no distance rule
-    const nearMat = makeMaterial({ to: NEAR });
+    const nearMat = makeMaterial({ to: NEAR, lens: true });
     const midMat = makeMaterial({ from: NEAR, to: MID, windK: 0.8 });
     const farMat = makeMaterial({ from: MID, windK: 0.6 });
     const groundMat = makeMaterial({ windK: 1.4 });
     const tuftMat = makeMaterial({ windK: 1.4, to: 62 });
     const fernNearMat = makeMaterial({ windK: 1.4, to: 36 });
-    const fernFarMat = makeMaterial({ windK: 1.2, from: 36 });
+    const fernFarMat = makeMaterial({ windK: 1.2, from: 36, to: 138 });
+    const standMat = makeMaterial({ to: 138 });                       // shrubs, cycads and fallen trunks round a stop
 
     // rocks reuse the island's stone look, triplanar in world space
     const rockMat = new THREE.MeshStandardNodeMaterial();
@@ -665,7 +687,9 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
         const pale = new THREE.Color('#a39478');
         const stone = mix(mix(vec3(c0.r, c0.g, c0.b), vec3(c1.r, c1.g, c1.b), hgt), vec3(pale.r, pale.g, pale.b).mul(mix(0.7, 1.1, hgt)), iB.w).mul(iB.z);
         const mossy = smoothstep(0.35, 0.8, n.y.mul(0.6).add(texture(noiseTex, P.xz.mul(1 / 9)).g.mul(0.6)));
-        rockMat.positionNode = rotY(positionLocal.mul(iA.w)).add(iA.xyz);
+        const fade = lodFade(iA.xyz, 0, 138);
+        rockMat.positionNode = rotY(positionLocal.mul(iA.w)).mul(step(0.0005, fade.on)).add(iA.xyz);
+        rockMat.maskNode = fade.show; rockMat.maskShadowNode = fade.show;
         rockMat.colorNode = mix(stone, vec3(mossC.r, mossC.g, mossC.b).mul(0.8), mossy.mul(0.7).mul(iB.y)).mul(mix(0.5, 1.0, smoothstep(-0.3, 0.5, positionLocal.y)));
         rockMat.roughnessNode = float(0.86);
         rockMat.normalNode = normalize(rotY(normalLocal).add(vec3(tY.r.sub(0.5), 0, tY.g.sub(0.5)).mul(0.9))).transformDirection(cameraViewMatrix);
@@ -700,7 +724,7 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
         mesh.matrixAutoUpdate = false;
         group.add(mesh);
         if (always) mesh.frustumCulled = false;
-        batches.push({ mesh, x: cx, z: cz, r: Math.hypot(maxx - minx, maxz - minz) / 2, near, far, always, cast, shadowTo, count: n, tris: n * geo.userData.tris });
+        batches.push({ mesh, x: cx, z: cz, r: Math.hypot(maxx - minx, maxz - minz) / 2, top: maxy, near, far, always, cast, shadowTo, count: n, tris: n * geo.userData.tris });
     };
 
     // ---- scatter
@@ -760,8 +784,10 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
         for (const cell of cells.values()) {
             for (const k of Object.keys(cell)) {
                 const kind = k.slice(0, -1), variant = +k.slice(-1), list = cell[k];
-                addBatch(species[kind][variant], nearMat, list, { near: 0, far: NEAR + 10, shadowTo: 1e9 });
-                const mv = species[kind + 'Mid']; addBatch(mv[variant % mv.length], midMat, list, { near: 0, far: MID + 30, shadowTo: 300 });
+                // Trees throw no shadow of their own: with the sun this low a stand of conifers would put every
+                // clearing in the dark. The ground under the canopy is shaded by the island's occlusion map.
+                addBatch(species[kind][variant], nearMat, list, { near: 0, far: NEAR + 10, cast: false });
+                const mv = species[kind + 'Mid']; addBatch(mv[variant % mv.length], midMat, list, { near: 0, far: MID + 30, cast: false });
                 const ref = { conifer: 30, broadleaf: 18, palm: 11, treeFern: 4.5 }[kind] / ({ conifer: [27, 36, 20], broadleaf: [16, 21, 11], palm: [9, 13], treeFern: [3.4, 5.6] }[kind][variant]);
                 for (let i = 0; i < list.length; i += 8) far[kind].push(list[i], list[i + 1], list[i + 2], list[i + 3] / ref * ({ palm: 0.61, treeFern: 0.6 }[kind] || 1), list[i + 4], list[i + 5], list[i + 6], list[i + 7]);
             }
@@ -838,7 +864,7 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
 
         const range = { near: 0, far: 150, shadowTo: 70 };
         addBatch(species.litter[0], tuftMat, lists.litter, { ...range, far: 70, cast: false });
-        addBatch(species.log[0], leafMat, lists.log, range);
+        addBatch(species.log[0], standMat, lists.log, range);
         addBatch(species.tuft[0], tuftMat, lists.tuft, { ...range, far: 70, cast: false });
         addBatch(species.fernlet[0], tuftMat, lists.fernlet0, { ...range, far: 70, cast: false });
         addBatch(species.fernlet[1], tuftMat, lists.fernlet1, { ...range, far: 70, cast: false });
@@ -846,8 +872,8 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
         addBatch(species.fern[0], fernNearMat, lists.fern0, { ...range, far: 44, cast: quality.post >= 2, shadowTo: 30 });
         addBatch(species.fern[1], fernNearMat, lists.fern1, { ...range, far: 44, cast: quality.post >= 2, shadowTo: 30 });
         addBatch(species.fernFar[0], fernFarMat, lists.fern0.concat(lists.fern1), { ...range, cast: false });
-        addBatch(species.shrub[0], leafMat, lists.shrub0, range); addBatch(species.shrub[1], leafMat, lists.shrub1, range);
-        addBatch(species.cycad[0], leafMat, lists.cycad0, range); addBatch(species.cycad[1], leafMat, lists.cycad1, range);
+        addBatch(species.shrub[0], standMat, lists.shrub0, range); addBatch(species.shrub[1], standMat, lists.shrub1, range);
+        addBatch(species.cycad[0], standMat, lists.cycad0, range); addBatch(species.cycad[1], standMat, lists.cycad1, range);
         for (let k = 0; k < 3; k++) addBatch(rocks[k], rockMat, lists['rock' + k], range);
     }
 
@@ -868,9 +894,11 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
 
     const update = (camera) => {
         const cx = camera.position.x, cz = camera.position.z, cy = camera.position.y;
+        uEye.value.copy(camera.position);
         for (const b of batches) {
-            const d = Math.max(0, Math.hypot(b.x - cx, b.z - cz) - b.r);
-            const dd = Math.hypot(d, Math.max(0, cy - 120) * 0.6);
+            // the nearest any plant of the batch can be, measured the way the shader measures it: a batch
+            // is only dropped once every plant in it has already dissolved
+            const dd = Math.max(0, Math.hypot(b.x - cx, b.z - cz) - b.r) + Math.max(cy - b.top - 60, 0) * 0.8;
             b.mesh.visible = b.always || (dd >= b.near && dd < b.far);
             if (b.cast) b.mesh.castShadow = dd < b.shadowTo;
         }
