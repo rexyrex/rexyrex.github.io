@@ -25,6 +25,7 @@ import { loadPhotos } from './photos.js';
 import { createSunlight } from './light.js';
 import { createCover } from './cover.js';
 import { createMotes, setPixel } from './fx.js';
+import { time as islandClock } from './tsl.js';
 
 const nextFrame = () => new Promise((r) => (typeof requestAnimationFrame === 'function' ? requestAnimationFrame(() => r()) : setTimeout(r, 0)));
 
@@ -130,7 +131,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     scene.add(flora.group);
     sunlight.bakeCanopy(places.filter((p) => !p.aerial).map((p) => [p.site.x, p.site.z, 16, 38]));
     await say('Waking the animals', 0.88);
-    const fauna = createFauna({ island, places, quality: q, noiseTex, groundTex, sites: SITES, skin: photos.skin });
+    const fauna = createFauna({ island, places, quality: q, noiseTex, groundTex, sites: SITES, shadowNormalBias: sun.shadow.normalBias });
     scene.add(fauna.group);
     scenes.attach(fauna);
     await say('Carving the stones', 0.89);
@@ -190,6 +191,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     const frame = () => {
         const now = performance.now(), dt = Math.min(0.1, (now - last) / 1000); last = now;
         if (!frozen) clockT += dt;
+        islandClock.value = clockT;
         resize();
         if (manual) { camera.position.copy(manual.pos); camera.lookAt(manual.look); } else director.update(dt, clockT);
         camera.updateMatrixWorld();
@@ -201,6 +203,8 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
         footprints.update(camera); cover.update(camera);
         motes.update(camera); setPixel(camera, renderer);
         scenes.update(clockT, frozen ? 0 : dt, camera);
+        footprints.refresh();
+        if (props.lava) terrain.uLava.value.set(props.lava.y, 2.4 * (0.45 + 0.55 * props.uActivity.value));
         fauna.update(clockT, frozen ? 0 : dt, camera);
         props.update(clockT, frozen ? 0 : dt, camera);
         sun.target.position.copy(camera.position);

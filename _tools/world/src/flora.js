@@ -8,9 +8,9 @@
 import * as THREE from 'three/webgpu';
 import {
     Fn, attribute, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, fract, log2,
-    positionLocal, normalLocal, positionWorld, cameraPosition, cameraViewMatrix, time, uv, saturate, fwidth, screenCoordinate, varying, step,
+    positionLocal, normalLocal, positionWorld, cameraPosition, cameraViewMatrix, uv, saturate, fwidth, screenCoordinate, varying, step,
 } from 'three/tsl';
-import { smoothstep } from './tsl.js';
+import { smoothstep, time } from './tsl.js';
 import { mulberry32, hash2, clamp as cl, lerp, smoothstep as sstep, fbm2, perlin2 } from './noise.js';
 import { WORLD } from './island.js';
 import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
@@ -338,7 +338,9 @@ class Builder {
         for (let s = 0; s <= segs; s++) {
             const t = s / segs, p = spine(t), q = spine(Math.min(1, t + 0.02)), r = spine(Math.max(0, t - 0.02));
             let tx = q[0] - r[0], tz = q[2] - r[2]; const tl = Math.hypot(tx, tz) || 1; tx /= tl; tz /= tl;
-            const d = depth * (0.55 + 0.45 * Math.sin(Math.PI * Math.min(1, 0.15 + t * 0.9)));
+            // (deepest a third of the way out and gone by the tip: hung at half its depth right to the end, every
+            // bough finished in a squared-off fringe)
+            const d = depth * Math.pow(Math.sin(Math.PI * Math.min(1, 0.08 + t * 0.92)), 0.6) * (1 - 0.35 * t);
             const vv = rv + rh * t, sw = swayA + (swayB - swayA) * t;
             this.vert(p[0], p[1], p[2], tz, 0.5, -tx, ru, vv, sw * 0.6, ao + 0.3, 0);
             this.vert(p[0] + tz * 0.06, p[1] - d, p[2] - tx * 0.06, tz, 0.2, -tx, ru + rw, vv, sw, ao, 0);
@@ -347,15 +349,18 @@ class Builder {
     }
 
     // a flat square plate facing `n`, rolled about it; for clumps of foliage
-    plate(cx, cy, cz, nx, ny, nz, size, roll, rect, sway, ao) {
+    plate(cx, cy, cz, nx, ny, nz, size, roll, rect, sway, ao, shade = null) {
         const [ru, rv, rw, rh] = rect;
+        { const l = Math.hypot(nx, ny, nz) || 1; nx /= l; ny /= l; nz /= l; }
+        // (`shade`: the normal it is lit by, when that is the crown's and not the plate's own)
+        const [hx, hy, hz] = shade || [nx, ny, nz];
         let ux = 0, uy = 1, uz = 0; if (Math.abs(ny) > 0.92) { ux = 1; uy = 0; }
         let tx = uy * nz - uz * ny, ty = uz * nx - ux * nz, tz = ux * ny - uy * nx; const tl = Math.hypot(tx, ty, tz) || 1; tx /= tl; ty /= tl; tz /= tl;
         let bx = ny * tz - nz * ty, by = nz * tx - nx * tz, bz = nx * ty - ny * tx;
         const c = Math.cos(roll), s2 = Math.sin(roll), h = size / 2;
         const ax = (tx * c + bx * s2) * h, ay = (ty * c + by * s2) * h, az = (tz * c + bz * s2) * h;
         const ex = (bx * c - tx * s2) * h, ey = (by * c - ty * s2) * h, ez = (bz * c - tz * s2) * h;
-        const v = (dx, dy, u, w) => this.vert(cx + ax * dx + ex * dy, cy + ay * dx + ey * dy, cz + az * dx + ez * dy, nx, ny, nz, ru + rw * u, rv + rh * w, sway, ao, 0);
+        const v = (dx, dy, u, w) => this.vert(cx + ax * dx + ex * dy, cy + ay * dx + ey * dy, cz + az * dx + ez * dy, hx, hy, hz, ru + rw * u, rv + rh * w, sway, ao, 0);
         const a = v(-1, -1, 0, 1), b = v(1, -1, 1, 1), d = v(-1, 1, 0, 0), e = v(1, 1, 1, 0);
         this.idx.push(a, b, d, b, e, d);
     }
@@ -426,7 +431,7 @@ const frond = (ox, oy, oz, az, len, rise, droop) => (t) => {
     return [ox + cz * out, oy + y, oz + sz * out];
 };
 
-function buildSpecies(seed) {
+function buildSpecies(seed, rich = true) {
     const S = {};
     const rnd = mulberry32(seed), R = (a, b) => a + (b - a) * rnd();
     const fernR = rectUV('fern'), palmR = rectUV('palm'), needleR = rectUV('needle'), leafR = rectUV('leaf'), tuftR = rectUV('tuft'), curtainR = rectUV('reed');
@@ -480,10 +485,20 @@ function buildSpecies(seed) {
                 const az = (i / cnt) * 6.283 + w * 2.4 + R(-0.4, 0.4), L = reach * R(0.6, 1.2);
                 const y = y0 + R(-0.48, 0.48) * gap;
                 const rise = -0.42 + 1.0 * t + R(-0.2, 0.2);
-                const opt = { swayA: 0.1 + 0.3 * t, swayB: 0.55 + 0.45 * t, aoA: 0.2, aoB: 1, fold: 0.18 };
-                const wid = () => L * (lod ? 1.0 : 0.58);
-                const sp = frond(ox, y, oz, az, L, rise, R(-0.28, 0.08) * (1 - t));
-                if (lod) b.card(sp, wid, 1, needleR, opt); else if (w < 9) b.strip(sp, wid, 2, needleR, opt); else b.card(sp, wid, 2, needleR, opt);
+                // (a bough seen end on is an arch, its sides hanging lower than its spine: flat, it is a shelf)
+                const opt = { swayA: 0.1 + 0.3 * t, swayB: 0.55 + 0.45 * t, aoA: 0.2, aoB: 1, fold: 0.34 };
+                const wid = () => L * (lod ? 1.0 : 0.46);
+                const droop = R(-0.28, 0.08) * (1 - t);
+                const sp = frond(ox, y, oz, az, L, rise, droop);
+                if (lod) b.card(sp, wid, 1, needleR, opt); else if (rich || w < 9) b.strip(sp, wid, 2, needleR, opt); else b.card(sp, wid, 2, needleR, opt);
+                // and it forks: a spray leaves it to either side part-way out, lower than the bough and shorter, so
+                // its outline from any side is a ragged hand and not the edge of a board
+                // (on the small tiers one spray a bough, on the big boughs only: the tree is the same shape for half the triangles)
+                if (!lod && L > (rich ? 2.0 : 3.2)) for (const side of rich ? [-1, 1] : [w % 2 ? 1 : -1]) {
+                    if (rnd() < 0.18) continue;
+                    const q = R(0.22, 0.5), o = sp(q), l2 = L * (1 - q) * R(0.6, 0.9) + 0.3;
+                    b.strip(frond(o[0], o[1] - 0.05, o[2], az + side * R(0.5, 0.95), l2, rise - R(0.12, 0.4), 0.22 + R(0, 0.2)), () => l2 * 0.5, 2, needleR, { swayA: opt.swayA + 0.1, swayB: opt.swayB, aoA: 0.3, aoB: 1, fold: 0.3 });
+                }
                 // the mass under the bough: a curtain of sprays, so no bough is ever seen as one thin plane
                 if (lod < 2 && t < 0.9 && (!lod || i % 2 === 0)) b.hang(sp, L * R(0.26, 0.4), lod ? 1 : 2, curtainR, { swayA: 0.2, swayB: 0.9, ao: 0.46 });
                 if (!lod && t < 0.8 && rnd() < 0.4) b.card(frond(ox, y - 0.3, oz, az + R(-0.5, 0.5), L * R(0.5, 0.75), rise - R(0.4, 0.7), 0.3), () => L * 0.42, 2, needleR, { swayA: 0.2, swayB: 0.8, aoA: 0.12, aoB: 0.62 });
@@ -527,10 +542,19 @@ function buildSpecies(seed) {
             for (let i = 0; i < perBlob; i++) {
                 let nx = R(-1, 1), ny = R(-0.85, 1), nz = R(-1, 1); const nl = Math.hypot(nx, ny, nz) || 1; nx /= nl; ny /= nl; nz /= nl;
                 const inner = !lod && i % 4 === 3;                       // plates set inside the mass: its shaded heart
-                const rr = br * (inner ? R(0.15, 0.5) : R(0.6, 1.02));
+                // (a stand-in's few big plates are set well inside the mass and face outward: nearer its edge, or
+                // tilted, half a plate stood out of the crown as a slab)
+                const rr = br * (inner ? R(0.15, 0.5) : lod ? R(0.3, 0.55) : R(0.6, 1.02));
                 const px = bx + nx * rr, py = by + ny * rr * 0.8, pz = bz + nz * rr;
                 const depth = cl(Math.hypot(px - tx, py - cy, pz - tz) / crownR, 0, 1);
-                b.plate(px, py, pz, nx * 0.75 + R(-0.35, 0.35), ny * 0.75 + 0.35, nz * 0.75 + R(-0.35, 0.35), br * (lod ? 2.3 : 1.4) * R(0.7, 1.25), R(0, 6.283), leafR, R(0.45, 1), inner ? 0.12 : 0.3 + 0.7 * depth * depth);
+                // No two sprays of leaves lean alike; laid flat on the ball, all facing out, they read as scales.
+                // (They lean, but they still mostly face out: turned to the sky as real sprays are, they were seen
+                // edge on from the ground, which is where every camera stands, and an edge-on plate is a slab.)
+                // They are lit as the crown is rounded, so the mass still has a bright side and a dark one.
+                const k = lod ? 0.95 : 0.62, j = lod ? 0.16 : 0.6;
+                b.plate(px, py, pz, nx * k + R(-j, j), ny * k + (lod ? 0.14 : 0.3) + R(-j, j) * 0.5, nz * k + R(-j, j), br * (lod ? 2.0 : 1.4) * R(0.7, 1.25), R(0, 6.283), leafR, R(0.45, 1), inner ? 0.12 : 0.3 + 0.7 * depth * depth, [nx * 0.75, ny * 0.75 + 0.35, nz * 0.75]);
+                // and the odd spray stands clear of the mass, which is what breaks its outline
+                if (!lod && !inner && i % 5 === 0) { const o = br * R(1.05, 1.3); b.plate(bx + nx * o, by + ny * o * 0.8, bz + nz * o, nx * 0.8 + R(-0.5, 0.5), ny * 0.5 + 0.25 + R(-0.3, 0.3), nz * 0.8 + R(-0.5, 0.5), br * R(0.7, 1.0), R(0, 6.283), leafR, 1, 0.9 + 0.1 * depth, [nx * 0.6, ny * 0.6 + 0.5, nz * 0.6]); }
             }
         }
         for (let i = leaf0; i < b.count; i++) { const l = Math.hypot(b.n[i * 3], b.n[i * 3 + 1], b.n[i * 3 + 2]) || 1; b.n[i * 3] /= l; b.n[i * 3 + 1] /= l; b.n[i * 3 + 2] /= l; }
@@ -578,7 +602,7 @@ function rockGeometry(seed, detail = 3) {
 export function createFlora({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, keepClear = [], bare = false, photo = null, sunlight = null, footprints = null }) {
     const group = new THREE.Group(); group.name = 'flora';
     const atlas = paintAtlas(photo);
-    const species = buildSpecies(4242);
+    const species = buildSpecies(4242, quality.post >= 2);
     const density = quality.flora;
 
     // ---- material shared by every plant
@@ -593,13 +617,17 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
     // a tree that shrank to nothing while its stand-in grew out of the ground beside it read as the
     // forest warping every time the camera travelled. `uEye` is the visitor's camera, in every pass
     // (the shadow pass has a camera of its own, a kilometre up the sunbeam).
-    const lodFade = (base, from, to) => {
+    const lodFade = (base, from, to, last = false) => {
         if (!(from > 0 || to > 0)) return null;
         const d = length(base.xz.sub(uEye.xz)).add(max(uEye.y.sub(base.y).sub(60), 0).mul(0.8));
-        const kIn = from > 0 ? varying(smoothstep(from * 0.94, from * 1.06, d)) : null;
-        const kOut = to > 0 ? varying(float(1).sub(smoothstep(to * 0.94, to * 1.06, d))) : null;
-        // interleaved gradient noise: the same threshold for both levels at a pixel, so where one has
-        // gone the other has arrived, with no hole and nothing drawn twice
+        // The further level has arrived in full before the nearer one starts to go: for the width of the
+        // hand-over both are drawn. Swapped pixel for pixel instead (each given the half the other left),
+        // every tree in that band was a crown at half strength against whatever lay behind it, which is a
+        // screen door; overlapped, what dissolves does so in front of its own stand-in.
+        const kIn = from > 0 ? varying(smoothstep(from * 0.94, from, d)) : null;
+        // (`last`: nothing takes its place, so it goes gradually, over the whole width)
+        const kOut = to > 0 ? varying(float(1).sub(smoothstep(to * (last ? 0.94 : 1), to * 1.06, d))) : null;
+        // (interleaved gradient noise for the threshold)
         const n = fract(float(52.9829189).mul(fract(dot(screenCoordinate.xy, vec2(0.06711056, 0.00583715)))));
         let show = null;
         if (kIn) show = kIn.greaterThan(float(1).sub(n));
@@ -609,10 +637,10 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
 
     // `lens`: a tree the camera flies through thins away in front of the lens instead of filling it with one
     // enormous frond (a flight between two stops goes at about the height of the canopy)
-    const makeMaterial = ({ windK = 1, shadowCut = 0.4, twoSided = true, from = 0, to = 0, lens = false } = {}) => {
+    const makeMaterial = ({ windK = 1, shadowCut = 0.4, twoSided = true, from = 0, to = 0, lens = false, last = false } = {}) => {
         const mat = new THREE.MeshSSSNodeMaterial({ side: twoSided ? THREE.DoubleSide : THREE.FrontSide });
         const base = iA.xyz;
-        const fade = lodFade(base, from, to);
+        const fade = lodFade(base, from, to, last);
         mat.positionNode = Fn(() => {
             const lp = rotY(positionLocal.mul(iA.w));
             const gust = texture(noiseTex, base.xz.mul(1 / 140).add(windDir.mul(time.mul(0.02)))).level(0).r;
@@ -671,10 +699,10 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
     const midMat = makeMaterial({ from: NEAR, to: MID, windK: 0.8 });
     const farMat = makeMaterial({ from: MID, windK: 0.6 });
     const groundMat = makeMaterial({ windK: 1.4 });
-    const tuftMat = makeMaterial({ windK: 1.4, to: 62 });
+    const tuftMat = makeMaterial({ windK: 1.4, to: 62, last: true });
     const fernNearMat = makeMaterial({ windK: 1.4, to: 36 });
-    const fernFarMat = makeMaterial({ windK: 1.2, from: 36, to: 138 });
-    const standMat = makeMaterial({ to: 138 });                       // shrubs, cycads and fallen trunks round a stop
+    const fernFarMat = makeMaterial({ windK: 1.2, from: 36, to: 138, last: true });
+    const standMat = makeMaterial({ to: 138, last: true });                       // shrubs, cycads and fallen trunks round a stop
 
     // rocks reuse the island's stone look, triplanar in world space
     const rockMat = new THREE.MeshStandardNodeMaterial();
@@ -688,7 +716,7 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
         const pale = new THREE.Color('#a39478');
         const stone = mix(mix(vec3(c0.r, c0.g, c0.b), vec3(c1.r, c1.g, c1.b), hgt), vec3(pale.r, pale.g, pale.b).mul(mix(0.7, 1.1, hgt)), iB.w).mul(iB.z);
         const mossy = smoothstep(0.35, 0.8, n.y.mul(0.6).add(texture(noiseTex, P.xz.mul(1 / 9)).g.mul(0.6)));
-        const fade = lodFade(iA.xyz, 0, 138);
+        const fade = lodFade(iA.xyz, 0, 138, true);
         rockMat.positionNode = rotY(positionLocal.mul(iA.w)).mul(step(0.0005, fade.on)).add(iA.xyz);
         rockMat.maskNode = fade.show; rockMat.maskShadowNode = fade.show;
         rockMat.colorNode = mix(stone, vec3(mossC.r, mossC.g, mossC.b).mul(0.8), mossy.mul(0.7).mul(iB.y)).mul(mix(0.5, 1.0, smoothstep(-0.3, 0.5, positionLocal.y)));

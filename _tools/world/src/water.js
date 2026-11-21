@@ -5,10 +5,10 @@
 import * as THREE from 'three/webgpu';
 import {
     Fn, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, normalize, dot, pow, sqrt, exp, reflect, length, sin,
-    positionWorld, positionView, cameraPosition, cameraViewMatrix, cameraProjectionMatrix, cameraNear, cameraFar, time, screenUV, screenCoordinate, viewportTexture, viewportDepthTexture,
+    positionWorld, positionView, cameraPosition, cameraViewMatrix, cameraProjectionMatrix, cameraNear, cameraFar, screenUV, screenCoordinate, viewportTexture, viewportDepthTexture,
     saturate, getScreenPosition, perspectiveDepthToViewZ, interleavedGradientNoise, Loop, If, Break,
 } from 'three/tsl';
-import { smoothstep } from './tsl.js';
+import { smoothstep, time } from './tsl.js';
 
 const C = (hex) => { const c = new THREE.Color(hex); return vec3(c.r, c.g, c.b); };
 
@@ -73,11 +73,16 @@ export function createWater({ waterTex, terrain, atmosphere, quality, sunlight }
     // behind something already drawn, and take that pixel. What the screen cannot show
     // (anything out of frame) falls back to the sky.
     const mirror = Fn(() => {
-        const Nv = normalize(normal.transformDirection(cameraViewMatrix));
+        // Far off, a pixel covers more ripples than it can show, and a mirror tilted by whichever one it
+        // happened to land on is a different mirror on every row: the far shore came back as stacked bars.
+        // What a great many small ripples do together is very nearly what flat water does, so that is
+        // what the distance is given.
+        const calmed = normalize(mix(normal, vec3(0.0, 1.0, 0.0), smoothstep(22.0, 150.0, positionView.z.negate()).mul(0.86)));
+        const Nv = normalize(calmed.transformDirection(cameraViewMatrix));
         const Rv = reflect(normalize(positionView), Nv);
         const hit = vec3(0.0).toVar();
-        const t = float(1.2).toVar(), lo = float(0.0).toVar(), found = float(0.0).toVar();
         const N = quality.post >= 3 ? 26 : 18, grow = quality.post >= 3 ? 1.3 : 1.42;
+        const t = float(1.2).toVar(), lo = float(0.0).toVar(), found = float(0.0).toVar();
         const zAt = (tt) => { const p = positionView.add(Rv.mul(tt)); const suv = getScreenPosition(p, cameraProjectionMatrix); return perspectiveDepthToViewZ(sceneDepth(suv).r, cameraNear, cameraFar).sub(p.z); };
         Loop(N, () => {
             const p = positionView.add(Rv.mul(t));

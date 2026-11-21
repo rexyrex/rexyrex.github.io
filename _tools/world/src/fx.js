@@ -10,9 +10,9 @@
 import * as THREE from 'three/webgpu';
 import {
     Fn, attribute, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, normalize, dot, pow, sin, cos, exp, length, fract, saturate,
-    positionGeometry, positionView, normalView, cameraPosition, cameraViewMatrix, cameraProjectionMatrix, time, uv, varying, dFdx, dFdy, cross, sign,
+    positionGeometry, positionView, normalView, cameraPosition, cameraViewMatrix, cameraProjectionMatrix, uv, varying, dFdx, dFdy, cross, sign,
 } from 'three/tsl';
-import { smoothstep } from './tsl.js';
+import { smoothstep, time } from './tsl.js';
 import { mulberry32 } from './noise.js';
 
 const quads = (count, seedOf) => {
@@ -126,11 +126,15 @@ export function createFlame({ origin, width, height, noiseTex, amount = float(1)
 // A surface normal bent by a height (in metres) that exists only as a formula: no texture, no tangents, just
 // how the height changes from one pixel to the next. For relief that is larger than a pixel (a carved
 // letter, bark); finer than that it turns to speckle.
-export const reliefNormal = (h) => Fn(() => {
+// `k`: how much of the relief is left at this distance, when it is faded out by how big it is on the
+// screen. It scales the slope after the slope is taken, and is never folded into the height: a fade
+// worked out from `fwidth` and then differentiated again is a derivative of a derivative, which neither
+// shading language defines (a phone may show sparkle exactly where the detail is meant to be going quiet).
+export const reliefNormal = (h, k = null) => Fn(() => {
     const dpdx = dFdx(positionView), dpdy = dFdy(positionView);
     const r1 = cross(dpdy, normalView), r2 = cross(normalView, dpdx);
     const det = dot(dpdx, r1);
-    const grad = sign(det).mul(dFdx(h).mul(r1).add(dFdy(h).mul(r2)));
+    const slope = sign(det).mul(dFdx(h).mul(r1).add(dFdy(h).mul(r2))), grad = k ? slope.mul(k) : slope;
     return normalize(abs(det).mul(normalView).sub(grad));
 })();
 

@@ -13,9 +13,9 @@
 // fleck it makes on the ground are the same piece of light.
 import * as THREE from 'three/webgpu';
 import {
-    Fn, If, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, log2, saturate, sin, cos, sqrt, pow, length, time, uv, cameraPosition,
+    Fn, If, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, log2, saturate, sin, cos, sqrt, pow, length, uv, cameraPosition,
 } from 'three/tsl';
-import { smoothstep } from './tsl.js';
+import { smoothstep, time } from './tsl.js';
 
 const TAU = 6.283185307179586;
 
@@ -114,11 +114,14 @@ export function createSunlight({ atmosphere, terrain, island, noiseTex, quality,
     const waveTex = rt.texture;
     // the visitor's eye, for passes that have no camera of their own (a full-screen pass looks through a flat one)
     const uEye = uniform(new THREE.Vector3());
-    let tick = 0;
+    let tick = 0, drawnAt = -1e9;
     const update = (renderer, camera) => {
         uEye.value.copy(camera.position);
-        // (on the small tiers the sheet is redrawn every other frame: water at thirty steps a second still flows)
-        if (tick++ % (L.waveEvery || 1)) return;
+        // (on the small tiers the sheet is redrawn every other frame: water at thirty steps a second still flows.
+        // Unless the clock has been moved, by a still asking for a moment: then it is drawn for that moment now.)
+        const jumped = Math.abs(time.value - drawnAt) > 0.25;
+        if (tick++ % (L.waveEvery || 1) && !jumped) return;
+        drawnAt = time.value;
         const prev = renderer.getRenderTarget();
         renderer.setRenderTarget(rt);
         quad.render(renderer);

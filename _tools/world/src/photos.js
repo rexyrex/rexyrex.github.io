@@ -1,5 +1,6 @@
-// Photographs laid over the painted world: plant sprites, six kinds of ground
-// and a patch of reptile skin (made by textures.py, kept in /assets/island/tex/).
+// Photographs laid over the painted world: plant sprites and six kinds of ground
+// (made by textures.py, kept in /assets/island/tex/). The animals' hide used to be a
+// third; it is a formula now (fauna.js), and its file is no longer fetched.
 // They are an improvement, never a requirement: a file that is missing, slow
 // or undecodable leaves that part of the world painted the way it always was.
 import * as THREE from 'three/webgpu';
@@ -28,8 +29,8 @@ export async function loadPhotos({ base = '/assets/island/tex/', size = 768, onP
     const out = { flora: null, ground: null, skin: null };
     if (!size || typeof document === 'undefined') return out;
     const q = '?v=' + VERSION;
-    let got = 0; const tick = (v) => { got++; onProgress(got / 3); return v; };
-    const [flora, ground, skin] = await Promise.all([fetchImage(base + 'flora.webp' + q, 20000).then(tick), fetchImage(base + 'ground.webp' + q, 20000).then(tick), fetchImage(base + 'skin.webp' + q, 20000).then(tick)]);
+    let got = 0; const tick = (v) => { got++; onProgress(got / 2); return v; };
+    const [flora, ground] = await Promise.all([fetchImage(base + 'flora.webp' + q, 20000).then(tick), fetchImage(base + 'ground.webp' + q, 20000).then(tick)]);
     try {
         if (flora && flora.naturalWidth === flora.naturalHeight * 2) {
             const n = flora.naturalHeight;
@@ -54,14 +55,5 @@ export async function loadPhotos({ base = '/assets/island/tex/', size = 768, onP
             out.ground = { tex, mean, layers };
         }
     } catch (e) { out.ground = null; }
-    try {
-        if (skin) {
-            const tex = new THREE.Texture(skin);
-            tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.minFilter = THREE.LinearMipmapLinearFilter; tex.generateMipmaps = true; tex.anisotropy = 8; tex.needsUpdate = true;
-            const px = pixels(skin, 0, 0, skin.naturalWidth, skin.naturalHeight, 64, 64);
-            let l = 0, k = 0; for (let j = 0; j < px.length; j += 4) { l += 0.3 * lin(px[j]) + 0.55 * lin(px[j + 1]) + 0.15 * lin(px[j + 2]); k++; }
-            out.skin = { tex, mean: l / k };
-        }
-    } catch (e) { out.skin = null; }
     return out;
 }

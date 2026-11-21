@@ -15,9 +15,9 @@
 import * as THREE from 'three/webgpu';
 import {
     Fn, pass, uniform, vec2, vec3, vec4, float, mix, max, min, clamp, dot, pow, length, normalize, abs, exp, sqrt, sin, cos, floor, fract, saturate,
-    screenUV, screenCoordinate, renderOutput, Loop, If, texture, time, rtt, perspectiveDepthToViewZ, interleavedGradientNoise,
+    screenUV, screenCoordinate, renderOutput, Loop, If, texture, rtt, perspectiveDepthToViewZ, interleavedGradientNoise,
 } from 'three/tsl';
-import { smoothstep } from './tsl.js';
+import { smoothstep, time } from './tsl.js';
 import { bloom } from 'three/addons/tsl/display/BloomNode.js';
 import { ao } from 'three/addons/tsl/display/GTAONode.js';
 
@@ -52,7 +52,10 @@ export function createPost({ renderer, scene, camera, quality, atmosphere, sunli
         const occ = aoPass.getTextureNode().r;
         // (shade takes more from dim surfaces than from sunlit ones: it is skylight that a crease loses)
         const sunlit = smoothstep(1.2, 6.0, dot(color.rgb, LUMA));
-        lit = lit.mul(mix(occ, 1.0, sunlit.mul(0.55)));
+        // (and it is a near thing: a crease a metre deep, a furlong off, is a pixel or two of noise, and on a far
+        // wood seen through haze that noise is a scatter of dark specks)
+        const away = smoothstep(55.0, 190.0, perspectiveDepthToViewZ(texture(depth, screenUV).r, uNear, uFar).negate());
+        lit = lit.mul(mix(occ, 1.0, max(sunlit.mul(0.55), away)));
     }
 
     // ---- sunbeams

@@ -9,9 +9,9 @@
 import * as THREE from 'three/webgpu';
 import {
     Fn, uniform, texture, vec2, vec3, vec4, float, normalize, max, min, sqrt, exp, pow, dot, mix, clamp, abs, atan, length,
-    positionWorld, cameraPosition, modelViewProjection, time, fog, saturate, select, step,
+    positionWorld, cameraPosition, modelViewProjection, fog, saturate, select, step,
 } from 'three/tsl';
-import { smoothstep } from './tsl.js';
+import { smoothstep, time } from './tsl.js';
 import { dataTexture } from './textures.js';
 
 const KM = 1000;
@@ -175,7 +175,9 @@ export function createAtmosphere({ sunDir, noiseTex, quality, salt = 0 }) {
     const TWO_PI = 6.283185307179586;
     // radiance of the clear sky in a direction
     const skyLookup = Fn(([dir]) => {
-        const u = atan(dir.z, dir.x).div(TWO_PI).add(0.5);
+        // (straight up has no bearing, and atan(0, 0) no defined answer: nudged, it has one, and every bearing reads
+        // the same sky at the zenith anyway)
+        const u = atan(dir.z, dir.x.add(1e-6)).div(TWO_PI).add(0.5);
         const v = sqrt(clamp(dir.y, 0.0, 1.0));
         return texture(table.tex, vec2(u, v)).level(0).rgb;
     });

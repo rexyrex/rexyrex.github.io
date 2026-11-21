@@ -6,9 +6,9 @@
 import * as THREE from 'three/webgpu';
 import {
     Fn, attribute, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, fract, floor,
-    positionLocal, normalLocal, positionGeometry, normalGeometry, positionWorld, cameraPosition, cameraViewMatrix, time, uv, saturate, instanceIndex, hash, exp, lights, materialColor, normalView, positionViewDirection,
+    positionLocal, normalLocal, positionGeometry, normalGeometry, positionWorld, cameraPosition, cameraViewMatrix, uv, saturate, instanceIndex, hash, exp, lights, materialColor, normalView, positionViewDirection,
 } from 'three/tsl';
-import { smoothstep } from './tsl.js';
+import { smoothstep, time } from './tsl.js';
 import { mulberry32, lerp } from './noise.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { SITES, VOLCANO } from './island.js';
@@ -178,7 +178,12 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         for (let i = 0; i < n; i++) {
             const m = new THREE.MeshSSSNodeMaterial({ color: new THREE.Color(tints[i % 3 === 0 ? Math.floor(rnd() * tints.length) : Math.floor(rnd() * 3)]), roughness: 0.22, clearcoat: 0.6, clearcoatRoughness: 0.2 });
             // (rubber stretched thin: held against the sun a balloon glows in its own colour)
-            m.thicknessColorNode = materialColor.mul(1.6).mul(pow(saturate(dot(normalView, positionViewDirection)), 0.55).mul(0.75).add(0.25));       // (more rubber to cross toward the rim) m.thicknessDistortionNode = float(0.5); m.thicknessAmbientNode = float(0.03); m.thicknessAttenuationNode = float(1.0); m.thicknessPowerNode = float(2.2); m.thicknessScaleNode = float(1.25);
+            // What glows in a balloon held against the light is its far wall, where the sun falls on the outside of
+            // it, seen through the near one: so the glow has a shape (brightest where the far side faces the sun),
+            // and a balloon is a lit hollow thing and not a disc of one colour.
+            const farWall = normalView.sub(positionViewDirection.mul(dot(normalView, positionViewDirection).mul(2.0)));
+            const farLit = pow(saturate(dot(farWall, atmosphere.uSunDir.transformDirection(cameraViewMatrix)).mul(0.6).add(0.4)), 1.6);
+            m.thicknessColorNode = materialColor.mul(1.9).mul(pow(saturate(dot(normalView, positionViewDirection)), 0.55).mul(0.75).add(0.25)).mul(mix(0.3, 1.3, farLit));       // (more rubber to cross toward the rim) m.thicknessDistortionNode = float(0.5); m.thicknessAmbientNode = float(0.03); m.thicknessAttenuationNode = float(1.0); m.thicknessPowerNode = float(2.2); m.thicknessScaleNode = float(1.25);
             const b = add(new THREE.Mesh(g, m)); b.receiveShadow = false;       // (one balloon's shadow on another is a black hole in a thing that glows)
             // spread through what the camera at this stop sees: out over the water, near and far, high and low
             const pl = places.find((q) => q.id === 'balloons');
@@ -339,29 +344,31 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
             const weave = texture(noiseTex, positionWorld.xz.mul(1.3).add(positionWorld.y.mul(0.9))).g, thread = texture(noiseTex, positionLocal.zy.mul(vec2(9.0, 14.0))).g;
             const folds = sin(positionLocal.z.mul(7.0).add(positionLocal.y.mul(2.4))).mul(0.5).add(0.5);
             const stain = texture(noiseTex, positionLocal.zy.mul(0.35).add(0.3)).r;
-            const cloth = col('#8f8262').mul(mix(0.74, 1.08, weave)).mul(mix(0.9, 1.05, thread)).mul(mix(0.8, 1.04, folds)).mul(mix(0.62, 1.0, smoothstep(0.0, 0.5, positionLocal.y))).mul(mix(0.82, 1.05, smoothstep(0.3, 0.7, stain)));
+            // sewn from widths of cloth: a doubled seam every so often, darker and a little proud
+            const sz = fract(positionLocal.z.div(0.92).add(0.5)).sub(0.5).abs(), seam = smoothstep(0.035, 0.012, sz);
+            const cloth = col('#8f8262').mul(mix(0.74, 1.08, weave)).mul(mix(0.9, 1.05, thread)).mul(mix(0.8, 1.04, folds)).mul(mix(0.62, 1.0, smoothstep(0.0, 0.5, positionLocal.y))).mul(mix(0.7, 1.08, smoothstep(0.25, 0.75, stain))).mul(mix(1.0, 0.8, seam));
             canvas.colorNode = cloth; canvas.roughnessNode = float(0.92);
             // folds pulled from the ridge down to the pegs, and the cloth's own weave
             const pull = sin(positionLocal.z.mul(4.7).add(positionLocal.y.mul(3.1)).add(sin(positionLocal.z.mul(1.3)).mul(2.0)));
-            canvas.normalNode = reliefNormal(pull.mul(0.022).add(folds.mul(0.012)).add(thread.mul(0.0025)));
+            canvas.normalNode = reliefNormal(pull.mul(0.034).add(folds.mul(0.016)).add(seam.mul(-0.006)));
             canvas.thicknessColorNode = cloth.mul(vec3(1.5, 1.25, 0.8)); canvas.thicknessDistortionNode = float(0.25); canvas.thicknessAmbientNode = float(0.0);
             canvas.thicknessAttenuationNode = float(1.0); canvas.thicknessPowerNode = float(2.5); canvas.thicknessScaleNode = float(1.1);
         }
         const rope = new THREE.LineBasicNodeMaterial({ color: 0xcfc6ac, transparent: true, opacity: 0.7 });
         const tent = (x, z, ry, sc) => {
             const g = new THREE.BufferGeometry();
-            const w = 1.35, l = 2.0, h = 1.45, sag = 0.12;
+            const w = 1.35, l = 2.0, h = 1.45, sag = 0.2;
             // Two cloth panels hung from a ridge line that dips between its poles; each sags between ridge and
             // ground, is drawn into a scallop between its pegs, and wrinkles a little. A back wall; the door is open.
             const NU = 14, NV = 8, v = [], idx = [];
-            const ridge = (u) => h - 0.07 * (1 - u * u);                                  // u: -1 .. 1 along the ridge
+            const ridge = (u) => h - 0.13 * (1 - u * u);                                  // u: -1 .. 1 along the ridge
             for (const sd of [-1, 1]) {
                 const base = v.length / 3;
                 for (let j = 0; j <= NV; j++) for (let i = 0; i <= NU; i++) {
                     const u = (i / NU) * 2 - 1, t = j / NV;
                     const belly = Math.sin(Math.PI * t) * (0.6 + 0.4 * Math.cos((Math.PI * u) / 2)) * sag;
-                    const peg = 0.06 * Math.abs(Math.sin(Math.PI * 1.5 * (u + 1))) * t * t;           // lifted between the pegs
-                    const crease = 0.014 * Math.sin(u * 9 + t * 5 + sd) * Math.sin(Math.PI * t);
+                    const peg = 0.15 * Math.abs(Math.sin(Math.PI * 1.5 * (u + 1))) * t * t * t;           // lifted between the pegs
+                    const crease = (0.03 * Math.sin(u * 9 + t * 5 + sd) + 0.018 * Math.sin(u * 17 - t * 9 + 2 * sd)) * Math.sin(Math.PI * t);
                     v.push(sd * (w * Math.pow(t, 0.96) + belly * 0.35 + crease), ridge(u) * (1 - t) - belly + peg + crease, u * l * (1 + 0.012 * Math.sin(t * 6 + sd) * (1 - u * u)));
                 }
                 for (let j = 0; j < NV; j++) for (let i = 0; i < NU; i++) { const a = base + j * (NU + 1) + i, b = a + 1, c = a + NU + 1, d = c + 1; if (sd > 0) idx.push(a, c, b, b, c, d); else idx.push(a, b, c, b, d, c); }

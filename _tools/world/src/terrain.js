@@ -135,7 +135,8 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
 
     // (a close-up nicety: gone by the time a place is far enough off for another stop's square to take over)
     const contact = footprints ? footprints.at(xz).g.mul(smoothstep(120.0, 60.0, dist)) : null;
-    const nBroad = texture(noiseTex, xz.mul(1 / 190)).r;
+    const nBroadAll = texture(noiseTex, xz.mul(1 / 190));
+    const nBroad = nBroadAll.r;
     const nMid = texture(noiseTex, xz.mul(1 / 31)).g;
 
     // triplanar weights from the large-scale normal
@@ -146,6 +147,18 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
     const rkZ = texture(rockTex, P.xy.mul(RS));
     const rockH = rkY.b.mul(tw.y).add(rkX.b.mul(tw.x)).add(rkZ.b.mul(tw.z));
     const rkFar = texture(rockTex, xz.mul(1 / 47));
+    // and read large, on the faces: the blocks, buttresses and joints a cliff is built of, which is what gives
+    // it a shape from across a valley. Taller than wide, as rock is that splits along joints running down it;
+    // pushed about a little by the broadest noise so the eye cannot find where the pattern comes round again
+    // (only a little, and only by noise much broader than the stone: bent harder, a joint is drawn running one
+    // way and lit as if it ran another).
+    const MACRO = quality.post >= 1, MS = 1 / 71, MY = 0.7;
+    const mWarp = MACRO ? vec2(nBroadAll.r, nBroadAll.b).mul(0.16) : null;
+    // (read a little soft: the stone's cracks are a texel wide, and tilted by a slope that sharp a sunlit face
+    // breaks into flecks with a hard edge)
+    const mkX = MACRO ? texture(rockTex, vec2(P.z, P.y.mul(MY)).mul(MS).add(mWarp)).bias(1.3) : null;
+    const mkZ = MACRO ? texture(rockTex, vec2(P.x, P.y.mul(MY)).mul(MS).sub(mWarp)).bias(1.3) : null;
+    const macroH = MACRO ? rkFar.b.mul(tw.y).add(mkX.b.mul(tw.x)).add(mkZ.b.mul(tw.z)) : rkFar.b;
     // the same stone read small, for what the lens is close to: the grain a cliff face has at arm's length
     const FINE = quality.post >= 2, FS = 1 / 1.9;
     const fine = FINE ? texture(rockTex, xz.mul(FS)).mul(tw.y).add(texture(rockTex, P.zy.mul(FS)).mul(tw.x)).add(texture(rockTex, P.xy.mul(FS)).mul(tw.z)) : null;
@@ -260,6 +273,8 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
         // and the shade that gathers round the foot of whatever has been stood on the ground
         if (footprints) col.mulAssign(float(1).sub(contact.mul(0.42)));
         if (FINE) col.mulAssign(mix(1.0, mix(0.66, 1.16, smoothstep(0.2, 0.75, fine.b)), fineK.mul(rockW)));
+        // the big joints hold shade and damp, the faces between them weather pale
+        col.mulAssign(mix(1.0, mix(0.7, 1.1, smoothstep(0.1, 0.56, macroH)), rockW.mul(0.9).mul(float(1).sub(strata.mul(0.75)))));
         return col;
     })();
 
@@ -280,6 +295,18 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
         n.x.addAssign(ry.x.mul(tw.y).mul(s)); n.z.addAssign(ry.y.mul(tw.y).mul(s));
         n.z.addAssign(rx.x.mul(tw.x).mul(s)); n.y.addAssign(rx.y.mul(tw.x).mul(s));
         n.x.addAssign(rz.x.mul(tw.z).mul(s)); n.y.addAssign(rz.y.mul(tw.z).mul(s));
+        {
+            // the big blocks: each face of the hill leans by the slope of the stone drawn large on it
+            // (lava rock is rubble and ash, not jointed cliff; and the mesas are laid in beds, which joints running every
+            // way across them were painted over like charcoal)
+            const sM = rockW.mul(1.9).mul(mix(1.0, 0.5, volcanic)).mul(mix(1.0, 0.22, strata)), m0 = r0.mul(tw.y).mul(sM);
+            n.x.addAssign(m0.x); n.z.addAssign(m0.y);
+            if (MACRO) {
+                const mx = mkX.rg.mul(2).sub(1).mul(tw.x).mul(sM), mz = mkZ.rg.mul(2).sub(1).mul(tw.z).mul(sM);
+                n.z.addAssign(mx.x); n.y.addAssign(mx.y.mul(MY));
+                n.x.addAssign(mz.x); n.y.addAssign(mz.y.mul(MY));
+            }
+        }
         if (FINE) {
             // (each face tilts by the fine stone's own slope: across it, and up or along it)
             const f = fine.rg.mul(2).sub(1).mul(fineK).mul(rockW).mul(1.1);
@@ -305,6 +332,14 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
     mat.normalNode = normalWorld.transformDirection(cameraViewMatrix);
     mat.aoNode = footprints ? aoMacro.mul(float(1).sub(contact.mul(0.5))) : aoMacro;
     mat.envMapIntensity = 1;
+    // where a lake of lava stands against the crater's wall the rock is hot: a band of dull red just above the
+    // surface, brightest in its cracks (x: the lake's level, y: how hot; set by whoever owns the lake)
+    const uLava = uniform(new THREE.Vector2(-1e4, 0));
+    {
+        const over = h.sub(uLava.x);
+        const hot = smoothstep(5.5, 0.0, over).mul(smoothstep(-1.5, 0.4, over)).mul(smoothstep(66.0, 52.0, vDist)).mul(volcanic);
+        mat.emissiveNode = vec3(1.0, 0.17, 0.02).mul(hot.mul(hot)).mul(mix(1.0, 0.2, smoothstep(0.2, 0.6, rockH))).mul(uLava.y);
+    }
 
     // ---- rings
     const CN = quality.clipN;
@@ -339,7 +374,7 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
     const infoBAt = (worldXZ) => texture(infoB, infoUV(worldXZ));
 
     const shadeAt = (x, z) => { const i = Math.min(N - 1, Math.max(0, Math.round((x + half) / cell))), j = Math.min(N - 1, Math.max(0, Math.round((z + half) / cell))); return sunVis[j * N + i] / 255; };
-    return { group, update, material: mat, hTex, infoA, infoB, infoC, shadowTex, shadowData, gridHeight, groundHeight, sunVisAt, infoAAt, infoBAt, infoUV, shadeAt };
+    return { group, update, material: mat, uLava, hTex, infoA, infoB, infoC, shadowTex, shadowData, gridHeight, groundHeight, sunVisAt, infoAAt, infoBAt, infoUV, shadeAt };
 }
 
 // (N+1)^2 vertices at integer coordinates centred on 0. `hole` leaves out the

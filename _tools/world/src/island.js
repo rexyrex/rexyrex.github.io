@@ -72,8 +72,11 @@ export function shapeHeight(x, z) {
     {
         const dx = x - VOLCANO.x, dz = z - VOLCANO.z, d = Math.hypot(dx, dz);
         if (d < 520) {
-            const a = Math.atan2(dz, dx);
-            const gully = 1 + 0.10 * ridged2(Math.cos(a) * 3.2 + 5, Math.sin(a) * 3.2 + d / 420, 3) * smoothstep(30, 200, d) - 0.05;
+            const a = Math.atan2(dz, dx), ca = Math.cos(a), sa = Math.sin(a), flank = smoothstep(30, 200, d);
+            // rain has cut gullies between sharp ribs, with finer ones feeding them lower down; and the
+            // cone was built by flows that did not all run the same way, so it is not quite round
+            const gully = 1 + (0.17 * ridged2(ca * 3.2 + 5, sa * 3.2 + d / 420, 3) + 0.05 * ridged2(ca * 8.3 + 1, sa * 8.3 + d / 230, 2) * smoothstep(90, 260, d) - 0.06) * flank
+                - 0.05 * (1 - flank) + 0.07 * fbm2(ca * 1.15 + 3, sa * 1.15 + 8, 2) * smoothstep(70, 230, d);
             let cone = (330 * Math.pow(clamp(1 - d / 470, 0, 1), 2.25) + 46 * Math.exp(-(d * d) / (250 * 250))) * gully;
             cone = smin(cone, VOLCANO.top + 7 * fbm2(x / 30, z / 30, 2), 26);
             // the pit: a wall in two steps with a bench between them, down to a level floor
@@ -121,7 +124,10 @@ export function shapeHeight(x, z) {
                 const lean = 1 + 0.25 * Math.cos(an - sx);
                 const pillar = top * lean * (0.78 * smoothstep(1.0, 0.8, q) + 0.22 * smoothstep(0.62, 0.42, q)) + 4 * fbm2(x / 9 + sx, z / 9, 3) * smoothstep(1.0, 0.7, q);
                 // a low broken shelf at its foot, awash
-                const apron = 5.2 * smoothstep(1.9, 1.0, q + 0.25 * perlin2(x / 7, z / 7)) - 5.5;
+                // (which falls away into deep water well inside the reach of this stack, and not in a ring:
+                // a shelf that ended where the arithmetic does showed from the air as a pale disc)
+                const qa = q + 0.25 * perlin2(x / 7, z / 7), qo = q * (1 + 0.3 * perlin2(x / 29 + sx, z / 29));
+                const apron = 5.2 * smoothstep(1.9, 1.0, qa) - 5.5 - 70 * smoothstep(1.35, 2.7, qo);
                 h = Math.max(h, pillar + apron);
             }
         }

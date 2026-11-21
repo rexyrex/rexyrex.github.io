@@ -14,9 +14,9 @@
 import * as THREE from 'three/webgpu';
 import {
     Fn, attribute, uniform, texture, vec2, vec3, vec4, float, int, mix, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, fract, step, saturate,
-    positionGeometry, cameraViewMatrix, time, varying, fwidth, screenCoordinate,
+    positionGeometry, cameraViewMatrix, varying, fwidth, screenCoordinate,
 } from 'three/tsl';
-import { smoothstep } from './tsl.js';
+import { smoothstep, time } from './tsl.js';
 import { mulberry32 } from './noise.js';
 
 export function createCover({ island, quality, atmosphere, terrain, noiseTex, footprints }) {
