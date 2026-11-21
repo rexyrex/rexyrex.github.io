@@ -131,7 +131,7 @@ Tools in the same folder (Node 22+, a Chrome started with `--remote-debugging-po
 
 ## Published paths never disappear
 
-Store listings, review forms and other people's links point into this site, so a path that was published stays published. `_tools/paths/manifest.txt` lists every file the site served on 2026-11-20; `_tools/paths/check.py` fails if any is missing, if the home page loses one of its anchors, or if any same-site link in any page does not resolve.
+Store listings, review forms and other people's links point into this site, so a path that was published stays published. `_tools/paths/manifest.txt` lists every file the site served on 2026-11-20; `_tools/paths/check.py` fails if any is missing, if the home page loses one of its anchors, or if any same-site link in any page does not resolve. The App Manager installers under `/downloads/app-manager/` are the one exception and are not in the manifest: their file names carry the version and every release replaces them, so `--update` leaves them out and only the link check watches them.
 
 ```bash
 python3 _tools/paths/check.py            # before every commit that moves or renames anything

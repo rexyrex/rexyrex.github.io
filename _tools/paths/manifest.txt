@@ -272,8 +272,6 @@ deadlyBalloons/res/img/balloon2.png
 deadlyBalloons/res/img/rexGreenSmall.png
 deadlyBalloons/res/img/rexRedSmall.png
 deadlyBalloons/style.css
-downloads/app-manager/AppManager-0.18.0.dmg
-downloads/app-manager/AppManagerSetup-0.18.0.exe
 downloads/DeadlyBalloons2.rar
 favicon.ico
 index.html

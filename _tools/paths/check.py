@@ -21,7 +21,10 @@ MANIFEST = Path(__file__).with_name('manifest.txt')
 # ids on / that are linked from elsewhere (/#apps from the top bar and 16 app
 # pages, /#mac from the palette) or from the page's own index
 ANCHORS = ['typing', 'balloons', 'apps', 'games', 'mac', 'tesla', 'music', 'index', 'contact']
-SKIP = ('_tools/', 'README.md', '.gitignore')
+# never listed: the App Manager installers carry their version in the file name
+# and each release replaces them (App Manager's scripts/publish-site.sh), so
+# those paths are not permanent. The link check below still covers the page.
+SKIP = ('_tools/', 'README.md', '.gitignore', 'downloads/app-manager/')
 # deliberate: the devlog links to a missing page to show off /404.html
 INTENTIONAL_404 = {'/this-page-does-not-exist'}
 
