@@ -6,9 +6,10 @@
 // grid so no seam opens between them.
 import * as THREE from 'three/webgpu';
 import {
-    Fn, uniform, texture, textureLoad, vec2, vec3, vec4, float, ivec2, floor, fract, mix, smoothstep, max, min, abs, clamp, normalize, dot, pow, sqrt,
+    Fn, uniform, texture, textureLoad, vec2, vec3, vec4, float, ivec2, floor, fract, mix, max, min, abs, clamp, normalize, dot, pow, sqrt,
     positionLocal, positionWorld, modelWorldMatrix, modelScale, cameraPosition, cameraViewMatrix, saturate, length, sin, varying, uniformArray, int, log2, atan, step,
 } from 'three/tsl';
+import { smoothstep } from './tsl.js';
 import { WORLD, VOLCANO } from './island.js';
 import { dataTexture, sampleWrap } from './textures.js';
 import { smoothstep as sstep } from './noise.js';
@@ -19,7 +20,7 @@ const C = (hex) => { const c = new THREE.Color(hex); return vec3(c.r, c.g, c.b);
 const DETAIL_NEAR = 110, DETAIL_FAR = 320;
 const D1 = 1 / 23.0, D2 = 1 / 6.1, A1 = 0.55, A2 = 0.16;
 
-export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere, quality, sunDir, photo = null }) {
+export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere, quality, sunDir, photo = null, footprints = null }) {
     const N = island.N, half = WORLD / 2, cell = island.cell;
 
     // ---- textures from the baked island
@@ -34,8 +35,26 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
 
     // Which ground the low sun reaches, at island scale: one sweep away from the sun
     // carrying the height of the shadow edge. Covers what the shadow cascades cannot reach.
-    const sunVis = bakeSunVisibility(island, sunDir);
+    const sweep = bakeSunVisibility(island, sunDir), sunVis = sweep.vis;
     const infoC = dataTexture(sunVis, N, N, { format: THREE.RedFormat });
+    // The same sweep kept as heights: how high the shadow of the hills stands over every cell, and the
+    // ground under it. With these, anything in the air can ask whether the sun reaches it: a treetop
+    // above the shadow line, a pterosaur, the haze a sunbeam crosses.
+    let shadowData = null;
+    const shadowTex = (() => {
+        // a: the shade of the trees, written by light.js once the forest is planted (one texture, not two: the
+        // ground's shader already reads as many as a phone allows)
+        // r: the shadow line, g: the ground, b: the shadow line smoothed over some forty metres. A beam in the
+        // haze is cut by the smoothed one: a ridge's every tooth, drawn as a streak through the air, reads as
+        // a fault in the picture and not as light.
+        const toHalf = THREE.DataUtils.toHalfFloat, d = new Uint16Array(N * N * 4), R = Math.max(2, Math.round(18 / cell));
+        const tmp = new Float32Array(N * N), soft = new Float32Array(N * N);
+        for (let j = 0; j < N; j++) { let a = 0; for (let i = -R; i <= R; i++) a += sweep.edge[j * N + Math.min(N - 1, Math.max(0, i))]; for (let i = 0; i < N; i++) { tmp[j * N + i] = a / (2 * R + 1); a += sweep.edge[j * N + Math.min(N - 1, i + R + 1)] - sweep.edge[j * N + Math.max(0, i - R)]; } }
+        for (let i = 0; i < N; i++) { let a = 0; for (let j = -R; j <= R; j++) a += tmp[Math.min(N - 1, Math.max(0, j)) * N + i]; for (let j = 0; j < N; j++) { soft[j * N + i] = a / (2 * R + 1); a += tmp[Math.min(N - 1, j + R + 1) * N + i] - tmp[Math.max(0, j - R) * N + i]; } }
+        for (let i = 0; i < N * N; i++) { d[i * 4] = toHalf(sweep.edge[i]); d[i * 4 + 1] = toHalf(island.height[i]); d[i * 4 + 2] = toHalf(soft[i]); d[i * 4 + 3] = 0; }
+        shadowData = d;
+        return dataTexture(d, N, N, { format: THREE.RGBAFormat, type: THREE.HalfFloatType });
+    })();
 
     // CPU twin of the fine relief the vertex shader adds
     const rd = rockTex.userData.data, rs = rockTex.userData.size, gd = groundTex.userData.data, gs = groundTex.userData.size;
@@ -59,6 +78,22 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
         return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
     });
     const gridHeight = Fn(([xz]) => mipHeight(xz, int(0)));
+
+    // the height of the finished ground, fine relief included, for things that plant themselves in a vertex
+    // shader (the ground cover): the same sum the rings below make
+    // Not the height of the land but of the innermost ring's triangles: the fine relief is only known at the
+    // ring's corners (it has grit and pebbles in it far smaller than a cell), and between corners the ground
+    // that is actually drawn is flat. A plant rooted on the formula instead would stand a hand above its
+    // own ground, or below it. The ring's diagonal alternates from cell to cell, so this does too.
+    const groundHeight = Fn(([xz]) => {
+        const S = quality.clipCell, g = xz.div(S), c = floor(g), f = g.sub(c);
+        // each corner's whole height, as the ring's vertex shader makes it
+        const corner = (ox, oz) => { const p = c.add(vec2(ox, oz)).mul(S), h = mipHeight(p, int(0)); return h.add(texture(rockTex, p.mul(D1)).level(0).a.sub(0.5).mul(A1).add(texture(groundTex, p.mul(D2)).level(0).b.sub(0.5).mul(A2)).mul(smoothstep(-1.5, 0.8, h))); };
+        const r00 = corner(0, 0), r10 = corner(1, 0), r01 = corner(0, 1), r11 = corner(1, 1);
+        const even = mix(r00.add(r10.sub(r00).mul(f.x)).add(r11.sub(r10).mul(f.y)), r00.add(r01.sub(r00).mul(f.y)).add(r11.sub(r01).mul(f.x)), step(f.x, f.y));
+        const odd = mix(r00.add(r10.sub(r00).mul(f.x)).add(r01.sub(r00).mul(f.y)), r11.add(r01.sub(r11).mul(float(1).sub(f.x))).add(r10.sub(r11).mul(float(1).sub(f.y))), step(1.0, f.x.add(f.y)));
+        return mix(even, odd, fract(c.x.add(c.y).mul(0.5)).mul(2.0));
+    });
 
     const HALF_CELLS = quality.clipN / 2;
     const vHeight = varying(float(0), 'vTerrainH');
@@ -98,6 +133,8 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
     const h = P.y;
     const dist = length(P.sub(cameraPosition));
 
+    // (a close-up nicety: gone by the time a place is far enough off for another stop's square to take over)
+    const contact = footprints ? footprints.at(xz).g.mul(smoothstep(120.0, 60.0, dist)) : null;
     const nBroad = texture(noiseTex, xz.mul(1 / 190)).r;
     const nMid = texture(noiseTex, xz.mul(1 / 31)).g;
 
@@ -109,6 +146,10 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
     const rkZ = texture(rockTex, P.xy.mul(RS));
     const rockH = rkY.b.mul(tw.y).add(rkX.b.mul(tw.x)).add(rkZ.b.mul(tw.z));
     const rkFar = texture(rockTex, xz.mul(1 / 47));
+    // the same stone read small, for what the lens is close to: the grain a cliff face has at arm's length
+    const FINE = quality.post >= 2, FS = 1 / 1.9;
+    const fine = FINE ? texture(rockTex, xz.mul(FS)).mul(tw.y).add(texture(rockTex, P.zy.mul(FS)).mul(tw.x)).add(texture(rockTex, P.xy.mul(FS)).mul(tw.z)) : null;
+    const fineK = FINE ? smoothstep(110.0, 12.0, dist) : null;
     const gr = texture(groundTex, xz.mul(1 / 2.6));
     const grFar = texture(groundTex, xz.mul(1 / 13));
 
@@ -216,6 +257,9 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
         col.mulAssign(mix(1.0, 0.58, damp));
         // crevices
         col.mulAssign(mix(0.86, 1.0, smoothstep(0.1, 0.6, mix(gr.b, rockH, rockW))));
+        // and the shade that gathers round the foot of whatever has been stood on the ground
+        if (footprints) col.mulAssign(float(1).sub(contact.mul(0.42)));
+        if (FINE) col.mulAssign(mix(1.0, mix(0.66, 1.16, smoothstep(0.2, 0.75, fine.b)), fineK.mul(rockW)));
         return col;
     })();
 
@@ -236,11 +280,20 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
         n.x.addAssign(ry.x.mul(tw.y).mul(s)); n.z.addAssign(ry.y.mul(tw.y).mul(s));
         n.z.addAssign(rx.x.mul(tw.x).mul(s)); n.y.addAssign(rx.y.mul(tw.x).mul(s));
         n.x.addAssign(rz.x.mul(tw.z).mul(s)); n.y.addAssign(rz.y.mul(tw.z).mul(s));
+        if (FINE) {
+            // (each face tilts by the fine stone's own slope: across it, and up or along it)
+            const f = fine.rg.mul(2).sub(1).mul(fineK).mul(rockW).mul(1.1);
+            n.x.addAssign(f.x.mul(tw.y.add(tw.z))); n.z.addAssign(f.y.mul(tw.y).add(f.x.mul(tw.x))); n.y.addAssign(f.y.mul(tw.x.add(tw.z)));
+        }
         // beds stand out as ledges: lit on top, shaded underneath
         const bu = h.div(5.2).add(nBroad.mul(5.5)).add(nMid.mul(1.6)).add(rockH.mul(0.5)), bf = fract(bu);
         const lip = smoothstep(0.16, 0.0, bf).sub(smoothstep(0.84, 1.0, bf));
         const bedsHere = smoothstep(0.38, 0.62, texture(noiseTex, xz.mul(1 / 83)).g).mul(float(1).sub(smoothstep(0.1, 0.4, volcanic)));
         n.y.addAssign(lip.mul(0.8).mul(bedsHere).mul(rockW).mul(float(1).sub(tw.y)).mul(mix(0.5, 1.0, fade)));
+        // the mesas' coloured beds weather back at different rates: each is a step, lit on its tread and
+        // shaded under its lip (the same bands the colour is painted in)
+        const sy = h.add(nBroad.mul(6.0)).add(rockH.mul(1.2)), sb = fract(sy.div(11.0).add(sin(sy.div(31.0)).mul(0.55)));
+        n.y.addAssign(smoothstep(0.12, 0.0, sb).sub(smoothstep(0.88, 1.0, sb)).mul(0.85).mul(strata).mul(rockW).mul(float(1).sub(tw.y)));
         return normalize(n);
     })();
 
@@ -250,7 +303,7 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
     mat.roughnessNode = roughness;
     mat.metalnessNode = float(0);
     mat.normalNode = normalWorld.transformDirection(cameraViewMatrix);
-    mat.aoNode = aoMacro;
+    mat.aoNode = footprints ? aoMacro.mul(float(1).sub(contact.mul(0.5))) : aoMacro;
     mat.envMapIntensity = 1;
 
     // ---- rings
@@ -286,7 +339,7 @@ export function createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere
     const infoBAt = (worldXZ) => texture(infoB, infoUV(worldXZ));
 
     const shadeAt = (x, z) => { const i = Math.min(N - 1, Math.max(0, Math.round((x + half) / cell))), j = Math.min(N - 1, Math.max(0, Math.round((z + half) / cell))); return sunVis[j * N + i] / 255; };
-    return { group, update, material: mat, hTex, infoA, infoB, infoC, gridHeight, sunVisAt, infoAAt, infoBAt, infoUV, shadeAt };
+    return { group, update, material: mat, hTex, infoA, infoB, infoC, shadowTex, shadowData, gridHeight, groundHeight, sunVisAt, infoAAt, infoBAt, infoUV, shadeAt };
 }
 
 // (N+1)^2 vertices at integer coordinates centred on 0. `hole` leaves out the
@@ -316,7 +369,7 @@ function ringGeometry(N, hole) {
 // cell before it, lowered by the sun's slope.
 function bakeSunVisibility(island, sunDir) {
     const N = island.N, cell = island.cell, H = island.height;
-    const out = new Uint8Array(N * N);
+    const out = new Uint8Array(N * N), edge = new Float32Array(N * N);
     const sx = sunDir.x, sz = sunDir.z, sy = sunDir.y;
     const horiz = Math.hypot(sx, sz) || 1e-6;
     const alongX = Math.abs(sx) >= Math.abs(sz);
@@ -341,6 +394,7 @@ function bakeSunVisibility(island, sunDir) {
                 sh = p0 + (p1 - p0) * f - drop;
             }
             cur[b] = Math.max(h, sh);
+            edge[o] = cur[b];
             // soft edge: how far below the shadow line this ground is
             const below = sh - Math.max(h, 0);                // the sea surface, not its bed, catches the shadow
             const deep = Math.min(1, Math.max(0, -h / 6));
@@ -348,7 +402,7 @@ function bakeSunVisibility(island, sunDir) {
         }
         const t = prev; prev = cur; cur = t;
     }
-    return out;
+    return { vis: out, edge };
 }
 
 // height grid + successively halved copies (1-2-1 filtered), packed left to right

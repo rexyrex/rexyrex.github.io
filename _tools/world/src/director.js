@@ -56,6 +56,8 @@ export function createDirector({ camera, places, island, onStop = () => {} }) {
         setMotion(m) { motion = m; },
         setPointer(x, y) { pointerX = x; pointerY = y; },
         get flying() { return !!flight; },
+        lensOf(i) { return places[clamp(i, 0, N - 1)].lens; },
+        focusOf(i) { return places[clamp(i, 0, N - 1)].lensAt; },
         get stop() { return stop; },
         get progress() { return s; },
         update(dt, t) {

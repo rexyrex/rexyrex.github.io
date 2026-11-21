@@ -8,18 +8,21 @@ import { SITES, VOLCANO } from './island.js';
 // rex: [east, south, heading in degrees (0 = north, clockwise)]
 // tall: where the look moves to on an upright screen, which sees a narrower slice ([east, up, south] added to look)
 // tallCam: the same for the camera (the whole island only fits an upright screen from further up)
+// lens: what is in focus ('rex', 'look', or a distance in metres), how wide the lens is open (0 keeps
+//       everything sharp, 0.08 leaves a forest sixty metres behind the subject soft), and how many stops
+//       brighter than the open ridge this place is exposed
 const DEFS = [
-    { id: 'top', site: 'overlook', name: 'Overlook', cam: [-13, 5.4, 15], look: [330, -34, -420], fov: 40, rex: [5.4, 1.3, -78], zone: 95 },      // the rex stands right of the middle: the page's headline has the left
-    { id: 'typing', site: 'typing', name: 'Stone keyboard', cam: [-10.5, 6.2, 13.8], look: [2.2, -0.4, 1.6], fov: 46, rex: [9, -12, -125], zone: 80 },
-    { id: 'balloons', site: 'balloons', name: 'Pterosaur cliffs', cam: [0, 3.4, 0], look: [-150, -15, -40], fov: 46, rex: [0, 0, -60], zone: 85, edge: true },
-    { id: 'apps', site: 'apps', name: 'Standing stones', cam: [-14, 4.6, -9.5], look: [-2.5, 1.6, 3.7], fov: 42, rex: [0, 0, 100], zone: 75, pose: 'henge' },
-    { id: 'games', site: 'games', name: 'Volcano', cam: [0, 7, 0], look: [-40, 10, -9], fov: 62, rex: null, zone: 60, rim: true },
-    { id: 'mac', site: 'mac', name: 'Ranger outpost', cam: [-10.1, 6.2, -1.4], look: [-5.3, 3.8, 9.3], fov: 44, rex: [-12, 6, 116], zone: 80, pose: 'typing', tall: [-2.6, 0.3, 1.2] },
-    { id: 'tesla', site: 'tesla', name: 'Migration trail', cam: [-34, 3.4, 30], look: [44, 7, -34], fov: 40, rex: [-10, 12, 250], rexView: [56, 21, 205], zone: 90 },
-    { id: 'music', site: 'music', name: 'Singing lagoon', cam: [11.7, 3.3, -13.4], look: [45.7, -4, -177.4], fov: 40, rex: [-13, 2, 20], rexView: [26, -11.5], zone: 85 },
-    { id: 'log', site: 'log', name: 'Strata cliff', cam: [-196, 11, 14], look: [-30, 24, 0], fov: 42, rex: [-170, 6, 290], zone: 80 },
-    { id: 'index', site: 'index', name: 'The whole island', cam: [-70, 1820, 940], look: [0, 0, 70], fov: 40, rex: null, zone: 0, aerial: true, tallCam: [-45, 1150, 600] },
-    { id: 'contact', site: 'contact', name: 'Base camp', cam: [-14, 3.8, 10], look: [6, 2.4, -4], fov: 44, rex: [7, 1.6, -75], zone: 80 },
+    { id: 'top', site: 'overlook', name: 'Overlook', cam: [-13, 5.4, 15], look: [330, -34, -420], fov: 40, rex: [5.4, 1.3, -78], zone: 95, lens: ['rex', 0.02, 0] },      // the rex stands right of the middle: the page's headline has the left
+    { id: 'typing', site: 'typing', name: 'Stone keyboard', cam: [-10.5, 6.2, 13.8], look: [2.2, -0.4, 1.6], fov: 46, rex: [9, -12, -125], zone: 80, lens: [17, 0.05, 0.38] },
+    { id: 'balloons', site: 'balloons', name: 'Pterosaur cliffs', cam: [0, 3.4, 0], look: [-150, -15, -40], fov: 46, rex: [0, 0, -60], zone: 85, edge: true, lens: [70, 0.02, 0] },
+    { id: 'apps', site: 'apps', name: 'Standing stones', cam: [-14, 4.6, -9.5], look: [-2.5, 1.6, 3.7], fov: 42, rex: [0, 0, 100], zone: 75, pose: 'henge', lens: ['look', 0.075, 0.2] },
+    { id: 'games', site: 'games', name: 'Volcano', cam: [0, 7, 0], look: [-40, 10, -9], fov: 62, rex: null, zone: 60, rim: true, lens: [80, 0.0, 0] },
+    { id: 'mac', site: 'mac', name: 'Ranger outpost', cam: [-10.1, 6.2, -1.4], look: [-5.3, 3.8, 9.3], fov: 44, rex: [-12, 6, 116], zone: 80, pose: 'typing', tall: [-2.6, 0.3, 1.2], lens: ['look', 0.03, 0.25] },
+    { id: 'tesla', site: 'tesla', name: 'Migration trail', cam: [-34, 3.4, 30], look: [44, 7, -34], fov: 40, rex: [-10, 12, 250], rexView: [56, 21, 205], zone: 90, lens: [34, 0.02, 0.1] },
+    { id: 'music', site: 'music', name: 'Singing lagoon', cam: [11.7, 3.3, -13.4], look: [45.7, -4, -177.4], fov: 40, rex: [-13, 2, 20], rexView: [26, -11.5], zone: 85, lens: [40, 0.03, 0] },
+    { id: 'log', site: 'log', name: 'Strata cliff', cam: [-196, 11, 14], look: [-30, 24, 0], fov: 42, rex: [-170, 6, 290], zone: 80, lens: ['rex', 0.02, 0.05] },
+    { id: 'index', site: 'index', name: 'The whole island', cam: [-70, 1820, 940], look: [0, 0, 70], fov: 40, rex: null, zone: 0, aerial: true, tallCam: [-45, 1150, 600], lens: [400, 0, 0.12] },
+    { id: 'contact', site: 'contact', name: 'Base camp', cam: [-14, 3.8, 10], look: [6, 2.4, -4], fov: 44, rex: [7, 1.6, -75], zone: 80, lens: ['rex', 0.05, 0.1] },
 ];
 
 export function definePlaces(island) {
@@ -64,8 +67,12 @@ export function definePlaces(island) {
         if (d.rexView) { const q = at(d.rexView[0], d.rexView[1]); rex = { x: q.x, z: q.z, y: island.heightAt(q.x, q.z), heading: speaker ? Math.atan2(speaker.x - q.x, -(speaker.z - q.z)) : Math.atan2(fx, -fz) + ((d.rexView[2] || 0) * Math.PI) / 180 }; }
         const lookTall = d.tall ? [look[0] + d.tall[0], look[1] + d.tall[1], look[2] + d.tall[2]] : look;
         const camTall = d.tallCam ? [cam[0] + d.tallCam[0], cam[1] + d.tallCam[1], cam[2] + d.tallCam[2]] : cam;
-        return { index, id: d.id, name: d.name, site: { x: s.x, z: s.z, y: ground }, cam, camTall, look, lookTall, fov: d.fov, rex, zone: d.zone, focus, aerial: !!d.aerial, pose: d.pose || null, speaker, at, fwd: [fx, fz] };
+        const far = (q) => Math.hypot(q[0] - cam[0], q[1] - cam[1], q[2] - cam[2]);
+        const ln = d.lens || [400, 0, 0], lens = [ln[0] === 'rex' && rex ? far([rex.x, rex.y + 3, rex.z]) : ln[0] === 'look' ? far(look) : typeof ln[0] === 'number' ? ln[0] : 400, ln[1], ln[2] || 0];
+        const lensAt = ln[0] === 'rex' && rex ? [rex.x, rex.y + 3, rex.z] : ln[0] === 'look' ? look : null;
+        return { index, lens, lensAt, id: d.id, name: d.name, site: { x: s.x, z: s.z, y: ground }, cam, camTall, look, lookTall, fov: d.fov, rex, zone: d.zone, focus, aerial: !!d.aerial, pose: d.pose || null, speaker, at, fwd: [fx, fz] };
     });
 }
 
+export const STOPS = DEFS.length;
 export { SITES, VOLCANO };

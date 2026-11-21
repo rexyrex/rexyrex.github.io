@@ -7,9 +7,10 @@
 // where a camera will stand.
 import * as THREE from 'three/webgpu';
 import {
-    Fn, attribute, uniform, texture, vec2, vec3, vec4, float, mix, smoothstep, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, fract, log2,
+    Fn, attribute, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, fract, log2,
     positionLocal, normalLocal, positionWorld, cameraPosition, cameraViewMatrix, time, uv, saturate, fwidth, screenCoordinate, varying, step,
 } from 'three/tsl';
+import { smoothstep } from './tsl.js';
 import { mulberry32, hash2, clamp as cl, lerp, smoothstep as sstep, fbm2, perlin2 } from './noise.js';
 import { WORLD } from './island.js';
 import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
@@ -574,7 +575,7 @@ function rockGeometry(seed, detail = 3) {
 }
 
 // ---- the system ----------------------------------------------------------------
-export function createFlora({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, keepClear = [], bare = false, photo = null }) {
+export function createFlora({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, keepClear = [], bare = false, photo = null, sunlight = null, footprints = null }) {
     const group = new THREE.Group(); group.name = 'flora';
     const atlas = paintAtlas(photo);
     const species = buildSpecies(4242);
@@ -655,12 +656,12 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
         mat.aoNode = occl;
         mat.normalNode = normalize(rotY(normalLocal)).transformDirection(cameraViewMatrix);
         // light coming through the leaf from behind
-        mat.thicknessColorNode = tint.mul(vec3(0.95, 1.0, 0.42)).mul(float(1).sub(wood)).mul(mix(0.25, 1.0, aux.y));
+        mat.thicknessColorNode = tint.mul(vec3(1.1, 1.2, 0.45)).mul(float(1).sub(wood)).mul(mix(0.25, 1.0, aux.y));
         mat.thicknessDistortionNode = float(0.35);
         mat.thicknessAmbientNode = float(0.0);
         mat.thicknessAttenuationNode = float(0.9);
-        mat.thicknessPowerNode = float(4.0);
-        mat.thicknessScaleNode = float(0.9);
+        mat.thicknessPowerNode = float(3.0);
+        mat.thicknessScaleNode = float(1.5);
         mat.envMapIntensity = 0.85;
         return mat;
     };
@@ -777,6 +778,8 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
                 const age = r4 < 0.16 ? lerp(0.28, 0.55, r4 / 0.16) : lerp(0.6, 1.32, Math.pow((r4 - 0.16) / 0.84, 1.3));
                 const s = age * (0.8 + 0.3 * core);
                 const cell = cellOf(x, z);
+                // its shadow goes into the island's map of shade (the trees themselves are in no shadow map)
+                if (sunlight) { const tall = { conifer: [27, 36, 20], broadleaf: [16, 21, 11], palm: [9, 13], treeFern: [3.4, 5.6] }[kind][variant] * s; sunlight.addTree(x, z, kind, tall, { conifer: 0.2, broadleaf: 0.36, palm: 0.3, treeFern: 0.5 }[kind] * tall * (kind === 'conifer' && variant === 2 ? 1.4 : 1)); }
                 put(cell, kind, variant, x, h - 0.15, z, s, r1 * 6.283, cl(0.5 + 0.9 * (r2 - 0.5) + 0.25 * (wet - 0.3), 0, 1), lerp(0.74, 1.12, r3), r4);
             }
         }
@@ -824,7 +827,12 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
         });
         ring(15, ZR, (x, z) => {
             const h = island.heightAt(x, z); if (h < 0.8 || island.slopeAt(x, z) > 0.05 || island.vegAt(x, z) < 0.25 || blocked(x, z, 4) || nearCam(x, z, 14) || inVista(x, z)) return;
-            if (rnd() < 0.55) push(lists.log, x, h - 0.08, z, lerp(0.7, 1.3, rnd()), rnd() * 6.283, 0.5, lerp(0.8, 1.1, rnd()), rnd());
+            if (rnd() < 0.55) {
+                const sc = lerp(0.7, 1.3, rnd()), rot = rnd() * 6.283;
+                push(lists.log, x, h - 0.08, z, sc, rot, 0.5, lerp(0.8, 1.1, rnd()), rnd());
+                // (nothing grows up through a trunk: its length, as a row of rounds)
+                if (footprints) for (let k = -6; k <= 6; k++) footprints.add(x + Math.cos(rot) * k * 0.5 * sc, z - Math.sin(rot) * k * 0.5 * sc, 0.5 * sc);
+            }
         });
         // ferns
         ring(1.25 / Math.sqrt(density), ZR, (x, z, d) => {
@@ -850,6 +858,7 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
         ring(1.9, Math.min(ZR, 40), (x, z) => {
             const h = island.heightAt(x, z); if (h < -0.3 || island.slopeAt(x, z) > 0.22 || rnd() > 0.2 + 0.5 * island.strataAt(x, z) + 0.4 * island.volcanicAt(x, z) || blocked(x, z, 0)) return;
             const q = rnd(), sz = lerp(0.05, 0.3, q * q); push(lists.rock2, x, h - sz * 0.3, z, sz, rnd() * 6.283, cl(island.vegAt(x, z) * 1.5, 0, 1), lerp(0.8, 1.15, rnd()), Math.max(island.strataAt(x, z), h < 7 && Math.hypot(x * 0.93, z * 1.04) > 620 ? 0.9 : 0));
+            if (footprints && sz > 0.17) footprints.add(x, z, sz * 0.8);
         });
         ring(5.2, ZR + 10, (x, z) => {
             const h = island.heightAt(x, z); if (h < -0.4 || nearRex(x, z, 8)) return;
@@ -860,6 +869,7 @@ export function createFlora({ island, places, quality, atmosphere, terrain, nois
             const s = big ? lerp(1.2, 3.0, rnd()) : lerp(0.18, 0.9, rnd() * rnd());
             const sandy = Math.max(island.strataAt(x, z), h < 7 && Math.hypot(x * 0.93, z * 1.04) > 620 ? 0.9 : 0);
             push(lists['rock' + Math.floor(rnd() * 3)], x, h - s * 0.38, z, s, rnd() * 6.283, cl(island.vegAt(x, z) * 1.5, 0, 1), lerp(0.8, 1.15, rnd()), sandy);
+            if (footprints && s > 0.3) footprints.add(x, z, s * 0.82);
         });
 
         const range = { near: 0, far: 150, shadowTo: 70 };

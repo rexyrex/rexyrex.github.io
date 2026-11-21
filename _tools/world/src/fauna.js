@@ -7,9 +7,10 @@
 // Model space: +x is forward (nose), +y up, +z the animal's left. Metres.
 import * as THREE from 'three/webgpu';
 import {
-    Fn, uniform, texture, vec2, vec3, vec4, float, mix, smoothstep, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, cross, sign, dFdx, dFdy,
+    Fn, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, cross, sign, dFdx, dFdy,
     positionGeometry, normalGeometry, positionView, normalView, saturate, attribute, uv,
 } from 'three/tsl';
+import { smoothstep } from './tsl.js';
 import { mulberry32, clamp as cl, lerp, smoothstep as sstep, catmull } from './noise.js';
 import { createFlock, wingStroke } from './pterosaur.js';
 
@@ -268,18 +269,19 @@ function buildSpecies(def, quality, noiseTex, groundTex, key, skin) {
     geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, def.hip, 0), def.len);
     geo.boundingBox = new THREE.Box3(new THREE.Vector3(-def.len, -1, -def.len), new THREE.Vector3(def.len, def.len, def.len));
 
-    return { def, geo, bones, index, material: skinMaterial(def, noiseTex, groundTex, skin), tris: idx.length / 3, key };
+    return { def, geo, bones, index, material: skinMaterial(def, noiseTex, groundTex, skin, quality.post >= 2), tris: idx.length / 3, key };
 }
 
 // Skin, all in the animal's rest pose so it moves with the hide: scales as fine
 // relief with larger scutes along the back, a pale belly, a dark back, broken
 // vertical bars, a darker mask round the eye, the inside of the mouth, and the
 // ivory of teeth and claws.
-function skinMaterial(def, noiseTex, groundTex, skin) {
+function skinMaterial(def, noiseTex, groundTex, skin, rich = false) {
     const L = def.look, col = (h) => { const c = new THREE.Color(h); return vec3(c.r, c.g, c.b); };
     const p = positionGeometry, n = normalGeometry;
     const hard = attribute('hard', 'float');
-    const mat = new THREE.MeshStandardNodeMaterial();
+    // (`rich`: the sheen below needs the costlier material; phones keep the plain one)
+    const mat = rich ? new THREE.MeshPhysicalNodeMaterial() : new THREE.MeshStandardNodeMaterial();
     const w = pow(abs(n), vec3(4.0)), ws = w.x.add(w.y).add(w.z);
     const s = L.scale / def.len;
     const tri = (tex, k) => texture(tex, p.zy.mul(k)).mul(w.x).add(texture(tex, p.xz.mul(k)).mul(w.y)).add(texture(tex, p.xy.mul(k)).mul(w.z)).div(ws);
@@ -348,6 +350,10 @@ function skinMaterial(def, noiseTex, groundTex, skin) {
         return normalize(abs(det).mul(normalView).sub(grad.mul(float(1).sub(eye))));
     })();
     mat.envMapIntensity = 1.0;
+    // Hide catches light along its edge: the sky on a flank turned away, the sun along a back. It is what
+    // lifts an animal off the ground behind it when the light is flat.
+    if (rich) mat.sheenNode = mix(vec3(0.13, 0.125, 0.11), vec3(0.08, 0.068, 0.05), smoothstep(-0.2, 0.6, up)).mul(float(1).sub(hard)).mul(float(1).sub(eye));
+    if (rich) mat.sheenRoughnessNode = float(0.42);
     return mat;
 }
 

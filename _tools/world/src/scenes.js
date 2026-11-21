@@ -5,13 +5,15 @@
 // pterosaurs wheeling on the heat over the crater.
 import * as THREE from 'three/webgpu';
 import {
-    attribute, uniform, texture, vec2, vec3, float, mix, smoothstep, max, min, abs, sign, step, normalize, pow, sin, atan, length, floor, cross,
+    attribute, uniform, texture, vec2, vec3, float, mix, max, min, abs, sign, step, normalize, pow, sin, atan, length, floor, cross,
     positionLocal, positionGeometry, normalGeometry, cameraPosition, uv, saturate,
 } from 'three/tsl';
+import { smoothstep } from './tsl.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mulberry32, lerp, clamp as cl, catmull, smoothstep as ss } from './noise.js';
 import { createFlock, wingStroke } from './pterosaur.js';
 import { paintScreens, paintKeys, SCREEN } from './screens.js';
+import { reliefNormal } from './fx.js';
 
 const col = (h) => { const c = new THREE.Color(h); return vec3(c.r, c.g, c.b); };
 const wrap = (a) => Math.atan2(Math.sin(a), Math.cos(a));
@@ -23,7 +25,7 @@ const loopAt = (pts, u, out) => {
     return out;
 };
 
-export function createScenes({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, water, apps = [], skyLights = null, lava = null }) {
+export function createScenes({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, water, apps = [], skyLights = null, lava = null, footprints = null }) {
     const group = new THREE.Group(); group.name = 'scenes';
     const rnd = mulberry32(90210);
     const clear = [];            // [x, z, r] kept free of plants
@@ -66,7 +68,8 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
             const side = normalize(cross(along, cameraPosition.sub(centre)));
             m.positionNode = centre.add(side.mul(positionLocal.x.mul(size))).add(along.mul(positionLocal.y.mul(size).mul(stretch)));
             // a jet that crosses right in front of the lens would be a row of bars: it thins away there
-            shape = smoothstep(1.0, 0.15, abs(d.x)).mul(smoothstep(1.0, 0.4, abs(d.y))).mul(smoothstep(7.0, 17.0, length(cameraPosition.sub(centre))));
+            // (a drop drawn out by its own speed: round at both ends)
+            shape = smoothstep(1.0, 0.25, length(d)).mul(smoothstep(7.0, 17.0, length(cameraPosition.sub(centre))));
         } else {
             m.positionNode = centre.add(uCamRight.mul(positionLocal.x.mul(size))).add(uCamUp.mul(positionLocal.y.mul(size)));
             shape = smoothstep(1.0, 0.0, length(d));
@@ -79,7 +82,7 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
         let cur = 0, dirty = false;
         const sys = {
             mesh,
-            spawn(x, y, z, vx, vy, vz, lifeScale = 1, ex = 0, ey = 0, ez = 0) { const i = cur * 4; A[i] = x; A[i + 1] = y; A[i + 2] = z; A[i + 3] = now; V[i] = vx; V[i + 1] = vy; V[i + 2] = vz; V[i + 3] = lifeScale; if (E) { E[cur * 3] = ex; E[cur * 3 + 1] = ey; E[cur * 3 + 2] = ez; } cur = (cur + 1) % count; dirty = true; },
+            spawn(x, y, z, vx, vy, vz, lifeScale = 1, ex = 0, ey = 0, ez = 0, ago = 0) { const i = cur * 4; A[i] = x; A[i + 1] = y; A[i + 2] = z; A[i + 3] = now - ago; V[i] = vx; V[i + 1] = vy; V[i + 2] = vz; V[i + 3] = lifeScale; if (E) { E[cur * 3] = ex; E[cur * 3 + 1] = ey; E[cur * 3 + 2] = ez; } cur = (cur + 1) % count; dirty = true; },
             flush() { if (dirty) { aA.needsUpdate = true; aV.needsUpdate = true; if (aE) aE.needsUpdate = true; dirty = false; } },
         };
         systems.push(sys);
@@ -160,7 +163,10 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
             const icon = texture(iconTex, iuv).rgb.mul(mix(0.82, 1.0, grain));
             m.colorNode = mix(stone.mul(float(1).sub(recess.mul(0.6))), icon, inside);
             m.roughnessNode = mix(float(0.9), float(0.42), inside);
-            m.emissiveNode = icon.mul(inside).mul(a.z.mul(1.1).add(0.07));
+            // hewn, not cast: the stone's own pits and the tile let a finger's depth into the face
+            // (only its broad dents: relief finer than a pixel, lit this way, breaks up into speckle)
+            m.normalNode = reliefNormal(texture(noiseTex, pg.xy.mul(0.085).add(a.w.mul(3.0))).r.mul(0.09).sub(inside.mul(0.025)));
+            m.emissiveNode = icon.mul(inside).mul(a.z.mul(1.1).add(0.15));
         }
         const inst = new THREE.InstancedMesh(geo, m, n); inst.frustumCulled = false; inst.instanceMatrix.setUsage(THREE.DynamicDrawUsage); add(inst);
         // a horseshoe that opens toward the lens, so the icons on the far stones face it
@@ -181,6 +187,8 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
             sc[i * 4] = i % COLS; sc[i * 4 + 1] = Math.floor(i / COLS); sc[i * 4 + 2] = 0; sc[i * 4 + 3] = rnd();
             setStone(i);
             clear.push([x, z, 1.5], [x + ox * 2.2, z + oz * 2.2, 2.0]);
+            // (where it comes down when the rex shoves it: kept bare, so nothing grows up through a fallen stone)
+            if (footprints) for (const k of [1.2, 2.3, 3.3]) footprints.add(x + ox * k, z + oz * k, 1.0, false);
         }
         clear.push([s.x, s.z, R + 0.6]);
         const dust = sprites({ count: 96, life: 1.7, accel: [0, 0.5, 0], size0: 0.6, size1: 2.8, tint: '#b6a487', opacity: 0.34 });
@@ -267,11 +275,16 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
             const pg = positionGeometry, top = smoothstep(0.75, 0.97, normalGeometry.y), r = length(pg.xz), ang = atan(pg.z, pg.x);
             const rings = sin(r.mul(52.0).add(texture(noiseTex, pg.xz.mul(0.7)).r.mul(6.0))).mul(0.5).add(0.5);
             const cut = mix(col('#b79466'), col('#8a6842'), rings).mul(mix(0.78, 1.06, texture(noiseTex, pg.xz.mul(2.6)).g)).mul(mix(1.0, 0.72, smoothstep(0.82, 1.0, r)));
-            const ridge = texture(noiseTex, vec2(ang.mul(2.3), pg.y.mul(0.22))).g, fine = texture(noiseTex, vec2(ang.mul(7.0), pg.y.mul(1.1))).r;
-            const bark = col('#4a3a2c').mul(mix(0.45, 1.2, ridge)).mul(mix(0.8, 1.1, fine));
+            const ridge = texture(noiseTex, vec2(ang.mul(1.3), pg.y.mul(0.8))).g, fine = texture(noiseTex, vec2(ang.mul(3.6), pg.y.mul(2.3))).r;
+            const bark = col('#4a3a2c').mul(mix(0.72, 1.15, ridge)).mul(mix(0.85, 1.08, fine));
             const moss = smoothstep(0.55, 0.8, texture(noiseTex, vec2(ang.mul(0.6), pg.y.mul(0.5))).a).mul(smoothstep(0.7, 0.1, pg.y));
             sm.colorNode = mix(mix(bark, col('#4a5a2a'), moss.mul(0.6)), cut, top);
             sm.roughnessNode = mix(float(0.92), float(0.7), top);
+            // bark stands in ridges; the cut face keeps the saw's marks and has checked as it dried
+            const checks = smoothstep(0.75, 0.9, texture(noiseTex, vec2(ang.mul(1.9), r.mul(0.35))).b);
+            // (the ridges are a formula, not the texture's own steps: a height read from texels this large would shade as blocks)
+            const furrow = abs(sin(ang.mul(19.0).add(ridge.mul(5.0)).add(pg.y.mul(0.8)))).oneMinus();
+            sm.normalNode = reliefNormal(mix(furrow.mul(furrow).mul(-0.03), rings.mul(0.004).sub(checks.mul(0.02)), top));
         }
         const stump = add(new THREE.Mesh(sg, sm), desk);
 
@@ -434,7 +447,8 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
         { const d = uv().sub(0.5).mul(2.0); padM.colorNode = col('#7cc4ff').mul(pow(smoothstep(1.0, 0.0, length(d)), 2.0).mul(0.2)); padM.fog = false; }
         const pad = new THREE.Mesh(new THREE.PlaneGeometry(4.6, 2.3).rotateX(Math.PI / 2), padM); pad.position.y = 0.1; pad.renderOrder = 21; g.add(pad);
         const pads = [null, null, wheels[2], wheels[3]];
-        const trail = sprites({ count: 300, life: 0.6, size0: 0.3, size1: 0.04, tint: '#9ad4ff', gain: 3.0, additive: true, lit: false, opacity: 0.5, order: 21 });
+        const RATE = quality.post >= 2 ? 340 : 175;
+        const trail = sprites({ count: quality.post >= 2 ? 560 : 300, life: 0.62, size0: 0.36, size1: 0.2, tint: '#9ad4ff', gain: 3.0, additive: true, lit: false, opacity: 0.5, order: 21 });
 
         // the loop it flies, given as [ahead, to the right, above the eye] of this stop's camera
         // (a lap it can be watched all the way round: out to the far side high, back past the lens low and slow)
@@ -454,7 +468,7 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
         const period = tab[N];
         const uAt = (time) => { const tt = ((time % period) + period) % period; let lo = 0, hi = N; while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (tab[mid] <= tt) lo = mid; else hi = mid; } return ((lo + (tt - tab[lo]) / (tab[hi] - tab[lo] || 1)) / N) * pts.length; };
         const p0 = [0, 0, 0], p1 = [0, 0, 0], p2 = [0, 0, 0], e = new THREE.Euler(0, 0, 0, 'YXZ'), wv = new THREE.Vector3();
-        let bank = 0, emit = 0;
+        let bank = 0, emit = 0; const padPrev = {};
         const START = period * 0.86;                 // so that it is already on its way in when the stop is reached
         sets.push({
             x: pl.cam[0], z: pl.cam[2], range: 900,
@@ -472,8 +486,16 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
                 g.quaternion.setFromEuler(e);
                 car.pos.copy(g.position);
                 // light spilt from the rear pads, left behind as a trail
-                emit += dt * 175;
-                while (emit >= 1) { emit -= 1; for (const k of [2, 3]) { pads[k].getWorldPosition(wv); trail.spawn(wv.x, wv.y - 0.3, wv.z, 0, -0.3, 0, 1); } }
+                // (each frame's share is laid along the way the pads came since the last one, each born at its
+                // own moment: at thirty frames a second they would otherwise leave the car in clumps)
+                emit += dt * RATE;
+                const nNew = Math.floor(emit); emit -= nNew;
+                for (const k of [2, 3]) {
+                    pads[k].getWorldPosition(wv);
+                    const pv = padPrev[k] || (padPrev[k] = wv.clone()), jump = pv.distanceTo(wv) > 6;
+                    for (let j = 1; j <= nNew; j++) { const f = jump ? 1 : j / nNew; trail.spawn(pv.x + (wv.x - pv.x) * f, pv.y + (wv.y - pv.y) * f - 0.3, pv.z + (wv.z - pv.z) * f, 0, -0.3, 0, 1, 0, 0, 0, jump ? 0 : dt * (1 - f)); }
+                    pv.copy(wv);
+                }
                 for (const w of wheels) w.rotation.z = -t * 9;
                 // the rex watches it go by
                 const rex = fauna && fauna.rex;
@@ -505,10 +527,10 @@ export function createScenes({ island, places, quality, atmosphere, terrain, noi
         // the stack: a sub below, a two-way cabinet on top
         const stack = new THREE.Group(); stack.position.y = TOP - 0.03; stack.rotation.z = 0.02; stack.scale.setScalar(1.45); g.add(stack);
         const tolex = new THREE.MeshStandardNodeMaterial();
-        { const pg = positionGeometry; tolex.colorNode = col('#0e0e10').mul(mix(0.7, 1.5, texture(noiseTex, pg.xy.mul(3.0).add(pg.z.mul(2.0))).g)); tolex.roughnessNode = float(0.62); }
+        { const pg = positionGeometry; tolex.colorNode = col('#0e0e10').mul(mix(0.7, 1.5, texture(noiseTex, pg.xy.mul(3.0).add(pg.z.mul(2.0))).g)); tolex.roughnessNode = float(0.62); tolex.normalNode = reliefNormal(texture(noiseTex, pg.xy.mul(3.0).add(pg.z.mul(2.0))).g.mul(0.012)); }
         const steel = plain('#b9bcc0', 0.35, { metalness: 0.9 });
         const coneM = new THREE.MeshStandardNodeMaterial({ side: THREE.DoubleSide }), uBeat = uniform(0);
-        { const r = length(positionGeometry.xy); coneM.emissiveNode = mix(col('#39d0ff'), col('#9be36f'), uBeat).mul(smoothstep(0.83, 0.86, r).mul(smoothstep(0.93, 0.9, r))).mul(uBeat.mul(4.0).add(1.4)).add(mix(col('#b9bdc6'), col('#5d6068').mul(mix(0.55, 1.2, smoothstep(0.26, 0.78, r))), smoothstep(0.2, 0.26, r)).mul(smoothstep(0.82, 0.76, r)).mul(1.5)); coneM.colorNode = mix(mix(mix(col('#c4c8cf'), col('#6f727b').mul(mix(0.7, 1.25, smoothstep(0.26, 0.78, r))), smoothstep(0.2, 0.26, r)), col('#101012'), smoothstep(0.78, 0.82, r)), col('#b4b7bc'), smoothstep(0.92, 0.95, r)); coneM.roughnessNode = mix(float(0.5), float(0.3), smoothstep(0.92, 0.95, r)); coneM.metalnessNode = smoothstep(0.92, 0.95, r).mul(0.9); }
+        { const r = length(positionGeometry.xy); coneM.emissiveNode = mix(col('#39d0ff'), col('#9be36f'), uBeat).mul(smoothstep(0.83, 0.86, r).mul(smoothstep(0.93, 0.9, r))).mul(uBeat.mul(4.0).add(1.4)).add(mix(col('#b9bdc6'), col('#5d6068').mul(mix(0.55, 1.2, smoothstep(0.26, 0.78, r))), smoothstep(0.2, 0.26, r)).mul(smoothstep(0.82, 0.76, r)).mul(0.7)); coneM.colorNode = mix(mix(mix(col('#c4c8cf'), col('#6f727b').mul(mix(0.7, 1.25, smoothstep(0.26, 0.78, r))), smoothstep(0.2, 0.26, r)), col('#101012'), smoothstep(0.78, 0.82, r)), col('#b4b7bc'), smoothstep(0.92, 0.95, r)); coneM.roughnessNode = mix(float(0.5), float(0.3), smoothstep(0.92, 0.95, r)); coneM.metalnessNode = smoothstep(0.92, 0.95, r).mul(0.9); }
         const coneG = new THREE.LatheGeometry([[0, -0.13], [0.1, -0.135], [0.2, -0.19], [0.23, -0.21], [0.5, -0.12], [0.79, -0.035], [0.84, 0.012], [0.9, -0.005], [0.93, 0.0], [1.0, 0.0]].map(([r, d]) => new THREE.Vector2(r, d)), 40); coneG.rotateX(Math.PI / 2);
         const cones = [];
         const cabinet = (w, h, d, y0, drivers) => {

@@ -13,7 +13,8 @@ import { makeRockTexture, makeGroundTexture, makeNoiseTexture, makeWaterTexture 
 import { createAtmosphere } from './atmosphere.js';
 import { createTerrain } from './terrain.js';
 import { createWater } from './water.js';
-import { definePlaces } from './places.js';
+import { definePlaces, STOPS } from './places.js';
+import { createFootprints } from './footprint.js';
 import { createFlora } from './flora.js';
 import { createFauna } from './fauna.js';
 import { createProps } from './props.js';
@@ -21,11 +22,15 @@ import { createScenes } from './scenes.js';
 import { createDirector } from './director.js';
 import { createPost } from './post.js';
 import { loadPhotos } from './photos.js';
+import { createSunlight } from './light.js';
+import { createCover } from './cover.js';
+import { createMotes, setPixel } from './fx.js';
 
 const nextFrame = () => new Promise((r) => (typeof requestAnimationFrame === 'function' ? requestAnimationFrame(() => r()) : setTimeout(r, 0)));
 
 export async function createWorld({ canvas, tier = 'high', forceWebGL = false, onProgress = () => {}, apps = [], flags = {}, onStop = () => {}, assets = '/assets/island/tex/' } = {}) {
-    const q = TIERS[tier] || TIERS.high;
+    // (`flags.q` overrides single fields of the tier, for measuring what each one costs)
+    const q = { ...(TIERS[tier] || TIERS.high), ...(flags.q || {}) };
     const say = async (label, p) => { onProgress(label, p); await nextFrame(); };
 
     await say('Waking the renderer', 0.02);
@@ -36,8 +41,10 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     await renderer.init();
     const pipes = { sync: 0, async: 0, labels: {} };
     if (flags.trace && renderer.backend.device) { const dv = renderer.backend.device, s0 = dv.createRenderPipeline.bind(dv), a0 = dv.createRenderPipelineAsync.bind(dv); dv.createRenderPipeline = (d) => { pipes.sync++; const k = String(d.label || '?').replace(/_?\d+$/, ''); pipes.labels[k] = (pipes.labels[k] || 0) + 1; return s0(d); }; dv.createRenderPipelineAsync = (d) => { pipes.async++; return a0(d); }; }
-    renderer.toneMapping = THREE.AgXToneMapping;
-    renderer.toneMappingExposure = 0.36;
+    // (the filmic curve keeps the colour of the sky, the water and the lava where a flatter one greys them)
+    renderer.toneMapping = flags.tm === 'agx' ? THREE.AgXToneMapping : THREE.ACESFilmicToneMapping;
+    // (with no grade to open the shadows, the smallest tier is simply exposed a little more)
+    renderer.toneMappingExposure = flags.exp || (usePost ? 0.3 : 0.4);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
 
@@ -77,19 +84,27 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     {
         const si = atmosphere.env.skyIrradiance, ti = atmosphere.env.irradiance;
         const sky = new THREE.Color(si[0], si[1], si[2]), bounce = new THREE.Color(ti[0] * 0.2, ti[1] * 0.19, ti[2] * 0.12);
-        hemi = new THREE.HemisphereLight(sky, bounce, 0.85);
+        hemi = new THREE.HemisphereLight(sky, bounce, 1.0);
         scene.add(hemi);
+        // And what comes back off the sea and the sunlit land on the far side: low, warm, weak, from opposite
+        // the sun. It casts no shadow; it is there so that a flank turned away from the sun still has a shape.
+        const fill = new THREE.DirectionalLight(new THREE.Color(ti[0] * 0.2, ti[1] * 0.17, ti[2] * 0.12), 1.0);
+        fill.position.set(-sunDir.x, 0.3, -sunDir.z).normalize(); fill.castShadow = false;
+        scene.add(fill); scene.add(fill.target);
     }
 
     await say('Developing the photographs', 0.68);
     const photos = await photosP;
-    const terrain = createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere, quality: q, sunDir, photo: photos.ground });
+    // (what stands on the ground is not known yet, but the ground's shader needs the map it will be drawn into)
+    const footprints = createFootprints({ island, count: STOPS });
+    const terrain = createTerrain({ island, rockTex, groundTex, noiseTex, atmosphere, quality: q, sunDir, photo: photos.ground, footprints });
     scene.add(terrain.group);
 
     const sun = new THREE.DirectionalLight(0xffffff, 1);
-    // light.colorNode replaces color * intensity: sunlight, minus what the hills block far away
-    // (a hill's shadow never takes all of it: light scattered in the haze still gets in)
-    sun.colorNode = atmosphere.uSunColor.mul(terrain.sunVisAt(positionWorld.xz).mul(0.86).add(0.14)).mul(atmosphere.cloudShadow(positionWorld));
+    // light.colorNode replaces color * intensity: sunlight, minus what the hills and clouds block, let
+    // through gaps in the canopy, and gathered into a bright net under water: see light.js)
+    const sunlight = createSunlight({ atmosphere, terrain, island, noiseTex, quality: q, world: WORLD });
+    sun.colorNode = sunlight.colorNode(positionWorld);
     sun.castShadow = true;
     sun.shadow.mapSize.set(q.shadowSize, q.shadowSize);
     sun.shadow.bias = -0.00035;
@@ -100,33 +115,42 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     sun.shadow.shadowNode = csm;
     scene.add(sun); scene.add(sun.target);
 
-    const water = createWater({ waterTex, terrain, atmosphere, quality: q });
+    const water = createWater({ waterTex, terrain, atmosphere, quality: q, sunlight });
     scene.add(water.mesh);
 
     const places = definePlaces(island);
+    footprints.place(places);
     await say('Setting the scene', 0.72);
-    const props = createProps({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex });
+    const props = createProps({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, skyLights: [sun, hemi] });
     scene.add(props.group);
-    const scenes = createScenes({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, water, apps, skyLights: [sun, hemi], lava: props.lava });
+    const scenes = createScenes({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, water, apps, skyLights: [sun, hemi], lava: props.lava, footprints });
     scene.add(scenes.group);
     await say('Planting the forest', 0.78);
-    const flora = createFlora({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, keepClear: props.clear.concat(scenes.clear), bare: !!flags.bare, photo: photos.flora });
+    const flora = createFlora({ island, places, quality: q, atmosphere, terrain, noiseTex, rockTex, keepClear: props.clear.concat(scenes.clear), bare: !!flags.bare, photo: photos.flora, sunlight, footprints });
     scene.add(flora.group);
+    sunlight.bakeCanopy(places.filter((p) => !p.aerial).map((p) => [p.site.x, p.site.z, 16, 38]));
     await say('Waking the animals', 0.88);
     const fauna = createFauna({ island, places, quality: q, noiseTex, groundTex, sites: SITES, skin: photos.skin });
     scene.add(fauna.group);
     scenes.attach(fauna);
     await say('Carving the stones', 0.89);
     await scenes.ready;
+    // the low green over everything; it grows round whatever has been stood on the ground, so it comes last
+    footprints.mask([props.group, scenes.group], [[SITES.contact.x, SITES.contact.z, 1.3]]);
+    const cover = createCover({ island, quality: flags.nocover ? { ...q, blades: 0 } : q, atmosphere, terrain, noiseTex, footprints });
+    scene.add(cover.group);
+    // and what drifts in the air over it
+    const motes = createMotes({ quality: q, atmosphere, sunlight, island });
+    scene.add(motes.group);
 
     const director = createDirector({ camera, places, island, onStop: (i, instant) => { fauna.setRex(i); onStop(i, places[i].id, instant); } });
-    const post = usePost ? createPost({ renderer, scene, camera, quality: q, atmosphere }) : null;
+    const post = usePost ? createPost({ renderer, scene, camera, quality: q, atmosphere, sunlight, director }) : null;
 
     // ---- frame
     let width = 0, height = 0, pixelScale = 1, manual = null;
     const resize = () => {
         const w = canvas.clientWidth || canvas.width, h = canvas.clientHeight || canvas.height;
-        if (!w || !h) return;
+        if (w < 16 || h < 16) return;                         // hidden, or mid-collapse: nothing a pass could be sized for
         const dpr = Math.min(globalThis.devicePixelRatio || 1, q.maxDpr);
         const want = Math.sqrt(Math.min(1, q.maxPixels / (w * h * dpr * dpr))) * dpr * pixelScale;
         if (w === width && h === height && Math.abs(renderer.getPixelRatio() - want) < 1e-3) return;
@@ -162,6 +186,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
 
     let last = performance.now(), clockT = 0, running = false, frozen = false;
     const target = new THREE.Vector3(), _dir = new THREE.Vector3();
+    const baseExposure = renderer.toneMappingExposure; let evNow = 0;
     const frame = () => {
         const now = performance.now(), dt = Math.min(0.1, (now - last) / 1000); last = now;
         if (!frozen) clockT += dt;
@@ -173,17 +198,26 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
         terrain.update(camera);
         water.update(camera);
         flora.update(camera);
+        footprints.update(camera); cover.update(camera);
+        motes.update(camera); setPixel(camera, renderer);
         scenes.update(clockT, frozen ? 0 : dt, camera);
         fauna.update(clockT, frozen ? 0 : dt, camera);
         props.update(clockT, frozen ? 0 : dt, camera);
         sun.target.position.copy(camera.position);
         sun.position.copy(camera.position).addScaledVector(sunDir, 1500);
+        sunlight.update(renderer, camera);
         if (post) {
             // how much of what the lens sees lies in the long shadow of a hill: here, and where it is pointed
             camera.getWorldDirection(_dir);
             const sh = 0.4 * terrain.shadeAt(camera.position.x, camera.position.z) + 0.6 * terrain.shadeAt(camera.position.x + _dir.x * 140, camera.position.z + _dir.z * 140);
-            post.update(sunDir, sh); post.render();
-        } else renderer.render(scene, camera);
+            post.update(sunDir, sh, frozen ? 0 : dt, !!manual); post.render();
+        } else {
+            // (no grade on this path: the stop's own exposure goes straight to the film curve)
+            const settled = !manual && !director.flying && Math.abs(director.progress - Math.round(director.progress)) < 0.04;
+            evNow += ((settled ? director.lensOf(director.stop)[2] || 0 : 0) - evNow) * 0.06;
+            renderer.toneMappingExposure = baseExposure * Math.pow(2, evNow);
+            renderer.render(scene, camera);
+        }
         if (running) {
             tune(dt);
             // warm once a run of frames has come in on time
@@ -199,7 +233,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     const pose = (i) => {
         director.jumpTo(i); director.update(0, clockT); camera.updateMatrixWorld();
         atmosphere.dome.position.copy(camera.position); atmosphere.dome.scale.setScalar(camera.far * 0.9);
-        terrain.update(camera); water.update(camera); flora.update(camera); scenes.update(clockT, 0, camera); fauna.update(clockT, 0, camera); props.update(clockT, 0, camera);
+        terrain.update(camera); water.update(camera); flora.update(camera); footprints.update(camera); cover.update(camera); motes.update(camera); scenes.update(clockT, 0, camera); fauna.update(clockT, 0, camera); props.update(clockT, 0, camera);
     };
     if (post && post.compile && !flags.syncwarm) {
         // First everything at once, hidden or not, in view or not: anything left out here would be
@@ -234,7 +268,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
     await say('Ready', 1);
 
     const world = {
-        renderer, scene, camera, island, atmosphere, terrain, water, sun, quality: q, SITES, places, flora, fauna, props, scenes, director, perf, photos: { flora: !!photos.flora, ground: !!photos.ground, skin: !!photos.skin },
+        renderer, scene, camera, island, atmosphere, terrain, water, sun, sunlight, cover, quality: q, SITES, places, flora, fauna, props, scenes, director, perf, photos: { flora: !!photos.flora, ground: !!photos.ground, skin: !!photos.skin },
         backend: renderer.backend && renderer.backend.isWebGPUBackend ? 'webgpu' : 'webgl2',
         frame,
         start() { if (running || perf.failed) return; running = true; last = performance.now(); renderer.setAnimationLoop(() => { try { frame(); } catch (e) { fail(e); } }); },
@@ -263,7 +297,7 @@ export async function createWorld({ canvas, tier = 'high', forceWebGL = false, o
         play(from, to) { clockT = from; frozen = false; return new Promise((done) => { const tick = () => { if (clockT >= to) { frozen = true; clockT = to; done(to); } else setTimeout(tick, 16); }; tick(); }); },
         setJourney(i, j, u) { const v = director.preview(i, j, u); manual = v; },
         specimens(x, z, dx, dz) { return flora.specimens(x, z, dx, dz); },
-        info() { const r = renderer.info.render; return { calls: r.drawCalls, tris: r.triangles, fps: +perf.fps.toFixed(1), scale: +perf.scale.toFixed(2), flora: flora.stats, fauna: fauna.stats }; },
+        info() { const r = renderer.info.render; return { calls: r.drawCalls, tris: r.triangles, fps: +perf.fps.toFixed(1), scale: +perf.scale.toFixed(2), flora: flora.stats, fauna: fauna.stats, cover: cover.stats }; },
         dispose() { world.stop(); renderer.dispose(); },
     };
     return world;

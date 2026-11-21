@@ -9,9 +9,10 @@
 // half span is about 3.9 m at scale 1.
 import * as THREE from 'three/webgpu';
 import {
-    attribute, texture, vec2, vec3, vec4, float, mix, smoothstep, max, min, abs, sign, normalize, pow, sin, cos, length, dot, select, saturate,
+    attribute, texture, vec2, vec3, vec4, float, mix, max, min, abs, sign, normalize, pow, sin, cos, length, dot, select, saturate,
     positionGeometry, normalGeometry, positionWorld, normalWorld, cameraViewMatrix, lights,
 } from 'three/tsl';
+import { smoothstep } from './tsl.js';
 import { catmull, clamp as cl, lerp } from './noise.js';
 
 // where the wing hinges, and where the hand begins (the fold of the outer wing)

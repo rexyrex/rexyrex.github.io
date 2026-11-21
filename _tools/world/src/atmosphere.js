@@ -8,9 +8,10 @@
 // always agree.
 import * as THREE from 'three/webgpu';
 import {
-    Fn, uniform, texture, vec2, vec3, vec4, float, normalize, max, min, sqrt, exp, pow, dot, mix, clamp, smoothstep, abs, atan, length,
-    positionWorld, cameraPosition, modelViewProjection, time, fog, saturate, select,
+    Fn, uniform, texture, vec2, vec3, vec4, float, normalize, max, min, sqrt, exp, pow, dot, mix, clamp, abs, atan, length,
+    positionWorld, cameraPosition, modelViewProjection, time, fog, saturate, select, step,
 } from 'three/tsl';
+import { smoothstep } from './tsl.js';
 import { dataTexture } from './textures.js';
 
 const KM = 1000;
@@ -210,7 +211,8 @@ export function createAtmosphere({ sunDir, noiseTex, quality, salt = 0 }) {
         const powder = float(1).sub(exp(d.mul(-2.2)));
         const lit = uSunColor.mul(shade).mul(fwd.add(0.42)).mul(mix(0.55, 1.0, powder));
         const amb = skyLookup(normalize(vec3(dir.x.mul(0.3), 0.75, dir.z.mul(0.3)))).mul(1.5).add(sky.mul(0.25));
-        const col = lit.mul(0.11).add(amb.mul(mix(1.0, 0.5, d)));
+        // (thick cloud is bright where the sun strikes it and grey underneath: the contrast is what gives it a body)
+        const col = lit.mul(0.17).add(amb.mul(mix(1.0, 0.42, d)));
         // dissolve into the horizon haze
         const far = exp(t.mul(-0.000085));
         const alpha = d.mul(far).mul(smoothstep(0.0, 0.07, dir.y));
@@ -223,7 +225,8 @@ export function createAtmosphere({ sunDir, noiseTex, quality, salt = 0 }) {
         const mu = dot(dir, uSunDir);
         // the disc itself, limb darkened; bloom turns it into the sun
         const disc = smoothstep(0.99985, 0.99996, mu);
-        const base = sky.add(uSunColor.mul(disc).mul(16.0)).add(uSunColor.mul(pow(saturate(mu), 900.0)).mul(0.5)).toVar();
+        // (and round it the aureole: tight and fierce at the limb, falling away over a hand's breadth of sky)
+        const base = sky.add(uSunColor.mul(disc).mul(30.0)).add(uSunColor.mul(pow(saturate(mu), 900.0).mul(0.5).add(pow(saturate(mu), 190.0).mul(0.14)).add(pow(saturate(mu), 36.0).mul(0.018)))).toVar();
         const high = cloudLayer(dir, float(9000), float(0.000045), float(0.0016), uCloudCover.mul(0.82), sky);
         base.assign(mix(base, high.rgb, high.a.mul(0.75)));
         const low = cloudLayer(dir, float(2300), float(0.00016), float(0.0042), uCloudCover, sky);
@@ -237,6 +240,16 @@ export function createAtmosphere({ sunDir, noiseTex, quality, salt = 0 }) {
         const drift = vec2(time.mul(speed), time.mul(speed).mul(0.37));
         const q = P.xz.add(uSunDir.xz.mul(alt.sub(P.y).div(max(uSunDir.y, 0.05)))).mul(scale).add(drift);
         return float(1).sub(cloudDensity(q, uCloudCover).mul(0.55));
+    });
+
+    // the same shade for a point in the haze, where only its broad shape matters: one sample, read coarsely
+    const cloudShadowAir = Fn(([P]) => {
+        const alt = float(2300), scale = float(0.00016), speed = float(0.0042);
+        const drift = vec2(time.mul(speed), time.mul(speed).mul(0.37));
+        // (a point above the deck is in no cloud's shade)
+        const q = P.xz.add(uSunDir.xz.mul(max(alt.sub(P.y), 0.0).div(max(uSunDir.y, 0.05)))).mul(scale).add(drift);
+        const n = texture(noiseTex, q).level(0).r.mul(0.62).add(texture(noiseTex, q.mul(0.23).add(vec2(0.7, 0.2))).level(0).r.mul(0.34)).add(0.1);
+        return float(1).sub(smoothstep(float(1.05).sub(uCloudCover), float(1.34).sub(uCloudCover), n).mul(0.55).mul(step(P.y, alt)));
     });
 
     // ---- dome
@@ -275,7 +288,7 @@ export function createAtmosphere({ sunDir, noiseTex, quality, salt = 0 }) {
     const fogNode = fog(hazeColor(), hazeAmount());
 
     return {
-        model, table, env, dome, fogNode, skyColor, skyLookup, hg, cloudShadow,
+        model, table, env, dome, fogNode, skyColor, skyLookup, hg, cloudShadow, cloudShadowAir,
         uSunDir, uSunColor, uCloudCover, uHaze, uFogBase, uFogLow, uFogHeight,
         sunColor: new THREE.Color(model.sun[0], model.sun[1], model.sun[2]),
     };

@@ -4,14 +4,20 @@
 // much water the light crossed to reach it.
 import * as THREE from 'three/webgpu';
 import {
-    Fn, uniform, texture, vec2, vec3, vec4, float, mix, smoothstep, max, min, abs, clamp, normalize, dot, pow, sqrt, exp, reflect, length, sin,
-    positionWorld, positionView, cameraPosition, cameraViewMatrix, cameraProjectionMatrix, cameraNear, cameraFar, time, screenUV, screenCoordinate, viewportSharedTexture, viewportDepthTexture,
+    Fn, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, normalize, dot, pow, sqrt, exp, reflect, length, sin,
+    positionWorld, positionView, cameraPosition, cameraViewMatrix, cameraProjectionMatrix, cameraNear, cameraFar, time, screenUV, screenCoordinate, viewportTexture, viewportDepthTexture,
     saturate, getScreenPosition, perspectiveDepthToViewZ, interleavedGradientNoise, Loop, If, Break,
 } from 'three/tsl';
+import { smoothstep } from './tsl.js';
 
 const C = (hex) => { const c = new THREE.Color(hex); return vec3(c.r, c.g, c.b); };
 
-export function createWater({ waterTex, terrain, atmosphere, quality }) {
+export function createWater({ waterTex, terrain, atmosphere, quality, sunlight }) {
+    // What is already drawn, and how far away it is, as the water finds them. One capture of each, read as
+    // often as needed: asked for afresh at every use, each use would copy the whole frame again.
+    const drawn = new THREE.FramebufferTexture(); drawn.minFilter = drawn.magFilter = THREE.LinearFilter;
+    const pictureNode = viewportTexture(screenUV, null, drawn), depthNode = viewportDepthTexture();
+    const picture = (at) => pictureNode.sample(at), sceneDepth = (at) => depthNode.sample(at);
     const { uSunDir, uSunColor, skyLookup } = atmosphere;
     const P = positionWorld;
     const xz = P.xz;
@@ -38,15 +44,27 @@ export function createWater({ waterTex, terrain, atmosphere, quality }) {
     const s3 = texture(waterTex, xz.mul(1 / 71.0).add(wind.mul(t.mul(0.007))));
     const s4 = texture(waterTex, xz.mul(1 / 1.9).add(vec2(0.7, -0.6).mul(t.mul(0.11))));
 
+    // The moving surface: the wave sheet (light.js) read at four sizes, each a real train of waves that
+    // travels and changes, where a scrolled picture of ripples only slides.
+    const W = sunlight.waveTex;
+    // (each reading is turned a different way, or every train would run the same way and the sea would be
+    // corrugated to the horizon; the slope that comes back is turned to match)
+    const wave = (deg, size, off) => { const c = Math.cos((deg * Math.PI) / 180), sn = Math.sin((deg * Math.PI) / 180); const t = texture(W, vec2(xz.x.mul(c).sub(xz.y.mul(sn)), xz.x.mul(sn).add(xz.y.mul(c))).mul(1 / size).add(off)); return { t, slope: vec2(t.b.mul(c).add(t.a.mul(sn)), t.a.mul(c).sub(t.b.mul(sn))) }; };
+    // (the long waves are also read through a slow wander, so no crest runs ruler-straight to the horizon)
+    const wander = texture(waterTex, xz.mul(1 / 610.0)).rg.sub(0.5);
+    const w1 = wave(0, 11.0, 0.0), w2 = wave(-68, 4.3, 0.21), w3 = wave(27, 43.0, wander.mul(0.34).add(0.6)), w4 = wave(115, 1.45, 0.4), w5 = wave(-141, 170.0, wander.yx.mul(0.2).add(0.33)), w6 = wave(81, 97.0, wander.mul(-0.26).add(0.15));
     const normal = Fn(() => {
         // ripples lose their steepness with distance; what is left is the swell
-        const near = smoothstep(180.0, 6.0, dist), mid = smoothstep(1500.0, 40.0, dist);
+        const near = smoothstep(120.0, 5.0, dist), mid = smoothstep(1100.0, 30.0, dist), far = smoothstep(6000.0, 200.0, dist);
         const calm = mix(0.3, 1.0, open);
         const shallow = smoothstep(0.0, 1.2, depth);
-        const n = s1.rg.mul(2).sub(1).mul(0.5).mul(mid)
-            .add(s2.rg.mul(2).sub(1).mul(0.55).mul(mid))
-            .add(s3.rg.mul(2).sub(1).mul(0.2))
-            .add(s4.rg.mul(2).sub(1).mul(0.3).mul(near));
+        const n = w1.slope.mul(0.6).mul(mid)
+            .add(w2.slope.mul(0.5).mul(mid))
+            .add(w3.slope.mul(0.3).mul(far))
+            .add(w6.slope.mul(0.26).mul(far).mul(open))
+            .add(w5.slope.mul(0.34).mul(open))                   // the swell: only the open sea has it
+            .add(w4.slope.mul(0.34).mul(near))
+            .add(s2.rg.mul(2).sub(1).mul(0.2).mul(mid));
         const k = calm.mul(mix(0.4, 1.0, shallow)).mul(0.36).mul(mix(1.0, mix(0.3, 1.0, open), smoothstep(50.0, 300.0, cameraPosition.y)));
         return normalize(vec3(n.x.mul(k).add(rdir.x.mul(rslope)), 1.0, n.y.mul(k).add(rdir.y.mul(rslope))));
     })().toVar('wN');
@@ -60,12 +78,12 @@ export function createWater({ waterTex, terrain, atmosphere, quality }) {
         const hit = vec3(0.0).toVar();
         const t = float(1.2).toVar(), lo = float(0.0).toVar(), found = float(0.0).toVar();
         const N = quality.post >= 3 ? 26 : 18, grow = quality.post >= 3 ? 1.3 : 1.42;
-        const zAt = (tt) => { const p = positionView.add(Rv.mul(tt)); const suv = getScreenPosition(p, cameraProjectionMatrix); return perspectiveDepthToViewZ(viewportDepthTexture(suv).r, cameraNear, cameraFar).sub(p.z); };
+        const zAt = (tt) => { const p = positionView.add(Rv.mul(tt)); const suv = getScreenPosition(p, cameraProjectionMatrix); return perspectiveDepthToViewZ(sceneDepth(suv).r, cameraNear, cameraFar).sub(p.z); };
         Loop(N, () => {
             const p = positionView.add(Rv.mul(t));
             const suv = getScreenPosition(p, cameraProjectionMatrix);
             If(suv.x.lessThan(0.0).or(suv.x.greaterThan(1.0)).or(suv.y.lessThan(0.0)).or(suv.y.greaterThan(1.0)).or(p.z.greaterThan(-0.2)), () => { Break(); });
-            const sz = perspectiveDepthToViewZ(viewportDepthTexture(suv).r, cameraNear, cameraFar);
+            const sz = perspectiveDepthToViewZ(sceneDepth(suv).r, cameraNear, cameraFar);
             const behind = sz.sub(p.z);
             // behind something by less than its likely thickness: a hit. Behind it by more: the ray has
             // passed behind a thing nearer the camera (an animal's head, a trunk) and carries on to what is beyond
@@ -82,8 +100,8 @@ export function createWater({ waterTex, terrain, atmosphere, quality }) {
             // at a true crossing the ray is now on the surface; if it is still well behind, it only slid past an edge
             const thick = hi.mul(0.3).add(1.2);
             // and the pixel it lands on must be something solid: never the sky just above a tree line
-            const landed = perspectiveDepthToViewZ(viewportDepthTexture(suv).r, cameraNear, cameraFar).greaterThan(cameraFar.mul(-0.9));
-            const onSurface = smoothstep(thick, thick.mul(0.35), zAt(hi)).mul(landed.select(1.0, 0.0));
+            const landed = perspectiveDepthToViewZ(sceneDepth(suv).r, cameraNear, cameraFar).greaterThan(cameraFar.mul(-0.9));
+            const onSurface = smoothstep(thick.mul(0.35), thick, zAt(hi)).oneMinus().mul(landed.select(1.0, 0.0));
             hit.assign(vec3(suv, edge.mul(onSurface)));
         });
         // from high up there is too little on screen to reflect: fade to the sky alone
@@ -95,14 +113,23 @@ export function createWater({ waterTex, terrain, atmosphere, quality }) {
         const fres = float(0.02).add(float(0.98).mul(pow(float(1).sub(ndv), 5.0)));
 
         // what lies under the surface: the rendered seabed, displaced by the ripples
-        const bend = normal.xz.mul(0.04).mul(smoothstep(0.0, 1.5, depth)).div(max(dist.mul(0.06), 1.0));
-        const under = viewportSharedTexture(screenUV.add(bend)).rgb;
-        const path = depth.div(max(V.y, 0.22)).add(depth);           // down and back up
+        const bend0 = normal.xz.mul(0.04).mul(smoothstep(0.0, 1.5, depth)).div(max(dist.mul(0.06), 1.0));
+        // (a ripple may only bend in what lies under the water: if the bent ray lands on something standing in
+        // front of the surface, a leg or a rock, it is not bent at all)
+        const zBent = perspectiveDepthToViewZ(sceneDepth(screenUV.add(bend0)).r, cameraNear, cameraFar);
+        const bend = bend0.mul(zBent.lessThan(positionView.z).select(1.0, 0.0));
+        // (the colours part company a little on the way through, as in any lens)
+        const under = quality.post >= 2 ? vec3(picture(screenUV.add(bend.mul(1.25))).r, picture(screenUV.add(bend)).g, picture(screenUV.add(bend.mul(0.8))).b) : picture(screenUV.add(bend)).rgb;
+        // How much water the light crossed, measured: from the surface to whatever is drawn behind it at the
+        // pixel the colour came from, and down to it from above. An animal's leg a hand under the surface is
+        // seen through a hand of water, however deep the lake is there.
+        const behind = max(positionView.z.sub(perspectiveDepthToViewZ(sceneDepth(screenUV.add(bend)).r, cameraNear, cameraFar)), 0.0).mul(dist.div(max(positionView.z.negate(), 0.01)));
+        const path = behind.mul(V.y.add(1.0));
         const absorb = exp(vec3(0.42, 0.075, 0.05).mul(path).negate());
         const amb = skyLookup(vec3(0.0, 1.0, 0.0)).mul(1.6).add(uSunColor.mul(max(uSunDir.y, 0.0)).mul(0.32));
-        const body = mix(C('#0c3a40'), C('#0a3554'), open).mul(amb).mul(mix(1.0, 0.72, smoothstep(2.0, 30.0, depth)));
+        const body = mix(C('#0c3a40'), C('#083a6a'), open).mul(amb).mul(mix(1.0, 0.72, smoothstep(2.0, 30.0, depth))).mul(mix(1.0, 1.35, open));
         // fine silt near river mouths and the lake shore makes shallow water milky green
-        const murk = float(1).sub(exp(depth.mul(mix(0.34, 0.2, open)).negate()));
+        const murk = float(1).sub(exp(min(depth, behind.mul(max(V.y, 0.22))).mul(mix(0.34, 0.2, open)).negate()));
         const below = under.mul(absorb).add(body.mul(float(1).sub(absorb.g))).toVar();
         below.assign(mix(below, body.mul(1.25), murk.mul(0.35)));
 
@@ -112,19 +139,24 @@ export function createWater({ waterTex, terrain, atmosphere, quality }) {
         const sky = skyLookup(Rs).toVar();
         const amb0 = skyLookup(vec3(0.0, 1.0, 0.0));
         sky.assign(mix(sky, C('#2c3a22').mul(amb0).mul(2.2), float(1).sub(open).mul(smoothstep(0.2, 0.04, Rs.y)).mul(0.92)));
-        if (quality.post >= 2) { const m = mirror(); sky.assign(mix(sky, min(viewportSharedTexture(m.xy).rgb, sky.mul(3.0).add(0.2)), m.z.mul(0.9).mul(smoothstep(0.012, 0.05, ndv)))); }
+        if (quality.post >= 2) { const m = mirror(); sky.assign(mix(sky, min(picture(m.xy).rgb, sky.mul(3.0).add(0.2)), m.z.mul(0.9).mul(smoothstep(0.012, 0.05, ndv)))); }
 
         // sun glitter: wide at a distance where many facets average together
         const H = normalize(V.add(uSunDir));
-        const rough = mix(0.035, 0.16, smoothstep(30.0, 2500.0, dist)).mul(mix(0.55, 1.0, open));
+        const rough = mix(0.04, 0.2, smoothstep(30.0, 1800.0, dist)).mul(mix(0.55, 1.0, open));
         const a2 = rough.mul(rough);
         const ndh = saturate(dot(normal, H));
         const dnm = ndh.mul(ndh).mul(a2.sub(1.0)).add(1.0);
         const D = a2.div(dnm.mul(dnm).mul(3.14159));
         const shadow = terrain.sunVisAt(xz);
-        const glint = uSunColor.mul(min(D, 40.0)).mul(fres.mul(0.9).add(0.02)).mul(saturate(dot(normal, uSunDir)).add(0.05)).mul(shadow).mul(0.3).mul(mix(0.12, 1.0, open));
+        // every facet that happens to face the sun flashes: the caustic net, read small, picks which ones
+        const sparkle = w4.t.r.mul(1.6).add(w2.t.g.mul(0.9)).mul(smoothstep(260.0, 8.0, dist)).add(0.55);
+        const glint = uSunColor.mul(min(D, 40.0)).mul(fres.mul(0.9).add(0.02)).mul(saturate(dot(normal, uSunDir)).add(0.05)).mul(shadow).mul(0.5).mul(mix(0.12, 1.0, open)).mul(sparkle);
+        // and a crest tilted toward the sun lets a little of it through from behind: the green of a wave's shoulder
+        const lean = saturate(dot(normal.xz, normalize(uSunDir.xz)).negate().mul(3.2).add(0.12));
+        const through = C('#1c8a72').mul(uSunColor).mul(lean).mul(shadow).mul(smoothstep(0.3, 2.5, depth)).mul(float(1).sub(fres)).mul(0.016).mul(smoothstep(0.02, 0.3, V.y).oneMinus().mul(0.7).add(0.3));
 
-        const col = mix(below, sky, fres).add(glint).toVar();
+        const col = mix(below, sky, fres).add(glint).add(through).toVar();
 
         // foam: a lace at the waterline that breathes with the swell, and a few whitecaps offshore
         const surge = sin(t.mul(0.55).add(xz.x.mul(0.05)).add(xz.y.mul(0.031))).mul(0.5).add(0.5);
@@ -139,7 +171,9 @@ export function createWater({ waterTex, terrain, atmosphere, quality }) {
         return vec4(mix(under, col, edge), 1.0);
     })();
 
-    const mat = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false });
+    // (it is drawn last and covers what is under it completely, so it can leave its depth behind: the lens
+    // and the haze then see the surface, not the seabed)
+    const mat = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: true });
     mat.colorNode = color;
     mat.fog = true;
 

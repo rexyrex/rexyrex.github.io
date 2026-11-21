@@ -5,16 +5,18 @@
 // acts at each stop lives in scenes.js.
 import * as THREE from 'three/webgpu';
 import {
-    Fn, attribute, uniform, texture, vec2, vec3, vec4, float, mix, smoothstep, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, fract, floor,
-    positionLocal, normalLocal, positionGeometry, normalGeometry, positionWorld, cameraPosition, time, uv, saturate, instanceIndex, hash,
+    Fn, attribute, uniform, texture, vec2, vec3, vec4, float, mix, max, min, abs, clamp, normalize, dot, pow, sin, cos, length, fract, floor,
+    positionLocal, normalLocal, positionGeometry, normalGeometry, positionWorld, cameraPosition, cameraViewMatrix, time, uv, saturate, instanceIndex, hash, exp, lights, materialColor, normalView, positionViewDirection,
 } from 'three/tsl';
+import { smoothstep } from './tsl.js';
 import { mulberry32, lerp } from './noise.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { SITES, VOLCANO } from './island.js';
+import { createSparks, createFlame, ember, reliefNormal } from './fx.js';
 
 const col = (h) => { const c = new THREE.Color(h); return vec3(c.r, c.g, c.b); };
 
-export function createProps({ island, places, quality, atmosphere, terrain, noiseTex, rockTex }) {
+export function createProps({ island, places, quality, atmosphere, terrain, noiseTex, rockTex, skyLights = null }) {
     const group = new THREE.Group(); group.name = 'props';
     const rnd = mulberry32(31337);
     const updates = [];
@@ -84,8 +86,8 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         const lit = mix(col(colorA), col(colorB), smoothstep(0.0, 0.55, age).mul(uv().y.mul(0.6).add(0.4)));
         // sunlit on the side facing the sun (the sprite's own left-to-right stands in for depth), sky-lit elsewhere
         const side = dot(normalize(uCamRight.mul(uv().x.sub(0.5)).add(uCamUp.mul(uv().y.sub(0.5)))), atmosphere.uSunDir).mul(0.5).add(0.5);
-        let c = lit.mul(atmosphere.uSunColor.mul(mix(0.03, 0.16, side)).add(atmosphere.skyLookup(vec3(0, 1, 0)).mul(1.1))).add(col(colorA).mul(glow).mul(smoothstep(0.5, 0.0, age)));
-        if (underglow) c = c.add(col(underglow).mul(smoothstep(0.16, 0.0, age)).mul(float(1).sub(uv().y)).mul(amount).mul(6.0));
+        let c = lit.mul(atmosphere.uSunColor.mul(mix(0.02, 0.34, side.mul(side))).add(atmosphere.skyLookup(vec3(0, 1, 0)).mul(1.1))).add(col(colorA).mul(glow).mul(smoothstep(0.5, 0.0, age)));
+        if (underglow) c = c.add(col(underglow).mul(smoothstep(0.16, 0.0, age)).mul(float(1).sub(uv().y)).mul(amount).mul(3.2));
         m.colorNode = c;
         if (flame) { m.colorNode = mix(col(colorA), col(colorB), smoothstep(0.1, 0.8, age)).mul(glow).mul(a).mul(amount); m.blending = THREE.AdditiveBlending; m.fog = false; }
         m.opacityNode = flame ? float(1) : a.mul(opacity).mul(amount);
@@ -133,15 +135,20 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         const guv = positionGeometry.xz.div(vec2(1.6, 1.6)).add(0.5);
         const cellUV = vec2(gl.x.add(guv.x.sub(0.5).mul(gl.w).add(0.5)), gl.y.add(guv.y)).div(vec2(8, 4));        // u runs with +x, v with +z: read from the south
         const glyph = texture(glyphs, cellUV).r.mul(top);
-        const rt = texture(rockTex, positionGeometry.xz.mul(0.5).add(gl.xy.mul(0.37))), rs = texture(rockTex, positionGeometry.xy.mul(0.5).add(gl.yx.mul(0.21)).add(positionGeometry.z.mul(0.5)));
-        const chisel = texture(noiseTex, positionGeometry.xz.mul(vec2(2.2, 9.0)).add(gl.xy.mul(0.13)).add(positionGeometry.y.mul(6.0))).g;
+        // (the long key is the same block stretched: its stone is read in metres, so the grain is not stretched with it)
+        const pk = vec3(positionGeometry.x.mul(gl.w.lessThan(0.5).select(5.2, 1.0)), positionGeometry.y, positionGeometry.z);
+        const rt = texture(rockTex, pk.xz.mul(0.5).add(gl.xy.mul(0.37))), rs = texture(rockTex, pk.xy.mul(0.5).add(gl.yx.mul(0.21)).add(pk.z.mul(0.5)));
+        const chisel = texture(noiseTex, pk.xz.mul(vec2(2.2, 9.0)).add(gl.xy.mul(0.13)).add(pk.y.mul(6.0))).g;
         const stone = col('#7a746a').mul(mix(0.55, 1.15, mix(rs.b, rt.b, top))).mul(mix(0.82, 1.08, chisel));
         const moss = smoothstep(0.5, 0.82, texture(noiseTex, positionGeometry.xz.mul(0.35).add(gl.xy.mul(0.21))).r.add(float(1).sub(top).mul(0.2))).mul(float(1).sub(top.mul(0.65)));
         // chipped corners show paler stone; soil has washed up the sides
         const edgeWear = smoothstep(0.62, 0.8, max(abs(positionGeometry.x), abs(positionGeometry.z))).mul(smoothstep(0.15, 0.33, positionGeometry.y)).mul(rt.a);
         const grime = smoothstep(0.08, -0.32, positionGeometry.y);
-        m.colorNode = mix(mix(mix(mix(stone, col('#44512a'), moss.mul(0.7)), stone.mul(0.07), glyph.mul(0.96)), col('#a39c8f'), edgeWear.mul(0.6)), col('#3f3327'), grime.mul(0.75));
+        // the letter is cut into the stone, not painted on it: dark where dirt has settled in the cut, and lit
+        // as a groove (its near wall in shade, its far wall catching the sun)
+        m.colorNode = mix(mix(mix(mix(stone, col('#44512a'), moss.mul(0.7)), stone.mul(0.2), glyph.mul(0.9)), col('#a39c8f'), edgeWear.mul(0.6)), col('#3f3327'), grime.mul(0.75));
         m.roughnessNode = float(0.86);
+        m.normalNode = reliefNormal(glyph.mul(-0.045).add(rt.b.mul(top).mul(0.016)).add(chisel.mul(0.006)));
         m.emissiveNode = col('#9be36f').mul(glyph).mul(gl.z).mul(7.0);
         inst.material = m; inst.frustumCulled = false; add(inst);
         clear.push([s.x, s.z, 12]);
@@ -169,8 +176,10 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         const n = Math.round(26 * Math.min(1, quality.fauna + 0.3));
         const strings = [];
         for (let i = 0; i < n; i++) {
-            const m = new THREE.MeshPhysicalNodeMaterial({ color: new THREE.Color(tints[i % 3 === 0 ? Math.floor(rnd() * tints.length) : Math.floor(rnd() * 3)]), roughness: 0.22, clearcoat: 0.6, clearcoatRoughness: 0.2 });
-            const b = add(new THREE.Mesh(g, m));
+            const m = new THREE.MeshSSSNodeMaterial({ color: new THREE.Color(tints[i % 3 === 0 ? Math.floor(rnd() * tints.length) : Math.floor(rnd() * 3)]), roughness: 0.22, clearcoat: 0.6, clearcoatRoughness: 0.2 });
+            // (rubber stretched thin: held against the sun a balloon glows in its own colour)
+            m.thicknessColorNode = materialColor.mul(1.6).mul(pow(saturate(dot(normalView, positionViewDirection)), 0.55).mul(0.75).add(0.25));       // (more rubber to cross toward the rim) m.thicknessDistortionNode = float(0.5); m.thicknessAmbientNode = float(0.03); m.thicknessAttenuationNode = float(1.0); m.thicknessPowerNode = float(2.2); m.thicknessScaleNode = float(1.25);
+            const b = add(new THREE.Mesh(g, m)); b.receiveShadow = false;       // (one balloon's shadow on another is a black hole in a thing that glows)
             // spread through what the camera at this stop sees: out over the water, near and far, high and low
             const pl = places.find((q) => q.id === 'balloons');
             const fx0 = pl.look[0] - pl.cam[0], fz0 = pl.look[2] - pl.cam[2], fl = Math.hypot(fx0, fz0), fx = fx0 / fl, fz = fz0 / fl;
@@ -218,25 +227,55 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         const q = positionWorld.xz.sub(vec2(VOLCANO.x, VOLCANO.z));
         // how deep the lava stands over the crater floor here: it is drawn only where it covers the rock
         const cover = float(y).sub(terrain.gridHeight(positionWorld.xz));
-        m.maskNode = cover.greaterThan(0.25);
+        // (it thins away to nothing at its shore: the ground far off is drawn in big triangles, and a lake that
+        // ended in a line would end along their edges)
+        m.transparent = true; m.opacityNode = smoothstep(0.2, 1.7, cover.add(texture(rockTex, q.mul(0.045)).b.sub(0.5).mul(1.3)));
+        m.maskNode = cover.greaterThan(0.1);
         const shore = smoothstep(0.25, 1.4, cover);
+        // The lake: plates of cooled crust adrift on the melt, the seams between them incandescent. Where the
+        // lake wells up the crust is thin and broken small; toward the walls it has set.
         const stir = texture(noiseTex, q.mul(0.006).add(vec2(time.mul(0.003), time.mul(-0.002)))).rg.sub(0.5);
-        const p1 = q.mul(0.024).add(stir.mul(0.5)).add(vec2(time.mul(0.0016), time.mul(0.0011)));
-        const p2 = q.mul(0.075).add(stir.mul(0.9)).sub(vec2(time.mul(0.0024), 0));
+        const p1 = q.mul(0.021).add(stir.mul(0.55)).add(vec2(time.mul(0.0016), time.mul(0.0011)));
+        const p2 = q.mul(0.068).add(stir.mul(1.0)).sub(vec2(time.mul(0.0026), time.mul(0.0007)));
         const plate = texture(noiseTex, p1).a, small = texture(noiseTex, p2).a;        // bright at a cell's middle
-        const fissure = smoothstep(0.17, 0.02, plate), hair = smoothstep(0.12, 0.01, small).mul(0.35);
-        const pool = smoothstep(0.7, 0.9, texture(noiseTex, q.mul(0.008).add(vec2(time.mul(0.002), 0))).r);
+        const well = smoothstep(0.5, 0.8, texture(noiseTex, q.mul(0.0075).add(vec2(time.mul(0.002), 0))).r);
+        // across a seam: a white-hot core, orange shoulders where the crust is thin, then the dark of a cooled plate
+        const core = smoothstep(0.075, 0.012, plate), shoulder = smoothstep(0.36, 0.02, plate);
+        const hair = smoothstep(0.085, 0.015, small).mul(well.mul(0.8).add(0.14));
         // toward the walls the crust has cooled: the glow dies away and the lake ends in dark rock, not in a line
-        const heat = saturate(fissure.add(hair).add(pool.mul(0.85)).mul(smoothstep(0.3, 3.2, cover)));
+        const cooled = smoothstep(0.3, 3.2, cover);
+        // (a wide opening is not one temperature: skin forms on it and tears, and it shows as moving amber)
+        const skin = texture(noiseTex, q.mul(0.19).add(stir.mul(1.6)).add(vec2(time.mul(0.011), time.mul(-0.007)))).g;
+        const heat = saturate(core.mul(mix(0.5, 1.0, smoothstep(0.3, 0.62, skin))).add(hair.mul(0.8)).add(well.mul(float(1).sub(small)).mul(0.22))).mul(cooled);
+        const glow = shoulder.mul(shoulder).mul(0.62).add(well.mul(smoothstep(0.55, 0.1, small)).mul(0.3)).mul(cooled);
         const pulse = sin(time.mul(0.6).add(plate.mul(6.0))).mul(0.14).add(1.0);
-        m.colorNode = mix(col('#070606'), col('#1a110e'), small.mul(0.6).add(plate.mul(0.4)));
-        m.roughnessNode = mix(float(0.92), float(0.4), heat);
-        m.emissiveNode = mix(col('#b81802'), col('#ffb646'), pow(heat, 2.2)).mul(pow(heat, 1.5)).mul(uActivity.mul(22).add(7)).mul(pulse);
+        // the crust itself: ropy and dull. It is lit by the sky alone: the lamp that reddens the crater's walls hangs
+        // right over it, and would make the lake look like rock under a light instead of the thing that glows
+        const crust = texture(rockTex, q.mul(0.11).add(stir.mul(0.3)));
+        m.colorNode = mix(col('#050404'), col('#17110f'), small.mul(0.5).add(crust.b.mul(0.5)));
+        m.roughnessNode = mix(float(0.62), float(0.9), crust.b);
+        m.normalNode = normalize(vec3(crust.r.sub(0.5).mul(1.5), 1.0, crust.g.sub(0.5).mul(1.5))).transformDirection(cameraViewMatrix);
+        if (skyLights) m.lightsNode = lights(skyLights);
+        m.emissiveNode = ember(heat.mul(heat)).mul(heat.mul(heat)).mul(uActivity.mul(9).add(9)).add(vec3(1.0, 0.2, 0.012).mul(glow).mul(uActivity.mul(1.5).add(1.7))).mul(pulse);
         const lava = new THREE.Mesh(g, m); lava.position.set(VOLCANO.x, y, VOLCANO.z); lava.receiveShadow = false; group.add(lava);
         lavaAt = { x: VOLCANO.x, y, z: VOLCANO.z };
         const glowLight = new THREE.PointLight(0xff7a2a, 0, 170, 2); glowLight.position.set(VOLCANO.x, y + 14, VOLCANO.z); group.add(glowLight);
-        updates.push((t) => { glowLight.intensity = (30000 + 3500 * Math.sin(t * 0.6)) * (0.3 + 0.7 * uActivity.value); });
+        updates.push((t) => { glowLight.intensity = (21000 + 2500 * Math.sin(t * 0.6)) * (0.45 + 0.55 * uActivity.value); });
         clear.push([VOLCANO.x, VOLCANO.z, 56]);
+        // the air over it glows: a few soft sheets of light stacked above the lake, thinning as they rise
+        {
+            const gm = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+            const r = length(uv().sub(0.5).mul(2.0)), lift = positionWorld.y.sub(y);
+            const wisp = texture(noiseTex, positionWorld.xz.mul(0.011).add(vec2(time.mul(0.006), lift.mul(0.02)))).r;
+            // (seen edge-on a sheet would show as a line: it fades as the eye comes level with it)
+            const edgeOn = smoothstep(0.03, 0.2, abs(normalize(cameraPosition.sub(positionWorld)).y));
+            gm.colorNode = col('#ff6a1e').mul(smoothstep(1.0, 0.1, r).pow(1.6)).mul(wisp.mul(1.1).add(0.3)).mul(exp(lift.mul(-0.07))).mul(edgeOn).mul(uActivity.mul(0.5).add(0.5)).mul(0.055);
+            gm.fog = false;
+            const sheet = new THREE.CircleGeometry(74, 40); sheet.rotateX(-Math.PI / 2);
+            for (const h of [1.5, 5, 10, 17, 26]) { const s2 = new THREE.Mesh(sheet, gm); s2.position.set(VOLCANO.x, y + h, VOLCANO.z); s2.renderOrder = 19; s2.frustumCulled = false; group.add(s2); }
+        }
+        // and sparks are thrown up from the seams
+        if (quality.post > 0) group.add(createSparks({ count: quality.post >= 2 ? 700 : 260, origin: [VOLCANO.x, y + 0.4, VOLCANO.z], radius: 44, height: 58, life: 8, size: 0.13, spread: 5.5, drift: [9, 3.5], gain: 7, amount: uActivity.mul(0.8).add(0.2), seed: 11 }));
         puffs({ count: 70, origin: [VOLCANO.x - 6, y + 1, VOLCANO.z + 4], height: 120, spread: 13, drift: [26, 10], size0: 5, size1: 30, life: 15, colorA: '#4f4743', colorB: '#8f8983', glow: 0, underglow: '#ff5a1a', opacity: 0.42, amount: uActivity.mul(0.7).add(0.3) });
         const top = ground(VOLCANO.x, VOLCANO.z) + 8;
         puffs({ count: quality.post > 0 ? 110 : 40, origin: [VOLCANO.x, top, VOLCANO.z], height: 430, spread: 30, drift: [430, 170], size0: 34, size1: 210, life: 58, colorA: '#6d635c', colorB: '#a8a39c', glow: 0, underglow: '#ff6a2a', opacity: 0.62, amount: uActivity.mul(0.85).add(0.15) });
@@ -294,16 +333,44 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
     const uFire = uniform(0.7);              // 0.25 embers .. 1 freshly fed
     {
         const s = SITES.contact, y = ground(s.x, s.z);
-        const canvas = new THREE.MeshStandardNodeMaterial({ side: THREE.DoubleSide });
-        { const weave = texture(noiseTex, positionWorld.xz.mul(1.3).add(positionWorld.y.mul(0.9))).g; const folds = sin(positionLocal.z.mul(7.0).add(positionLocal.y.mul(2.4))).mul(0.5).add(0.5); canvas.colorNode = col('#877a5c').mul(mix(0.72, 1.08, weave)).mul(mix(0.78, 1.04, folds)).mul(mix(0.66, 1.0, smoothstep(0.0, 0.5, positionLocal.y))); canvas.roughnessNode = float(0.93); }
+        // canvas: woven, creased where it was folded, and thin enough that the sun comes through it
+        const canvas = new THREE.MeshSSSNodeMaterial({ side: THREE.DoubleSide });
+        {
+            const weave = texture(noiseTex, positionWorld.xz.mul(1.3).add(positionWorld.y.mul(0.9))).g, thread = texture(noiseTex, positionLocal.zy.mul(vec2(9.0, 14.0))).g;
+            const folds = sin(positionLocal.z.mul(7.0).add(positionLocal.y.mul(2.4))).mul(0.5).add(0.5);
+            const stain = texture(noiseTex, positionLocal.zy.mul(0.35).add(0.3)).r;
+            const cloth = col('#8f8262').mul(mix(0.74, 1.08, weave)).mul(mix(0.9, 1.05, thread)).mul(mix(0.8, 1.04, folds)).mul(mix(0.62, 1.0, smoothstep(0.0, 0.5, positionLocal.y))).mul(mix(0.82, 1.05, smoothstep(0.3, 0.7, stain)));
+            canvas.colorNode = cloth; canvas.roughnessNode = float(0.92);
+            // folds pulled from the ridge down to the pegs, and the cloth's own weave
+            const pull = sin(positionLocal.z.mul(4.7).add(positionLocal.y.mul(3.1)).add(sin(positionLocal.z.mul(1.3)).mul(2.0)));
+            canvas.normalNode = reliefNormal(pull.mul(0.022).add(folds.mul(0.012)).add(thread.mul(0.0025)));
+            canvas.thicknessColorNode = cloth.mul(vec3(1.5, 1.25, 0.8)); canvas.thicknessDistortionNode = float(0.25); canvas.thicknessAmbientNode = float(0.0);
+            canvas.thicknessAttenuationNode = float(1.0); canvas.thicknessPowerNode = float(2.5); canvas.thicknessScaleNode = float(1.1);
+        }
         const rope = new THREE.LineBasicNodeMaterial({ color: 0xcfc6ac, transparent: true, opacity: 0.7 });
         const tent = (x, z, ry, sc) => {
             const g = new THREE.BufferGeometry();
             const w = 1.35, l = 2.0, h = 1.45, sag = 0.12;
-            // two cloth panels that sag between ridge and ground, a back wall, door flaps left open
-            const v = [-w, 0, -l, -w * 0.5, h * 0.5 - sag, -l, 0, h, -l, w * 0.5, h * 0.5 - sag, -l, w, 0, -l, -w, 0, l, -w * 0.5, h * 0.5 - sag, l, 0, h - 0.05, l, w * 0.5, h * 0.5 - sag, l, w, 0, l];
+            // Two cloth panels hung from a ridge line that dips between its poles; each sags between ridge and
+            // ground, is drawn into a scallop between its pegs, and wrinkles a little. A back wall; the door is open.
+            const NU = 14, NV = 8, v = [], idx = [];
+            const ridge = (u) => h - 0.07 * (1 - u * u);                                  // u: -1 .. 1 along the ridge
+            for (const sd of [-1, 1]) {
+                const base = v.length / 3;
+                for (let j = 0; j <= NV; j++) for (let i = 0; i <= NU; i++) {
+                    const u = (i / NU) * 2 - 1, t = j / NV;
+                    const belly = Math.sin(Math.PI * t) * (0.6 + 0.4 * Math.cos((Math.PI * u) / 2)) * sag;
+                    const peg = 0.06 * Math.abs(Math.sin(Math.PI * 1.5 * (u + 1))) * t * t;           // lifted between the pegs
+                    const crease = 0.014 * Math.sin(u * 9 + t * 5 + sd) * Math.sin(Math.PI * t);
+                    v.push(sd * (w * Math.pow(t, 0.96) + belly * 0.35 + crease), ridge(u) * (1 - t) - belly + peg + crease, u * l * (1 + 0.012 * Math.sin(t * 6 + sd) * (1 - u * u)));
+                }
+                for (let j = 0; j < NV; j++) for (let i = 0; i < NU; i++) { const a = base + j * (NU + 1) + i, b = a + 1, c = a + NU + 1, d = c + 1; if (sd > 0) idx.push(a, c, b, b, c, d); else idx.push(a, b, c, b, d, c); }
+            }
+            // the back wall hangs from the two panels' own back edges (copies of those points, so it keeps a crease there)
+            { const b0 = v.length / 3; v.push(0, 0, -l); const edge = (sd2) => { const base = sd2 < 0 ? 0 : (NU + 1) * (NV + 1), first = v.length / 3; for (let j = 0; j <= NV; j++) { const o = (base + j * (NU + 1)) * 3; v.push(v[o], v[o + 1], v[o + 2]); } return first; };
+                const eL = edge(-1), eR = edge(1); for (let j = 0; j < NV; j++) idx.push(b0, eL + j + 1, eL + j, b0, eR + j, eR + j + 1); }
             g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(v), 3));
-            g.setIndex([0, 1, 6, 0, 6, 5, 1, 2, 7, 1, 7, 6, 2, 3, 8, 2, 8, 7, 3, 4, 9, 3, 9, 8, 0, 2, 1, 0, 4, 2, 2, 4, 3]);
+            g.setIndex(idx);
             g.computeVertexNormals();
             const cr = Math.cos(ry), sr = Math.sin(ry);
             let y0 = ground(x, z); for (const [lx, lz] of [[-w, -l], [w, -l], [-w, l], [w, l], [0, -l], [0, l]]) y0 = Math.min(y0, ground(x + (lx * cr + lz * sr) * sc, z + (-lx * sr + lz * cr) * sc));
@@ -319,11 +386,14 @@ export function createProps({ island, places, quality, atmosphere, terrain, nois
         // fire ring
         const stone = stoneMat('#5d5852');
         for (let i = 0; i < 9; i++) { const a = (i / 9) * 6.283, m = add(new THREE.Mesh(new THREE.IcosahedronGeometry(0.2 + rnd() * 0.1, 1), stone)); m.position.set(s.x + Math.cos(a) * 0.75, y + 0.08, s.z + Math.sin(a) * 0.75); m.scale.y = 0.7; }
-        for (let i = 0; i < 4; i++) { const m = add(new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 1.1, 7), woodMat('#3a2c20'))); m.position.set(s.x, y + 0.28, s.z); m.rotation.set(1.05, (i / 4) * 6.283, 0); }
-        puffs({ count: 64, origin: [s.x, y + 0.2, s.z], height: 2.3, spread: 0.36, drift: [0.4, 0.14], size0: 0.72, size1: 0.14, life: 0.8, colorA: '#ffb54a', colorB: '#d93a06', glow: 1.15, opacity: 1, amount: uFire, flame: true });
+        for (let i = 0; i < 4; i++) { const m = add(new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 1.1, 7), woodMat('#3a2c20'))); m.position.set(s.x + Math.cos((i / 4) * 6.283 + 0.4) * 0.16, y + 0.2, s.z + Math.sin((i / 4) * 6.283 + 0.4) * 0.16); m.rotation.set(1.3, (i / 4) * 6.283, 0); }
+        // the fire: a sheet of flame that turns to the lens, a few loose tongues round it, sparks going up
+        group.add(createFlame({ origin: [s.x, y + 0.08, s.z], width: 2.0, height: 2.1, noiseTex, amount: uFire, gain: 2.0 }));
+        puffs({ count: 18, origin: [s.x, y + 0.2, s.z], height: 1.5, spread: 0.3, drift: [0.3, 0.1], size0: 0.5, size1: 0.1, life: 0.7, colorA: '#ffb54a', colorB: '#d93a06', glow: 0.7, opacity: 1, amount: uFire, flame: true });
+        group.add(createSparks({ count: 80, origin: [s.x, y + 0.5, s.z], radius: 0.26, height: 5.2, life: 2.4, size: 0.016, spread: 0.55, drift: [1.1, 0.4], gain: 16, amount: uFire, seed: 23 }));
         puffs({ count: 18, origin: [s.x, y + 1.6, s.z], height: 22, spread: 0.6, drift: [16, 6], size0: 0.4, size1: 2.6, life: 9, colorA: '#55524e', colorB: '#7d7a75', glow: 0, opacity: 0.07, amount: uFire });
         const light = new THREE.PointLight(0xff9040, 0, 26, 1.6); light.position.set(s.x, y + 0.9, s.z); group.add(light);
-        updates.push((t) => { light.intensity = (26 + 9 * Math.sin(t * 9.1) * Math.sin(t * 13.7)) * uFire.value; });
+        updates.push((t) => { light.intensity = (11 + 4 * Math.sin(t * 9.1) * Math.sin(t * 13.7)) * uFire.value; });
         // crates and a log to sit on
         const crate = new THREE.BoxGeometry(0.8, 0.6, 0.6);
         for (const [dx, dz, ry] of [[-2.4, -3.3, 0.4], [-3.3, -2.9, 1.1]]) { const m = add(new THREE.Mesh(crate, plankMat('#7b6243', 'x', 0.15))); m.position.set(s.x + dx, ground(s.x + dx, s.z + dz) + 0.3, s.z + dz); m.rotation.y = ry; }
