@@ -4,3 +4,15 @@ rex_start.bat
 
 # island build tooling
 _tools/world/node_modules/
+
+# Deadly Balloons 3 trailer pipeline: footage, renders, generated assets
+_tools/db3-trailer/clips/
+_tools/db3-trailer/out/
+_tools/db3-trailer/edl.json
+_tools/db3-trailer/audio/*.wav
+_tools/db3-trailer/.chrome-*/
+_tools/db3-trailer/.site-sprites/
+_tools/db3-trailer/video/index.html
+_tools/db3-trailer/video/assets/
+_tools/db3-trailer/video/.hyperframes/
+_tools/db3-trailer/video/renders/
