@@ -14,9 +14,15 @@
   </url>
   <url>
     <loc>https://rexyrex.github.io/deadlyBalloons/</loc>
-    <lastmod>2026-09-09</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://rexyrex.github.io/deadlyBalloons/play/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://rexyrex.github.io/apps/app_manager/</loc>

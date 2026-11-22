@@ -1,4 +1,4 @@
-/* Deadly Balloons 2 landing page. Tokens and components come from
+/* Deadly Balloons 3 landing page. Tokens and components come from
    /css/index.css; this file only adds the balloon layer and the card. */
 
 /* Balloon rain: fixed behind the content, fades in after the card lands. */
@@ -18,6 +18,7 @@
     left: 0;
     width: 260px;
     height: 260px;
+    object-fit: contain;
     will-change: transform;
     opacity: 0.6;
     -webkit-user-drag: none;
@@ -76,6 +77,16 @@
 
 .game-video {
     margin-bottom: 1.5rem;
+    background: #07060d;
+}
+
+.embed video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: #07060d;
 }
 
 .game-actions {

@@ -24,7 +24,9 @@ ANCHORS = ['typing', 'balloons', 'apps', 'games', 'mac', 'tesla', 'music', 'inde
 # never listed: the App Manager installers carry their version in the file name
 # and each release replaces them (App Manager's scripts/publish-site.sh), so
 # those paths are not permanent. The link check below still covers the page.
-SKIP = ('_tools/', 'README.md', '.gitignore', 'downloads/app-manager/')
+# Likewise Deadly Balloons 3's build output: Vite names its chunks by content
+# hash, so every rebuild of the game replaces deadlyBalloons/play/assets/.
+SKIP = ('_tools/', 'README.md', '.gitignore', 'downloads/app-manager/', 'deadlyBalloons/play/assets/')
 # deliberate: the devlog links to a missing page to show off /404.html
 INTENTIONAL_404 = {'/this-page-does-not-exist'}
 

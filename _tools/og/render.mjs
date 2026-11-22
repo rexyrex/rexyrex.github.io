@@ -24,7 +24,7 @@ const IMG = pathToFileURL(resolve(ROOT, 'assets/rexGreenSmall.png')).href;
 const CARDS = {
     home:     { path: '/', eyebrow: 'rexyrex.github.io', file: '/index.html', title: 'Apps, games, and music, built by one person.', desc: 'Apps on Google Play and the App Store, native macOS apps, multiplayer browser games, a typing game, and a few tracks.' },
     typing:   { path: '/typing/', file: '/typing/index.html', title: 'Typing Speed Test', desc: 'Korean, English and programmer modes, with daily and all-time leaderboards.' },
-    balloons: { path: '/deadlyBalloons/', file: '/deadlyBalloons/index.html', title: 'Deadly Balloons 2', desc: 'A desktop balloon-popping game. Trailer, download and source.' },
+    balloons: { path: '/deadlyBalloons/', file: '/deadlyBalloons/index.html', title: 'Deadly Balloons 3', desc: 'A bullet-hell balloon shooter for your browser, on PC and mobile. Trailer, and play it free.' },
     music:    { path: '/music/', file: '/music/showcase.html', title: 'Music', desc: 'SuperPose streams from SoundCloud. More tracks on SoundCloud and Newgrounds.' },
     lab:      { path: '/animation.html', file: '/animation.html', title: 'Animation lab', desc: 'A scratchpad of CSS text effects on Vue 3. Pick one, or let it shuffle.' },
     support:  { path: '/support/', file: '/support/index.html', title: 'Support', desc: 'How to reach the developer about any of the apps, and where each privacy policy lives.' },

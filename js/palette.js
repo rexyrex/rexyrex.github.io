@@ -14,7 +14,8 @@
         pages: [
             { title: 'Home', path: '/', hint: 'rexyrex.github.io', keys: 'index start landing rex home' },
             { title: 'Typing Speed Test', path: '/typing/index.html', hint: '/typing/', keys: 'typing 한타 영타 타자 keyboard wpm leaderboard game' },
-            { title: 'Deadly Balloons 2', path: '/deadlyBalloons/index.html', hint: '/deadlyBalloons/', keys: 'balloons desktop game download trailer' },
+            { title: 'Deadly Balloons 3', path: '/deadlyBalloons/index.html', hint: '/deadlyBalloons/', keys: 'balloons browser game bullet hell shooter trailer play' },
+            { title: 'Play Deadly Balloons 3', path: '/deadlyBalloons/play/', hint: '/deadlyBalloons/play/', keys: 'balloons play game browser bullet hell shooter' },
             { title: 'Music', path: '/music/showcase.html', hint: '/music/', keys: 'music soundcloud superpose newgrounds tracks audio' },
             { title: 'Animation lab', path: '/animation.html', hint: '/animation.html', keys: 'lab css text effects vue scratchpad animation' },
             { title: 'Apps', path: '/#apps', hint: 'every app, on the home page', keys: 'apps mobile store google play app store android ios' },

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Deadly Balloons 2 — Rexyrex</title>
-    <meta name="description" content="Deadly Balloons 2, a desktop balloon-popping game by rexyrex. Watch the trailer, download the game, or read the source.">
+    <title>Deadly Balloons 3 — Rexyrex</title>
+    <meta name="description" content="Deadly Balloons 3, a bullet-hell balloon shooter by rexyrex that runs in your browser on PC and mobile. Watch the trailer and play it free.">
     <meta name="color-scheme" content="dark light">
     <link rel="icon" href="/favicon.ico">
     <link rel="canonical" href="https://rexyrex.github.io/deadlyBalloons/">
@@ -15,15 +15,15 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="rexyrex.github.io">
     <meta property="og:url" content="https://rexyrex.github.io/deadlyBalloons/">
-    <meta property="og:title" content="Deadly Balloons 2 — Rexyrex">
-    <meta property="og:description" content="A desktop balloon-popping game. Watch the trailer, download the game, or read the source.">
+    <meta property="og:title" content="Deadly Balloons 3 — Rexyrex">
+    <meta property="og:description" content="A bullet-hell balloon shooter for your browser, on PC and mobile. Watch the trailer and play it free.">
     <meta property="og:image" content="https://rexyrex.github.io/assets/og/balloons.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Deadly Balloons 2 — Rexyrex">
+    <meta property="og:image:alt" content="Deadly Balloons 3 — Rexyrex">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Deadly Balloons 2 — Rexyrex">
-    <meta name="twitter:description" content="A desktop balloon-popping game. Watch the trailer, download the game, or read the source.">
+    <meta name="twitter:title" content="Deadly Balloons 3 — Rexyrex">
+    <meta name="twitter:description" content="A bullet-hell balloon shooter for your browser, on PC and mobile. Watch the trailer and play it free.">
     <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/balloons.png">
     <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,26 +42,25 @@
     <main class="wrap game-main">
         <article class="card game-card" data-reveal-group>
             <p class="eyebrow">/deadlyBalloons/</p>
-            <h1>Deadly Balloons 2</h1>
-            <p class="lede">A game for only the hardcore balloon poppers. Built for the desktop.</p>
+            <h1>Deadly Balloons 3</h1>
+            <p class="lede">Pop everything. Don't get popped. A bullet-hell balloon shooter that runs in your browser, on PC and mobile.</p>
 
             <div class="embed embed-16x9 game-video">
-                <iframe
-                    src="https://www.youtube.com/embed/_L_c12JEX6M"
-                    title="Deadly Balloons 2 trailer"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
+                <video controls playsinline preload="none" poster="trailer-poster.jpg" aria-label="Deadly Balloons 3 trailer">
+                    <source src="trailer.mp4" type="video/mp4">
+                    <a href="trailer.mp4">Watch the Deadly Balloons 3 trailer</a>
+                </video>
             </div>
 
             <div class="game-actions">
-                <a class="btn btn-primary btn-lg" href="/downloads/DeadlyBalloons2.rar" download>Download the game <span class="arrow">↓</span></a>
-                <a class="btn btn-ghost btn-lg" href="https://github.com/rexyrex/Deadly-Balloons-2" target="_blank" rel="noopener noreferrer">Source on GitHub</a>
+                <a class="btn btn-primary btn-lg" href="/deadlyBalloons/play/">Play now <span class="arrow">→</span></a>
+                <a class="btn btn-ghost btn-lg" href="trailer.mp4" download>Download the trailer</a>
             </div>
 
             <dl class="facts game-facts">
-                <div><dt>file</dt><dd>DeadlyBalloons2.rar · 21 MB</dd></div>
-                <div><dt>runs on</dt><dd>Desktop</dd></div>
+                <div><dt>runs in</dt><dd>Your browser, on PC, phone or tablet. Free, no install; add it to your home screen and it plays offline.</dd></div>
+                <div><dt>controls</dt><dd>Keyboard, gamepad or touch. Your ship fires straight up: you dodge, you don't aim.</dd></div>
+                <div><dt>inside</dt><dd>4 campaigns with a boss each, endless mode, 17 balloon types, 13 power-ups, 25 upgrade cards.</dd></div>
                 <div><dt>popped</dt><dd><b id="popCount">0</b> <span class="faint">· click the balloons floating past</span></dd></div>
                 <div><dt>mobile</dt><dd>A separate mobile game, Deadly Balloons: Bullet Hell, is on Google Play and the App Store. <a href="/apps/deadly_balloons/">See its page</a>.</dd></div>
             </dl>
@@ -74,18 +73,20 @@
     <script>
     // Balloon rain: persistent <img> elements moved with transforms in a
     // single requestAnimationFrame loop (velocities are scaled by frame delta
-    // to match the original 30ms tick speed). Balloons vary in size and depth
-    // and pop when clicked. Respects reduced motion.
+    // to match the original 30ms tick speed). The balloons are Deadly
+    // Balloons 3's own sprites (exported from the game's texture atlas); they
+    // vary in size and depth and pop when clicked. Respects reduced motion.
     document.addEventListener('DOMContentLoaded', function() {
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         const image_width = 256;
         const image_height = 256;
         const total_size = 50;
-        const balloon_image_count = 3;
+        const balloon_image_count = 10;
         const speed_factor = 1;
         const BASE_TICK_MS = 30;
-        const SHARD = ['#2456c4', '#c11c1c', '#22a52d'];
+        // Shard colour per sprite (b0..b9), from the game's balloon palette.
+        const SHARD = ['#ff4d6d', '#a66bff', '#ff5fd2', '#ff4d6d', '#ffd23f', '#9be34b', '#ff8c42', '#4da3ff', '#ff5fd2', '#3ee0c0'];
 
         let max_y = window.innerHeight + image_height;
         let max_x = window.innerWidth - image_width;
@@ -109,7 +110,7 @@
         function srcFor(type, c) {
             if (type === 'rexGreen') return 'res/img/rexGreenSmall.png';
             if (type === 'rexRed') return 'res/img/rexRedSmall.png';
-            return 'res/img/balloon' + c + '.png';
+            return 'res/img/db3/b' + c + '.webp';
         }
 
         function spawnState(balloon, init) {
