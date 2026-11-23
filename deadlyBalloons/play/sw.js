@@ -5,8 +5,8 @@
 // Pages are network-first (so updates arrive); hashed assets are cache-first
 // (their names change with their content); other files (icons, manifest) are
 // served from the cache and refreshed in the background.
-const VERSION = "b4791fcbf16a";
-const PRECACHE = ["./","./assets/index-A3l_GLUH.js","./assets/CanvasPool-D2tzPPke.js","./assets/RenderTargetSystem-BEtPb9va.js","./assets/browserAll-DcW84kQu.js","./assets/canvasUtils-BAiQ06yU.js","./assets/getTexelRangeRects-rxQ59kRK.js","./assets/getTextureBatchBindGroup-C473t026.js","./assets/init-DPhg8wyW.js","./assets/panel-DEu3UdVu.js","./assets/webworkerAll-BKtBR4p7.js","./assets/index-C6VSaW5u.css","./icons/apple-touch-icon.png","./icons/favicon-64.png","./icons/icon-192.png","./icons/icon-512.png","./icons/maskable-512.png","./manifest.webmanifest"];
+const VERSION = "dadc4acf1466";
+const PRECACHE = ["./","./assets/index-_iLclLsj.js","./assets/CanvasPool-D2tzPPke.js","./assets/RenderTargetSystem-BEtPb9va.js","./assets/browserAll-DKIQK-Yo.js","./assets/canvasUtils-BAiQ06yU.js","./assets/getTexelRangeRects-rxQ59kRK.js","./assets/getTextureBatchBindGroup-C473t026.js","./assets/init-DPhg8wyW.js","./assets/panel-BGKERwKj.js","./assets/webworkerAll-DwAs5GIz.js","./assets/index-QslNTE0_.css","./icons/apple-touch-icon.png","./icons/favicon-64.png","./icons/icon-192.png","./icons/icon-512.png","./icons/maskable-512.png","./manifest.webmanifest"];
 const CACHE = `db3-${VERSION}`;
 const START = new URL('./', self.location).href;
 
