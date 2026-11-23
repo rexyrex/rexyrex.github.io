@@ -13,7 +13,11 @@
     var INDEX = {
         pages: [
             { title: 'Home', path: '/', hint: 'rexyrex.github.io', keys: 'index start landing rex home' },
-            { title: 'Typing Speed Test', path: '/typing/index.html', hint: '/typing/', keys: 'typing 한타 영타 타자 keyboard wpm leaderboard game' },
+            { title: 'Typing Speed Test', path: '/typing/index.html', hint: '/typing/', keys: 'typing 한타 영타 타자 keyboard wpm leaderboard game test code' },
+            { title: 'Meteor defense', path: '/typing/#/meteor', hint: '/typing/ · type the words before they land', keys: 'typing meteor 운석 산성비 arcade falling words game' },
+            { title: 'Dino race', path: '/typing/#/race', hint: '/typing/ · race three dinosaurs', keys: 'typing race 레이스 공룡 dinosaur versus' },
+            { title: 'Daily typing challenge', path: '/typing/#/daily', hint: '/typing/ · one text a day', keys: 'typing daily 오늘의 도전 challenge share' },
+            { title: 'Key drills', path: '/typing/#/drills', hint: '/typing/ · learn the keyboard', keys: 'typing drills 자리 연습 home row 두벌식 practice' },
             { title: 'Deadly Balloons 3', path: '/deadlyBalloons/index.html', hint: '/deadlyBalloons/', keys: 'balloons browser game bullet hell shooter trailer play' },
             { title: 'Play Deadly Balloons 3', path: '/deadlyBalloons/play/', hint: '/deadlyBalloons/play/', keys: 'balloons play game browser bullet hell shooter' },
             { title: 'Music', path: '/music/showcase.html', hint: '/music/', keys: 'music soundcloud superpose newgrounds tracks audio' },

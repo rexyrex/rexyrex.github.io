@@ -7,7 +7,7 @@ Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) — an inde
 | Path | What it is |
 |---|---|
 | `/` | Home page: **the island**. Eleven stops, one per part of the site; scrolling or pressing a place glides a camera across a live Late Cretaceous island to it, with that section's content in a panel. Stills of every stop stand in where the live world cannot run — see [The island](#the-island-indexhtml) |
-| `/typing/` | Typing speed game — Korean / English / programmer modes, Firebase leaderboards (jQuery + Bootstrap 4.6 + Firebase compat 8) |
+| `/typing/` | **rex/type**, the typing game: speed tests in Korean, English and code, meteor defense, a dino race, key drills and a daily challenge, with Firebase leaderboards. Plain ES modules, no framework — see [The typing game](#the-typing-game-typing) |
 | `/deadlyBalloons/` | Landing page for Deadly Balloons 3 (dependency-free): the trailer (`trailer.mp4`, made with HyperFrames from real gameplay; source and `make.sh` in `_tools/db3-trailer/`) and a link to the game |
 | `/deadlyBalloons/play/` | **Deadly Balloons 3** itself: the production build (`npm run build` → `dist/`) of the private `rexyrex/Deadly-Balloons-3` repository, copied in as is. Relative paths, its own service worker (offline play) and web manifest. Rebuild and recopy to update; never edit it here |
 | `/music/showcase.html` | Music page with a SoundCloud embed and links out |
@@ -32,7 +32,7 @@ Everything is styled from `/css/index.css`:
 - **Eyebrows are real paths.** Section labels like `/apps/` and `/typing/` are the actual URLs of what they introduce.
 - **Cross-document view transitions.** `index.css` opts every page in with `@view-transition { navigation: auto }`, so same-origin navigations crossfade. The top bar and status bar carry `view-transition-name`s (`navbar.css`) and hold still. Reduced motion turns it off.
 
-The typing game has its own stylesheet (`typing/css/typespeed2.css`) layered on top of Bootstrap 4 and `index.css`; the animation lab keeps its effect CSS inline and only its page chrome uses the tokens.
+The typing game has its own stylesheet (`typing/css/typespeed2.css`) on top of `index.css` and nothing else; the animation lab keeps its effect CSS inline and only its page chrome uses the tokens.
 
 ## The island (`/index.html`)
 
@@ -154,16 +154,42 @@ python3 _tools/paths/check.py --update   # after adding pages: appends them to t
 
 `css/motion.css` + `js/motion.js` (dependency-free) reveal `[data-reveal]` elements and the children of `[data-reveal-group]` as they scroll in. Browsers with CSS scroll-driven animations do it in the stylesheet alone (`animation-timeline: view()`, `animation-range: entry 0% entry 40%`) and `motion.js` steps aside when `CSS.supports` says so; everywhere else the script marks `html.motion-ready` and toggles `.is-in` with an IntersectionObserver. Nothing is hidden unless one of the two can reveal it. Page extras:
 
-- `/typing/` — `typing/js/keyboard-hero.js` draws a QWERTY + 두벌식 keyboard in the landing hero and types sample sentences on it, decomposing Hangul syllables into the real jamo keystrokes so the right keys light up (real key presses light them too). It lives inside `.hero-section-typing`, so the game's show/hide logic still covers it.
+- `/typing/` — `typing/js/keyboard-hero.js` draws a QWERTY + 두벌식 keyboard in the game's home view and types sample sentences on it, decomposing Hangul syllables into the real jamo keystrokes so the right keys light up (real key presses light them too). It pauses whenever the home view is hidden.
 - `/deadlyBalloons/` — the balloon rain uses Deadly Balloons 3's own sprites (`res/img/db3/`, exported from the game's texture atlas), varies in size and depth, and balloons pop when clicked (shards, ring, "+100", a counter in the card).
 - `/music/` — a CSS equaliser above the player. `/support/` — a pulsing "replies within a day or two" status. `/404.html` — the rex looks left and right.
+
+## The typing game (`/typing/`)
+
+**rex/type** is one page (`typing/index.html`) with hash routes, so every mode has a link: `#/` home, `#/test`, `#/daily`, `#/drills`, `#/meteor`, `#/race`, `#/ranks`, `#/stats` (and `#/result` after a run). Plain ES modules under `typing/js/`, no framework; the page loads Font Awesome, the Firebase compat SDK (deferred) and `data/simple_words.js` besides.
+
+| Module | Job |
+|---|---|
+| `hangul.js` | Hangul ↔ 두벌식 keystrokes (한 → `gks`). Stroke counts (타수), "is this composing syllable a correct step toward the target" (한 is on the way to 하나: `gks` is a prefix of `gksk`), the next key for the keyboard hint |
+| `engine.js` | `Session`: judges every character, scores lines, keeps the clock and per-second samples. No DOM, tested in Node |
+| `content.js` | Seeded text sources (`makeSource`), balanced line wrapping, the daily text, word pools for the arcade modes, and the original silly-sentence machine (plus the 이포넷 office variant) |
+| `stage.js` | The typing surface: four lines, smooth caret, pace ghost, HUD, and a visible prompt that holds the real `<input>` so the IME composes in it on every platform |
+| `app.js` | Routing, the test / daily / drill flow, results, leaderboards, stats, settings |
+| `result.js` | Result screen: tier badge, numbers, SVG speed chart, character breakdown, missed words, missed-key heat map, share text |
+| `meteor.js`, `race.js` | Meteor defense (falling words, lives, combos, gold / ice / bomb / heart meteors) and the dino race (three bots paced to the player's recent average) |
+| `drills.js`, `keyboard.js` | Key drills (rows, double consonants, numbers, symbols, weak keys) and the on-screen keyboard with finger colours, next-key hints and the heat map |
+| `store.js` | Everything kept on the device, in `localStorage` under `rex-type`: settings, history, personal bests, per-key accuracy, XP and level, streak, achievements |
+| `board.js` | Firestore leaderboards |
+| `i18n.js`, `grades.js`, `sound.js` | Korean / English interface strings, tiers and titles, Web Audio sound effects |
+
+Content lives in `typing/data/`: `ko.js` (proverbs, quotes, sentences, paragraphs, 800 words), `en.js` (top 200 words, quotes, original paragraphs, hard words), `code.js` (12 snippets in each of 10 languages), and the older `simple_words.js` (the normal English list). Every string is plain typeable text: no smart quotes, dashes or tabs. `nouns.js`, `verbs.js`, `adjectives.js` and the old `js/transit.js`, `js/sent_generator.js`, `js/prg_sent.js` are no longer loaded; they stay because published paths stay.
+
+**How a run is measured.** The clock starts at the first keystroke (races start it at the green light). Lines are compared word by word, letter by letter. Speed counts only what ends up correct, spaces and line breaks included: correct jamo keystrokes per minute for Korean (타/분, KPM), correct characters ÷ 5 per minute for English and code (WPM). A line typed exactly advances on its own, and its break counts only if the player then types it (space or Enter). Accuracy counts every character at the moment it was committed, corrected mistakes too. The per-second raw speed and consistency come from keystrokes as they happen. The last syllable of the input is never judged while the IME may still change it. Enter during composition waits for the IME to finish the syllable. A space on an empty word (doubled, or at the start of a line) is ignored, and paste is blocked.
+
+**Leaderboards** (Firebase project `rextypingspeed`). The ranked tests are the 60-second ones: 한글 문장 or 이포넷, English words on normal without punctuation or numbers, and code. They write to the same collections and fields as every earlier version of the game: `records2` / `engRecords` / `prgRecords` (best per name, all time) and `recordsAnon` / `engRecordsAnon` / `prgRecordsAnon` (every finished ranked run, read for today's board by `day`). Meteor defense saves to `meteorRecords`. Nothing is written from a local host (`localhost`, `127.0.0.1`, `*.localhost`, `*.test`), so testing never touches the boards; reads still work. `CLIENT_VERSION` in `board.js` is compared with the `version` collection, and holding the brand mark for three seconds shows that collection's history.
+
+**Tests.** `node _tools/typing/engine.test.mjs` runs the engine against a simulated 두벌식 IME (`_tools/typing/ime.mjs`): composition, corrections, timing, sudden death, line commits.
 
 ## Shared chrome: skip link, navbar, status bar, palette
 
 `navbar.html` is a pure HTML **fragment** (not a standalone page) containing the skip link, the fixed top bar and the fixed bottom **status bar**. `/js/common.js` mounts it into `<div id="nav-placeholder">` on every page, injects `/css/navbar.css`, Font Awesome, the Google Fonts link and `/js/palette.js` if the host page lacks them, highlights the active link, and wires everything:
 
 - **Mounting** — the fragment is cached in `sessionStorage` (`rex-navbar-html`) and mounted synchronously from the cache on the next page, so the bars already exist when a view transition snapshots the new page; the network copy refreshes the cache in the background. A change to `navbar.html` therefore reaches a visitor on their *next* page load.
-- **Skip link** — first in the tab order; `common.js` points it at `<main>` (given `id="main"` and `tabindex="-1"` if missing), or at the first content block on pages without a `<main>` (the typing game, the generated policies).
+- **Skip link** — first in the tab order; `common.js` points it at `<main>` (given `id="main"` and `tabindex="-1"` if missing), or at the first content block on pages without a `<main>` (the generated policies).
 - **Top bar** — typing · balloons · games ↗ · music · apps (→ `/#apps`, lit on every `/apps/…` page via `data-match`) · log · support · github ↗, then the palette button (`⌘K`, `Ctrl K` on other platforms; icon only on touch). The animation lab is reachable from the index, the footer and the palette rather than the top bar. The hidden Parser admin dropdown is still in the fragment.
 - **Status bar** — left: branch (links to the repo) with the age of the last commit from the GitHub API (`api.github.com/repos/…/commits`, cached per tab for ten minutes, silent on failure) and the current path (`~/typing/index.html`); right: a games-portal dot, `Ln` following scroll, `Col` following the pointer, scroll percentage, encoding, the **theme toggle** and a second palette button.
 - **Games ping** — `rexChrome.pingGames()` makes one opaque (`mode: 'no-cors'`) request to `https://games.rexy.win/api/status`: it resolves when the server answers at all and rejects when it does not, so it is an honest "up" that never logs a CORS error. The status API sends no CORS header yet; once games-infra adds `Access-Control-Allow-Origin`, the same call can read per-game status.
@@ -259,8 +285,7 @@ Every `apps/<app_id>/privacy-policy/index.html` is generated by the external **A
 - Three.js 0.187.0, bundled into `/js/world.js` by `_tools/world/build.mjs` (the home page's island; not a CDN dependency)
 - Google Fonts: IBM Plex Mono, IBM Plex Sans KR
 - Font Awesome 6.7.2 (home page easter egg, typing game, animation lab)
-- Bootstrap 4.6.2 + Popper 1.16.1 + jQuery 3.7.1 (typing game only)
-- Bootstrap 5.3.8 (animation lab grid, parser admin tools)
+- Bootstrap 5.3.8 + jQuery 3.7.1 (animation lab grid, parser admin tools)
 - Vue 3.5 (animation lab)
 - Firebase compat 8.2.8 (typing game, parser tools)
 
