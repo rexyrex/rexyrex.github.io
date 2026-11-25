@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "version": "0.7.0",
+  "publishedAt": "2026-11-25T10:23:35Z",
+  "minimumOS": "14.0",
+  "page": "../../apps/rexdesk/",
+  "notes": "- **RexDesk updates itself.** It tells you when a new version is out and installs it in one click: download, signature check and relaunch take a few seconds.\n- **A display made to your screen's measure** (RexDesk Host → Settings): the Mac's desktop takes this screen's exact size and refresh rate, up to 120 Hz.\n- **Faster over the internet:** straight to the Mac's forwarded port, over TCP before the relay.\n- A stream starts near the rate your network carried last time, instead of finding it again.\n- RexDesk Host says when the Mac's display isn't sRGB and offers the sRGB profile, so colours look right.\n- A paste right after a copy pastes what was just copied.",
+  "apps": {
+    "com.rexyrex.RexDesk": {
+      "file": "RexDesk-0.7.0.zip",
+      "size": 2553166,
+      "sha256": "6a171ba0f702cbbc1a4c78e35fb74273728c145a0d3871a9436279c73a92b671"
+    }
+  }
+}
