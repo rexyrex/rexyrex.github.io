@@ -487,6 +487,10 @@
   transition: translate 0.45s var(--ease), border-color 0.3s var(--ease), box-shadow 0.45s var(--ease);
 }
 
+.dir-desk + .dir-desk {
+  margin-top: 1rem;
+}
+
 .dir-desk:hover {
   text-decoration: none;
   translate: 0 -3px;

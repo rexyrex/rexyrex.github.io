@@ -355,3 +355,12 @@ typing/js/sound.js
 typing/js/stage.js
 typing/js/store.js
 typing/js/transit.js
+apps/rexdesk/img/host.png
+apps/rexdesk/img/icon-180.png
+apps/rexdesk/img/icon-64.png
+apps/rexdesk/img/icon.png
+apps/rexdesk/img/viewer.png
+apps/rexdesk/index.html
+apps/rexdesk/page.css
+apps/rexdesk/page.js
+assets/og/rexdesk.png

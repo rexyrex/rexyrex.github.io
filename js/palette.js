@@ -54,6 +54,7 @@
         mac: [
             { title: 'Rex Boing', path: 'https://github.com/rexyrex/Rex-Boing', hint: 'menu bar telemetry · open source', keys: 'rex boing macos mac menu bar system monitor cpu gpu memory thermals telemetry dinosaur swift' },
             { title: 'App Manager', path: '/apps/app_manager/', hint: 'macOS · Windows · download', keys: 'app manager macos mac windows store portfolio fastlane deploy metadata screenshots flutter download dmg exe 앱 매니저 출시' },
+            { title: 'RexDesk', path: '/apps/rexdesk/', hint: 'macOS · remote control for Macs · download', keys: 'rexdesk rex desk remote desktop control mac macos screen sharing host viewer vnc hevc low latency download dmg 원격 제어 데스크톱' },
             { title: 'Project Manager', path: '/#mac', hint: 'macOS · projects, processes and stray dev servers', keys: 'project manager macos mac dev servers processes ports git build install swift' },
             { title: 'AI Usage Tracker', path: '/#mac', hint: 'macOS · how much Claude and Codex are left', keys: 'ai usage tracker claude codex limits quota menu bar macos mac swift' }
         ],
