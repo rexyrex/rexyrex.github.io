@@ -261,6 +261,8 @@ Rules for its copy: every claim comes from what RexDesk does today (its README's
 
 The web viewer itself: type a Host ID and the access password, and the Mac's screen is in the tab. It is **not part of this site's design system and not edited here**: the whole folder is RexDesk's `web/` directory (minus its tests), copied in by RexDesk's `scripts/publish-site.sh` on every `make publish` / `make publish-web` (and Mac Studio Project Manager's Publish buttons), with files that left `web/` removed. A change made here is overwritten by the next publish; fix it in the RexDesk repository.
 
+The viewer's real home is the rendezvous service's own address, `https://rexdesk.rexy.win/`, an origin nothing else shares (which is what lets it offer "Remember this browser"; on this site's shared origin it asks for the password every time). Once that address serves the viewer, the same publish script replaces this folder's page with a forwarder to it (keeping `?host=…`), removes `js/`, and leaves the stylesheet, manifest and icons in place. From then on `/rexdesk/` here is only that forwarder.
+
 It stands alone on purpose. It does not load `/css/index.css`, `/js/common.js`, the navbar or any font or script from outside its folder, and its `<meta http-equiv="Content-Security-Policy">` allows only that (plus WebSocket connections to rendezvous services): the page handles an access password and an end-to-end encrypted session, so nothing else gets to run in it. Keep it that way: no site chrome, no analytics, no ads in `/rexdesk/`.
 
 `_tools/paths/check.py` treats `/rexdesk/index.html`, `app.css`, the manifest and the icons as permanent paths and leaves `/rexdesk/js/` out of the manifest (module names belong to RexDesk and may change with a release).
