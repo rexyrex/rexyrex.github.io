@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "0.7.0",
-  "publishedAt": "2026-11-25T10:23:35Z",
+  "version": "0.7.1",
+  "publishedAt": "2026-11-25T15:23:35Z",
   "minimumOS": "14.0",
   "page": "../../apps/rexdesk/",
-  "notes": "- **RexDesk updates itself.** It tells you when a new version is out and installs it in one click: download, signature check and relaunch take a few seconds.\n- **A display made to your screen's measure** (RexDesk Host → Settings): the Mac's desktop takes this screen's exact size and refresh rate, up to 120 Hz.\n- **Faster over the internet:** straight to the Mac's forwarded port, over TCP before the relay.\n- A stream starts near the rate your network carried last time, instead of finding it again.\n- RexDesk Host says when the Mac's display isn't sRGB and offers the sRGB profile, so colours look right.\n- A paste right after a copy pastes what was just copied.",
+  "notes": "- **The picture keeps its size when the Mac switches displays.** In full screen it could stay at a quarter of its pixels.\n- **A steadier, sharper stream over the internet** (with RexDesk Host 0.7.1): Wi-Fi hold-ups no longer push the bitrate to its floor, long connections carry all 60 frames a second, and the host switches to a faster way of encoding when heavy motion would cost frames.\n- **Paste works beside other remote-desktop apps:** a text coming round again no longer replaces what you just copied.\n- When RexDesk Host restarts, RexDesk reconnects by itself.",
   "apps": {
     "com.rexyrex.RexDesk": {
-      "file": "RexDesk-0.7.0.zip",
-      "size": 2553166,
-      "sha256": "6a171ba0f702cbbc1a4c78e35fb74273728c145a0d3871a9436279c73a92b671"
+      "file": "RexDesk-0.7.1.zip",
+      "size": 2573398,
+      "sha256": "dd59ea46078798a5114f59c99e9420fd614f2a450819ffbb0ba99974cf4f1731"
     }
   }
 }
