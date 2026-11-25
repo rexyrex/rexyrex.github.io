@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>RexDesk — Rexyrex</title>
-    <meta name="description" content="Control a Mac from another Mac: hardware video on both ends, sharp text, a pointer with no lag, end-to-end encrypted. On your network or over the internet.">
+    <meta name="description" content="Control a Mac from another Mac, or from any browser: hardware video on both ends, sharp text, a pointer with no lag, end-to-end encrypted.">
     <meta name="color-scheme" content="dark light">
     <!-- Language before first paint: ?lang=en|ko wins (shareable), then the
          visitor's last choice, then the browser's language. page.js keeps
@@ -71,6 +71,7 @@
     <svg class="rd-sprite" aria-hidden="true" focusable="false" width="0" height="0">
         <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 2.5v8.2M4.4 7.4 8 11l3.6-3.6M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
         <symbol id="i-check" viewBox="0 0 16 16"><path d="m3.5 8.4 3 3 6-6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M3 8h9.2M8.6 4.2 12.4 8l-3.8 3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
         <symbol id="i-lock" viewBox="0 0 16 16"><path d="M4.2 7V5.3a3.8 3.8 0 0 1 7.6 0V7M3.4 7h9.2v6.4H3.4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
         <symbol id="i-cursor" viewBox="0 0 16 16"><path d="M3 1.6v11.2l3-2.7 1.9 4.3 2-.9-1.9-4.2h4z" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linejoin="round"/></symbol>
     </svg>
@@ -128,6 +129,11 @@
                             <svg class="rd-dl-arrow" aria-hidden="true"><use href="#i-down"/></svg>
                         </a>
                     </div>
+
+                    <p class="rd-web">
+                        <a href="/rexdesk/"><span lang="en">Or connect from this browser</span><span lang="ko">또는 이 브라우저에서 바로 연결</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                        <span lang="en">Nothing to install on the device you are holding.</span><span lang="ko">지금 쓰는 기기에는 아무것도 설치하지 않습니다.</span>
+                    </p>
 
                     <ul class="rd-assure">
                         <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">Signed and notarized by Apple</span><span lang="ko">Apple 서명·공증 완료</span></li>
@@ -385,8 +391,22 @@
                         <a class="rd-btn" href="/downloads/rexdesk/RexDesk-0.5.0.dmg" download><svg aria-hidden="true"><use href="#i-down"/></svg><span lang="en">Download RexDesk</span><span lang="ko">RexDesk 다운로드</span><small>2 MB</small></a>
                     </article>
                 </div>
-                <p class="rd-soon" data-reveal lang="en"><b>Other screens.</b> Viewers for iPhone and iPad, Android and Windows exist and are in testing. They are not offered for download here yet.</p>
-                <p class="rd-soon" data-reveal lang="ko"><b>다른 기기.</b> iPhone·iPad, Android, Windows용 뷰어도 만들어져 테스트 중입니다. 아직 이곳에서 내려받을 수는 없습니다.</p>
+                <article class="rd-app rd-app-web" data-reveal>
+                    <div>
+                        <h3><span lang="en">RexDesk in the browser</span><span lang="ko">브라우저에서 쓰는 RexDesk</span></h3>
+                        <p lang="en">Reach your Mac from a phone, a tablet, a Windows PC or a borrowed laptop: open the page, type the Host ID and the access password. With a mouse it works like the app; on a touch screen one finger moves the pointer like a trackpad, with an on-screen keyboard.</p>
+                        <p lang="ko">휴대폰, 태블릿, Windows PC, 빌린 노트북에서도 내 Mac에 접속하세요. 페이지를 열고 Host ID와 접속 암호를 입력하면 됩니다. 마우스로는 앱처럼 동작하고, 터치 화면에서는 한 손가락이 트랙패드처럼 포인터를 움직이며 화면 키보드도 쓸 수 있습니다.</p>
+                        <dl class="rd-req">
+                            <dt lang="en">Needs</dt><dt lang="ko">요구 사항</dt>
+                            <dd lang="en">A current Chrome or Edge, and RexDesk Host running on the Mac</dd><dd lang="ko">최신 Chrome 또는 Edge, 그리고 Mac에서 실행 중인 RexDesk Host</dd>
+                            <dt lang="en">Good to know</dt><dt lang="ko">알아 둘 점</dt>
+                            <dd lang="en">A browser cannot open a direct path, so the encrypted stream always goes through the relay: a little more delay than the apps.</dd><dd lang="ko">브라우저는 직접 경로를 열 수 없어, 암호화된 스트림이 항상 중계 서버를 거칩니다. 앱보다 지연이 조금 더 있습니다.</dd>
+                        </dl>
+                    </div>
+                    <a class="rd-btn" href="/rexdesk/"><span lang="en">Open RexDesk in this browser</span><span lang="ko">이 브라우저에서 RexDesk 열기</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                </article>
+                <p class="rd-soon" data-reveal lang="en"><b>Other screens.</b> Apps for iPhone and iPad, Android and Windows exist and are in testing; they are not offered for download here yet. Until then, those devices connect from the browser.</p>
+                <p class="rd-soon" data-reveal lang="ko"><b>다른 기기.</b> iPhone·iPad, Android, Windows용 앱도 만들어져 테스트 중이며, 아직 이곳에서 내려받을 수는 없습니다. 그때까지 이 기기들은 브라우저로 접속하면 됩니다.</p>
             </div>
         </section>
 
@@ -402,6 +422,11 @@
                         <summary><span lang="en">Which app goes on which Mac?</span><span lang="ko">어느 앱을 어느 Mac에 설치하나요?</span></summary>
                         <p lang="en">RexDesk Host goes on the Mac you want to reach and stays running in its menu bar. RexDesk goes on the Mac you are using. A Mac can have both.</p>
                         <p lang="ko">RexDesk Host는 접속하려는 Mac에 설치해 메뉴 막대에 켜 둡니다. RexDesk는 지금 사용하는 Mac에 설치합니다. 한 Mac에 둘 다 설치해도 됩니다.</p>
+                    </details>
+                    <details name="rd-faq">
+                        <summary><span lang="en">Can I connect without installing anything?</span><span lang="ko">아무것도 설치하지 않고 접속할 수 있나요?</span></summary>
+                        <p lang="en">On the device you are holding, yes: <a href="/rexdesk/">RexDesk in the browser</a> is made for a current Chrome or Edge and is encrypted end to end like the apps. Safari has had only a little testing, Firefox none. The Mac you reach still needs RexDesk Host.</p>
+                        <p lang="ko">지금 쓰는 기기에는 필요 없습니다. <a href="/rexdesk/">브라우저용 RexDesk</a>는 최신 Chrome이나 Edge에 맞춰 만들었고, 앱과 똑같이 종단 간 암호화됩니다. Safari는 조금만 테스트했고 Firefox는 아직 테스트하지 않았습니다. 접속할 Mac에는 RexDesk Host가 필요합니다.</p>
                     </details>
                     <details name="rd-faq">
                         <summary><span lang="en">Do both Macs have to be on the same network?</span><span lang="ko">두 Mac이 같은 네트워크에 있어야 하나요?</span></summary>

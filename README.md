@@ -15,6 +15,7 @@ Personal GitHub Pages site for [rexyrex](https://github.com/rexyrex) — an inde
 | `/log/` | Devlog: hand-written HTML posts (`log/*.html`, styled by `log/log.css`), newest first |
 | `/parser/` | KakaoParser companion pages: admin tools (query/download, Bootstrap 5) + Korean help & ToS docs |
 | `/support/` | App store support/contact page |
+| `/rexdesk/` | **RexDesk in the browser**: the web viewer for RexDesk (remote control for Macs), a standalone app page copied in from the RexDesk repository's `web/` by its publish script. Never edit it here — see [RexDesk in the browser](#rexdesk-in-the-browser-rexdesk) |
 | `/apps/<app_id>/` | **App landing pages**, hand-built, one per public app — see [App landing pages](#app-landing-pages) |
 | `/apps/` | **App directory**: every public app as a card (search, store and language filters), the desktop apps (App Manager, RexDesk), and every privacy policy — see [App directory](#app-directory-apps). The `/apps/<app_id>/privacy-policy/` pages under it are **generated** — see below |
 | `/404.html` | Served by GitHub Pages for unknown paths: the path that failed, a terminal that says so, "did you mean" from the site index |
@@ -252,7 +253,17 @@ The second desktop download page: RexDesk (remote control for Macs) ships as two
 
 Layout: a centered hero (version chip, the two download buttons side by side, since a visitor needs both) over a drawn pair of Macs joined by a line that carries the picture one way and the pointer the other; four measured figures; three set-up steps; six feature cards; **the demo**, a packet-loss slider (`page.js`) that shows frames arriving as pieces plus spares and being rebuilt or asked for again; security and privacy; one card per app with what it needs and asks for; FAQ on exclusive `<details name>`; the closing CTA with the checksums. Palette: the host icon's teal on the left, the viewer icon's blue-violet on the right. Type: Sora for display.
 
-Rules for its copy: every claim comes from what RexDesk does today (its README's measurements and its protocol documents) — no user counts, ratings or pricing — and the two drawn things say what they are (the Macs: "a drawing, not a screenshot"; the slider: "a simulation of the idea, not a measurement"). The viewers for iPhone/iPad, Android and Windows are named as in testing and not downloadable; give them cards and download links only when RexDesk's publish script learns to ship them.
+The page also sends people to the web viewer at `/rexdesk/` (a line under the hero's download buttons, a third card in the downloads section, an FAQ entry): those links carry no version, so the rewriter does not touch them.
+
+Rules for its copy: every claim comes from what RexDesk does today (its README's measurements and its protocol documents) — no user counts, ratings or pricing — and the two drawn things say what they are (the Macs: "a drawing, not a screenshot"; the slider: "a simulation of the idea, not a measurement"). The apps for iPhone/iPad, Android and Windows are named as in testing and not downloadable; give them cards and download links only when RexDesk's publish script learns to ship them. The web viewer is described as made for current Chrome and Edge, with Safari little tested (it ran in an iPhone simulator) and Firefox not at all: change that only when they have been tested.
+
+### RexDesk in the browser (`/rexdesk/`)
+
+The web viewer itself: type a Host ID and the access password, and the Mac's screen is in the tab. It is **not part of this site's design system and not edited here**: the whole folder is RexDesk's `web/` directory (minus its tests), copied in by RexDesk's `scripts/publish-site.sh` on every `make publish` / `make publish-web` (and Mac Studio Project Manager's Publish buttons), with files that left `web/` removed. A change made here is overwritten by the next publish; fix it in the RexDesk repository.
+
+It stands alone on purpose. It does not load `/css/index.css`, `/js/common.js`, the navbar or any font or script from outside its folder, and its `<meta http-equiv="Content-Security-Policy">` allows only that (plus WebSocket connections to rendezvous services): the page handles an access password and an end-to-end encrypted session, so nothing else gets to run in it. Keep it that way: no site chrome, no analytics, no ads in `/rexdesk/`.
+
+`_tools/paths/check.py` treats `/rexdesk/index.html`, `app.css`, the manifest and the icons as permanent paths and leaves `/rexdesk/js/` out of the manifest (module names belong to RexDesk and may change with a release).
 
 Files per app: `apps/<id>/index.html`, `page.css`, `page.js` (dependency-free), `img/` (WebP screen captures, icon), and the social card `/assets/og/apps/<id>.jpg` (the store feature graphic, 1024×500). Shared pieces live in `/css/app-page.css` — store buttons, the `.app-device` phone frame for real screen captures, the `.app-foot` footer — and a new page starts from `_tools/app-page/skeleton.html`. Each page sets the site tokens (`--bg`, `--fg`, `--accent`, …) for both themes so the top bar and status bar sit on its palette.
 

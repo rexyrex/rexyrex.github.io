@@ -21,8 +21,8 @@
         ko: 'RexDesk — Mac 원격 제어 · Rexyrex'
     };
     var DESCRIPTIONS = {
-        en: 'Control a Mac from another Mac: hardware video on both ends, sharp text, a pointer with no lag, end-to-end encrypted. On your network or over the internet.',
-        ko: '다른 Mac에서 Mac을 제어하세요. 양쪽 모두 하드웨어 영상 처리로 선명한 글자와 지연 없는 포인터, 종단 간 암호화. 같은 네트워크에서도 인터넷 너머에서도.'
+        en: 'Control a Mac from another Mac, or from any browser: hardware video on both ends, sharp text, a pointer with no lag, end-to-end encrypted.',
+        ko: '다른 Mac이나 브라우저에서 Mac을 제어하세요. 양쪽 모두 하드웨어 영상 처리로 선명한 글자와 지연 없는 포인터, 종단 간 암호화. 같은 네트워크에서도 인터넷 너머에서도.'
     };
 
     function currentLang() {

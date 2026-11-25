@@ -284,9 +284,9 @@ page = f'''<!doctype html>
                     <img class="dir-icon" src="/apps/rexdesk/img/icon.png" width="512" height="512" alt="" loading="lazy" decoding="async">
                     <span class="dir-desk-copy">
                         <b>RexDesk</b>
-                        <span>Control a Mac from another Mac as if you were sitting at it: hardware video on both ends, sharp text, a pointer with no lag, end-to-end encrypted — on your network or over the internet.</span>
+                        <span>Control a Mac from another Mac, or from any browser, as if you were sitting at it: hardware video on both ends, sharp text, a pointer with no lag, end-to-end encrypted — on your network or over the internet.</span>
                     </span>
-                    <span class="dir-desk-meta"><i>macOS</i><span class="dir-open">Download <i>→</i></span></span>
+                    <span class="dir-desk-meta"><i>macOS</i><i>Web</i><span class="dir-open">Download <i>→</i></span></span>
                 </a>
             </div>
         </section>
