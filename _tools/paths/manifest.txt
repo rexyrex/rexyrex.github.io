@@ -364,3 +364,9 @@ apps/rexdesk/index.html
 apps/rexdesk/page.css
 apps/rexdesk/page.js
 assets/og/rexdesk.png
+rexdesk/app.css
+rexdesk/icons/icon-192.png
+rexdesk/icons/icon-512.png
+rexdesk/icons/icon-64.png
+rexdesk/index.html
+rexdesk/manifest.webmanifest
