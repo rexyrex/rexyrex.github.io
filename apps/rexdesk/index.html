@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>RexDesk — Rexyrex</title>
+    <meta name="description" content="Control a Mac from another Mac: hardware video on both ends, sharp text, a pointer with no lag, end-to-end encrypted. On your network or over the internet.">
+    <meta name="color-scheme" content="dark light">
+    <!-- Language before first paint: ?lang=en|ko wins (shareable), then the
+         visitor's last choice, then the browser's language. page.js keeps
+         the URL in step when the toggle is used. -->
+    <script>(function(){var d=document.documentElement,l=null;try{var q=new URLSearchParams(location.search).get('lang');if(q){q=q.toLowerCase().slice(0,2);if(q==='en'||q==='ko')l=q;}}catch(e){}if(!l){try{var s=localStorage.getItem('rex-lang');if(s==='en'||s==='ko')l=s;}catch(e){}}if(!l){var n=(navigator.languages&&navigator.languages[0])||navigator.language||'';l=/^ko\b/i.test(n)?'ko':'en';}d.setAttribute('lang',l);d.setAttribute('data-lang',l);if(l==='ko')document.title='RexDesk — Mac 원격 제어 · Rexyrex';})();</script>
+    <link rel="icon" type="image/png" sizes="64x64" href="/apps/rexdesk/img/icon-64.png">
+    <link rel="canonical" href="https://rexyrex.github.io/apps/rexdesk/">
+    <link rel="alternate" hreflang="en" href="https://rexyrex.github.io/apps/rexdesk/?lang=en">
+    <link rel="alternate" hreflang="ko" href="https://rexyrex.github.io/apps/rexdesk/?lang=ko">
+    <link rel="alternate" hreflang="x-default" href="https://rexyrex.github.io/apps/rexdesk/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apps/rexdesk/img/icon-180.png">
+    <meta name="theme-color" content="#070912" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f4f6fb" media="(prefers-color-scheme: light)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rexyrex.github.io">
+    <meta property="og:url" content="https://rexyrex.github.io/apps/rexdesk/">
+    <meta property="og:title" content="RexDesk">
+    <meta property="og:description" content="Control a Mac from another Mac: sharp text, a pointer with no lag, end-to-end encrypted.">
+    <meta property="og:image" content="https://rexyrex.github.io/assets/og/rexdesk.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="RexDesk">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="ko_KR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RexDesk">
+    <meta name="twitter:description" content="Control a Mac from another Mac: sharp text, a pointer with no lag, end-to-end encrypted.">
+    <meta name="twitter:image" content="https://rexyrex.github.io/assets/og/rexdesk.png">
+    <script>(function(){try{var t=localStorage.getItem('rex-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- IBM Plex stays: the site chrome is set in it, and Plex Sans KR carries the Korean where the system has no Apple SD Gothic Neo. Sora is this page's display face. -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/app-page.css">
+    <link rel="stylesheet" href="/css/motion.css">
+    <link rel="stylesheet" href="/apps/rexdesk/page.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "RexDesk",
+        "operatingSystem": "macOS 14",
+        "applicationCategory": "UtilitiesApplication",
+        "softwareVersion": "0.5.0",
+        "description": "Control a Mac from another Mac: hardware video on both ends, sharp text, a pointer with no lag, end-to-end encrypted.",
+        "url": "https://rexyrex.github.io/apps/rexdesk/",
+        "image": "https://rexyrex.github.io/apps/rexdesk/img/icon.png",
+        "downloadUrl": [
+            "https://rexyrex.github.io/downloads/rexdesk/RexDesk-Host-0.5.0.dmg",
+            "https://rexyrex.github.io/downloads/rexdesk/RexDesk-0.5.0.dmg"
+        ],
+        "author": { "@type": "Person", "name": "Rexyrex", "url": "https://rexyrex.github.io/" }
+    }
+    </script>
+</head>
+
+<body class="app-page app-rexdesk">
+    <div id="nav-placeholder"></div>
+
+    <!-- Icons used more than once -->
+    <svg class="rd-sprite" aria-hidden="true" focusable="false" width="0" height="0">
+        <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 2.5v8.2M4.4 7.4 8 11l3.6-3.6M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-check" viewBox="0 0 16 16"><path d="m3.5 8.4 3 3 6-6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-lock" viewBox="0 0 16 16"><path d="M4.2 7V5.3a3.8 3.8 0 0 1 7.6 0V7M3.4 7h9.2v6.4H3.4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+        <symbol id="i-cursor" viewBox="0 0 16 16"><path d="M3 1.6v11.2l3-2.7 1.9 4.3 2-.9-1.9-4.2h4z" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linejoin="round"/></symbol>
+    </svg>
+
+    <main id="main">
+
+        <!-- ============ Hero ============ -->
+        <section class="rd-hero" id="top" aria-labelledby="rd-title">
+            <div class="rd-hero-bg" aria-hidden="true">
+                <span class="rd-glow g-host"></span>
+                <span class="rd-glow g-viewer"></span>
+                <span class="rd-scan"></span>
+            </div>
+
+            <div class="rd-wrap">
+                <div class="rd-topline">
+                    <nav class="rd-crumb" aria-label="Breadcrumb">
+                        <a href="/apps/">/apps/</a><span aria-current="page">rexdesk/</span>
+                    </nav>
+                    <a class="rd-chip" href="#download">
+                        <b>v0.5.0</b>
+                        <span lang="en">for macOS 14 and later</span><span lang="ko">macOS 14 이상</span>
+                    </a>
+                    <div class="rd-lang" role="group" aria-label="Language · 언어">
+                        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+                        <button type="button" data-set-lang="ko" aria-pressed="false">한국어</button>
+                    </div>
+                </div>
+
+                <div class="rd-hero-copy">
+                    <h1 id="rd-title">
+                        <span class="rd-name">RexDesk</span>
+                        <span class="rd-tagline" lang="en">Your Mac, <em>from anywhere.</em></span>
+                        <span class="rd-tagline" lang="ko">어디서든, <em>내 Mac 그대로.</em></span>
+                    </h1>
+
+                    <p class="rd-intro" lang="en">Control a Mac from another Mac as if you were sitting at it. Hardware video on both ends keeps text sharp and the pointer immediate, on your own network or across the internet, end-to-end encrypted.</p>
+                    <p class="rd-intro" lang="ko">다른 Mac에서, 바로 앞에 앉은 것처럼 Mac을 제어하세요. 양쪽 모두 하드웨어로 영상을 처리해 글자는 선명하고 포인터는 즉시 따라옵니다. 같은 네트워크에서도, 인터넷 너머에서도, 종단 간 암호화로.</p>
+
+                    <div class="rd-downloads" id="download">
+                        <a class="rd-dl rd-dl-host" href="/downloads/rexdesk/RexDesk-Host-0.5.0.dmg" download>
+                            <img src="/apps/rexdesk/img/host.png" width="512" height="512" alt="">
+                            <span class="rd-dl-text">
+                                <b>RexDesk Host</b>
+                                <small><span lang="en">For the Mac you control</span><span lang="ko">제어할 Mac에 설치</span> · .dmg · 2 MB</small>
+                            </span>
+                            <svg class="rd-dl-arrow" aria-hidden="true"><use href="#i-down"/></svg>
+                        </a>
+                        <a class="rd-dl rd-dl-viewer" href="/downloads/rexdesk/RexDesk-0.5.0.dmg" download>
+                            <img src="/apps/rexdesk/img/viewer.png" width="512" height="512" alt="">
+                            <span class="rd-dl-text">
+                                <b>RexDesk</b>
+                                <small><span lang="en">For the Mac you sit at</span><span lang="ko">내가 앉아 있는 Mac에 설치</span> · .dmg · 2 MB</small>
+                            </span>
+                            <svg class="rd-dl-arrow" aria-hidden="true"><use href="#i-down"/></svg>
+                        </a>
+                    </div>
+
+                    <ul class="rd-assure">
+                        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span lang="en">Signed and notarized by Apple</span><span lang="ko">Apple 서명·공증 완료</span></li>
+                        <li><span lang="en">Apple silicon and Intel</span><span lang="ko">Apple 실리콘·Intel</span></li>
+                        <li><span lang="en">No account</span><span lang="ko">계정 불필요</span></li>
+                    </ul>
+                    <p class="rd-fine" lang="en">Version 0.5.0. Two small apps: one stays on the Mac you want to reach, the other is where you watch from.</p>
+                    <p class="rd-fine" lang="ko">버전 0.5.0. 작은 앱 두 개입니다. 하나는 접속할 Mac에 켜 두고, 다른 하나로 그 화면을 봅니다.</p>
+                </div>
+            </div>
+
+            <!-- ============ The link, drawn ============ -->
+            <div class="rd-wrap">
+                <figure class="rd-stage" data-reveal aria-labelledby="rd-stage-cap">
+                    <div class="rd-mac rd-mac-host">
+                        <div class="rd-screen">
+                            <div class="rd-desktop" aria-hidden="true">
+                                <span class="rd-menubar"><i></i><i></i><i></i><b></b></span>
+                                <span class="rd-win w1"><i class="rd-lights"></i><span class="rd-lines"><i></i><i></i><i></i><i></i><i></i></span></span>
+                                <span class="rd-win w2"><i class="rd-lights"></i><span class="rd-code"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+                                <span class="rd-dock"><i></i><i></i><i></i><i></i><i></i></span>
+                                <svg class="rd-pointer"><use href="#i-cursor"/></svg>
+                            </div>
+                        </div>
+                        <span class="rd-stand"></span>
+                        <span class="rd-mac-label"><img src="/apps/rexdesk/img/host.png" width="512" height="512" alt=""><b>RexDesk Host</b><i lang="en">the Mac across town</i><i lang="ko">멀리 있는 Mac</i></span>
+                    </div>
+
+                    <div class="rd-wire" aria-hidden="true">
+                        <span class="rd-wire-line"><i></i><i></i><i></i><i></i></span>
+                        <span class="rd-wire-pill"><svg><use href="#i-lock"/></svg>AES-256-GCM</span>
+                        <span class="rd-wire-line back"><i></i><i></i></span>
+                    </div>
+
+                    <div class="rd-mac rd-mac-viewer">
+                        <div class="rd-screen">
+                            <div class="rd-desktop" aria-hidden="true">
+                                <span class="rd-menubar"><i></i><i></i><i></i><b></b></span>
+                                <span class="rd-win w1"><i class="rd-lights"></i><span class="rd-lines"><i></i><i></i><i></i><i></i><i></i></span></span>
+                                <span class="rd-win w2"><i class="rd-lights"></i><span class="rd-code"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+                                <span class="rd-dock"><i></i><i></i><i></i><i></i><i></i></span>
+                                <svg class="rd-pointer"><use href="#i-cursor"/></svg>
+                            </div>
+                        </div>
+                        <span class="rd-base"></span>
+                        <span class="rd-mac-label"><img src="/apps/rexdesk/img/viewer.png" width="512" height="512" alt=""><b>RexDesk</b><i lang="en">the Mac in front of you</i><i lang="ko">지금 내 앞의 Mac</i></span>
+                    </div>
+
+                    <figcaption id="rd-stage-cap">
+                        <span lang="en">Screen and sound travel one way, your pointer and keys the other. A drawing, not a screenshot.</span>
+                        <span lang="ko">화면과 소리는 한 방향으로, 포인터와 키 입력은 반대 방향으로 흐릅니다. 스크린샷이 아닌 그림입니다.</span>
+                    </figcaption>
+                </figure>
+
+                <dl class="rd-facts" data-reveal-group>
+                    <div><dt>≈ 4 ms</dt><dd lang="en">to encode a 1080p frame in HEVC</dd><dd lang="ko">1080p 한 프레임 HEVC 인코딩</dd></div>
+                    <div><dt>60 fps</dt><dd lang="en">held at 15% packet loss in tests</dd><dd lang="ko">패킷 15% 손실 테스트에서도 유지</dd></div>
+                    <div><dt>4:4:4</dt><dd lang="en">full-colour text on Apple silicon</dd><dd lang="ko">Apple 실리콘에서 풀컬러 글자</dd></div>
+                    <div><dt>≈ 40 ms</dt><dd lang="en">sound buffer, in 10 ms Opus packets</dd><dd lang="ko">사운드 버퍼, 10ms Opus 패킷</dd></div>
+                </dl>
+                <p class="rd-facts-note" lang="en">Measured on Apple silicon with RexDesk's own probe tool.</p>
+                <p class="rd-facts-note" lang="ko">Apple 실리콘에서 RexDesk의 자체 측정 도구로 잰 값입니다.</p>
+            </div>
+        </section>
+
+        <!-- ============ Set up ============ -->
+        <section class="rd-section" id="setup" aria-labelledby="rd-setup-title">
+            <div class="rd-wrap">
+                <header class="rd-head" data-reveal>
+                    <span class="rd-eyebrow" lang="en">Set up</span><span class="rd-eyebrow" lang="ko">설정</span>
+                    <h2 id="rd-setup-title"><span lang="en">Three steps, about a minute.</span><span lang="ko">세 단계, 1분이면 됩니다.</span></h2>
+                </header>
+                <ol class="rd-steps" data-reveal-group>
+                    <li>
+                        <span class="rd-step-n">1</span>
+                        <h3><span lang="en">On the Mac you want to reach</span><span lang="ko">접속할 Mac에서</span></h3>
+                        <p lang="en">Open <b>RexDesk Host</b>. It lives in the menu bar, asks once for Screen Recording and Accessibility, and lets you set an access password for when nobody is at that Mac.</p>
+                        <p lang="ko"><b>RexDesk Host</b>를 엽니다. 메뉴 막대에 자리 잡고, 화면 기록과 손쉬운 사용 권한을 한 번 묻습니다. 그 Mac 앞에 아무도 없을 때를 위한 접속 암호도 정해 두세요.</p>
+                    </li>
+                    <li>
+                        <span class="rd-step-n">2</span>
+                        <h3><span lang="en">On the Mac in front of you</span><span lang="ko">내 앞의 Mac에서</span></h3>
+                        <p lang="en">Open <b>RexDesk</b>. Macs on the same network appear by themselves. The first time, check that the fingerprint matches the one in the host's menu, then type the password.</p>
+                        <p lang="ko"><b>RexDesk</b>를 엽니다. 같은 네트워크의 Mac은 저절로 나타납니다. 처음 연결할 때는 지문이 Host 메뉴의 지문과 같은지 확인한 뒤 암호를 입력하세요.</p>
+                    </li>
+                    <li>
+                        <span class="rd-step-n">3</span>
+                        <h3><span lang="en">From anywhere else</span><span lang="ko">다른 곳에서는</span></h3>
+                        <p lang="en">Copy the <b>Host ID</b> from the host's menu and paste it into “Connect to”. A Mac you have connected to once on the same network needs nothing at all.</p>
+                        <p lang="ko">Host 메뉴에서 <b>Host ID</b>를 복사해 “Connect to”에 붙여 넣으세요. 같은 네트워크에서 한 번 연결해 둔 Mac은 그것도 필요 없습니다.</p>
+                        <code class="rd-hostid" aria-label="Host ID, example">4F2A-9C1B-77D0-E3A8</code>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ============ Why it feels local ============ -->
+        <section class="rd-section" id="features" aria-labelledby="rd-feat-title">
+            <div class="rd-wrap">
+                <header class="rd-head" data-reveal>
+                    <span class="rd-eyebrow" lang="en">How it stays fast and sharp</span><span class="rd-eyebrow" lang="ko">빠르고 선명한 이유</span>
+                    <h2 id="rd-feat-title"><span lang="en">Built to feel like the Mac is right there.</span><span lang="ko">그 Mac이 바로 앞에 있는 것처럼.</span></h2>
+                </header>
+                <ul class="rd-grid" data-reveal-group>
+                    <li class="rd-card rd-card-wide">
+                        <span class="rd-card-k">01</span>
+                        <h3><span lang="en">Hardware all the way</span><span lang="ko">처음부터 끝까지 하드웨어로</span></h3>
+                        <p lang="en">The screen goes from capture straight into the Mac's hardware encoder, and the viewer decodes it in hardware too. HEVC by default, H.264 when a viewer needs it.</p>
+                        <p lang="ko">화면은 캡처되자마자 Mac의 하드웨어 인코더로 들어가고, 보는 쪽도 하드웨어로 디코딩합니다. 기본은 HEVC, 필요하면 H.264.</p>
+                        <div class="rd-pipe" aria-hidden="true"><span>capture</span><i></i><span>encode</span><i></i><span class="net">network</span><i></i><span>decode</span><i></i><span>draw</span></div>
+                    </li>
+                    <li class="rd-card">
+                        <span class="rd-card-k">02</span>
+                        <h3><span lang="en">The newest picture wins</span><span lang="ko">항상 가장 새로운 화면</span></h3>
+                        <p lang="en">Frames are never queued. When the network slows, the frame rate drops and the delay does not grow.</p>
+                        <p lang="ko">프레임을 쌓아 두지 않습니다. 네트워크가 느려지면 프레임 수가 줄어들 뿐, 지연은 늘지 않습니다.</p>
+                    </li>
+                    <li class="rd-card">
+                        <span class="rd-card-k">03</span>
+                        <h3><span lang="en">A pointer with no lag</span><span lang="ko">지연 없는 포인터</span></h3>
+                        <p lang="en">The host leaves the cursor out of the video and sends its shape and position. Your Mac draws it itself.</p>
+                        <p lang="ko">Host는 영상에서 커서를 빼고 모양과 위치만 보냅니다. 커서는 내 Mac이 직접 그립니다.</p>
+                    </li>
+                    <li class="rd-card">
+                        <span class="rd-card-k">04</span>
+                        <h3><span lang="en">Text you can read all day</span><span lang="ko">하루 종일 읽어도 편한 글자</span></h3>
+                        <p lang="en">Full-colour 4:4:4 on Apple-silicon viewers, drawn pixel for pixel at the size of your window. A still screen is sharpened until it is exact.</p>
+                        <p lang="ko">Apple 실리콘에서는 풀컬러 4:4:4로, 창 크기에 맞춰 픽셀 그대로 그립니다. 화면이 멈추면 원본과 같아질 때까지 다듬습니다.</p>
+                    </li>
+                    <li class="rd-card">
+                        <span class="rd-card-k">05</span>
+                        <h3><span lang="en">Sound, in step</span><span lang="ko">어긋나지 않는 소리</span></h3>
+                        <p lang="en">The Mac's sound arrives in 10 ms packets and plays from a buffer of about 40 ms.</p>
+                        <p lang="ko">Mac의 소리는 10ms 패킷으로 도착해 약 40ms 버퍼에서 재생됩니다.</p>
+                    </li>
+                    <li class="rd-card rd-card-wide">
+                        <span class="rd-card-k">06</span>
+                        <h3><span lang="en">Like sitting at that Mac</span><span lang="ko">그 Mac 앞에 앉은 것처럼</span></h3>
+                        <p lang="en">Connections open in full screen, in a Space of their own. Every shortcut goes to the remote Mac; only the <kbd>⌃⌥⌘</kbd> ones stay with you, to disconnect, leave full screen or show statistics.</p>
+                        <p lang="ko">연결은 전체 화면으로, 별도의 Space에서 열립니다. 모든 단축키는 원격 Mac으로 가고, <kbd>⌃⌥⌘</kbd> 조합만 내 쪽에 남아 연결 끊기, 전체 화면 전환, 통계 보기에 쓰입니다.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============ Bad networks (the demo) ============ -->
+        <section class="rd-section rd-net" id="network" aria-labelledby="rd-net-title">
+            <div class="rd-wrap rd-net-cols">
+                <div class="rd-net-copy" data-reveal>
+                    <span class="rd-eyebrow" lang="en">Bad Wi-Fi</span><span class="rd-eyebrow" lang="ko">불안정한 Wi-Fi</span>
+                    <h2 id="rd-net-title"><span lang="en">Packets get lost. The picture doesn't.</span><span lang="ko">패킷은 사라져도, 화면은 그대로.</span></h2>
+                    <p lang="en">Each frame travels over UDP as a handful of pieces plus a few spares. Lose some and the viewer rebuilds the frame from what arrived; lose too many and it asks again for only what is missing. The number of spares follows the network, from 5% up to 50%.</p>
+                    <p lang="ko">한 프레임은 UDP 위에서 여러 조각과 예비 조각 몇 개로 나뉘어 갑니다. 일부가 사라지면 도착한 조각으로 프레임을 복원하고, 너무 많이 사라지면 빠진 조각만 다시 요청합니다. 예비 조각의 비율은 네트워크 상태에 따라 5%에서 50%까지 달라집니다.</p>
+                    <p class="rd-net-fine" lang="en">Try it: drag the slider. This is a simulation of the idea, not a measurement.</p>
+                    <p class="rd-net-fine" lang="ko">슬라이더를 움직여 보세요. 원리를 보여 주는 시뮬레이션이며 실제 측정값은 아닙니다.</p>
+                </div>
+
+                <div class="rd-sim" data-sim data-reveal>
+                    <div class="rd-sim-head">
+                        <label for="rd-loss"><span lang="en">Packets lost on the way</span><span lang="ko">도중에 사라지는 패킷</span></label>
+                        <output id="rd-loss-out" for="rd-loss">5%</output>
+                    </div>
+                    <input class="rd-range" id="rd-loss" type="range" min="0" max="30" step="1" value="5">
+                    <div class="rd-sim-frames" data-frames role="img" aria-label="Frames arriving, piece by piece">
+                        <!-- page.js adds rows; these three stand in without it -->
+                        <div class="rd-row is-ok"><span class="rd-shards"><i></i><i></i><i class="lost"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="spare"></i><i class="spare"></i></span><em><span lang="en">rebuilt</span><span lang="ko">복원됨</span></em></div>
+                        <div class="rd-row is-ok"><span class="rd-shards"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="spare"></i><i class="spare lost"></i></span><em><span lang="en">complete</span><span lang="ko">완전함</span></em></div>
+                        <div class="rd-row is-ok"><span class="rd-shards"><i></i><i></i><i></i><i></i><i></i><i class="lost"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="spare"></i><i class="spare"></i></span><em><span lang="en">rebuilt</span><span lang="ko">복원됨</span></em></div>
+                    </div>
+                    <dl class="rd-sim-stats">
+                        <div><dt lang="en">Spares sent</dt><dt lang="ko">예비 조각</dt><dd data-fec>15%</dd></div>
+                        <div><dt lang="en">Rebuilt from spares</dt><dt lang="ko">예비 조각으로 복원</dt><dd data-rebuilt>0</dd></div>
+                        <div><dt lang="en">Asked again</dt><dt lang="ko">다시 요청</dt><dd data-asked>0</dd></div>
+                        <div><dt lang="en">Frames shown</dt><dt lang="ko">표시된 프레임</dt><dd data-shown>0</dd></div>
+                    </dl>
+                    <ul class="rd-legend" aria-hidden="true">
+                        <li><i></i><span lang="en">piece</span><span lang="ko">조각</span></li>
+                        <li><i class="spare"></i><span lang="en">spare</span><span lang="ko">예비</span></li>
+                        <li><i class="lost"></i><span lang="en">lost</span><span lang="ko">손실</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Security ============ -->
+        <section class="rd-section" id="security" aria-labelledby="rd-sec-title">
+            <div class="rd-wrap">
+                <header class="rd-head" data-reveal>
+                    <span class="rd-eyebrow" lang="en">Security and privacy</span><span class="rd-eyebrow" lang="ko">보안과 개인정보</span>
+                    <h2 id="rd-sec-title"><span lang="en">Only your two Macs can read it.</span><span lang="ko">내 Mac 두 대만 읽을 수 있습니다.</span></h2>
+                </header>
+                <div class="rd-sec" data-reveal-group>
+                    <article>
+                        <h3><span lang="en">Encrypted end to end</span><span lang="ko">종단 간 암호화</span></h3>
+                        <p lang="en">Every connection starts with a P-256 key exchange that the host signs with its own identity key, then runs under AES-256-GCM in both directions.</p>
+                        <p lang="ko">모든 연결은 Host가 자신의 신원 키로 서명한 P-256 키 교환으로 시작하고, 이후 양방향 모두 AES-256-GCM으로 보호됩니다.</p>
+                    </article>
+                    <article>
+                        <h3><span lang="en">A host you can recognise</span><span lang="ko">알아볼 수 있는 Host</span></h3>
+                        <p lang="en">The viewer remembers each host's fingerprint the first time and refuses one that has changed.</p>
+                        <p lang="ko">RexDesk는 처음 연결할 때 Host의 지문을 기억하고, 지문이 달라진 Host는 거부합니다.</p>
+                    </article>
+                    <article>
+                        <h3><span lang="en">The password stays home</span><span lang="ko">암호는 밖으로 나가지 않습니다</span></h3>
+                        <p lang="en">The access password never crosses the wire: the viewer proves it knows it with a code bound to that one session. Wrong guesses are rate-limited.</p>
+                        <p lang="ko">접속 암호는 네트워크로 전송되지 않습니다. 해당 세션에만 유효한 코드로 암호를 알고 있음을 증명합니다. 틀린 시도는 횟수가 제한됩니다.</p>
+                    </article>
+                    <article>
+                        <h3><span lang="en">Over the internet</span><span lang="ko">인터넷을 통할 때</span></h3>
+                        <p lang="en">A small rendezvous service introduces the two Macs, which then open a direct path to each other. Where a network blocks that, the service relays the connection, still encrypted. It never sees the screen and stores nothing, and its address is a setting in both apps.</p>
+                        <p lang="ko">작은 중개 서비스가 두 Mac을 서로 소개하면, 둘은 직접 통신 경로를 엽니다. 네트워크가 이를 막으면 서비스가 암호화된 상태 그대로 연결을 중계합니다. 서비스는 화면을 볼 수 없고 아무것도 저장하지 않으며, 그 주소는 두 앱의 설정에서 바꿀 수 있습니다.</p>
+                    </article>
+                </div>
+                <p class="rd-sec-note" data-reveal lang="en">No account, no sign-up. Each device keeps its own identity key, and a new device over the internet always needs the access password.</p>
+                <p class="rd-sec-note" data-reveal lang="ko">계정도 가입도 없습니다. 각 기기는 자신의 신원 키를 기기 안에 보관하며, 인터넷을 통한 새 기기의 접속에는 항상 접속 암호가 필요합니다.</p>
+            </div>
+        </section>
+
+        <!-- ============ The two apps ============ -->
+        <section class="rd-section" id="apps" aria-labelledby="rd-apps-title">
+            <div class="rd-wrap">
+                <header class="rd-head" data-reveal>
+                    <span class="rd-eyebrow" lang="en">Downloads</span><span class="rd-eyebrow" lang="ko">다운로드</span>
+                    <h2 id="rd-apps-title"><span lang="en">Two apps, one for each end.</span><span lang="ko">양쪽에 하나씩, 앱 두 개.</span></h2>
+                </header>
+                <div class="rd-apps" data-reveal-group>
+                    <article class="rd-app rd-app-host">
+                        <img class="rd-app-icon" src="/apps/rexdesk/img/host.png" width="512" height="512" alt="" loading="lazy" decoding="async">
+                        <h3>RexDesk Host</h3>
+                        <p lang="en">Goes on the Mac you want to control. A menu-bar app that captures the display, sends it, and takes your input.</p>
+                        <p lang="ko">제어할 Mac에 설치합니다. 메뉴 막대 앱으로, 화면을 캡처해 보내고 입력을 받아 실행합니다.</p>
+                        <dl class="rd-req">
+                            <dt lang="en">Needs</dt><dt lang="ko">요구 사항</dt>
+                            <dd lang="en">macOS 14 or later</dd><dd lang="ko">macOS 14 이상</dd>
+                            <dt lang="en">Asks for</dt><dt lang="ko">필요한 권한</dt>
+                            <dd lang="en">Screen Recording, to show the screen; Accessibility, to click and type for you</dd><dd lang="ko">화면 기록(화면 표시), 손쉬운 사용(클릭과 입력 대행)</dd>
+                            <dt lang="en">Install</dt><dt lang="ko">설치</dt>
+                            <dd lang="en">Open the .dmg and drag RexDesk Host to Applications. It can open at login.</dd><dd lang="ko">.dmg를 열고 RexDesk Host를 응용 프로그램 폴더로 드래그하세요. 로그인 시 자동 실행도 됩니다.</dd>
+                        </dl>
+                        <a class="rd-btn" href="/downloads/rexdesk/RexDesk-Host-0.5.0.dmg" download><svg aria-hidden="true"><use href="#i-down"/></svg><span lang="en">Download RexDesk Host</span><span lang="ko">RexDesk Host 다운로드</span><small>2 MB</small></a>
+                    </article>
+                    <article class="rd-app rd-app-viewer">
+                        <img class="rd-app-icon" src="/apps/rexdesk/img/viewer.png" width="512" height="512" alt="" loading="lazy" decoding="async">
+                        <h3>RexDesk</h3>
+                        <p lang="en">Goes on the Mac you sit at. Finds your hosts, shows the screen, and sends mouse, trackpad and keyboard.</p>
+                        <p lang="ko">내가 앉아 있는 Mac에 설치합니다. Host를 찾아 화면을 보여 주고, 마우스·트랙패드·키보드 입력을 보냅니다.</p>
+                        <dl class="rd-req">
+                            <dt lang="en">Needs</dt><dt lang="ko">요구 사항</dt>
+                            <dd lang="en">macOS 14 or later</dd><dd lang="ko">macOS 14 이상</dd>
+                            <dt lang="en">Asks for</dt><dt lang="ko">필요한 권한</dt>
+                            <dd lang="en">Nothing, unless you want ⌘Tab and Mission Control sent to the remote Mac too (Accessibility)</dd><dd lang="ko">없음. ⌘Tab과 Mission Control까지 원격 Mac으로 보내려면 손쉬운 사용 권한</dd>
+                            <dt lang="en">Install</dt><dt lang="ko">설치</dt>
+                            <dd lang="en">Open the .dmg and drag RexDesk to Applications.</dd><dd lang="ko">.dmg를 열고 RexDesk를 응용 프로그램 폴더로 드래그하세요.</dd>
+                        </dl>
+                        <a class="rd-btn" href="/downloads/rexdesk/RexDesk-0.5.0.dmg" download><svg aria-hidden="true"><use href="#i-down"/></svg><span lang="en">Download RexDesk</span><span lang="ko">RexDesk 다운로드</span><small>2 MB</small></a>
+                    </article>
+                </div>
+                <p class="rd-soon" data-reveal lang="en"><b>Other screens.</b> Viewers for iPhone and iPad, Android and Windows exist and are in testing. They are not offered for download here yet.</p>
+                <p class="rd-soon" data-reveal lang="ko"><b>다른 기기.</b> iPhone·iPad, Android, Windows용 뷰어도 만들어져 테스트 중입니다. 아직 이곳에서 내려받을 수는 없습니다.</p>
+            </div>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="rd-section" id="faq" aria-labelledby="rd-faq-title">
+            <div class="rd-wrap rd-faq-wrap">
+                <header class="rd-head" data-reveal>
+                    <span class="rd-eyebrow">FAQ</span>
+                    <h2 id="rd-faq-title"><span lang="en">Questions, answered.</span><span lang="ko">자주 묻는 질문.</span></h2>
+                </header>
+                <div class="rd-faq" data-reveal-group>
+                    <details name="rd-faq">
+                        <summary><span lang="en">Which app goes on which Mac?</span><span lang="ko">어느 앱을 어느 Mac에 설치하나요?</span></summary>
+                        <p lang="en">RexDesk Host goes on the Mac you want to reach and stays running in its menu bar. RexDesk goes on the Mac you are using. A Mac can have both.</p>
+                        <p lang="ko">RexDesk Host는 접속하려는 Mac에 설치해 메뉴 막대에 켜 둡니다. RexDesk는 지금 사용하는 Mac에 설치합니다. 한 Mac에 둘 다 설치해도 됩니다.</p>
+                    </details>
+                    <details name="rd-faq">
+                        <summary><span lang="en">Do both Macs have to be on the same network?</span><span lang="ko">두 Mac이 같은 네트워크에 있어야 하나요?</span></summary>
+                        <p lang="en">No. On the same network they find each other. From anywhere else, paste the Host ID from the host's menu, or add the Mac by address if you use Tailscale or another VPN.</p>
+                        <p lang="ko">아니요. 같은 네트워크에서는 서로를 자동으로 찾습니다. 다른 곳에서는 Host 메뉴의 Host ID를 붙여 넣거나, Tailscale 같은 VPN을 쓴다면 주소로 Mac을 추가하세요.</p>
+                    </details>
+                    <details name="rd-faq">
+                        <summary><span lang="en">Is there an account, or a subscription?</span><span lang="ko">계정이나 구독이 필요한가요?</span></summary>
+                        <p lang="en">Neither. There is nothing to sign up for: a host is identified by its own key, and you get in with the access password you set on it.</p>
+                        <p lang="ko">둘 다 없습니다. 가입할 것이 없습니다. Host는 자신의 키로 식별되고, 그 Mac에 정해 둔 접속 암호로 들어갑니다.</p>
+                    </details>
+                    <details name="rd-faq">
+                        <summary><span lang="en">Why does the host ask for Screen Recording and Accessibility?</span><span lang="ko">Host는 왜 화면 기록과 손쉬운 사용 권한을 요청하나요?</span></summary>
+                        <p lang="en">macOS guards both. Screen Recording lets RexDesk Host capture the display to send it; Accessibility lets it move the pointer and type what you type. You grant each once, in System Settings.</p>
+                        <p lang="ko">둘 다 macOS가 보호하는 기능입니다. 화면 기록은 보낼 화면을 캡처하는 데, 손쉬운 사용은 포인터를 움직이고 입력을 대신하는 데 필요합니다. 시스템 설정에서 각각 한 번만 허용하면 됩니다.</p>
+                    </details>
+                    <details name="rd-faq">
+                        <summary><span lang="en">What if nobody set a password?</span><span lang="ko">암호를 정해 두지 않았다면요?</span></summary>
+                        <p lang="en">On the same network a new device can still ask, and someone at that Mac clicks Allow. Over the internet a new device always needs the access password.</p>
+                        <p lang="ko">같은 네트워크에서는 새 기기가 접속을 요청할 수 있고, 그 Mac 앞에 있는 사람이 허용을 누르면 됩니다. 인터넷을 통한 새 기기의 접속에는 항상 접속 암호가 필요합니다.</p>
+                    </details>
+                    <details name="rd-faq">
+                        <summary><span lang="en">Does it work on Intel Macs?</span><span lang="ko">Intel Mac에서도 되나요?</span></summary>
+                        <p lang="en">Yes, both apps run on Apple silicon and Intel with macOS 14 or later. The full-colour 4:4:4 mode needs an Apple-silicon Mac on the viewing side.</p>
+                        <p lang="ko">네. 두 앱 모두 macOS 14 이상의 Apple 실리콘과 Intel Mac에서 동작합니다. 풀컬러 4:4:4 모드는 보는 쪽이 Apple 실리콘 Mac이어야 합니다.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Closing ============ -->
+        <section class="rd-cta" aria-labelledby="rd-cta-title">
+            <div class="rd-wrap">
+                <h2 id="rd-cta-title" data-reveal><span lang="en">Get both ends.</span><span lang="ko">양쪽 모두 받으세요.</span></h2>
+                <p class="rd-cta-sub" lang="en">Version 0.5.0 for macOS 14 and later.</p>
+                <p class="rd-cta-sub" lang="ko">버전 0.5.0 · macOS 14 이상.</p>
+                <div class="rd-downloads">
+                    <a class="rd-dl rd-dl-host" href="/downloads/rexdesk/RexDesk-Host-0.5.0.dmg" download>
+                        <img src="/apps/rexdesk/img/host.png" width="512" height="512" alt="" loading="lazy" decoding="async">
+                        <span class="rd-dl-text"><b>RexDesk Host</b><small>RexDesk-Host-0.5.0.dmg · 2 MB</small></span>
+                        <svg class="rd-dl-arrow" aria-hidden="true"><use href="#i-down"/></svg>
+                    </a>
+                    <a class="rd-dl rd-dl-viewer" href="/downloads/rexdesk/RexDesk-0.5.0.dmg" download>
+                        <img src="/apps/rexdesk/img/viewer.png" width="512" height="512" alt="" loading="lazy" decoding="async">
+                        <span class="rd-dl-text"><b>RexDesk</b><small>RexDesk-0.5.0.dmg · 2 MB</small></span>
+                        <svg class="rd-dl-arrow" aria-hidden="true"><use href="#i-down"/></svg>
+                    </a>
+                </div>
+                <details class="rd-sums">
+                    <summary>SHA-256</summary>
+                    <dl>
+                        <dt>RexDesk-Host-0.5.0.dmg</dt><dd class="mono">0000000000000000000000000000000000000000000000000000000000000000</dd>
+                        <dt>RexDesk-0.5.0.dmg</dt><dd class="mono">0000000000000000000000000000000000000000000000000000000000000000</dd>
+                    </dl>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-foot">
+        <nav aria-label="About this app">
+            <a href="/support/"><span lang="en">Support</span><span lang="ko">문의하기</span></a>
+            <a href="/#mac"><span lang="en">More Mac apps by Rexyrex</span><span lang="ko">Rexyrex의 다른 Mac 앱</span></a>
+            <a href="/apps/"><span lang="en">Every app</span><span lang="ko">모든 앱</span></a>
+        </nav>
+        <p><span lang="en">Made by</span><span lang="ko">만든 사람</span> <a href="/">Rexyrex</a> · <code>/apps/rexdesk/</code></p>
+    </footer>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/motion.js" defer></script>
+    <script src="/apps/rexdesk/page.js" defer></script>
+</body>
+</html>
