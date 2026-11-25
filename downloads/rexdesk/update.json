@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "0.7.1",
-  "publishedAt": "2026-11-25T15:23:35Z",
+  "version": "0.8.0",
+  "publishedAt": "2026-11-25T16:46:21Z",
   "minimumOS": "14.0",
   "page": "../../apps/rexdesk/",
-  "notes": "- **The picture keeps its size when the Mac switches displays.** In full screen it could stay at a quarter of its pixels.\n- **A steadier, sharper stream over the internet** (with RexDesk Host 0.7.1): Wi-Fi hold-ups no longer push the bitrate to its floor, long connections carry all 60 frames a second, and the host switches to a faster way of encoding when heavy motion would cost frames.\n- **Paste works beside other remote-desktop apps:** a text coming round again no longer replaces what you just copied.\n- When RexDesk Host restarts, RexDesk reconnects by itself.",
+  "notes": "- **Every frame reaches the screen, sooner.** RexDesk drew only every other refresh of the display (60 of 120, 30 of 60) and held each frame for two refreshes; it now shows all of them, the moment they are decoded.\n- **Smoother in fast motion and quicker to respond:** decoding no longer holds up the network, keys and clicks.\n- **True colours:** greys and colours arrive as the Mac drew them (they were up to 11 in 255 too light).\n- **Half the data in motion, the same picture:** bits are no longer spent on detail that cannot be seen while it moves.\n- **Copy and paste between your own Macs:** no more pause after a copy, and a paste right after a copy pastes it, also with Universal Clipboard on.",
   "apps": {
     "com.rexyrex.RexDesk": {
-      "file": "RexDesk-0.7.1.zip",
-      "size": 2573398,
-      "sha256": "dd59ea46078798a5114f59c99e9420fd614f2a450819ffbb0ba99974cf4f1731"
+      "file": "RexDesk-0.8.0.zip",
+      "size": 2638327,
+      "sha256": "565e26d0185950f771168069aa77a703c410a921411591b20e04eb1637fc81ba"
     }
   }
 }
