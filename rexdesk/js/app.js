@@ -32,10 +32,17 @@ function defaultDeviceName() {
     return os ? `${browser} on ${os}` : browser;
 }
 
+/**
+ * The rendezvous service this page was served by, when it was: a service serves the viewer at
+ * its own address (so a self-hosted one works with nothing to set). On the project's site and
+ * on this machine the public service is the default.
+ */
+const homeService = sharedOrigin || local ? DEFAULT_SERVICE : `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}`;
+
 /** The service to use: the setting, or (on this machine only, for tests) `?rendezvous=ws://…`. */
 function serviceUrl() {
-    const override = local ? params.get('rendezvous') : null;
-    return normalizeService(override || prefs().service) || DEFAULT_SERVICE;
+    const chosen = (local ? params.get('rendezvous') : null) || prefs().service;
+    return (chosen && normalizeService(chosen)) || homeService;
 }
 
 const deviceName = () => prefs().deviceName.trim() || defaultDeviceName();
@@ -773,6 +780,7 @@ $('open-settings').addEventListener('click', () => {
     $('set-name').value = p.deviceName;
     $('set-name').placeholder = defaultDeviceName();
     $('set-service').value = p.service;
+    $('set-service').placeholder = homeService;
     $('set-ctrl').checked = p.ctrlIsCommand;
     $('set-ctrl').closest('label').hidden = localIsApple();
     $('set-clipboard').checked = p.clipboard;
@@ -791,7 +799,7 @@ $('settings-form').addEventListener('submit', (event) => {
         error.hidden = false;
         return;
     }
-    setPrefs({ deviceName: $('set-name').value.trim(), service: normalized === DEFAULT_SERVICE ? '' : normalized,
+    setPrefs({ deviceName: $('set-name').value.trim(), service: normalized === homeService ? '' : normalized,
         ctrlIsCommand: $('set-ctrl').checked, clipboard: $('set-clipboard').checked });
     post({ t: 'config', service: serviceUrl(), deviceName: deviceName() });
     $('settings-dialog').close();
