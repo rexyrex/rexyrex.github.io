@@ -255,6 +255,10 @@ html[data-lang="ko"] .rd-tagline { font-size: clamp(2.2rem, 7vw, 4.6rem); line-h
 .rd-dl-text b { display: block; font-family: var(--rd-display); font-size: 1.06rem; font-weight: 600; letter-spacing: -0.01em; }
 .rd-dl-text small { display: block; font-size: 0.8rem; color: var(--rd-dim); margin-top: 1px; }
 .rd-dl-arrow { width: 18px; height: 18px; flex: none; color: var(--dl); }
+/* Not offered for download yet: greyed out, not a link, labelled "Coming soon". */
+.rd-dl.is-soon { --dl: var(--rd-faint); --dl-deep: var(--rd-faint); filter: grayscale(1); opacity: 0.6; box-shadow: none; cursor: not-allowed; }
+.rd-dl.is-soon:hover { transform: none; box-shadow: none; }
+.rd-dl-soon { flex: none; padding: 0.22rem 0.55rem; border-radius: 999px; border: 1px solid var(--rd-faint); font-family: var(--rd-mono); font-size: 0.7rem; letter-spacing: 0.04em; color: var(--rd-dim); white-space: nowrap; }
 
 .rd-web { margin-top: 1.25rem !important; display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0.3rem 0.8rem; font-size: 0.9rem; color: var(--rd-faint); }
 .rd-web a { display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 600; color: var(--rd-viewer-text); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--rd-viewer-text) 40%, transparent); }
@@ -444,6 +448,8 @@ html[data-lang="ko"] .rd-tagline { font-size: clamp(2.2rem, 7vw, 4.6rem); line-h
 .rd-btn:hover { background: color-mix(in srgb, var(--app) 26%, transparent); transform: translateY(-1px); }
 .rd-btn svg { width: 16px; height: 16px; color: var(--app-text); }
 .rd-btn small { font-family: var(--rd-mono); font-weight: 400; font-size: 0.74rem; color: var(--rd-dim); }
+.rd-btn.is-soon { --app: var(--rd-faint); --app-text: var(--rd-faint); color: var(--rd-dim); filter: grayscale(1); opacity: 0.6; cursor: not-allowed; }
+.rd-btn.is-soon:hover { background: color-mix(in srgb, var(--app) 14%, transparent); transform: none; }
 .rd-app-web { --app: var(--rd-viewer); --app-text: var(--rd-viewer-text); grid-column: 1 / -1; margin-top: 1rem; flex-direction: row; align-items: center; gap: 1.5rem 2.5rem; border-style: dashed; }
 .rd-app-web > div { flex: 1; min-width: 0; }
 .rd-app-web > div > p { margin-top: 0.5rem; color: var(--rd-dim); font-size: 0.98rem; }
