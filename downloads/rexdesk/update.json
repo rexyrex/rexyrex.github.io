@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "0.8.1",
-  "publishedAt": "2026-11-26T03:49:09Z",
+  "version": "0.8.2",
+  "publishedAt": "2026-11-26T07:39:04Z",
   "minimumOS": "14.0",
   "page": "../../apps/rexdesk/",
-  "notes": "- **Every frame after a pause on the network.** Wi-Fi often delivers several frames at once. On a screen faster than the stream (120 Hz for 60 frames a second) the Mac viewer now shows them all, in order, where 0.8.0 showed only the newest of them. Settings → Display has the switch.\n- **A frame count you can trust:** the statistics panel counts the frames that reached the screen (\"45 of 60 fps\" when more arrived), not the frames that arrived.",
+  "notes": "- **Every frame, without the 10-second gaps.** 0.8.1 went back to showing only the newest frame for 10 seconds whenever a few screen refreshes ran slow. The Mac viewer now goes by how late frames reach the screen, steps back for 2 seconds (longer only while they keep coming late), and holds the screen at its full rate while frames wait.\n- **Faster on a Mac that is doing nothing else:** the host encodes a frame in half the time or less (7 to 13 ms where it took 24), so each frame is on its way sooner.\n- **No frames skipped on a quick network:** after a short pause on Wi-Fi the host left out frames when the round trip was short; it now sends them.\n- **A picture that comes back:** when screen capture stopped after the stream was resized, the viewer stayed on its last picture. The host starts capture again.\n- **A frame count that knows what the screen did:** frames the display skipped count as not drawn.\n\nThe second, third and fourth are in RexDesk Host 0.8.2: update the Mac you connect to as well.",
   "apps": {
     "com.rexyrex.RexDesk": {
-      "file": "RexDesk-0.8.1.zip",
-      "size": 2655670,
-      "sha256": "27d9e0ef47484fba496b7d22e65b2811138f2aa2e421d3a91be00892125ad56a"
+      "file": "RexDesk-0.8.2.zip",
+      "size": 2663358,
+      "sha256": "4d87819b83adfab3571ea71110ca2a907a960a1ef88ff945d8f5c6b193b312d5"
     }
   }
 }
