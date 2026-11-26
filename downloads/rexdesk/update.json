@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "0.8.0",
-  "publishedAt": "2026-11-25T16:46:21Z",
+  "version": "0.8.1",
+  "publishedAt": "2026-11-26T03:49:09Z",
   "minimumOS": "14.0",
   "page": "../../apps/rexdesk/",
-  "notes": "- **Every frame reaches the screen, sooner.** RexDesk drew only every other refresh of the display (60 of 120, 30 of 60) and held each frame for two refreshes; it now shows all of them, the moment they are decoded.\n- **Smoother in fast motion and quicker to respond:** decoding no longer holds up the network, keys and clicks.\n- **True colours:** greys and colours arrive as the Mac drew them (they were up to 11 in 255 too light).\n- **Half the data in motion, the same picture:** bits are no longer spent on detail that cannot be seen while it moves.\n- **Copy and paste between your own Macs:** no more pause after a copy, and a paste right after a copy pastes it, also with Universal Clipboard on.",
+  "notes": "- **Every frame after a pause on the network.** Wi-Fi often delivers several frames at once. On a screen faster than the stream (120 Hz for 60 frames a second) the Mac viewer now shows them all, in order, where 0.8.0 showed only the newest of them. Settings → Display has the switch.\n- **A frame count you can trust:** the statistics panel counts the frames that reached the screen (\"45 of 60 fps\" when more arrived), not the frames that arrived.",
   "apps": {
     "com.rexyrex.RexDesk": {
-      "file": "RexDesk-0.8.0.zip",
-      "size": 2638327,
-      "sha256": "565e26d0185950f771168069aa77a703c410a921411591b20e04eb1637fc81ba"
+      "file": "RexDesk-0.8.1.zip",
+      "size": 2655670,
+      "sha256": "27d9e0ef47484fba496b7d22e65b2811138f2aa2e421d3a91be00892125ad56a"
     }
   }
 }
