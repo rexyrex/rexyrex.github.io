@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "0.9.1",
-  "publishedAt": "2026-11-27T01:06:36Z",
+  "version": "0.9.2",
+  "publishedAt": "2026-11-27T06:25:19Z",
   "minimumOS": "14.0",
   "page": "../../apps/rexdesk/",
-  "notes": "- **Every frame of a bunch, without the pauses.** On a connection that delivers frames in bunches (Wi-Fi, mostly) the Mac viewer went back to showing only the newest frame, for 2 to 30 seconds at a time, whenever a few frames reached its screen late. That came up every few seconds, also on a screen fast enough to show them all. It now goes by the pace the screen keeps: as many frames wait as the screen shows in 60 ms, and only a screen that is not clearly faster than the stream gets the newest frame alone. Nothing is switched off for a set time any more.\n- **A ProMotion screen stays at its full rate between bunches:** for 2 seconds after the last one, where it was a quarter of a second.\n- **The host's log says what the viewer's screen did:** how long it took to show a frame, and at what pace it took the frames that waited for it.\n\nThe third needs RexDesk Host 0.9.1 on the Mac you connect to.",
+  "notes": "- **Every frame of a bunch on a screen that reports late.** After a hold-up on the network the Mac viewer sent the next frame to its screen only once the screen had said it showed the one before. On a MacBook's 120 Hz display that word can come just before the next refresh (in the last benchmark, 7 ms after the frame), so the frames of a bunch went out at half the screen's rate, 60 a second, and the rest were left out. Where the word comes that late the viewer now sends the next frame at the refresh without waiting for it. Where it comes promptly nothing changes.\n- **A change you cause is on the screen sooner:** for 2 seconds after a key, a click or a scroll the viewer asks the screen for its full rate. In a still picture the display had taken 19 to 29 ms to show a new frame, against 5 ms in motion.\n- **The host's log says how many frames went ahead of the screen's word.**\n\nThe third needs RexDesk Host 0.9.2 on the Mac you connect to.",
   "apps": {
     "com.rexyrex.RexDesk": {
-      "file": "RexDesk-0.9.1.zip",
-      "size": 2745622,
-      "sha256": "e96b42b03b11054ea52d795bcd8609926c0a8f6eed8ed9270226cf92512c0565"
+      "file": "RexDesk-0.9.2.zip",
+      "size": 2754919,
+      "sha256": "6f1ed6a3d1cdbde760277f9a79951ddd4ba65758a76a91dde1c3a4b202e7bdaa"
     }
   }
 }
