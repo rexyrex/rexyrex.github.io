@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "0.9.0",
-  "publishedAt": "2026-11-26T10:52:20Z",
+  "version": "0.9.1",
+  "publishedAt": "2026-11-27T01:06:36Z",
   "minimumOS": "14.0",
   "page": "../../apps/rexdesk/",
-  "notes": "- **Open sessions show in the list.** A Mac you are connected to says \"Connected\" on its card. Click it and you are back in that session's window, from the Dock or another desktop; before, the click connected a second time and ended the session.\n- **Low bandwidth mode** (Settings → Data). *Low* runs every session at 30 frames a second and at most 5 Mb/s. *Minimum data* is for a metered or weak connection: a picture of half the size, 15 frames a second, no sound, text kept readable. It costs next to nothing while the screen is still, about 30 kb/s while you type and about 170 kb/s while you read. The same choice is in each session's quality menu.\n- **Typing costs less data** at every quality (a third less at Low bandwidth): small changes now travel in small packets, where a typed character took 2.4 kB on the wire.\n- **A hidden window stays quiet.** A session whose window you cannot see (minimized, another desktop, covered) stops its stream and costs 1 kb/s until you look again. It now waits a moment before stopping, so swiping past a desktop does not restart the picture.\n- The full-size stream declares the standard HEVC level again (5.1), at the same speed.\n\nThe second and third need RexDesk Host 0.9.0 on the Mac you connect to; with an older host, Minimum data still halves the picture and holds 15 frames a second.",
+  "notes": "- **Every frame of a bunch, without the pauses.** On a connection that delivers frames in bunches (Wi-Fi, mostly) the Mac viewer went back to showing only the newest frame, for 2 to 30 seconds at a time, whenever a few frames reached its screen late. That came up every few seconds, also on a screen fast enough to show them all. It now goes by the pace the screen keeps: as many frames wait as the screen shows in 60 ms, and only a screen that is not clearly faster than the stream gets the newest frame alone. Nothing is switched off for a set time any more.\n- **A ProMotion screen stays at its full rate between bunches:** for 2 seconds after the last one, where it was a quarter of a second.\n- **The host's log says what the viewer's screen did:** how long it took to show a frame, and at what pace it took the frames that waited for it.\n\nThe third needs RexDesk Host 0.9.1 on the Mac you connect to.",
   "apps": {
     "com.rexyrex.RexDesk": {
-      "file": "RexDesk-0.9.0.zip",
-      "size": 2728901,
-      "sha256": "ef1e9298000e2fbaa472c5892bf472f0cd0036ca5d0c12e4648e5931009e973e"
+      "file": "RexDesk-0.9.1.zip",
+      "size": 2745622,
+      "sha256": "e96b42b03b11054ea52d795bcd8609926c0a8f6eed8ed9270226cf92512c0565"
     }
   }
 }
